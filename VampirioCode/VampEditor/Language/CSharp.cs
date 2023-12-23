@@ -114,11 +114,12 @@ namespace VampEditor.Language
                 //Styles[ScintillaNET.Style.Default].BackColor = Color.FromArgb(39, 40, 34);
                 //Styles[ScintillaNET.Style.Default].ForeColor = Color.FromArgb(39, 40, 34);
 
+                Styles[Style.Default].Font = "Consolas";
+                Styles[Style.Default].Size = 10;
+
                 //
                 // This Should be before 'StyleClearAll' to work!!!
                 //
-                //Styles[Style.Default].Font = "Consolas";
-                //Styles[Style.Default].Size = 8;
                 Styles[Style.Default].BackColor = CColor(39, 40, 34);
                 
 
@@ -176,10 +177,16 @@ namespace VampEditor.Language
                 //editor.SetKeywordsSafe(1, classes + CSHARP_COMMON_CLASSES);
 
 
+                SetFoldMarginStyle();
+                EnableCodeFolding();
 
             }
 
         }
+
+        
+
+        
 
     }
 }
