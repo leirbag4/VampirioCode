@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VampirioCode", "VampirioCode\VampirioCode.csproj", "{EDDBD5C0-B2D1-4342-8E50-72C921310241}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDDBD5C0-B2D1-4342-8E50-72C921310241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDDBD5C0-B2D1-4342-8E50-72C921310241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDDBD5C0-B2D1-4342-8E50-72C921310241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDDBD5C0-B2D1-4342-8E50-72C921310241}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D008D9CF-A6B1-43F1-A340-90EAF8DCD0C8}
+	EndGlobalSection
+EndGlobal
