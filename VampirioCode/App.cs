@@ -13,6 +13,9 @@ namespace VampirioCode
 
         protected override void OnLoad(EventArgs e)
         {
+            //tabControl.DrawMode = TabDrawMode.Normal;
+
+            tabControl.SetSkin(16, CColor(64, 64, 64), CColor(39, 40, 34), CColor(170, 60, 85), CColor(255, 255, 255));
 
             // CREATE CONTROL
             editor2 = new VampEditor.VampirioEditor();
@@ -76,6 +79,10 @@ namespace VampEditor.Language
             base.OnLoad(e);
         }
 
+        private Color CColor(int red, int green, int blue)
+        {
+            return Color.FromArgb(red, green, blue);
+        }
         private void OnTestPressed(object sender, EventArgs e)
         {
             editor2.DebugTest();

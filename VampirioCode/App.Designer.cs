@@ -32,9 +32,14 @@
             testButton = new Button();
             footerui1 = new UI.FooterUI();
             splitContainer1 = new SplitContainer();
+            tabControl = new UI.Controls.TabControlAdv();
+            tabPage1 = new TabPage();
+            tabPage2 = new TabPage();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            tabControl.SuspendLayout();
             SuspendLayout();
             // 
             // codeContainer
@@ -77,9 +82,53 @@
             // splitContainer1.Panel1
             // 
             splitContainer1.Panel1.Controls.Add(codeContainer);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(tabControl);
             splitContainer1.Size = new Size(790, 622);
-            splitContainer1.SplitterDistance = 497;
+            splitContainer1.SplitterDistance = 336;
             splitContainer1.TabIndex = 3;
+            // 
+            // tabControl
+            // 
+            tabControl.AllowDrop = true;
+            tabControl.ArrowsBackColor = Color.LightGray;
+            tabControl.ArrowsColor = Color.Black;
+            tabControl.Controls.Add(tabPage1);
+            tabControl.Controls.Add(tabPage2);
+            tabControl.DragAndDrop = true;
+            tabControl.FontColor = Color.Black;
+            tabControl.InnerBorderColor = Color.DarkGray;
+            tabControl.ItemSize = new Size(200, 25);
+            tabControl.Location = new Point(194, 76);
+            tabControl.Name = "tabControl";
+            tabControl.SelectedIndex = 0;
+            tabControl.Size = new Size(250, 125);
+            tabControl.TabColor = Color.LightGray;
+            tabControl.TabIndex = 0;
+            tabControl.TabSelectedColor = Color.Gray;
+            tabControl.TopBorderColor = Color.DarkGray;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Location = new Point(4, 29);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(242, 92);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "tabPage1";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            tabPage2.Location = new Point(4, 29);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(242, 92);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
             // 
             // App
             // 
@@ -93,8 +142,10 @@
             Name = "App";
             Text = "Vampirio Code";
             splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            tabControl.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -104,5 +155,8 @@
         private Button testButton;
         private UI.FooterUI footerui1;
         private SplitContainer splitContainer1;
+        private UI.Controls.TabControlAdv tabControl;
+        private TabPage tabPage1;
+        private TabPage tabPage2;
     }
 }
