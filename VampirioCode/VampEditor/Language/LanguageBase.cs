@@ -15,6 +15,10 @@ namespace VampEditor.Language
         protected MarginCollection Margins { get; private set; }
         protected Lexer Lexer { get; private set; }
 
+        protected bool _lineNumbVisibile = false;
+        private int _maxLineNumberCharLength;
+
+
         public void Config(VampirioEditor editor)
         {
             this.editor =   editor;
@@ -23,8 +27,16 @@ namespace VampEditor.Language
             this.Margins =  editor.Margins;
             this.Lexer =    editor.Lexer;
 
+            editor.TextChanged += OnTextChanged;
+
             //string str = string.Join(',', Lexilla.GetLexerNames());
             //MessageBox.Show(str);
+        }
+
+        private void OnTextChanged(object? sender, EventArgs e)
+        {
+            if (_lineNumbVisibile)
+                ResizeLineNumbMargins();
         }
 
         public void Activate(StyleMode style)
@@ -39,6 +51,23 @@ namespace VampEditor.Language
         {
             for (int a = 0; a < Styles.Count; a++)
                 Styles[a].BackColor = Color.FromArgb(39, 40, 34);
+        }
+
+        private void ResizeLineNumbMargins()
+        {
+            // from: https://github.com/jacobslusser/ScintillaNET/wiki/Displaying-Line-Numbers
+
+            // Did the number of characters in the line number display change?
+            // i.e. nnn VS nn, or nnnn VS nn, etc...
+            var maxLineNumberCharLength = editor.Lines.Count.ToString().Length;
+            if (maxLineNumberCharLength == this._maxLineNumberCharLength)
+                return;
+
+            // Calculate the width required to display the last line number
+            // and include some padding for good measure.
+            const int padding = 2;
+            editor.Margins[0].Width = editor.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
+            this._maxLineNumberCharLength = maxLineNumberCharLength;
         }
 
         protected void SetFoldMarginStyle()
@@ -102,6 +131,37 @@ namespace VampEditor.Language
 
             //editor.SetFoldFlags(FoldFlags.LineAfterContracted);
 
+        }
+
+        protected void SetLinesNumber(bool visible, int width)
+        {
+            /*
+                From user's internet post:
+
+                'By default, margins 0-2 are given the following width and display attributes. A margin
+                'with zero width is not displayed.
+                '    margin      display      width
+                '      0        line numbers    0  (not visible)
+                '      1        symbols         16 (visible)
+                '      2        symbols         0  (not visible)
+
+                From Scintilla github:
+
+                In Scintilla there can be up to five margins (0 through 4) on the left edge of the control, of which, line numbers 
+                is just one of those. By convention Scintilla sets the Margin.Type property of margin 0 to MarginType.Number, making 
+                it the de facto line number margin. Any margin can display line numbers though if its Type property is set to 
+                MarginType.Number. Scintilla also hides line numbers by default by setting the Width of margin 0 to zero. To display the
+                default line number margin, increase its width:
+                
+                scintilla.Margins[0].Width = 16;
+            */
+
+            _lineNumbVisibile = visible;
+
+            if (!_lineNumbVisibile)
+                Margins[0].Width = 0;
+            else
+                Margins[0].Width = width;
         }
 
         protected Color CColor(int red, int green, int blue)

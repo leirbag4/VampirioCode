@@ -30,14 +30,18 @@
         {
             codeContainer = new Panel();
             testButton = new Button();
+            footerui1 = new UI.FooterUI();
+            splitContainer1 = new SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
             // 
             // codeContainer
             // 
-            codeContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            codeContainer.Location = new Point(12, 45);
+            codeContainer.Location = new Point(0, 0);
             codeContainer.Name = "codeContainer";
-            codeContainer.Size = new Size(776, 393);
+            codeContainer.Size = new Size(790, 495);
             codeContainer.TabIndex = 0;
             // 
             // testButton
@@ -52,16 +56,45 @@
             testButton.UseVisualStyleBackColor = true;
             testButton.Click += OnTestPressed;
             // 
+            // footerui1
+            // 
+            footerui1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            footerui1.BackColor = Color.FromArgb(20, 20, 20);
+            footerui1.Character = 0;
+            footerui1.Line = 0;
+            footerui1.Location = new Point(2, 673);
+            footerui1.Name = "footerui1";
+            footerui1.Size = new Size(798, 26);
+            footerui1.TabIndex = 2;
+            // 
+            // splitContainer1
+            // 
+            splitContainer1.BackColor = Color.FromArgb(30, 30, 30);
+            splitContainer1.Location = new Point(5, 45);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(codeContainer);
+            splitContainer1.Size = new Size(790, 622);
+            splitContainer1.SplitterDistance = 497;
+            splitContainer1.TabIndex = 3;
+            // 
             // App
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 700);
+            Controls.Add(splitContainer1);
+            Controls.Add(footerui1);
             Controls.Add(testButton);
-            Controls.Add(codeContainer);
             Name = "App";
             Text = "Vampirio Code";
+            splitContainer1.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -69,5 +102,7 @@
 
         private Panel codeContainer;
         private Button testButton;
+        private UI.FooterUI footerui1;
+        private SplitContainer splitContainer1;
     }
 }
