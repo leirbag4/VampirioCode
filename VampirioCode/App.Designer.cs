@@ -28,26 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            codeContainer = new Panel();
             testButton = new Button();
-            footerui1 = new UI.FooterUI();
-            splitContainer1 = new SplitContainer();
-            tabControl = new UI.Controls.TabControlAdv();
-            tabPage1 = new TabPage();
-            tabPage2 = new TabPage();
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
-            splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.Panel2.SuspendLayout();
-            splitContainer1.SuspendLayout();
-            tabControl.SuspendLayout();
+            footer = new UI.FooterUI();
+            splitContainer = new SplitContainer();
+            xconsole = new UI.XConsole();
+            vampDocManager1 = new VampDocManager.DocManager();
+            ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+            splitContainer.Panel1.SuspendLayout();
+            splitContainer.Panel2.SuspendLayout();
+            splitContainer.SuspendLayout();
             SuspendLayout();
-            // 
-            // codeContainer
-            // 
-            codeContainer.Location = new Point(0, 0);
-            codeContainer.Name = "codeContainer";
-            codeContainer.Size = new Size(790, 495);
-            codeContainer.TabIndex = 0;
             // 
             // testButton
             // 
@@ -61,74 +51,53 @@
             testButton.UseVisualStyleBackColor = true;
             testButton.Click += OnTestPressed;
             // 
-            // footerui1
+            // footer
             // 
-            footerui1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            footerui1.BackColor = Color.FromArgb(20, 20, 20);
-            footerui1.Character = 0;
-            footerui1.Line = 0;
-            footerui1.Location = new Point(2, 673);
-            footerui1.Name = "footerui1";
-            footerui1.Size = new Size(798, 26);
-            footerui1.TabIndex = 2;
+            footer.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            footer.BackColor = Color.FromArgb(20, 20, 20);
+            footer.Character = 0;
+            footer.Line = 0;
+            footer.Location = new Point(4, 673);
+            footer.Name = "footer";
+            footer.Size = new Size(792, 26);
+            footer.TabIndex = 2;
             // 
-            // splitContainer1
+            // splitContainer
             // 
-            splitContainer1.BackColor = Color.FromArgb(30, 30, 30);
-            splitContainer1.Location = new Point(5, 45);
-            splitContainer1.Name = "splitContainer1";
-            splitContainer1.Orientation = Orientation.Horizontal;
+            splitContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            splitContainer.BackColor = Color.FromArgb(30, 30, 30);
+            splitContainer.Location = new Point(4, 45);
+            splitContainer.Margin = new Padding(0);
+            splitContainer.Name = "splitContainer";
+            splitContainer.Orientation = Orientation.Horizontal;
             // 
-            // splitContainer1.Panel1
+            // splitContainer.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(codeContainer);
+            splitContainer.Panel1.Controls.Add(vampDocManager1);
             // 
-            // splitContainer1.Panel2
+            // splitContainer.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(tabControl);
-            splitContainer1.Size = new Size(790, 622);
-            splitContainer1.SplitterDistance = 336;
-            splitContainer1.TabIndex = 3;
+            splitContainer.Panel2.Controls.Add(xconsole);
+            splitContainer.Size = new Size(792, 630);
+            splitContainer.SplitterDistance = 474;
+            splitContainer.TabIndex = 3;
             // 
-            // tabControl
+            // xconsole
             // 
-            tabControl.AllowDrop = true;
-            tabControl.ArrowsBackColor = Color.LightGray;
-            tabControl.ArrowsColor = Color.Black;
-            tabControl.Controls.Add(tabPage1);
-            tabControl.Controls.Add(tabPage2);
-            tabControl.DragAndDrop = true;
-            tabControl.FontColor = Color.Black;
-            tabControl.InnerBorderColor = Color.DarkGray;
-            tabControl.ItemSize = new Size(200, 25);
-            tabControl.Location = new Point(194, 76);
-            tabControl.Name = "tabControl";
-            tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(250, 125);
-            tabControl.TabColor = Color.LightGray;
-            tabControl.TabIndex = 0;
-            tabControl.TabSelectedColor = Color.Gray;
-            tabControl.TopBorderColor = Color.DarkGray;
+            xconsole.BackColor = Color.FromArgb(40, 40, 40);
+            xconsole.Dock = DockStyle.Fill;
+            xconsole.Location = new Point(0, 0);
+            xconsole.Name = "xconsole";
+            xconsole.Size = new Size(792, 152);
+            xconsole.TabIndex = 0;
             // 
-            // tabPage1
+            // vampDocManager1
             // 
-            tabPage1.Location = new Point(4, 29);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(242, 92);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            tabPage2.Location = new Point(4, 29);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(242, 92);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
-            tabPage2.UseVisualStyleBackColor = true;
+            vampDocManager1.Dock = DockStyle.Fill;
+            vampDocManager1.Location = new Point(0, 0);
+            vampDocManager1.Name = "vampDocManager1";
+            vampDocManager1.Size = new Size(792, 474);
+            vampDocManager1.TabIndex = 0;
             // 
             // App
             // 
@@ -136,27 +105,23 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(800, 700);
-            Controls.Add(splitContainer1);
-            Controls.Add(footerui1);
+            Controls.Add(splitContainer);
+            Controls.Add(footer);
             Controls.Add(testButton);
             Name = "App";
             Text = "Vampirio Code";
-            splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
-            splitContainer1.ResumeLayout(false);
-            tabControl.ResumeLayout(false);
+            splitContainer.Panel1.ResumeLayout(false);
+            splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+            splitContainer.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Panel codeContainer;
         private Button testButton;
-        private UI.FooterUI footerui1;
-        private SplitContainer splitContainer1;
-        private UI.Controls.TabControlAdv tabControl;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
+        private UI.FooterUI footer;
+        private SplitContainer splitContainer;
+        private UI.XConsole xconsole;
+        private VampDocManager.DocManager vampDocManager1;
     }
 }

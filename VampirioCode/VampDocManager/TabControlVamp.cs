@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
 
-namespace VampirioCode.UI.Controls
+namespace VampDocManager
 {
     public class PolyObject
     {
@@ -280,7 +280,7 @@ namespace VampirioCode.UI.Controls
     [ToolboxBitmap(typeof(System.Windows.Forms.TabControl))] //,
                                                              //Designer(typeof(Designers.FlatTabControlDesigner))]
 
-    public class TabControlAdv : System.Windows.Forms.TabControl
+    public class TabControlVamp : System.Windows.Forms.TabControl
     {
 
         [Localizable(true)]
@@ -384,13 +384,13 @@ namespace VampirioCode.UI.Controls
 
         public bool paintTabs = true;
 
-        public TabControlAdv()
+        public TabControlVamp()
         {
             // This call is required by the Windows.Forms Form Designer.
             InitializeComponent();
 
-            AllowDrop =     true;
-            DragAndDrop =   true;
+            AllowDrop = true;
+            DragAndDrop = true;
 
             DrawMode = TabDrawMode.Normal;
             // TabSizeMode.Normal: tab width is dynamically calculated
@@ -430,20 +430,20 @@ namespace VampirioCode.UI.Controls
         {
             //Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             SetSkin(Color.FromArgb(64, 64, 64), Color.FromArgb(30, 30, 30), Color.FromArgb(45, 45, 46), Color.FromArgb(0, 122, 204), Color.White, Color.FromArgb(60, 60, 60), Color.White);
-            FontColor =         Color.White;
+            FontColor = Color.White;
         }
 
         public void SetSkin(Color backColor, Color innerBorderColor, Color tabColor, Color selectedTabColor, Color arrowsColor, Color arrowsBackColor, Color fontColor)
         {
             //Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            this.BackColor =            backColor;
-            this.InnerBorderColor =     innerBorderColor;
-            this.TabColor =             tabColor;
-            this.TabSelectedColor =     selectedTabColor;
-            this.ArrowsColor =          arrowsColor;
-            this.ArrowsBackColor =      arrowsBackColor;
-            this.TopBorderColor =       Color.FromArgb(60, 60, 60);
-            this.FontColor =            fontColor;
+            this.BackColor = backColor;
+            this.InnerBorderColor = innerBorderColor;
+            this.TabColor = tabColor;
+            this.TabSelectedColor = selectedTabColor;
+            this.ArrowsColor = arrowsColor;
+            this.ArrowsBackColor = arrowsBackColor;
+            this.TopBorderColor = Color.FromArgb(60, 60, 60);
+            this.FontColor = fontColor;
         }
 
         public void SetSkin(int tabHeight, Color backColor, Color tabColor, Color selectedTabColor, Color fontColor)
@@ -522,7 +522,7 @@ namespace VampirioCode.UI.Controls
             rightArrow.color = ArrowsColor;
             rightArrow.paint(g);
 
-            if(leftRightImages == null)
+            if (leftRightImages == null)
                 leftRightImages = new ImageList();
             leftRightImages.Images.Clear();
             leftRightImages.Images.AddStrip(bmpRight);
@@ -560,8 +560,8 @@ namespace VampirioCode.UI.Controls
             if (!Visible)
                 return;
 
-            Rectangle TabControlArea =  this.ClientRectangle;
-            Rectangle TabArea =         this.DisplayRectangle;
+            Rectangle TabControlArea = this.ClientRectangle;
+            Rectangle TabArea = this.DisplayRectangle;
 
             //----------------------------
             // fill client area
@@ -1069,10 +1069,11 @@ namespace VampirioCode.UI.Controls
 
             if (e.Data.GetData(typeof(TabPage)) != null)
                 dragTab = (TabPage)e.Data.GetData(typeof(TabPage));
-            //else if (e.Data.GetData(typeof(DocContainer)) != null)
-            //    dragTab = (DocContainer)e.Data.GetData(typeof(DocContainer));
+            else if (e.Data.GetData(typeof(DocumentTab)) != null)
+                dragTab = (DocumentTab)e.Data.GetData(typeof(DocumentTab));
             else
                 dragTab = null;
+
 
             int dragTab_index = tc.TabPages.IndexOf(dragTab);
 

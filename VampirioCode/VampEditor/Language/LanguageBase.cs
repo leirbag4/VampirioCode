@@ -17,7 +17,7 @@ namespace VampEditor.Language
 
         protected bool _lineNumbVisibile = false;
         private int _maxLineNumberCharLength;
-
+        private int _minLineMarginWidth = 0;
 
         public void Config(VampirioEditor editor)
         {
@@ -66,7 +66,13 @@ namespace VampEditor.Language
             // Calculate the width required to display the last line number
             // and include some padding for good measure.
             const int padding = 2;
-            editor.Margins[0].Width = editor.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
+            int newMarginWidth = editor.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
+            
+            if (newMarginWidth > _minLineMarginWidth)
+                editor.Margins[0].Width = newMarginWidth;
+            else
+                editor.Margins[0].Width = _minLineMarginWidth;
+
             this._maxLineNumberCharLength = maxLineNumberCharLength;
         }
 
@@ -156,12 +162,15 @@ namespace VampEditor.Language
                 scintilla.Margins[0].Width = 16;
             */
 
-            _lineNumbVisibile = visible;
+            _lineNumbVisibile =     visible;
+            _minLineMarginWidth =    width;
 
             if (!_lineNumbVisibile)
-                Margins[0].Width = 0;
+                _minLineMarginWidth = 0;
             else
-                Margins[0].Width = width;
+                _minLineMarginWidth = width;
+
+            Margins[0].Width = _minLineMarginWidth;
         }
 
         protected Color CColor(int red, int green, int blue)

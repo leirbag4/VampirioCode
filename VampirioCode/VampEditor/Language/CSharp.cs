@@ -180,7 +180,7 @@ namespace VampEditor.Language
                 SetFoldMarginStyle();
                 EnableCodeFolding();
 
-                SetLinesNumber(true, 60);
+                SetLinesNumber(true, 40);
             }
 
         }
