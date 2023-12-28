@@ -126,27 +126,31 @@ namespace VampDocManager
             return ++currNumb;
         }
 
-        private void Read()
+        private bool Read()
         {
             try
             {
                 Text = File.ReadAllText(FullFilePath);
+                return true;
             }
             catch (Exception ee)
             {
                 XConsole.ErrorAlert("Can't read the document at\n" + FullFilePath);
+                return false;
             }
         }
 
-        public void Save()
+        public bool Save()
         {
             try
             {
                 File.WriteAllText(FullFilePath, Text);
+                return true;
             }
             catch (Exception ee)
             {
                 MessageBox.Show("Can't read the document at\n" + FullFilePath, "Can't read", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
         }
 

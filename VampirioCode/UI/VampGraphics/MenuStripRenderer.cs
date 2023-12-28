@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.VampGraphics
+namespace VampirioCode.UI.VampGraphics
 {
     public class MenuStripRenderer : ToolStripProfessionalRenderer
     {
@@ -27,7 +27,7 @@ namespace VampirioCode.VampGraphics
         protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
         {
 
-            if ((e.Item as ToolStripSeparator) == null)
+            if (e.Item as ToolStripSeparator == null)
                 base.OnRenderSeparator(e);
             else
             {
@@ -38,7 +38,7 @@ namespace VampirioCode.VampGraphics
 
                 e.Graphics.FillRectangle(backBrush, 0, 0, e.Item.Width, e.Item.Height);
                 e.Graphics.FillRectangle(lineBrush, 4, (e.Item.Height >> 1) - 1, e.Item.Width - 8, 1);
-                e.Graphics.FillRectangle(lineBrush2, 4, (e.Item.Height >> 1), e.Item.Width - 8, 1);
+                e.Graphics.FillRectangle(lineBrush2, 4, e.Item.Height >> 1, e.Item.Width - 8, 1);
             }
         }
 
@@ -47,7 +47,7 @@ namespace VampirioCode.VampGraphics
             base.OnRenderToolStripBorder(e);
 
             //IF TOP bar menu, return
-            if ((e.ToolStrip as MenuStrip) != null)
+            if (e.ToolStrip as MenuStrip != null)
                 return;
 
             SolidBrush br = new SolidBrush(Color.FromArgb(40, 40, 40));

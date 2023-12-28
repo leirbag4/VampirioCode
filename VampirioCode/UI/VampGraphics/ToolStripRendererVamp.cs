@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampGraphics
+namespace VampirioCode.UI.VampGraphics
 {
     public class ToolStripRendererVamp : ToolStripProfessionalRenderer
     {
-            protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
         {
             Rectangle rc = new Rectangle(Point.Empty, e.Item.Size);
 
@@ -25,7 +25,7 @@ namespace VampGraphics
         protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
         {
 
-            if ((e.Item as ToolStripSeparator) == null)
+            if (e.Item as ToolStripSeparator == null)
                 base.OnRenderSeparator(e);
             else
             {
@@ -36,7 +36,7 @@ namespace VampGraphics
 
                 e.Graphics.FillRectangle(backBrush, 0, 0, e.Item.Width, e.Item.Height);
                 e.Graphics.FillRectangle(lineBrush, 4, (e.Item.Height >> 1) - 1, e.Item.Width - 8, 1);
-                e.Graphics.FillRectangle(lineBrush2, 4, (e.Item.Height >> 1), e.Item.Width - 8, 1);
+                e.Graphics.FillRectangle(lineBrush2, 4, e.Item.Height >> 1, e.Item.Width - 8, 1);
             }
         }
 
@@ -45,7 +45,7 @@ namespace VampGraphics
             base.OnRenderToolStripBorder(e);
 
             //IF TOP bar menu, return
-            if ((e.ToolStrip as MenuStrip) != null)
+            if (e.ToolStrip as MenuStrip != null)
                 return;
 
             SolidBrush br = new SolidBrush(Color.FromArgb(40, 40, 40));

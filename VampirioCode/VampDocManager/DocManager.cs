@@ -71,7 +71,7 @@ namespace VampDocManager
 
             tabControl.ContextMenuStrip = contextMenu;
             tabControl.ContextMenuStrip.ForeColor = Color.Silver;
-            tabControl.ContextMenuStrip.Renderer =  new VampGraphics.ToolStripRendererVamp();
+            tabControl.ContextMenuStrip.Renderer =  new VampirioCode.UI.VampGraphics.ToolStripRendererVamp();
         }
 
         public DocumentTab NewDocument()
@@ -102,6 +102,21 @@ namespace VampDocManager
             }
 
             return docTab;
+        }
+
+        public void Save()
+        {
+            if (CurrDocument.IsTemporal)
+                SaveAs();
+            else
+            { 
+                
+            }
+        }
+
+        public void SaveAs()
+        { 
+            
         }
 
         public void SelectTab(DocumentTab docTab)

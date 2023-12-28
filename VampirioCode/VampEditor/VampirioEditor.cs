@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScintillaNET;
 using VampEditor.Language;
+using VampirioCode.UI;
 
 namespace VampEditor
 {
@@ -13,6 +14,28 @@ namespace VampEditor
     {
         public LanguageBase Language { get; private set; }
         public StyleMode StyleMode { get; private set; }
+
+        public VampirioEditor() 
+        {
+            /*AssignCmdKey(Keys.Control | Keys.F, ScintillaNET.Command.Null);
+            AssignCmdKey(Keys.Control | Keys.S, ScintillaNET.Command.Null);
+            AssignCmdKey(Keys.Control | Keys.G, ScintillaNET.Command.Null);
+            AssignCmdKey(Keys.Control | Keys.P, ScintillaNET.Command.Null);
+            AssignCmdKey(Keys.Control | Keys.D, ScintillaNET.Command.Null);*/
+
+
+            ClearCmdKey(Keys.Control | Keys.N); // new
+            ClearCmdKey(Keys.Control | Keys.O); // open
+            ClearCmdKey(Keys.Control | Keys.W); // close
+            ClearCmdKey(Keys.Control | Keys.F); // find
+            ClearCmdKey(Keys.Control | Keys.H); // find and replace
+            ClearCmdKey(Keys.Control | Keys.S); // save
+            ClearCmdKey(Keys.Control | Keys.G); // goto
+            ClearCmdKey(Keys.Control | Keys.D); // duplicate
+            ClearCmdKey(Keys.Control | Keys.P);
+
+
+        }
 
         public void SetLanguage(LangId lang, StyleMode styleMode = StyleMode.Dark)
         {
@@ -26,18 +49,7 @@ namespace VampEditor
             Language.Activate(StyleMode);
         }
 
-        private int dbgCount = 0;
 
-        public void DebugTest()
-        {
-
-            Styles[dbgCount].BackColor = Color.Red;
-            MessageBox.Show("dbgCount: " + dbgCount);
-
-            dbgCount++;
-            if (dbgCount > Styles.Count)
-                dbgCount = 0;
-        }
 
 
     }
