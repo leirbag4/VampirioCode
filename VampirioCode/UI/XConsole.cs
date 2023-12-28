@@ -49,6 +49,17 @@ namespace VampirioCode.UI
             MessageBox.Show(str);
         }
 
+        public static void ErrorAlert(string str)
+        {
+            MessageBox.Show(str, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public static void Alert(string[] strArr)
+        {
+            foreach(var str in strArr)
+                MessageBox.Show(str);
+        }
+
         public static void Clear()
         {
             if (_outp.InvokeRequired)
@@ -115,6 +126,19 @@ namespace VampirioCode.UI
             }
             else
                 _Println(str, color);
+        }
+
+        public static void PrintArr(String[] strArr)
+        {
+            foreach (var str in strArr)
+            {
+                if (_outp.InvokeRequired)
+                {
+                    _outp.Invoke(new MethodInvoker(delegate { _Println(str); }));
+                }
+                else
+                    _Println(str);
+            }
         }
 
         public static void PrintError(String str)

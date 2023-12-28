@@ -363,6 +363,18 @@ namespace VampDocManager
             get { return _arrowsColor; }
         }
 
+        public DocumentTab[] DocumentTabs 
+        { 
+            get 
+            {
+                DocumentTab[] docTabs = new DocumentTab[TabPages.Count];
+                for (int a = 0; a < TabPages.Count; a++)
+                    docTabs[a] = (DocumentTab)TabPages[a];
+
+                return docTabs;
+            } 
+        }
+
         /// <summary> 
         /// Required designer variable.
         /// </summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 
@@ -11,6 +12,9 @@ namespace VampDocManager
     public class DocManager : UserControl
     {
         public DocumentTab CurrDocumentTab { get { return (DocumentTab)tabControl.SelectedTab; } }
+        public Document CurrDocument { get { return CurrDocumentTab.Document; } }
+        public DocumentTab[] DocumentTabs { get; set; } = new DocumentTab[0];
+        public Document[] Documents { get; set; } = new Document[0];
 
         private TabControlVamp tabControl;
 
@@ -18,6 +22,7 @@ namespace VampDocManager
         private ToolStripMenuItem closeItem;
         private ToolStripMenuItem closeAllItem;
         private ToolStripMenuItem closeAllButThis;
+        private ToolStripMenuItem newItem;
 
         public DocManager() 
         {
@@ -27,13 +32,25 @@ namespace VampDocManager
             tabControl.Margin =     new Padding(0);
             tabControl.Padding =    new Point(0, 0);
             tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), CColor(170, 60, 85), CColor(255, 255, 255));
+            tabControl.ControlAdded += OnDocumentTabAdded;
             CreateContextItems();
 
             //tabControl.DragAndDrop = true;
             //tabControl.AllowDrop = true;
             this.Controls.Add(tabControl);
 
-            NewDocument();
+        }
+
+        private void OnDocumentTabAdded(object? sender, ControlEventArgs e)
+        {
+            List<Document> docs = new List<Document>();
+            
+            DocumentTabs = tabControl.DocumentTabs.ToArray();
+            
+            foreach (DocumentTab doc in DocumentTabs)
+                docs.Add(doc.Document);
+            
+            Documents = docs.ToArray();
         }
 
         private static Color CColor(int red, int green, int blue)
@@ -46,28 +63,51 @@ namespace VampDocManager
             closeItem =         new ToolStripMenuItem("Close");                 closeItem.Click +=          OnCloseTabPressed;
             closeAllItem =      new ToolStripMenuItem("Close All");             closeAllItem.Click +=       OnCloseAllPressed;
             closeAllButThis =   new ToolStripMenuItem("Close All but this");    closeAllButThis.Click +=    OnCloseAllButThisPressed;
+            newItem =           new ToolStripMenuItem("New File");              newItem.Click +=            OnNewPressed;
 
-            contextMenu = new ContextMenuStrip(); 
-            contextMenu.Items.AddRange(new ToolStripMenuItem[] { closeItem, closeAllItem, closeAllButThis });
+            contextMenu = new ContextMenuStrip();
+            //contextMenu.Items.AddRange(new ToolStripMenuItem[] { closeItem, closeAllItem, closeAllButThis, new ToolStripSeparator(), newItem });
+            contextMenu.Items.AddRange(new ToolStripItem[] { closeItem, closeAllItem, closeAllButThis, new ToolStripSeparator(), newItem });
+
             tabControl.ContextMenuStrip = contextMenu;
             tabControl.ContextMenuStrip.ForeColor = Color.Silver;
             tabControl.ContextMenuStrip.Renderer =  new VampGraphics.ToolStripRendererVamp();
         }
 
-        public void NewDocument()
+        public DocumentTab NewDocument()
         {
-            DocumentTab page = new DocumentTab();
-            page.Text = "capitan.cs";
+            DocumentTab docTab = null;
+            Document doc = Document.NewTemporal();
+            
+            if (doc != null)
+            {
+                docTab = DocumentTab.Create(doc);
+                tabControl.TabPages.Add(docTab);
+                SelectTab(docTab);
+            }
 
-            tabControl.TabPages.Add(page);
+            return docTab;
+        }
 
-            DocumentTab page2 = new DocumentTab();
-            page2.Text = "lepronito.cs";
+        public DocumentTab OpenDocument(string path)
+        {
+            DocumentTab docTab = null;
+            Document doc = Document.Load(path);
+            
+            if (doc != null)
+            {
+                docTab = DocumentTab.Create(doc);
+                tabControl.TabPages.Add(docTab);
+                SelectTab(docTab);
+            }
 
-            tabControl.TabPages.Add(page2);
+            return docTab;
+        }
 
-            //TabDocument
-
+        public void SelectTab(DocumentTab docTab)
+        { 
+            if(docTab != null)
+                tabControl.SelectTab(docTab);
         }
 
         private void OnCloseTabPressed(object sender, EventArgs e)
@@ -83,6 +123,11 @@ namespace VampDocManager
         private void OnCloseAllButThisPressed(object sender, EventArgs e)
         {
 
+        }
+
+        private void OnNewPressed(object sender, EventArgs e)
+        {
+            NewDocument();
         }
     }
 

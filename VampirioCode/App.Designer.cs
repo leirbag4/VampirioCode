@@ -28,28 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            testButton = new Button();
             footer = new UI.FooterUI();
             splitContainer = new SplitContainer();
+            docManager = new VampDocManager.DocManager();
             xconsole = new UI.XConsole();
-            vampDocManager1 = new VampDocManager.DocManager();
+            menuStrip = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            newToolStripMenuItem = new ToolStripMenuItem();
+            openToolStripMenuItem = new ToolStripMenuItem();
+            saveToolStripMenuItem = new ToolStripMenuItem();
+            saveAsToolStripMenuItem = new ToolStripMenuItem();
+            editToolStripMenuItem = new ToolStripMenuItem();
+            undoToolStripMenuItem = new ToolStripMenuItem();
+            redoToolStripMenuItem = new ToolStripMenuItem();
+            cutToolStripMenuItem = new ToolStripMenuItem();
+            copyToolStripMenuItem = new ToolStripMenuItem();
+            pasteToolStripMenuItem = new ToolStripMenuItem();
+            closeToolStripMenuItem = new ToolStripMenuItem();
+            closeAllToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
             splitContainer.SuspendLayout();
+            menuStrip.SuspendLayout();
             SuspendLayout();
-            // 
-            // testButton
-            // 
-            testButton.FlatStyle = FlatStyle.Flat;
-            testButton.ForeColor = Color.DarkOrchid;
-            testButton.Location = new Point(12, 10);
-            testButton.Name = "testButton";
-            testButton.Size = new Size(94, 29);
-            testButton.TabIndex = 1;
-            testButton.Text = "test";
-            testButton.UseVisualStyleBackColor = true;
-            testButton.Click += OnTestPressed;
             // 
             // footer
             // 
@@ -73,7 +76,7 @@
             // 
             // splitContainer.Panel1
             // 
-            splitContainer.Panel1.Controls.Add(vampDocManager1);
+            splitContainer.Panel1.Controls.Add(docManager);
             // 
             // splitContainer.Panel2
             // 
@@ -81,6 +84,14 @@
             splitContainer.Size = new Size(792, 630);
             splitContainer.SplitterDistance = 474;
             splitContainer.TabIndex = 3;
+            // 
+            // docManager
+            // 
+            docManager.Dock = DockStyle.Fill;
+            docManager.Location = new Point(0, 0);
+            docManager.Name = "docManager";
+            docManager.Size = new Size(792, 474);
+            docManager.TabIndex = 0;
             // 
             // xconsole
             // 
@@ -91,13 +102,137 @@
             xconsole.Size = new Size(792, 152);
             xconsole.TabIndex = 0;
             // 
-            // vampDocManager1
+            // menuStrip
             // 
-            vampDocManager1.Dock = DockStyle.Fill;
-            vampDocManager1.Location = new Point(0, 0);
-            vampDocManager1.Name = "vampDocManager1";
-            vampDocManager1.Size = new Size(792, 474);
-            vampDocManager1.TabIndex = 0;
+            menuStrip.ImageScalingSize = new Size(20, 20);
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem });
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Size = new Size(800, 28);
+            menuStrip.TabIndex = 4;
+            menuStrip.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, closeToolStripMenuItem, closeAllToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(46, 24);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // newToolStripMenuItem
+            // 
+            newToolStripMenuItem.ForeColor = Color.Silver;
+            newToolStripMenuItem.Name = "newToolStripMenuItem";
+            newToolStripMenuItem.Size = new Size(224, 26);
+            newToolStripMenuItem.Tag = "new";
+            newToolStripMenuItem.Text = "New";
+            newToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // openToolStripMenuItem
+            // 
+            openToolStripMenuItem.ForeColor = Color.Silver;
+            openToolStripMenuItem.Name = "openToolStripMenuItem";
+            openToolStripMenuItem.Size = new Size(224, 26);
+            openToolStripMenuItem.Tag = "open";
+            openToolStripMenuItem.Text = "Open";
+            openToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // saveToolStripMenuItem
+            // 
+            saveToolStripMenuItem.ForeColor = Color.Silver;
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            saveToolStripMenuItem.Size = new Size(224, 26);
+            saveToolStripMenuItem.Tag = "save";
+            saveToolStripMenuItem.Text = "Save";
+            saveToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            saveAsToolStripMenuItem.ForeColor = Color.Silver;
+            saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            saveAsToolStripMenuItem.Size = new Size(224, 26);
+            saveAsToolStripMenuItem.Tag = "save_as";
+            saveAsToolStripMenuItem.Text = "Save As...";
+            saveAsToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // editToolStripMenuItem
+            // 
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, redoToolStripMenuItem, cutToolStripMenuItem, copyToolStripMenuItem, pasteToolStripMenuItem });
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new Size(49, 24);
+            editToolStripMenuItem.Text = "Edit";
+            // 
+            // undoToolStripMenuItem
+            // 
+            undoToolStripMenuItem.ForeColor = Color.Silver;
+            undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+            undoToolStripMenuItem.Size = new Size(128, 26);
+            undoToolStripMenuItem.Tag = "undo";
+            undoToolStripMenuItem.Text = "Undo";
+            undoToolStripMenuItem.Click += OnEditPressed;
+            // 
+            // redoToolStripMenuItem
+            // 
+            redoToolStripMenuItem.ForeColor = Color.Silver;
+            redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+            redoToolStripMenuItem.Size = new Size(128, 26);
+            redoToolStripMenuItem.Tag = "redo";
+            redoToolStripMenuItem.Text = "Redo";
+            redoToolStripMenuItem.Click += OnEditPressed;
+            // 
+            // cutToolStripMenuItem
+            // 
+            cutToolStripMenuItem.ForeColor = Color.Silver;
+            cutToolStripMenuItem.Name = "cutToolStripMenuItem";
+            cutToolStripMenuItem.Size = new Size(128, 26);
+            cutToolStripMenuItem.Tag = "cut";
+            cutToolStripMenuItem.Text = "Cut";
+            cutToolStripMenuItem.Click += OnEditPressed;
+            // 
+            // copyToolStripMenuItem
+            // 
+            copyToolStripMenuItem.ForeColor = Color.Silver;
+            copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            copyToolStripMenuItem.Size = new Size(128, 26);
+            copyToolStripMenuItem.Tag = "copy";
+            copyToolStripMenuItem.Text = "Copy";
+            copyToolStripMenuItem.Click += OnEditPressed;
+            // 
+            // pasteToolStripMenuItem
+            // 
+            pasteToolStripMenuItem.ForeColor = Color.Silver;
+            pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            pasteToolStripMenuItem.Size = new Size(128, 26);
+            pasteToolStripMenuItem.Tag = "paste";
+            pasteToolStripMenuItem.Text = "Paste";
+            pasteToolStripMenuItem.Click += OnEditPressed;
+            // 
+            // closeToolStripMenuItem
+            // 
+            closeToolStripMenuItem.ForeColor = Color.Silver;
+            closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            closeToolStripMenuItem.Size = new Size(224, 26);
+            closeToolStripMenuItem.Tag = "close";
+            closeToolStripMenuItem.Text = "Close";
+            closeToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // closeAllToolStripMenuItem
+            // 
+            closeAllToolStripMenuItem.ForeColor = Color.Silver;
+            closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
+            closeAllToolStripMenuItem.Size = new Size(224, 26);
+            closeAllToolStripMenuItem.Tag = "close_all";
+            closeAllToolStripMenuItem.Text = "Close All";
+            closeAllToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.ForeColor = Color.Silver;
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(224, 26);
+            exitToolStripMenuItem.Tag = "exit";
+            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += OnFilePressed;
             // 
             // App
             // 
@@ -107,21 +242,39 @@
             ClientSize = new Size(800, 700);
             Controls.Add(splitContainer);
             Controls.Add(footer);
-            Controls.Add(testButton);
+            Controls.Add(menuStrip);
+            MainMenuStrip = menuStrip;
             Name = "App";
             Text = "Vampirio Code";
             splitContainer.Panel1.ResumeLayout(false);
             splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
             splitContainer.ResumeLayout(false);
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-        private Button testButton;
         private UI.FooterUI footer;
         private SplitContainer splitContainer;
         private UI.XConsole xconsole;
-        private VampDocManager.DocManager vampDocManager1;
+        private VampDocManager.DocManager docManager;
+        private MenuStrip menuStrip;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private ToolStripMenuItem newToolStripMenuItem;
+        private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem saveAsToolStripMenuItem;
+        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem undoToolStripMenuItem;
+        private ToolStripMenuItem redoToolStripMenuItem;
+        private ToolStripMenuItem cutToolStripMenuItem;
+        private ToolStripMenuItem copyToolStripMenuItem;
+        private ToolStripMenuItem pasteToolStripMenuItem;
+        private ToolStripMenuItem closeToolStripMenuItem;
+        private ToolStripMenuItem closeAllToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
     }
 }

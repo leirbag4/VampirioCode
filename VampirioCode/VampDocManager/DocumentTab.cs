@@ -9,7 +9,10 @@ namespace VampDocManager
 {
     public class DocumentTab : TabPage
     {
-        public Document Document { get; set; }
+        public string Text { get { return _editor.Text; } set { _editor.Text = value; } }
+        public string Title { get { return base.Text; } set { base.Text = value; } }
+
+        public Document Document { get; private set; }
         public VampirioEditor Editor { get { return _editor; } }
 
         private VampirioEditor _editor;
@@ -27,6 +30,19 @@ namespace VampDocManager
             this.Controls.Add(_editor);
         }
 
+        private void Init(Document doc)
+        { 
+            this.Document = doc;
+            this.Title =    doc.FileName;
+            this.Text =     doc.Text;
+        }
+
+        public static DocumentTab Create(Document doc)
+        { 
+            DocumentTab docTab = new DocumentTab();
+            docTab.Init(doc);
+            return docTab;
+        }
 
     }
 }
