@@ -16,15 +16,15 @@ namespace VampirioCode.SaveData
         public static string Version { get { return config.version; } set { config.version = value; } }
 
         // The documents from the previous session that were still opened before close
-        public static SavedDocument[] LastOpenDocuments { get { return config.last_open_documents; } set { config.last_open_documents = value; } }
-
+        public static SavedDocument[] LastOpenDocuments {   get { return config.last_open_documents; }      set { config.last_open_documents = value; } }
+        public static int LastSelectedTabIndex {            get { return config.last_selected_tab_index; }  set { config.last_selected_tab_index = value; } }
         
         private static Config config = null;
         private const string FILENAME = "config.cfg";
 
         public string version { get; set; } = "";
         public SavedDocument[] last_open_documents { get; set; }
-
+        public int last_selected_tab_index { get; set; } = 0;
 
         public static void Initialize()
         {

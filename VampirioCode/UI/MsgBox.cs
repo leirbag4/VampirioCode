@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,9 +26,21 @@ namespace VampirioCode.UI
         Error
     }
 
+    public enum OptionResult
+    { 
+        None,
+        OptionA,
+        OptionB,
+        OptionC
+    }
+
     public partial class MsgBox : VampirioCode.UI.Controls.VampirioForm
     {
+        private static ContainerControl mainControl = null;
+
         private DialogButtons currButtons;
+        private OptionResult CurrOptionResult = OptionResult.None;
+        private bool customMode = false;
 
         private static string[] buttons_str = new string[]{
             "Abort",
@@ -45,6 +58,11 @@ namespace VampirioCode.UI
         private const int _ok = 4;
         private const int _retry = 5;
         private const int _yes = 6;
+
+        public static void Setup(ContainerControl control)
+        { 
+            mainControl = control;
+        }
 
         public MsgBox()
         {
@@ -86,16 +104,106 @@ namespace VampirioCode.UI
             return msgBox.DialogResult;
         }
 
+        public static OptionResult Show(String title, String description, String optionA, DialogIcon dialogIcon = DialogIcon.Question)
+        {
+            return Show(mainControl, title, description, optionA, dialogIcon);
+        }
+
+        public static OptionResult Show(ContainerControl parent, String title, String description, String optionA, DialogIcon dialogIcon = DialogIcon.Question)
+        {
+            return _ShowCustom(parent, title, description, new string[] {optionA}, dialogIcon);
+        }
+
+        public static OptionResult Show(String title, String description, String optionA, String optionB, DialogIcon dialogIcon = DialogIcon.Question)
+        {
+            return Show(mainControl, title, description, optionA, optionB, dialogIcon);
+        }
+
+        public static OptionResult Show(ContainerControl parent, String title, String description, String optionA, String optionB, DialogIcon dialogIcon = DialogIcon.Question)
+        {
+            return _ShowCustom(parent, title, description, new string[] {optionA, optionB}, dialogIcon);
+        }
+
+        public static OptionResult Show(String title, String description, String optionA, String optionB, String optionC, DialogIcon dialogIcon = DialogIcon.Question)
+        {
+            return Show(mainControl, title, description, optionA, optionB, optionC, dialogIcon);
+        }
+
+        public static OptionResult Show(ContainerControl parent, String title, String description, String optionA, String optionB, String optionC, DialogIcon dialogIcon = DialogIcon.Question)
+        {
+            return _ShowCustom(parent, title, description, new string[] { optionA, optionB, optionC }, dialogIcon);
+        }
+
+        public static OptionResult _ShowCustom(ContainerControl parent, String title, String description, String[] buttonsText, DialogIcon dialogIcon = DialogIcon.Question)
+        {
+            MsgBox msgBox = new MsgBox();
+            msgBox.customMode = true;
+
+            if (buttonsText.Length == 1)
+            {
+                msgBox.module_initialize(title, description, DialogButtons.OK, dialogIcon);
+                msgBox.button0.Text =   buttonsText[0]; msgBox.button0.Tag = OptionResult.OptionA;
+
+            }
+            else if (buttonsText.Length == 2)
+            {
+                msgBox.module_initialize(title, description, DialogButtons.YesNo, dialogIcon);
+                msgBox.button0.Text = buttonsText[0];   msgBox.button0.Tag = OptionResult.OptionA;
+                msgBox.button2.Text = buttonsText[1];   msgBox.button2.Tag = OptionResult.OptionB;
+            }
+            else if (buttonsText.Length == 3)
+            {
+                msgBox.module_initialize(title, description, DialogButtons.YesNoCancel, dialogIcon);
+                msgBox.button0.Text = buttonsText[0];   msgBox.button0.Tag = OptionResult.OptionA;
+                msgBox.button1.Text = buttonsText[1];   msgBox.button1.Tag = OptionResult.OptionB;
+                msgBox.button2.Text = buttonsText[2];   msgBox.button2.Tag = OptionResult.OptionC;
+            }
+
+            msgBox.ShowMe(parent);
+
+            return msgBox.CurrOptionResult;
+        }
+
+        public static DialogResult Error(String description)
+        {
+            return Error(mainControl, description);
+        }
+
+        public static DialogResult Error(ContainerControl parent, String description)
+        {
+            MsgBox msgBox = new MsgBox();
+
+            msgBox.module_initialize("Error", description, DialogButtons.OK, DialogIcon.Error);
+            msgBox.ShowMe(parent);
+
+            return msgBox.DialogResult;
+        }
+
+        public static DialogResult Warning(String description)
+        {
+            return Warning(mainControl, description);
+        }
+
+        public static DialogResult Warning(ContainerControl parent, String description)
+        {
+            MsgBox msgBox = new MsgBox();
+
+            msgBox.module_initialize("Warning", description, DialogButtons.OK, DialogIcon.Warning);
+            msgBox.ShowMe(parent);
+
+            return msgBox.DialogResult;
+        }
+
         protected void SetupIcon(DialogIcon dialogIcon)
         {
-            /*if (dialogIcon == DialogIcon.Question)
-                icon.Image = LizardEngine.Properties.Resources.dialog_question_med;
+            if (dialogIcon == DialogIcon.Question)
+                icon.Image = VampirioCode.Properties.Resources.dialog_question_med;
             else if (dialogIcon == DialogIcon.Info)
-                icon.Image = LizardEngine.Properties.Resources.dialog_info_med;
+                icon.Image = VampirioCode.Properties.Resources.dialog_info_med;
             else if (dialogIcon == DialogIcon.Warning)
-                icon.Image = LizardEngine.Properties.Resources.dialog_warning_info_med;
+                icon.Image = VampirioCode.Properties.Resources.dialog_warning_info_med;
             else if (dialogIcon == DialogIcon.Error)
-                icon.Image = LizardEngine.Properties.Resources.dialog_error_info_med;*/
+                icon.Image = VampirioCode.Properties.Resources.dialog_error_info_med;
         }
 
         protected void SetupButtons(DialogButtons buttons)
@@ -164,7 +272,11 @@ namespace VampirioCode.UI
         protected void Assign(Button ubutton, DialogResult buttonType)
         {
             ubutton.DialogResult = buttonType;
-            ubutton.Click += OnButtonPressed;
+            
+            if(customMode)
+                ubutton.Click += OnCustomButtonPressed;
+            else
+                ubutton.Click += OnButtonPressed;
 
             if (buttonType == DialogResult.Abort)
             {
@@ -199,6 +311,12 @@ namespace VampirioCode.UI
         private void OnButtonPressed(object sender, EventArgs e)
         {
             DialogResult = (sender as Button).DialogResult;
+            this.Close();
+        }
+
+        private void OnCustomButtonPressed(object sender, EventArgs e)
+        {
+            CurrOptionResult = (OptionResult)(sender as Button).Tag;
             this.Close();
         }
 

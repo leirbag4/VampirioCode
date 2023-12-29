@@ -8,11 +8,21 @@ using VampirioCode;
 using VampirioCode.Utils;
 using VampirioCode.UI;
 using VampirioCode.SaveData;
+using ScintillaNET;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Reflection;
 
 namespace VampDocManager
 {
     public class Document
     {
+
+        public delegate void SavedEvent();
+        public delegate void ModifiedEvent();
+
+        public event SavedEvent OnSaved;
+        public event ModifiedEvent OnModified;
+
         public string FilePath { get; set; }
         public string FullFilePath { get; set; }
         public string FileName { get; set; }
@@ -20,7 +30,9 @@ namespace VampDocManager
         public string Text { get; set; }
         public DocumentType DocType { get; set; }
         public bool IsTemporal { get; set; }        // if file was created using 'file -> new' and was never saved, it will be mark as temporal
+        public bool Modified { get { return _modified; } set { _modified = value; if (OnModified != null) OnModified(); } }
 
+        protected bool _modified = false;
 
         public static Document Load(string path)
         {
@@ -31,7 +43,6 @@ namespace VampDocManager
                 if (doc.FullFilePath.IndexOf(AppInfo.TemporalFilesPath) == 0)
                     doc.IsTemporal = true;
             }
-
             return doc;
         }
 
@@ -44,7 +55,7 @@ namespace VampDocManager
                 Directory.CreateDirectory(tempPath);
 
             // get next free number for temporal files. E.g: 'untitled 1' 'untitled 3' -> next will be ['untitled 2']
-            string newFilePath = AppInfo.TemporalFilesPath + "untitled " + GetNextTemporalNumb() + ".txt";
+            string newFilePath = AppInfo.TemporalFilesPath + "untitled " + GetNextTemporalNumb();// + ".txt";
 
             // try to create the new file
             try
@@ -126,6 +137,17 @@ namespace VampDocManager
             return ++currNumb;
         }
 
+        public void CopyFrom(Document newDocument)
+        {
+            PropertyInfo[] properties = typeof(Document).GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.CanWrite)
+                    property.SetValue(this, property.GetValue(newDocument));
+            }
+        }
+
         private bool Read()
         {
             try
@@ -145,11 +167,15 @@ namespace VampDocManager
             try
             {
                 File.WriteAllText(FullFilePath, Text);
+                Modified = false;
+
+                if(OnSaved != null)
+                    OnSaved();
                 return true;
             }
             catch (Exception ee)
             {
-                MessageBox.Show("Can't read the document at\n" + FullFilePath, "Can't read", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MsgBox.Error("Can't read the document at\n" + FullFilePath);
                 return false;
             }
         }

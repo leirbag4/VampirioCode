@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
+using VampirioCode.Utils;
 
 namespace VampDocManager
 {
@@ -15,24 +16,28 @@ namespace VampDocManager
         public Document CurrDocument { get { return CurrDocumentTab.Document; } }
         public DocumentTab[] DocumentTabs { get; set; } = new DocumentTab[0];
         public Document[] Documents { get; set; } = new Document[0];
+        public int CurrentTabIndex { get { return tabControl.SelectedIndex; } set { tabControl.SelectedIndex = value; } }
 
+        // controls
         private TabControlVamp tabControl;
 
+        // context menu
         private ContextMenuStrip contextMenu;
         private ToolStripMenuItem closeItem;
         private ToolStripMenuItem closeAllItem;
         private ToolStripMenuItem closeAllButThis;
         private ToolStripMenuItem newItem;
 
-        public DocManager() 
+        public DocManager()
         {
-            tabControl =            new TabControlVamp();
-            tabControl.Dock =       DockStyle.Fill;
-            tabControl.BackColor =  Color.FromArgb(30, 30, 30);
-            tabControl.Margin =     new Padding(0);
-            tabControl.Padding =    new Point(0, 0);
+            tabControl = new TabControlVamp();
+            tabControl.Dock = DockStyle.Fill;
+            tabControl.BackColor = Color.FromArgb(30, 30, 30);
+            tabControl.Margin = new Padding(0);
+            tabControl.Padding = new Point(0, 0);
             tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), CColor(170, 60, 85), CColor(255, 255, 255));
             tabControl.ControlAdded += OnDocumentTabAdded;
+            tabControl.SelectedIndexChanged += OnSelectedIndexChanged;
             CreateContextItems();
 
             //tabControl.DragAndDrop = true;
@@ -41,15 +46,24 @@ namespace VampDocManager
 
         }
 
+        private void OnSelectedIndexChanged(object? sender, EventArgs e)
+        {
+            RefreshDocs();
+        }
+
         private void OnDocumentTabAdded(object? sender, ControlEventArgs e)
         {
+            RefreshDocs();
+        }
+
+        private void RefreshDocs()
+        {
             List<Document> docs = new List<Document>();
-            
             DocumentTabs = tabControl.DocumentTabs.ToArray();
-            
+
             foreach (DocumentTab doc in DocumentTabs)
                 docs.Add(doc.Document);
-            
+
             Documents = docs.ToArray();
         }
 
@@ -109,14 +123,54 @@ namespace VampDocManager
             if (CurrDocument.IsTemporal)
                 SaveAs();
             else
-            { 
-                
-            }
+                CurrDocument.Save();
         }
 
         public void SaveAs()
-        { 
-            
+        {
+            String text;
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Title =      "Save file as";
+            dialog.Filter =     "All Files (*.*)|*.*|Text Files (*.txt)|*.txt";
+            dialog.FilterIndex = 1; // set first index
+
+            dialog.ShowDialog();
+            string newFilePath = dialog.FileName;
+
+
+            if (newFilePath != "")
+            {
+                if (CurrDocument.IsTemporal)
+                {
+                    try
+                    {
+                        text = CurrDocument.Text;
+                        File.Move(CurrDocument.FullFilePath, newFilePath);
+                        CurrDocument.CopyFrom(Document.Load(newFilePath));
+                        CurrDocument.Text = text;
+                        CurrDocument.Save();
+                    }
+                    catch (Exception e)
+                    {
+                        MsgBox.Error("Can't save temporal file: '" + CurrDocument.FullFilePath + "' to '" + newFilePath + "'");
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        text = CurrDocument.Text;
+                        File.Delete(CurrDocument.FullFilePath);
+                        CurrDocument.CopyFrom(Document.Load(newFilePath));
+                        CurrDocument.Text = text;
+                        CurrDocument.Save();
+                    }
+                    catch (Exception e)
+                    {
+                        MsgBox.Error("Can't save file: '" + CurrDocument.FullFilePath + "' to '" + newFilePath + "'");
+                    }
+                }
+            }
         }
 
         public void SelectTab(DocumentTab docTab)

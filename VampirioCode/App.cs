@@ -21,6 +21,7 @@ namespace VampirioCode
         protected override void OnLoad(EventArgs e)
         {
             Config.Initialize();
+            MsgBox.Setup(this);
             RegisterCmdKeys();
 
             menuStrip.Renderer = new VampirioCode.UI.VampGraphics.MenuStripRenderer();
@@ -97,7 +98,7 @@ namespace VampirioCode
 
         private void SaveAs()
         { 
-        
+            //docManager.Documents
         }
 
         private void CloseDoc()
@@ -117,8 +118,7 @@ namespace VampirioCode
 
         private void Find()
         {
-            MsgBox.Show(this, "information abut", DialogButtons.OK, DialogIcon.Info);
-            //XConsole.Alert("find");
+            XConsole.Alert("find");
         }
 
         private void FindAndReplace()
@@ -144,6 +144,9 @@ namespace VampirioCode
             {
                 docManager.OpenDocument(doc.FullFilePath);
             }
+
+            if(Config.LastSelectedTabIndex < docManager.Documents.Length)
+                docManager.CurrentTabIndex = Config.LastSelectedTabIndex;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -151,14 +154,58 @@ namespace VampirioCode
 
             Document[] docs = docManager.Documents;
             SavedDocument[] savedDocs = new SavedDocument[docs.Length];
+            List<Document> docsToSave = new List<Document>();
+            String docsToSaveNames = "\n\n";
+            int maxItemsToShow = 5;
 
             for(int a = 0; a < savedDocs.Length; a++)
             {
                 Document doc = docs[a];
+
+                // If document was created with this app and was never saved, it lives inside 
+                // a temporal folder. So it must be saved always there to hold the input text before close.
+                // When a user tries to save it using [control+s or file/save], the file will be removed from
+                // temporal and also the 'IsTemporal' will be set to false;
+                if (doc.Modified)
+                {
+                    if (doc.IsTemporal)
+                        doc.Save();
+                    else
+                    {
+                        docsToSave.Add(doc);
+
+                        if (docsToSave.Count == maxItemsToShow)    
+                            docsToSaveNames += "   ...";
+                        else if (docsToSave.Count > maxItemsToShow) {}
+                        else                                            
+                            docsToSaveNames += "   " + doc.FileName + "\n";
+                    }
+                }
+
                 savedDocs[a] = new SavedDocument() { FullFilePath = doc.FullFilePath, IsTemporal = doc.IsTemporal };
             }
 
-            Config.LastOpenDocuments = savedDocs;
+            if (docsToSave.Count > 0)
+            {
+                OptionResult option = MsgBox.Show("Save files?", "Save changes to files: " + docsToSaveNames, "Save", "Don't Save", "Cancel");
+
+                if (option == OptionResult.None)
+                    return;
+                else if (option == OptionResult.OptionA) // Save
+                {
+                    foreach (var doc in docs) doc.Save();
+                }
+                else if (option == OptionResult.OptionB) // Don't Save
+                { }
+                else if (option == OptionResult.OptionC) // Cancel
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            Config.LastOpenDocuments =      savedDocs;
+            Config.LastSelectedTabIndex =   docManager.CurrentTabIndex;
             Config.Save();
 
             base.OnClosing(e);

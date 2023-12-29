@@ -4,45 +4,74 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampEditor;
+using VampirioCode.UI;
 
 namespace VampDocManager
 {
     public class DocumentTab : TabPage
     {
-        public string Text { get { return _editor.Text; } set { _editor.Text = value; } }
-        public string Title { get { return base.Text; } set { base.Text = value; } }
+        //public string Text { get { return _editor.Text; } set { _editor.Text = value; } }
+        public string Text { get { return ""; } set { } } // remove title behaviour
+        public string Title { get { return base.Text; } }
 
         public Document Document { get; private set; }
-        public VampirioEditor Editor { get { return _editor; } }
+        public VampirioEditor Editor { get { return editor; } }
 
-        private VampirioEditor _editor;
-
-
-
-        public DocumentTab() 
-        {
-            _editor =               new VampirioEditor();
-            _editor.Dock =          DockStyle.Fill;
-            _editor.BorderStyle =   ScintillaNET.BorderStyle.None;
-            _editor.SetLanguage(VampEditor.LangId.CSharp, VampEditor.StyleMode.Dark);
-            this.BackColor =        Color.FromArgb(30, 30, 30);
-            this.BorderStyle =      BorderStyle.None;
-            this.Controls.Add(_editor);
-        }
-
-        private void Init(Document doc)
-        { 
-            this.Document = doc;
-            this.Title =    doc.FileName;
-            this.Text =     doc.Text;
-        }
+        private VampirioEditor editor;
 
         public static DocumentTab Create(Document doc)
-        { 
-            DocumentTab docTab = new DocumentTab();
-            docTab.Init(doc);
-            return docTab;
+        {
+            return new DocumentTab().Init(doc);
         }
 
+        private DocumentTab Init(Document doc)
+        {
+            // editor style
+            editor = new VampirioEditor();
+            editor.Dock = DockStyle.Fill;
+            editor.BorderStyle = ScintillaNET.BorderStyle.None;
+            editor.SetLanguage(VampEditor.LangId.CSharp, VampEditor.StyleMode.Dark);
+
+            // tab style
+            BackColor = Color.FromArgb(30, 30, 30);
+            BorderStyle = BorderStyle.None;
+            Controls.Add(editor);
+
+            // set data
+            Document =      doc;
+            Editor.Text =   doc.Text;
+            SetTitle(Document.FileName);
+
+            // events
+            Editor.TextChanged +=   OnEditorTextChanged;
+            Document.OnSaved +=     OnSaved;
+            Document.OnModified +=  OnModified;
+
+            return this;
+        }
+
+        private void SetTitle(string title)
+        {
+            if(Document.Modified)
+                base.Text = title + " *";
+            else
+                base.Text = title;
+        }
+
+        private void OnEditorTextChanged(object? sender, EventArgs e)
+        {
+            Document.Modified = true;
+            Document.Text =     Editor.Text;
+        }
+
+        private void OnModified()
+        {
+            SetTitle(Document.FileName);
+        }
+
+        private void OnSaved()
+        {
+            //Document.Modified = false;
+        }
     }
 }
