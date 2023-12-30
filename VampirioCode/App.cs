@@ -179,12 +179,12 @@ namespace VampirioCode
         {
 
             Document[] docs = docManager.Documents;
-            SavedDocument[] savedDocs = new SavedDocument[docs.Length];
+            SavedDocument[] lastOpenDocs = new SavedDocument[docs.Length];
             List<Document> docsToSave = new List<Document>();
             String docsToSaveNames = "\n\n";
             int maxItemsToShow = 5;
 
-            for(int a = 0; a < savedDocs.Length; a++)
+            for(int a = 0; a < docs.Length; a++)
             {
                 Document doc = docs[a];
 
@@ -200,37 +200,36 @@ namespace VampirioCode
                     {
                         docsToSave.Add(doc);
 
-                        if (docsToSave.Count == maxItemsToShow)    
-                            docsToSaveNames += "   ...";
-                        else if (docsToSave.Count > maxItemsToShow) {}
-                        else                                            
-                            docsToSaveNames += "   " + doc.FileName + "\n";
+                             // create msgbox string like 'file1, file2 ...'
+                             if (docsToSave.Count == maxItemsToShow)    docsToSaveNames += "   ...";
+                        else if (docsToSave.Count > maxItemsToShow)     {}
+                        else                                            docsToSaveNames += "   " + doc.FileName + "\n";
                     }
                 }
 
-                savedDocs[a] = new SavedDocument() { FullFilePath = doc.FullFilePath, IsTemporary = doc.IsTemporary };
+                lastOpenDocs[a] = new SavedDocument() { FullFilePath = doc.FullFilePath, IsTemporary = doc.IsTemporary };
             }
 
+            // There are modified open documents
+            // Ask user if wants to save them
             if (docsToSave.Count > 0)
             {
                 OptionResult option = MsgBox.Show("Save files?", "Save changes to files: " + docsToSaveNames, "Save", "Don't Save", "Cancel");
 
-                if (option == OptionResult.None)
-                    return;
-                else if (option == OptionResult.OptionA) // Save
+                if (option == OptionResult.OptionA) // Save
                 {
                     foreach (var doc in docs) doc.Save();
                 }
                 else if (option == OptionResult.OptionB) // Don't Save
                 { }
-                else if (option == OptionResult.OptionC) // Cancel
+                else if ((option == OptionResult.OptionC) || (option == OptionResult.None)) // Cancel
                 {
                     e.Cancel = true;
-                    return;
+                    return; 
                 }
             }
 
-            Config.LastOpenDocuments =      savedDocs;
+            Config.LastOpenDocuments =      lastOpenDocs;
             Config.LastSelectedTabIndex =   docManager.CurrIndex;
             Config.Save();
 

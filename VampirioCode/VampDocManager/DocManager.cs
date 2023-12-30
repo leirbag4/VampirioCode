@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
+using VampirioCode.UI.Style;
 using VampirioCode.Utils;
 
 namespace VampDocManager
@@ -17,6 +18,7 @@ namespace VampDocManager
         public DocumentTab[] DocumentTabs { get; set; } = new DocumentTab[0];
         public Document[] Documents { get; set; } = new Document[0];
         public int CurrIndex { get { return tabControl.SelectedIndex; } set { tabControl.SelectedIndex = value; } }
+        public int Totals { get { return Documents.Length; } }
 
         // controls
         private TabControlVamp tabControl;
@@ -123,6 +125,20 @@ namespace VampDocManager
             CloseDocument(CurrDocument);
         }
 
+        public void CloseAll()
+        {
+            int totals = Totals;
+
+            //SimpleOverlay.ShowFX(this);
+            for (int a = (totals - 1); a >= 0; a--) 
+            {
+                CloseDocumentAt(a);
+            }
+
+            //SimpleOverlay.HideFX();
+            NewDocument();
+        }
+
         private void CloseDocumentAt(int index) 
         {
             //Document doc = Documents[index];
@@ -147,7 +163,7 @@ namespace VampDocManager
                     if (doc.IsTemporary)
                         Document.Delete(doc);
                 }
-                else if (result == OptionResult.OptionC) // Cancel
+                else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
                 {
                     return;
                 }
@@ -166,7 +182,7 @@ namespace VampDocManager
                 {
                     Document.Delete(doc);
                 }
-                else if (result == OptionResult.OptionC) // Cancel
+                else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
                 {
                     return;
                 }
@@ -272,7 +288,7 @@ namespace VampDocManager
 
         private void OnCloseAllPressed(object sender, EventArgs e)
         {
-
+            CloseAll();
         }
 
         private void OnCloseAllButThisPressed(object sender, EventArgs e)

@@ -13,7 +13,7 @@ namespace VampirioCode.UI.Style
 
         private static List<SimpleOverlay> OVERLAYS;
 
-        public static void showFX(ContainerControl applyTo)
+        public static void ShowFX(ContainerControl applyTo)
         {
             if (!ENABLE)
                 return;
@@ -27,7 +27,7 @@ namespace VampirioCode.UI.Style
                 OVERLAYS.Add(new SimpleOverlay(applyTo));
         }
 
-        public static void hideFX()
+        public static void HideFX()
         {
             if (OVERLAYS == null)
                 return;

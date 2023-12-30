@@ -20,9 +20,9 @@ namespace VampirioCode.UI.Controls
 
         public void ShowMe(ContainerControl parent)
         {
-            if (parent != null) SimpleOverlay.showFX(parent);
+            if (parent != null) SimpleOverlay.ShowFX(parent);
             this.ShowDialog(parent);
-            if (parent != null) SimpleOverlay.hideFX();
+            if (parent != null) SimpleOverlay.HideFX();
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
