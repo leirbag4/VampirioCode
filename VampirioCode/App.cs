@@ -170,7 +170,7 @@ namespace VampirioCode
                 if (!loadedTempFilesPath.Contains(tempFile))
                 {
                     File.Delete(tempFile);
-                    XConsole.PrintWarning("old temporary file deleted:" + tempFile);
+                    XConsole.PrintWarning("old temporary file deleted: " + tempFile);
                 }
             }
         }

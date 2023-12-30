@@ -129,17 +129,17 @@ namespace VampDocManager
         {
             int totals = Totals;
 
-            //SimpleOverlay.ShowFX(this);
             for (int a = (totals - 1); a >= 0; a--) 
             {
-                CloseDocumentAt(a);
+                if (!CloseDocumentAt(a))
+                    return;
             }
 
-            //SimpleOverlay.HideFX();
             NewDocument();
         }
 
-        private void CloseDocumentAt(int index) 
+        // returns 'false' only if user press 'cancel' or 'escape'
+        private bool CloseDocumentAt(int index) 
         {
             //Document doc = Documents[index];
             SelectTabAt(index);
@@ -156,7 +156,7 @@ namespace VampDocManager
                 {
                     saved = Save();
                     if (!saved)
-                        return;
+                        return true;
                 }
                 else if (result == OptionResult.OptionB) // Don't Save
                 {
@@ -165,7 +165,7 @@ namespace VampDocManager
                 }
                 else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
                 {
-                    return;
+                    return false;
                 }
             }
             else if(CurrDocument.IsTemporary)
@@ -176,7 +176,7 @@ namespace VampDocManager
                 {
                     saved = Save();
                     if (!saved)
-                        return;
+                        return true;
                 }
                 else if (result == OptionResult.OptionB) // Don't Save
                 {
@@ -184,7 +184,7 @@ namespace VampDocManager
                 }
                 else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
                 {
-                    return;
+                    return false;
                 }
             }
 
@@ -196,6 +196,7 @@ namespace VampDocManager
 
             tabControl.TabPages.RemoveAt(index);
             RefreshDocs();
+            return true;
         }
 
         private void CloseDocument(Document document)
