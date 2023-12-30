@@ -127,11 +127,12 @@ namespace VampDocManager
 
         public void CloseAll()
         {
-            int totals = Totals;
+            List<Document> modifiedDocs =   Documents.OrderByDescending(doc => (doc.Modified || doc.IsTemporary)).
+                                                      OrderByDescending(doc => doc.IsTemporary).ToList();
 
-            for (int a = (totals - 1); a >= 0; a--) 
+            foreach (var doc in modifiedDocs)
             {
-                if (!CloseDocumentAt(a))
+                if (!CloseDocument(doc))
                     return;
             }
 
@@ -199,9 +200,9 @@ namespace VampDocManager
             return true;
         }
 
-        private void CloseDocument(Document document)
+        private bool CloseDocument(Document document)
         {
-            CloseDocumentAt(DocToIndex(document));
+            return CloseDocumentAt(DocToIndex(document));
         }
 
         public bool Save()
