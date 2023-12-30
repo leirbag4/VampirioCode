@@ -155,13 +155,13 @@ namespace VampirioCode
         // Those that are not used are deleted
         private void CleanUpTempFiles()
         {
-            string[] allTempFilesPath = FileUtils.GetFilesAt(AppInfo.TemporalFilesPath);
+            string[] allTempFilesPath = FileUtils.GetFilesAt(AppInfo.TemporaryFilesPath);
             List<string> loadedTempFilesPath = new List<string>();
 
             foreach (var doc in docManager.Documents)
             {
                 // group temporary files which are opened right now
-                if (doc.IsTemporal)
+                if (doc.IsTemporary)
                     loadedTempFilesPath.Add(doc.FullFilePath);
             }
             
@@ -189,12 +189,12 @@ namespace VampirioCode
                 Document doc = docs[a];
 
                 // If document was created with this app and was never saved, it lives inside 
-                // a temporal folder. So it must be saved always there to hold the input text before close.
+                // a temporary folder. So it must be saved always there to hold the input text before close.
                 // When a user tries to save it using [control+s or file/save], the file will be removed from
-                // temporal and also the 'IsTemporal' will be set to false;
+                // temporary and also the 'IsTemporary' will be set to false;
                 if (doc.Modified)
                 {
-                    if (doc.IsTemporal)
+                    if (doc.IsTemporary)
                         doc.Save();
                     else
                     {
@@ -208,7 +208,7 @@ namespace VampirioCode
                     }
                 }
 
-                savedDocs[a] = new SavedDocument() { FullFilePath = doc.FullFilePath, IsTemporal = doc.IsTemporal };
+                savedDocs[a] = new SavedDocument() { FullFilePath = doc.FullFilePath, IsTemporary = doc.IsTemporary };
             }
 
             if (docsToSave.Count > 0)

@@ -56,7 +56,7 @@ namespace VampDocManager
                 base.Text = title + " *";
             else
             {
-                if(Document.IsTemporal)
+                if(Document.IsTemporary)
                     base.Text = title + " ~";
                 else
                     base.Text = title;

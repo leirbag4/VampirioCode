@@ -29,7 +29,7 @@ namespace VampDocManager
         public string Extension { get; set; }
         public string Text { get; set; }
         public DocumentType DocType { get; set; }
-        public bool IsTemporal { get; set; }        // if file was created using 'file -> new' and was never saved, it will be mark as temporal
+        public bool IsTemporary { get; set; }        // if file was created using 'file -> new' and was never saved, it will be mark as temporary
         public bool Modified { get { return _modified; } set { _modified = value; if (OnModified != null) OnModified(); } }
 
         protected bool _modified = false;
@@ -40,22 +40,22 @@ namespace VampDocManager
 
             if (doc != null)
             {
-                if (doc.FullFilePath.IndexOf(AppInfo.TemporalFilesPath) == 0)
-                    doc.IsTemporal = true;
+                if (doc.FullFilePath.IndexOf(AppInfo.TemporaryFilesPath) == 0)
+                    doc.IsTemporary = true;
             }
             return doc;
         }
 
-        public static Document NewTemporal()
+        public static Document NewTemporary()
         {
-            string tempPath = AppInfo.TemporalFilesPath;
+            string tempPath = AppInfo.TemporaryFilesPath;
 
-            // create temporal directory if not exists
+            // create temporary directory if not exists
             if(!Directory.Exists(tempPath))
                 Directory.CreateDirectory(tempPath);
 
-            // get next free number for temporal files. E.g: 'untitled 1' 'untitled 3' -> next will be ['untitled 2']
-            string newFilePath = AppInfo.TemporalFilesPath + "untitled " + GetNextTemporalNumb();// + ".txt";
+            // get next free number for temporary files. E.g: 'untitled 1' 'untitled 3' -> next will be ['untitled 2']
+            string newFilePath = AppInfo.TemporaryFilesPath + "untitled " + GetNextTemporaryNumb();// + ".txt";
 
             // try to create the new file
             try
@@ -64,13 +64,13 @@ namespace VampDocManager
             }
             catch (Exception e)
             {
-                XConsole.ErrorAlert("Can't create new temporal file at '" + newFilePath + "'");
+                XConsole.ErrorAlert("Can't create new temporary file at '" + newFilePath + "'");
             }
 
             Document doc = _Load(newFilePath);
             
             if(doc != null)
-                doc.IsTemporal = true;
+                doc.IsTemporary = true;
 
             return doc;
         }
@@ -95,7 +95,7 @@ namespace VampDocManager
 
             try
             {
-                doc.IsTemporal=     false;
+                doc.IsTemporary=     false;
                 doc.FilePath =      path.Trim();
                 doc.FullFilePath =  Path.GetFullPath(path);
                 doc.FileName =      Path.GetFileName(path);
@@ -119,9 +119,9 @@ namespace VampDocManager
             return doc;
         }
 
-        private static int GetNextTemporalNumb()
+        private static int GetNextTemporaryNumb()
         {
-            string[] files =    FileUtils.GetFileNamesAt(AppInfo.TemporalFilesPath);
+            string[] files =    FileUtils.GetFileNamesAt(AppInfo.TemporaryFilesPath);
             int[] numbers =     new int[files.Length];
             int currNumb =      0;
             int i;

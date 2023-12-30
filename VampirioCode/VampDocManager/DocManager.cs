@@ -91,7 +91,7 @@ namespace VampDocManager
         public DocumentTab NewDocument()
         {
             DocumentTab docTab = null;
-            Document doc = Document.NewTemporal();
+            Document doc = Document.NewTemporary();
             
             if (doc != null)
             {
@@ -144,7 +144,7 @@ namespace VampDocManager
                 }
                 else if (result == OptionResult.OptionB) // Don't Save
                 {
-                    if (doc.IsTemporal)
+                    if (doc.IsTemporary)
                         Document.Delete(doc);
                 }
                 else if (result == OptionResult.OptionC) // Cancel
@@ -152,9 +152,9 @@ namespace VampDocManager
                     return;
                 }
             }
-            else if(CurrDocument.IsTemporal)
+            else if(CurrDocument.IsTemporary)
             {
-                var result = MsgBox.Show("Temporal file", "Save temporal file '" + doc.FileName + "'?", "Save", "Don't Save", "Cancel", DialogIcon.Question);
+                var result = MsgBox.Show("Temporary file", "Save temporary file '" + doc.FileName + "'?", "Save", "Don't Save", "Cancel", DialogIcon.Question);
 
                 if (result == OptionResult.OptionA) // Save
                 {
@@ -189,7 +189,7 @@ namespace VampDocManager
 
         public bool Save()
         {
-            if (CurrDocument.IsTemporal)
+            if (CurrDocument.IsTemporary)
                 return SaveAs();
             else
                 return CurrDocument.Save();
@@ -209,7 +209,7 @@ namespace VampDocManager
 
             if (newFilePath != "")
             {
-                if (CurrDocument.IsTemporal)
+                if (CurrDocument.IsTemporary)
                 {
                     try
                     {
@@ -222,7 +222,7 @@ namespace VampDocManager
                     }
                     catch (Exception e)
                     {
-                        MsgBox.Error("Can't save temporal file: '" + CurrDocument.FullFilePath + "' to '" + newFilePath + "'", e);
+                        MsgBox.Error("Can't save temporary file: '" + CurrDocument.FullFilePath + "' to '" + newFilePath + "'", e);
                         return false;
                     }
                 }
