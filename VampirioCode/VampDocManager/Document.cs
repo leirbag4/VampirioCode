@@ -75,6 +75,20 @@ namespace VampDocManager
             return doc;
         }
 
+        public static bool Delete(Document document)
+        {
+            try
+            {
+                File.Delete(document.FullFilePath);
+                return true;
+            }
+            catch (Exception e)
+            {
+                MsgBox.Error(@"Can't delete file '" + document.FullFilePath + "'", e);
+                return false;
+            }
+        }
+
         private static Document _Load(string path)
         { 
             Document doc = new Document();

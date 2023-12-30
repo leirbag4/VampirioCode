@@ -169,6 +169,11 @@ namespace VampirioCode.UI
             return Error(mainControl, description);
         }
 
+        public static DialogResult Error(String description, Exception e)
+        {
+            return Error(mainControl, description + "\n\nException: " + e.Message + "\n\nStackTrace: " + e.StackTrace);
+        }
+
         public static DialogResult Error(ContainerControl parent, String description)
         {
             MsgBox msgBox = new MsgBox();

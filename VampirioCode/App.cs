@@ -97,13 +97,13 @@ namespace VampirioCode
         }
 
         private void SaveAs()
-        { 
-            //docManager.Documents
+        {
+            docManager.SaveAs();
         }
 
         private void CloseDoc()
-        { 
-        
+        {
+            docManager.Close();
         }
 
         private void CloseAll()
@@ -146,7 +146,33 @@ namespace VampirioCode
             }
 
             if(Config.LastSelectedTabIndex < docManager.Documents.Length)
-                docManager.CurrentTabIndex = Config.LastSelectedTabIndex;
+                docManager.CurrIndex = Config.LastSelectedTabIndex;
+
+            CleanUpTempFiles();
+        }
+
+        // Check which temporary files are not used at '\temp_files' folder.
+        // Those that are not used are deleted
+        private void CleanUpTempFiles()
+        {
+            string[] allTempFilesPath = FileUtils.GetFilesAt(AppInfo.TemporalFilesPath);
+            List<string> loadedTempFilesPath = new List<string>();
+
+            foreach (var doc in docManager.Documents)
+            {
+                // group temporary files which are opened right now
+                if (doc.IsTemporal)
+                    loadedTempFilesPath.Add(doc.FullFilePath);
+            }
+            
+            foreach (var tempFile in allTempFilesPath)
+            {
+                if (!loadedTempFilesPath.Contains(tempFile))
+                {
+                    File.Delete(tempFile);
+                    XConsole.PrintWarning("old temporary file deleted:" + tempFile);
+                }
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -205,7 +231,7 @@ namespace VampirioCode
             }
 
             Config.LastOpenDocuments =      savedDocs;
-            Config.LastSelectedTabIndex =   docManager.CurrentTabIndex;
+            Config.LastSelectedTabIndex =   docManager.CurrIndex;
             Config.Save();
 
             base.OnClosing(e);

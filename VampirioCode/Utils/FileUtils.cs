@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VampDocManager;
 using VampirioCode.UI;
 
 namespace VampirioCode.Utils
@@ -18,6 +19,18 @@ namespace VampirioCode.Utils
         public static string[] GetFileNamesAt(string path)
         {
             return Directory.GetFiles(path).Select(Path.GetFileName).ToArray();
+        }
+
+        public static string SaveFileDialog()
+        { 
+            String text;
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Title =      "Save file as";
+            dialog.Filter =     "All Files (*.*)|*.*|Text Files (*.txt)|*.txt";
+            dialog.FilterIndex = 1; // set first index
+
+            dialog.ShowDialog();
+            return dialog.FileName;
         }
 
     }

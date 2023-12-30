@@ -52,10 +52,15 @@ namespace VampDocManager
 
         private void SetTitle(string title)
         {
-            if(Document.Modified)
+            if (Document.Modified)
                 base.Text = title + " *";
             else
-                base.Text = title;
+            {
+                if(Document.IsTemporal)
+                    base.Text = title + " ~";
+                else
+                    base.Text = title;
+            }
         }
 
         private void OnEditorTextChanged(object? sender, EventArgs e)

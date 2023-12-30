@@ -146,6 +146,11 @@ namespace VampirioCode.UI
             Println(str, Color.Red);
         }
 
+        public static void PrintWarning(String str)
+        {
+            Println(str, Color.Orange);
+        }
+
         /*public static void PrintError(ErrorInfo error)
         {
             XConsole.PrintError(error.ToString());

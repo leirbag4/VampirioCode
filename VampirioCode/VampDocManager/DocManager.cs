@@ -16,7 +16,7 @@ namespace VampDocManager
         public Document CurrDocument { get { return CurrDocumentTab.Document; } }
         public DocumentTab[] DocumentTabs { get; set; } = new DocumentTab[0];
         public Document[] Documents { get; set; } = new Document[0];
-        public int CurrentTabIndex { get { return tabControl.SelectedIndex; } set { tabControl.SelectedIndex = value; } }
+        public int CurrIndex { get { return tabControl.SelectedIndex; } set { tabControl.SelectedIndex = value; } }
 
         // controls
         private TabControlVamp tabControl;
@@ -103,7 +103,7 @@ namespace VampDocManager
             return docTab;
         }
 
-        public DocumentTab OpenDocument(string path)
+        public Document OpenDocument(string path)
         {
             DocumentTab docTab = null;
             Document doc = Document.Load(path);
@@ -115,18 +115,87 @@ namespace VampDocManager
                 SelectTab(docTab);
             }
 
-            return docTab;
+            return doc;
         }
 
-        public void Save()
+        public void Close()
+        {
+            CloseDocument(CurrDocument);
+        }
+
+        private void CloseDocumentAt(int index) 
+        {
+            //Document doc = Documents[index];
+            SelectTabAt(index);
+            Document doc = CurrDocument;
+            int newIndex = index > 0 ? (index - 1) : 0;
+            bool saved;
+
+
+            if (doc.Modified)
+            {
+                var result = MsgBox.Show("File modified", "Save changes to '" + doc.FileName + "'?", "Save", "Don't Save", "Cancel", DialogIcon.Question);
+
+                if (result == OptionResult.OptionA) // Save
+                {
+                    saved = Save();
+                    if (!saved)
+                        return;
+                }
+                else if (result == OptionResult.OptionB) // Don't Save
+                {
+                    if (doc.IsTemporal)
+                        Document.Delete(doc);
+                }
+                else if (result == OptionResult.OptionC) // Cancel
+                {
+                    return;
+                }
+            }
+            else if(CurrDocument.IsTemporal)
+            {
+                var result = MsgBox.Show("Temporal file", "Save temporal file '" + doc.FileName + "'?", "Save", "Don't Save", "Cancel", DialogIcon.Question);
+
+                if (result == OptionResult.OptionA) // Save
+                {
+                    saved = Save();
+                    if (!saved)
+                        return;
+                }
+                else if (result == OptionResult.OptionB) // Don't Save
+                {
+                    Document.Delete(doc);
+                }
+                else if (result == OptionResult.OptionC) // Cancel
+                {
+                    return;
+                }
+            }
+
+
+            if (Documents.Length > 0)
+                SelectTabAt(newIndex);
+            else
+                NewDocument();
+
+            tabControl.TabPages.RemoveAt(index);
+            RefreshDocs();
+        }
+
+        private void CloseDocument(Document document)
+        {
+            CloseDocumentAt(DocToIndex(document));
+        }
+
+        public bool Save()
         {
             if (CurrDocument.IsTemporal)
-                SaveAs();
+                return SaveAs();
             else
-                CurrDocument.Save();
+                return CurrDocument.Save();
         }
 
-        public void SaveAs()
+        public bool SaveAs()
         {
             String text;
             SaveFileDialog dialog = new SaveFileDialog();
@@ -149,10 +218,12 @@ namespace VampDocManager
                         CurrDocument.CopyFrom(Document.Load(newFilePath));
                         CurrDocument.Text = text;
                         CurrDocument.Save();
+                        return true;
                     }
                     catch (Exception e)
                     {
-                        MsgBox.Error("Can't save temporal file: '" + CurrDocument.FullFilePath + "' to '" + newFilePath + "'");
+                        MsgBox.Error("Can't save temporal file: '" + CurrDocument.FullFilePath + "' to '" + newFilePath + "'", e);
+                        return false;
                     }
                 }
                 else
@@ -164,13 +235,17 @@ namespace VampDocManager
                         CurrDocument.CopyFrom(Document.Load(newFilePath));
                         CurrDocument.Text = text;
                         CurrDocument.Save();
+                        return true;
                     }
                     catch (Exception e)
                     {
-                        MsgBox.Error("Can't save file: '" + CurrDocument.FullFilePath + "' to '" + newFilePath + "'");
+                        MsgBox.Error("Can't save file: '" + CurrDocument.FullFilePath + "' to '" + newFilePath + "'", e);
+                        return false;
                     }
                 }
             }
+            else
+                return false;
         }
 
         public void SelectTab(DocumentTab docTab)
@@ -179,9 +254,20 @@ namespace VampDocManager
                 tabControl.SelectTab(docTab);
         }
 
+        public void SelectTabAt(int index)
+        {
+            if(index > -1)
+                tabControl.SelectTab(index);
+        }
+
+        public int DocToIndex(Document document)
+        {
+            return Documents.ToList().IndexOf(document);
+        }
+
         private void OnCloseTabPressed(object sender, EventArgs e)
         {
-            //MessageBox.Show("is: " + CurrDocumentTab.Document.Filename);
+            CloseDocument(CurrDocument);
         }
 
         private void OnCloseAllPressed(object sender, EventArgs e)
