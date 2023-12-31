@@ -136,7 +136,11 @@ namespace VampDocManager
                     return;
             }
 
-            NewDocument();
+            //NewDocument();
+        }
+        private bool CloseDocument(Document document)
+        {
+            return CloseDocumentAt(DocToIndex(document));
         }
 
         // returns 'false' only if user press 'cancel' or 'escape'
@@ -171,38 +175,41 @@ namespace VampDocManager
             }
             else if(CurrDocument.IsTemporary)
             {
-                var result = MsgBox.Show("Temporary file", "Save temporary file '" + doc.FileName + "'?", "Save", "Don't Save", "Cancel", DialogIcon.Question);
-
-                if (result == OptionResult.OptionA) // Save
-                {
-                    saved = Save();
-                    if (!saved)
-                        return true;
-                }
-                else if (result == OptionResult.OptionB) // Don't Save
+                // Doc is empty. User never write anything
+                if (CurrDocument.Text == "")
                 {
                     Document.Delete(doc);
                 }
-                else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
+                else
                 {
-                    return false;
+                    var result = MsgBox.Show("Temporary file", "Save temporary file '" + doc.FileName + "'?", "Save", "Don't Save", "Cancel", DialogIcon.Question);
+
+                    if (result == OptionResult.OptionA) // Save
+                    {
+                        saved = Save();
+                        if (!saved)
+                            return true;
+                    }
+                    else if (result == OptionResult.OptionB) // Don't Save
+                    {
+                        Document.Delete(doc);
+                    }
+                    else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
+                    {
+                        return false;
+                    }
                 }
             }
 
+            tabControl.TabPages.RemoveAt(index);
+            RefreshDocs();
 
             if (Documents.Length > 0)
                 SelectTabAt(newIndex);
             else
                 NewDocument();
 
-            tabControl.TabPages.RemoveAt(index);
-            RefreshDocs();
             return true;
-        }
-
-        private bool CloseDocument(Document document)
-        {
-            return CloseDocumentAt(DocToIndex(document));
         }
 
         public bool Save()

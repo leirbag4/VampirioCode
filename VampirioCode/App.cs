@@ -46,15 +46,26 @@ namespace VampirioCode
         {
             HotKeyManager.AddHotKey(New,            Keys.Control | Keys.N);
             HotKeyManager.AddHotKey(Open,           Keys.Control | Keys.O);
-            HotKeyManager.AddHotKey(CloseDoc,       Keys.Control | Keys.C);
+            HotKeyManager.AddHotKey(CloseDoc,       Keys.Control | Keys.W);
             HotKeyManager.AddHotKey(Find,           Keys.Control | Keys.F);
             HotKeyManager.AddHotKey(FindAndReplace, Keys.Control | Keys.H);
             HotKeyManager.AddHotKey(Save,           Keys.Control | Keys.S);
             HotKeyManager.AddHotKey(GoTo,           Keys.Control | Keys.G);
             HotKeyManager.AddHotKey(Duplicate,      Keys.Control | Keys.D);
+            HotKeyManager.AddHotKey(Build,          Keys.F4);
+            HotKeyManager.AddHotKey(BuildAndRun,    Keys.F5);
             //HotKeyManager.AddHotKey(Function,       Keys.Control | Keys.P);
         }
 
+        private void Build()
+        {
+            
+        }
+
+        private void BuildAndRun()
+        {
+            
+        }
 
         private void OnFilePressed(object sender, EventArgs e)
         {
@@ -107,8 +118,8 @@ namespace VampirioCode
         }
 
         private void CloseAll()
-        { 
-        
+        {
+            docManager.CloseAll();
         }
 
         private void Exit()
