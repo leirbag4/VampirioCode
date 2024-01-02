@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampirioCode.IO;
 
 namespace VampirioCode.UI
 {
@@ -144,6 +145,11 @@ namespace VampirioCode.UI
         public static void PrintError(String str)
         {
             Println(str, Color.Red);
+        }
+
+        public static void PrintError(ErrorInfo error)
+        {
+            XConsole.PrintError(error.ToString());
         }
 
         public static void PrintWarning(String str)

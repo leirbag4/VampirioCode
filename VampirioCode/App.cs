@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using VampDocManager;
+using VampirioCode.Command.Dotnet;
 using VampirioCode.SaveData;
 using VampirioCode.UI;
 using VampirioCode.Utils;
@@ -13,6 +14,7 @@ namespace VampirioCode
         public Document CurrDocument { get { return docManager.CurrDocument; } }
         public DocumentTab CurrDocumentTab { get { return docManager.CurrDocumentTab; } }
 
+        private Dotnet dotnet;
         public App()
         {
             InitializeComponent();
@@ -30,6 +32,8 @@ namespace VampirioCode
 
             OpenLastDocuments();
 
+
+            dotnet = new Dotnet();
 
             base.OnLoad(e);
         }
@@ -57,9 +61,9 @@ namespace VampirioCode
             //HotKeyManager.AddHotKey(Function,       Keys.Control | Keys.P);
         }
 
-        private void Build()
+        private async void Build()
         {
-            
+            var result = await dotnet.BuildAsync();
         }
 
         private void BuildAndRun()

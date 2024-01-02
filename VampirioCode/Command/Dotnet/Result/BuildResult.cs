@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.Compile
+namespace VampirioCode.Command.Dotnet.Result
 {
-    public class Builder
+    public class BuildResult : BaseResult
     {
     }
 }
