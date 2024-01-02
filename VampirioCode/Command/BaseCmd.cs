@@ -112,33 +112,33 @@ namespace VampirioCode.Command
 
         protected void Set(string argumentName, string value)
         {
-            cmd += argumentName + " " + value;
+            cmd += argumentName + " \"" + value + "\" ";
         }
 
         protected void SetIfExists(string argumentName, string value)
         {
             if(value != "")
-                cmd += argumentName + " " + value;
+                cmd += argumentName + " \"" + value + "\" ";
         }
 
         protected void SetIfExists(string value)
         {
             if(value != "")
-                cmd += value + " ";
+                cmd += "\"" + value + "\" ";
         }
 
         protected void SetAnyIfExists(string value, string value2)
         {
             if (value != "")
-                cmd += value + " ";
+                cmd += "\"" + value + "\" ";
             else if (value2 != "")
-                cmd += value2 + " ";
+                cmd += "\"" + value2 + "\" ";
         }
 
         protected void SetIfNot(string argumentName, string value, string notThisValue)
         { 
             if(value != notThisValue)
-                cmd += argumentName + " " + value;
+                cmd += argumentName + " \"" + value + "\"";
         }
 
         protected string _quotes(string str)

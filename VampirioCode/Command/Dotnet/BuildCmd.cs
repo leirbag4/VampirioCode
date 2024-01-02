@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VampirioCode.Command.Dotnet.Props;
+using VampirioCode.Command.Dotnet.Params;
 using VampirioCode.Command.Dotnet.Result;
 using VampirioCode.UI;
 
@@ -103,7 +103,8 @@ namespace VampirioCode.Command.Dotnet
             Set("--disable-build-servers",  DisableBuildServers);
 
 
-            return await CreateCommand<BuildResult>("build", @"C:\dotnet_test\projects\Capitan");
+            //return await CreateCommand<BuildResult>("build", @"C:\dotnet_test\projects\Capitan");
+            return await CreateCommand<BuildResult>("build", cmd.Trim());
         }
 
         protected override void OnDataReceived(string data)

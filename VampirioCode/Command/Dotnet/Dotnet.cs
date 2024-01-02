@@ -17,11 +17,16 @@ namespace VampirioCode.Command.Dotnet
         public async Task<BuildResult> BuildAsync()
         { 
             BuildCmd cmd = new BuildCmd();
+            cmd.ProjectPath = @"C:\dotnet_test\projects\Capitan";
+            cmd.Output = @"C:\dotnet_test\projects\Capitan\my_out";
+
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
 
             return result;
         }
+
+        //public async Task<BuildResult>
 
         private void CheckCmd(BaseCmd cmd)
         {

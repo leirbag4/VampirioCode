@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.Command.Dotnet.Props
+namespace VampirioCode.Command.Dotnet.Params
 {
     public enum Framework
     {

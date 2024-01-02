@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace VampirioCode.Command.Dotnet.Props
+namespace VampirioCode.Command.Dotnet.Params
 {
     public class VerbosityInfo
     {
