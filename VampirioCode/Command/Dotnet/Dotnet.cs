@@ -71,10 +71,22 @@ namespace VampirioCode.Command.Dotnet
             return result;
         }
 
-        public async Task<NewListResult> NewListAsyc()
+        /// <summary>
+        /// The dotnet new list command lists available templates to use with dotnet new.
+        /// </summary>
+        /// <param name="author">Filters templates based on template author. Partial match is supported. Available since .NET SDK 5.0.300.</param>
+        /// <param name="tags">Filters templates based on template tags. To be selected, a template must have at least one tag that exactly matches the criteria. Available since .NET SDK 5.0.300.</param>
+        /// <param name="type">Filters templates based on template type. Predefined values are project, item, and solution.</param>
+        /// <param name="language">Filters templates based on language supported by the template. The language accepted varies by the template. Not valid for some templates.</param>
+        /// <returns></returns>
+        public async Task<NewListResult> NewListAsyc(string author = "", string tags = "", string type = "", Language language = Language.Default)
         {
             NewListCmd cmd = new NewListCmd();
-            var result = await cmd.NewListAsync();
+            cmd.Author =    author;
+            cmd.Tag =       tags;
+            cmd.Type=       type;
+            cmd.Language =  language;
+            var result =    await cmd.NewListAsync();
             CheckCmd(cmd);
             return result;
         }
@@ -86,6 +98,16 @@ namespace VampirioCode.Command.Dotnet
             return result;
         }
 
+        /// <summary>
+        /// The dotnet new search command searches for templates supported by dotnet new on NuGet.org. 
+        /// </summary>
+        /// <param name="templateName">The template name you are looking for or a part of the name</param>
+        /// <param name="author">Filters templates based on template author. Partial match is supported.</param>
+        /// <param name="package">Filters templates based on NuGet package ID. Partial match is supported.</param>
+        /// <param name="tags">Filters templates based on template type. Predefined values are project, item, and solution.</param>
+        /// <param name="type">Enables diagnostic output. Available since .NET SDK 7.0.100.</param>
+        /// <param name="language">Filters templates based on template tags. To be selected, a template must have at least one tag that exactly matches the criteria.</param>
+        /// <returns></returns>
         public async Task<NewSearchResult> NewSearchAsyc(string templateName, string author = "", string package = "", string tags = "", string type = "", Language language = Language.Default)
         {
             NewSearchCmd cmd =  new NewSearchCmd();

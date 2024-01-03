@@ -73,7 +73,7 @@ namespace VampirioCode
             //var result = await dotnet.NewListAsyc();
             //XConsole.Println(result.ToString());
 
-            var result = await dotnet.NewSearchAsyc("console");
+            var result = await dotnet.NewSearchAsyc("cocomiel");
             XConsole.Println(result.ToString());
         }
 
