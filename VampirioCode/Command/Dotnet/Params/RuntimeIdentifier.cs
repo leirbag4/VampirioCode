@@ -8,7 +8,7 @@ namespace VampirioCode.Command.Dotnet.Params
 {
     public enum RuntimeIdentifier
     {
-        None,
+        Default,
 
         // Windows
         WinX64,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Dotnet.Params;
@@ -57,33 +58,103 @@ namespace VampirioCode.Command.Dotnet
          */
 
 
-
+        /// <summary>
+        /// The project file to operate on. If a file is not specified, the command will search
+        /// the current directory for one.
+        /// </summary>
         public string ProjectPath { get; set; } = "";
+        /// <summary>
+        /// The solution file to operate on. If a file is not specified, the command will search
+        /// the current directory for one.
+        /// </summary>
         public string SolutionPath { get; set; } = "";
-
-        public Framework Framework { get; set; } = Framework.None;
+        /// <summary>
+        /// The target framework to build for. The target framework must also be specified
+        /// in the project file.
+        /// </summary>
+        public FullFramework Framework { get; set; } = FullFramework.Default;
+        /// <summary>
+        /// The configuration to use for building the project. The default for most projects
+        /// is 'Debug'.
+        /// </summary>
         public string Configuration { get; set; } = ""; // can be 'Debug', 'Release', 'CustomConfig', 'etc'
-        public RuntimeIdentifier RuntimeIdentifier { get; set; } = RuntimeIdentifier.None;
+        /// <summary>
+        /// Specifies the target runtime. If you use this option with .NET 6 SDK, 
+        /// use --self-contained or --no-self-contained also.  If not specified, 
+        /// the default is to build for the current OS and architecture.
+        /// </summary>
+        public RuntimeIdentifier RuntimeIdentifier { get; set; } = RuntimeIdentifier.Default;
+        /// <summary>
+        /// Sets the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. 
+        /// The default is minimal. By default, MSBuild displays warnings and errors at all verbosity levels. To exclude warnings, 
+        /// use /property:WarningLevel=0
+        /// </summary>
         public Verbosity Verbosity { get; set; } = Verbosity.None;
+        /// <summary>
+        /// * The output directory to place built artifacts in.
+        /// Directory in which to place the built binaries. If not specified, the default path is ./bin/<configuration>/<framework>/. 
+        /// For projects with multiple target frameworks (via the TargetFrameworks property), you also need to define --framework 
+        /// when you specify this option.
+        /// </summary>
         public string Output { get; set; } = "";
+        /// <summary>
+        /// The artifacts path. All output from the project, including build, publish, and
+        /// pack output, will go in subfolders under the specified path.
+        /// </summary>
         public string ArtifactsPath { get; set; } = "";
+        /// <summary>
+        /// Set the value of the $(VersionSuffix) property to use when building the project.
+        /// </summary>
         public string VersionSuffix { get; set; } = "";
+        /// <summary>
+        /// Use current runtime as the target runtime.
+        /// </summary>
         public bool UseCurrentRuntime { get; set; } = false;
+        /// <summary>
+        /// Do not restore the project before building.
+        /// </summary>
         public bool NoRestore { get; set; } = false;
+        /// <summary>
+        /// Allows the command to stop and wait for user input or action (for example to complete authentication).
+        /// </summary>
         public bool Interactive { get; set; } = false;
+        /// <summary>
+        /// Debug
+        /// </summary>
         public bool Debug { get; set; } = false;
+        /// <summary>
+        /// Do not use incremental building.
+        /// </summary>
         public bool NoIncremental { get; set; } = false;
+        /// <summary>
+        /// Do not build project-to-project references and only build the specified project.
+        /// </summary>
         public bool NoDependencies { get; set; } = false;
+        /// <summary>
+        /// Do not display the startup banner or the copyright message.
+        /// </summary>
         public bool NoLogo { get; set; } = false;
+        /// <summary>
+        /// Publish the .NET runtime with your application so the runtime doesn't need to be
+        /// installed on the target machine. The default is 'false.' However, when targeting.NET 7 or lower, the default is
+        /// 'true' if a runtime identifier is specified.
+        /// </summary>
         public bool SelfContained { get; set; } = false;
+        /// <summary>
+        /// Publish your application as a framework dependent application. A compatible .NET
+        /// runtime must be installed on the target machine to run your application.
+        /// </summary>
         public bool NoSelfContained { get; set; } = false;
+        /// <summary>
+        /// Force the command to ignore any persistent build servers.
+        /// </summary>
         public bool DisableBuildServers { get; set; } = false;
 
         public async Task<BuildResult> BuildAsync()
         {
             SetAnyIfExists(ProjectPath, SolutionPath);
 
-            SetIfExists("--framework",      FrameworkInfo.Get(Framework).Param);
+            SetIfExists("--framework",      FullFrameworkInfo.Get(Framework).Param);
             SetIfExists("--configuration",  Configuration);
             SetIfExists("--runtime",        RuntimeIdentifierInfo.Get(RuntimeIdentifier).Param);
             SetIfExists("--version-suffix", VersionSuffix);
@@ -104,7 +175,7 @@ namespace VampirioCode.Command.Dotnet
 
 
             //return await CreateCommand<BuildResult>("build", @"C:\dotnet_test\projects\Capitan");
-            return await CreateCommand<BuildResult>("build", cmd.Trim());
+            return await CreateCommand<BuildResult>("dotnet", "build", cmd.Trim());
         }
 
         protected override void OnDataReceived(string data)
@@ -114,7 +185,7 @@ namespace VampirioCode.Command.Dotnet
 
         protected override void OnErrorDataReceived(string data)
         {
-            Println("err: " + data);
+            PrintError("err: " + data);
         }
 
         protected override void OnComplete(BaseResult result)

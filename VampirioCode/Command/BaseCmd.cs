@@ -18,7 +18,7 @@ namespace VampirioCode.Command
         protected BaseResult baseResult = null;
         protected string cmd = "";
 
-        protected async Task<T> CreateCommand<T>(string command, string param0 = "", string param1 = "") where T : BaseResult, new()
+        /*protected async Task<T> CreateCommand<T>(string command, string param0 = "", string param1 = "") where T : BaseResult, new()
         {
             return await _CreateCommand<T>("dotnet", command, param0, param1);
         }
@@ -26,9 +26,11 @@ namespace VampirioCode.Command
         protected async Task<T> CreateCommandProg<T>(string program, string command, string param0 = "", string param1 = "") where T : BaseResult, new()
         {
             return await _CreateCommand<T>(program, command, param0, param1);
-        }
+        }*/
 
-        protected async Task<T> _CreateCommand<T>(string program, string command, string param0 = "", string param1 = "") where T : BaseResult, new()
+        //protected async Task<T> _CreateCommand<T>(string program, string command, string param0 = "", string param1 = "") where T : BaseResult, new()
+        
+        protected async Task<T> CreateCommand<T>(string program, string command, string param0 = "", string param1 = "") where T : BaseResult, new()
         {
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
             baseResult = new T();
@@ -104,6 +106,11 @@ namespace VampirioCode.Command
             tcs.SetResult(baseResult);
         }*/
 
+        protected void Set(string value)
+        {
+            cmd += "\"" + value + "\" ";
+        }
+
         protected void Set(string argumentName, bool active)
         {
             if(active)
@@ -113,6 +120,20 @@ namespace VampirioCode.Command
         protected void Set(string argumentName, string value)
         {
             cmd += argumentName + " \"" + value + "\" ";
+        }
+
+        protected bool SetRequire(string value, string internalVariableName)
+        {
+            if (value == "")
+            {
+                CallError("Argument: '" + internalVariableName + "' can't be empty!");
+                return false;
+            }
+            else
+            {
+                cmd += "\"" + value + "\" ";
+                return true;
+            }
         }
 
         protected void SetIfExists(string argumentName, string value)
@@ -144,6 +165,17 @@ namespace VampirioCode.Command
         protected string _quotes(string str)
         {
             return '"' + str + '"';
+        }
+
+        protected bool RequireArgument(string value, string internalVariableName)
+        {
+            if (value == "")
+            {
+                CallError("Argument: '" + internalVariableName + "' can't be empty!");
+                return false;
+            }
+            else
+                return true;
         }
 
         protected void CallError(string str)

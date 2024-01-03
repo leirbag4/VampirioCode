@@ -28,7 +28,7 @@ namespace VampirioCode.Command.Dotnet.Params
 
             switch (runtime) 
             {
-                case RuntimeIdentifier.None:                return _Create(runtime, "", "", "");
+                case RuntimeIdentifier.Default:                return _Create(runtime, "", "", "");
 
                 // Windows
                 case RuntimeIdentifier.WinX64:              return _Create(runtime, "Windows x64",          "win-x64",              "Windows");

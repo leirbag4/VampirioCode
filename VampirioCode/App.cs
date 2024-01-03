@@ -63,12 +63,12 @@ namespace VampirioCode
 
         private async void Build()
         {
-            var result = await dotnet.BuildAsync();
+            var result = await dotnet.BuildAsync(@"C:\dotnet_test\projects\Capitan");
         }
 
-        private void BuildAndRun()
+        private async void BuildAndRun()
         {
-            
+            var result = await dotnet.NewAsync("console", @"C:\dotnet_test\projects\Patasucia3", "");
         }
 
         private void OnFilePressed(object sender, EventArgs e)

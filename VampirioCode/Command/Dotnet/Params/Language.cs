@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace VampirioCode.Command.Dotnet.Params
 {
-    public enum Framework
+    public enum Language
     {
-        Default,
-        DotNet6_0,
-        DotNet7_0,
-        DotNet8_0
+        None,
+        CSharp,
+        FSharp,
+        VisualBasic
     }
 }
