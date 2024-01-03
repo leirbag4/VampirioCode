@@ -27,11 +27,29 @@ namespace VampirioCode.Command.Dotnet
         [--verbosity <LEVEL>] [-h|--help]
          */
 
+        /// <summary>
+        /// Filters templates based on template author. Partial match is supported. Available since .NET SDK 5.0.300.
+        /// </summary>
         public string Author { get; set; } = "";
+        /// <summary>
+        /// Filters templates based on language supported by the template. The language accepted varies by the template. Not valid for some templates.
+        /// </summary>
         public Language Language { get; set; } = Params.Language.Default;
+        /// <summary>
+        /// Filters templates based on template tags. To be selected, a template must have at least one tag that exactly matches the criteria. Available since .NET SDK 5.0.300.
+        /// </summary>
         public string Tag { get; set; } = "";
+        /// <summary>
+        /// Filters templates based on template type. Predefined values are project, item, and solution.
+        /// </summary>
         public string Type { get; set; } = "";
+        /// <summary>
+        /// Enables diagnostic output. Available since .NET SDK 7.0.100.
+        /// </summary>
         public bool Diagnostics { get; set; } = false;
+        /// <summary>
+        /// Sets the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], and diag[nostic]. Available since .NET SDK 7.0.100.
+        /// </summary>
         public Verbosity Verbosity { get; set; } = Verbosity.Default;
 
         private List<Template> _templates;
