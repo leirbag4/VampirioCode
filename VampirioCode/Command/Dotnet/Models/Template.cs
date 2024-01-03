@@ -11,21 +11,25 @@ namespace VampirioCode.Command.Dotnet.Models
     {
         public string Name { get; set; } = "";
         public string ShortName { get; set; } = "";
-        public Language[] Languages { get; set; }
+        public string[] Languages { get; set; }
         public string Type { get; set; } = "";
         public string Author { get; set; } = "";
         public string Tags { get; set; } = "";
 
-        public override string ToString()
+
+        public Template(string name, string shortName, string[] languages, string type, string author, string tags)
         {
-            string langs = "";
-            foreach (var lang in Languages)
-                langs += lang.ToString() + "/";
-
-            langs = langs.TrimEnd('/');
-
-            return "Name: " + Name + ", ShortName: " + ShortName + ", Languages: " + langs + ", Type: " + Type + ", Author: " + Author + ", Tags: " + Tags;
+            Name =      name;
+            ShortName = shortName;
+            Languages = languages;
+            Type =      type;
+            Author =    author;
+            Tags =      tags;
         }
 
+        public override string ToString()
+        {
+            return "Name: " + Name + ", ShortName: " + ShortName + ", Languages: " + string.Join(",", Languages) + ", Type: " + Type + ", Author: " + Author + ", Tags: " + Tags;
+        }
     }
 }

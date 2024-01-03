@@ -178,6 +178,16 @@ namespace VampirioCode.Command
                 return true;
         }
 
+        protected void CallError(ErrorInfo error)
+        {
+            ErrorInfo = error;
+            Error = true;
+            PrintError(ErrorInfo);
+
+            if (baseResult != null)
+                baseResult.SetError(ErrorInfo);
+        }
+
         protected void CallError(string str)
         {
             ErrorInfo = ErrorInfo.Create(str);

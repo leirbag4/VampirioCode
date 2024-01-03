@@ -3,34 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 using VampirioCode.Command.Dotnet.Models;
 using VampirioCode.Command.Dotnet.Params;
 using VampirioCode.Command.Dotnet.Result;
-using VampirioCode.Command.Dotnet.Utils;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using VampirioCode.UI;
-using static System.Windows.Forms.AxHost;
+using VampirioCode.Command.Dotnet.Utils;
 
 namespace VampirioCode.Command.Dotnet
 {
-    public class NewListCmd : BaseCmd
+    public class NewSearchCmd : BaseCmd
     {
         /*
-        dotnet new list [<TEMPLATE_NAME>] 
-        [--author <AUTHOR>] 
-        [-lang|--language {"C#"|"F#"|VB}]
-        [--tag <TAG>] 
-        [--type <TYPE>] 
-        [--columns <COLUMNS>] 
-        [--columns-all]
-        [-o|--output <output>] 
-        [--project <project>] 
-        [--ignore-constraints]
-        [-d|--diagnostics] 
-        [--verbosity <LEVEL>] [-h|--help]
+            dotnet new search [<TEMPLATE_NAME>] 
+            [--author <AUTHOR>] 
+            [-lang|--language {"C#"|"F#"|VB}]
+            [--package <PACKAGE>] 
+            [--tag <TAG>] 
+            [--type <TYPE>]
+            [--columns <COLUMNS>] 
+            [--columns-all]
+            [-d|--diagnostics] 
+            [--verbosity <LEVEL>] 
+            [-h|--help]
          */
 
         /// <summary>
-        /// Filters templates based on template author. Partial match is supported. Available since .NET SDK 5.0.300.
+        /// If the argument is specified, only templates containing <TEMPLATE_NAME> in the template name or short name will be shown.
+        /// The argument is mandatory when --author, --language, --package, --tag or --type options are not specified.
+        /// </summary>
+        public string TemplateName { get; set; } = "";
+        /// <summary>
+        /// Filters templates based on NuGet package ID. Partial match is supported.
+        /// </summary>
+        public string Package { get; set; } = "";
+        /// <summary>
+        /// Filters templates based on template author. Partial match is supported.
         /// </summary>
         public string Author { get; set; } = "";
         /// <summary>
@@ -38,7 +47,7 @@ namespace VampirioCode.Command.Dotnet
         /// </summary>
         public Language Language { get; set; } = Params.Language.Default;
         /// <summary>
-        /// Filters templates based on template tags. To be selected, a template must have at least one tag that exactly matches the criteria. Available since .NET SDK 5.0.300.
+        /// Filters templates based on template tags. To be selected, a template must have at least one tag that exactly matches the criteria.
         /// </summary>
         public string Tag { get; set; } = "";
         /// <summary>
@@ -56,10 +65,11 @@ namespace VampirioCode.Command.Dotnet
 
         private List<string> dataArr = null;
 
-        public async Task<NewListResult> NewListAsync()
+        public async Task<NewSearchResult> NewSearchAsync()
         {
             dataArr = new List<string>();
 
+            SetIfExists("--package",        Package);
             SetIfExists("--author",         Author);
             SetIfExists("--laguage",        LanguageInfo.Get(Language).Param);
             SetIfExists("--tag",            Tag);
@@ -67,9 +77,10 @@ namespace VampirioCode.Command.Dotnet
                     Set("--diagnostics",    Diagnostics);
             SetIfExists("--verbosity",      VerbosityInfo.Get(Verbosity).Param);
 
-            return await CreateCommand<NewListResult>("dotnet", "new list", "--columns-all", cmd.Trim());
+            return await CreateCommand<NewSearchResult>("dotnet", "new search \"" + TemplateName + "\"", "--columns-all", cmd.Trim());
         }
 
+        
         protected override void OnDataReceived(string data)
         {
             dataArr.Add(data);
@@ -82,8 +93,8 @@ namespace VampirioCode.Command.Dotnet
 
         protected override void OnComplete(BaseResult result)
         {
-            TableResultParser table = new TableResultParser();
-            List<Template> templates = new List<Template>();
+            TableResultParser table =   new TableResultParser();
+            List<STemplate> templates =  new List<STemplate>();
             table.Parse(dataArr);
 
             if (table.Error)
@@ -92,14 +103,17 @@ namespace VampirioCode.Command.Dotnet
                 return;
             }
 
+
             foreach (var row in table.Rows)
             {
                 string[] items = row.Items;
-                templates.Add(new Template(items[0], items[1], LangUtils.SplitLanguages(items[2]), items[3], items[4], items[5]));
+                templates.Add(new STemplate(items[0], items[1], items[2], LangUtils.SplitLanguages(items[3]), items[4], items[5], items[6], items[7], items[8]));
             }
 
-            ((NewListResult)result).Templates = templates.ToArray();
+            ((NewSearchResult)result).Templates = templates.ToArray();
             Println("[complete]");
         }
+
+
     }
 }

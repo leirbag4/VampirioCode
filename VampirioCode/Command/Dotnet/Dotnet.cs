@@ -76,15 +76,33 @@ namespace VampirioCode.Command.Dotnet
             NewListCmd cmd = new NewListCmd();
             var result = await cmd.NewListAsync();
             CheckCmd(cmd);
-
-            XConsole.Println(result.ToString());
-
             return result;
         }
 
         public async Task<NewListResult> NewListAsyc(NewListCmd cmd)
         {
             var result = await cmd.NewListAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
+        public async Task<NewSearchResult> NewSearchAsyc(string templateName, string author = "", string package = "", string tags = "", string type = "", Language language = Language.Default)
+        {
+            NewSearchCmd cmd =  new NewSearchCmd();
+            cmd.TemplateName =  templateName;
+            cmd.Author =        author;
+            cmd.Tag =           tags;
+            cmd.Type =          type;
+            cmd.Language =      language;
+            var result = await cmd.NewSearchAsync();
+            CheckCmd(cmd);
+
+            return result;
+        }
+
+        public async Task<NewSearchResult> NewSearchAsyc(NewSearchCmd cmd)
+        {
+            var result = await cmd.NewSearchAsync();
             CheckCmd(cmd);
             return result;
         }

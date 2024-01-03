@@ -70,7 +70,11 @@ namespace VampirioCode
         {
             //var result = await dotnet.NewAsync("console", @"C:\dotnet_test\projects\Patasucia3", "");
 
-            var result = await dotnet.NewListAsyc();
+            //var result = await dotnet.NewListAsyc();
+            //XConsole.Println(result.ToString());
+
+            var result = await dotnet.NewSearchAsyc("console");
+            XConsole.Println(result.ToString());
         }
 
         private void OnFilePressed(object sender, EventArgs e)
