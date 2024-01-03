@@ -8,7 +8,7 @@ namespace VampirioCode.Command.Dotnet.Params
 {
     public enum Language
     {
-        None,
+        Default,
         CSharp,
         FSharp,
         VisualBasic

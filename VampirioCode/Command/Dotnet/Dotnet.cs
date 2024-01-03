@@ -7,6 +7,7 @@ using VampirioCode.Command.Dotnet.Result;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using VampirioCode.IO;
 using VampirioCode.Command.Dotnet.Params;
+using VampirioCode.UI;
 
 namespace VampirioCode.Command.Dotnet
 {
@@ -66,6 +67,24 @@ namespace VampirioCode.Command.Dotnet
         public async Task<NewResult> NewAsync(NewCmd cmd)
         {
             var result = await cmd.NewAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
+        public async Task<NewListResult> NewListAsyc()
+        {
+            NewListCmd cmd = new NewListCmd();
+            var result = await cmd.NewListAsync();
+            CheckCmd(cmd);
+
+            XConsole.Println(result.ToString());
+
+            return result;
+        }
+
+        public async Task<NewListResult> NewListAsyc(NewListCmd cmd)
+        {
+            var result = await cmd.NewListAsync();
             CheckCmd(cmd);
             return result;
         }

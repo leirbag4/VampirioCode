@@ -50,12 +50,12 @@ namespace VampirioCode.Command.Dotnet
         /// The language of the template to create. The language accepted varies by the template
         /// (see defaults in the arguments section). Not valid for some templates.
         /// </summary>
-        public Language Language { get; set; } = Language.None;
+        public Language Language { get; set; } = Language.Default;
         /// <summary>
         /// Sets the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], and diag[nostic]. 
         /// Available since .NET SDK 7.0.100.
         /// </summary>
-        public Verbosity Verbosity { get; set; } = Verbosity.None;
+        public Verbosity Verbosity { get; set; } = Verbosity.Default;
         /// <summary>
         /// Enables diagnostic output. Available since .NET SDK 7.0.100.
         /// </summary>

@@ -8,5 +8,8 @@ namespace VampirioCode.Command.Dotnet.Result
 {
     public class NewResult : BaseResult
     {
+
+
+
     }
 }

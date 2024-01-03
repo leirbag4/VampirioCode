@@ -18,7 +18,7 @@ namespace VampirioCode.Command.Dotnet.Params
 
             switch (language)
             {
-                case Language.None:         return new LanguageInfo() { Language = Language.None,           Name = "",              Param = ""};
+                case Language.Default:         return new LanguageInfo() { Language = Language.Default,           Name = "",              Param = ""};
                 case Language.CSharp:       return new LanguageInfo() { Language = Language.CSharp,         Name = "CSharp",        Param = "C#"};
                 case Language.FSharp:       return new LanguageInfo() { Language = Language.FSharp,         Name = "FSharp",        Param = "F#"};
                 case Language.VisualBasic:  return new LanguageInfo() { Language = Language.VisualBasic,    Name = "VisualBasic",   Param = "VB"};

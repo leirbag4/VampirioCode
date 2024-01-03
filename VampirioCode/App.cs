@@ -68,7 +68,9 @@ namespace VampirioCode
 
         private async void BuildAndRun()
         {
-            var result = await dotnet.NewAsync("console", @"C:\dotnet_test\projects\Patasucia3", "");
+            //var result = await dotnet.NewAsync("console", @"C:\dotnet_test\projects\Patasucia3", "");
+
+            var result = await dotnet.NewListAsyc();
         }
 
         private void OnFilePressed(object sender, EventArgs e)

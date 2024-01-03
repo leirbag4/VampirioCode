@@ -26,7 +26,7 @@ namespace VampirioCode.Command.Dotnet.Params
         {
             switch (verb) 
             { 
-                case Verbosity.None:        return _Create(verb, "",            "");
+                case Verbosity.Default:        return _Create(verb, "",            "");
                 case Verbosity.Quiet:       return _Create(verb, "Quiet",       "q");
                 case Verbosity.Minimal:     return _Create(verb, "Minimal",     "m");
                 case Verbosity.Normal:      return _Create(verb, "Normal",      "n");

@@ -8,7 +8,7 @@ namespace VampirioCode.Command.Dotnet.Params
 {
     public enum Verbosity
     {
-        None,
+        Default,
         Quiet,
         Minimal,
         Normal,

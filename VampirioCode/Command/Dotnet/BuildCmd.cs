@@ -89,7 +89,7 @@ namespace VampirioCode.Command.Dotnet
         /// The default is minimal. By default, MSBuild displays warnings and errors at all verbosity levels. To exclude warnings, 
         /// use /property:WarningLevel=0
         /// </summary>
-        public Verbosity Verbosity { get; set; } = Verbosity.None;
+        public Verbosity Verbosity { get; set; } = Verbosity.Default;
         /// <summary>
         /// * The output directory to place built artifacts in.
         /// Directory in which to place the built binaries. If not specified, the default path is ./bin/<configuration>/<framework>/. 
