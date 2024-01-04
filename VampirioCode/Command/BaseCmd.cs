@@ -148,6 +148,15 @@ namespace VampirioCode.Command
                 cmd += "\"" + value + "\" ";
         }
 
+        protected void SetIfExists(string[] value)
+        {
+            if ((value != null) && (value.Length > 0))
+            {
+                foreach (string val in value)
+                    cmd += "\"" + val + "\" ";
+            }
+        }
+
         protected void SetAnyIfExists(string value, string value2)
         {
             if (value != "")

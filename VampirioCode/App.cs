@@ -73,8 +73,10 @@ namespace VampirioCode
             //var result = await dotnet.NewListAsyc();
             //XConsole.Println(result.ToString());
 
-            var result = await dotnet.NewSearchAsyc("cocomiel");
-            XConsole.Println(result.ToString());
+            //var result = await dotnet.NewSearchAsync("console");
+            //XConsole.Println(result.ToString());
+
+            var result = await dotnet.RunAsync(@"C:\dotnet_test\projects\Capitan", new string[] { "malo", "--chipote" });
         }
 
         private void OnFilePressed(object sender, EventArgs e)

@@ -83,7 +83,7 @@ namespace VampirioCode.Command.Dotnet
         /// use --self-contained or --no-self-contained also.  If not specified, 
         /// the default is to build for the current OS and architecture.
         /// </summary>
-        public RuntimeIdentifier RuntimeIdentifier { get; set; } = RuntimeIdentifier.Default;
+        public RuntimeIdentifier Runtime { get; set; } = RuntimeIdentifier.Default;
         /// <summary>
         /// Sets the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]. 
         /// The default is minimal. By default, MSBuild displays warnings and errors at all verbosity levels. To exclude warnings, 
@@ -156,7 +156,7 @@ namespace VampirioCode.Command.Dotnet
 
             SetIfExists("--framework",      FullFrameworkInfo.Get(Framework).Param);
             SetIfExists("--configuration",  Configuration);
-            SetIfExists("--runtime",        RuntimeIdentifierInfo.Get(RuntimeIdentifier).Param);
+            SetIfExists("--runtime",        RuntimeIdentifierInfo.Get(Runtime).Param);
             SetIfExists("--version-suffix", VersionSuffix);
             SetIfExists("--verbosity",      VerbosityInfo.Get(Verbosity).Param);
             SetIfExists("--output",         Output);
@@ -173,8 +173,6 @@ namespace VampirioCode.Command.Dotnet
             Set("--no-self-contained",      NoSelfContained);
             Set("--disable-build-servers",  DisableBuildServers);
 
-
-            //return await CreateCommand<BuildResult>("build", @"C:\dotnet_test\projects\Capitan");
             return await CreateCommand<BuildResult>("dotnet", "build", cmd.Trim());
         }
 

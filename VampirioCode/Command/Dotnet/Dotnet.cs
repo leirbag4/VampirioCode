@@ -30,7 +30,7 @@ namespace VampirioCode.Command.Dotnet
             BuildCmd cmd =          new BuildCmd();
             cmd.ProjectPath =       projectOrSolution;
             cmd.Output =            output;
-            cmd.RuntimeIdentifier = runtime;
+            cmd.Runtime = runtime;
 
             var result = await cmd.BuildAsync(); CheckCmd(cmd);
             return result;
@@ -99,6 +99,38 @@ namespace VampirioCode.Command.Dotnet
         }
 
         /// <summary>
+        /// Runs source code without any explicit compile or launch commands.
+        /// </summary>
+        /// <param name="projectPath">Specifies the path of the project file to run (folder name or full path). If not specified, it defaults to the current directory.</param>
+        /// <param name="configuration">Defines the build configuration. The default for most projects is Debug, but you can override the build configuration settings in your project.</param>
+        /// <param name="launchProfile">The name of the launch profile (if any) to use when launching the application. Launch profiles are defined in the launchSettings.json file and are typically called Development, Staging, and Production. For more information, see Working with multiple environments.</param>
+        /// <param name="runtime">Specifies the target runtime to restore packages for. For a list of Runtime Identifiers (RIDs), see the RID catalog.</param>
+        /// <param name="force">Forces all dependencies to be resolved even if the last restore was successful. Specifying this flag is the same as deleting the project.assets.json file.</param>
+        /// <param name="noDependencies">When restoring a project with project-to-project (P2P) references, restores the root project and not the references.</param>
+        /// <param name="noLaunchProfile">Doesn't try to use launchSettings.json to configure the application.</param>
+        /// <param name="noRestore">Doesn't execute an implicit restore when running the command.</param>
+        /// <returns></returns>
+        public async Task<RunResult> RunAsync(string projectPath, string[] arguments = null, string configuration = "Debug", string launchProfile = "", RuntimeIdentifier runtime = RuntimeIdentifier.Default, bool force = false, bool noDependencies = false, bool noLaunchProfile = false, bool noRestore = false)
+        {
+            RunCmd cmd =            new RunCmd();
+
+            if(arguments != null)
+                cmd.Arguments = arguments;
+
+            cmd.ProjectPath =       projectPath;
+            cmd.Configuration =     configuration;
+            cmd.LaunchProfile =     launchProfile;
+            cmd.Runtime =           runtime;
+            cmd.Force =             force;
+            cmd.NoDependencies =    noDependencies;
+            cmd.NoLaunchProfile =   noLaunchProfile;
+            cmd.NoRestore =         noRestore;
+            var result =            await cmd.RunAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
+        /// <summary>
         /// The dotnet new search command searches for templates supported by dotnet new on NuGet.org. 
         /// </summary>
         /// <param name="templateName">The template name you are looking for or a part of the name</param>
@@ -108,7 +140,7 @@ namespace VampirioCode.Command.Dotnet
         /// <param name="type">Enables diagnostic output. Available since .NET SDK 7.0.100.</param>
         /// <param name="language">Filters templates based on template tags. To be selected, a template must have at least one tag that exactly matches the criteria.</param>
         /// <returns></returns>
-        public async Task<NewSearchResult> NewSearchAsyc(string templateName, string author = "", string package = "", string tags = "", string type = "", Language language = Language.Default)
+        public async Task<NewSearchResult> NewSearchAsync(string templateName, string author = "", string package = "", string tags = "", string type = "", Language language = Language.Default)
         {
             NewSearchCmd cmd =  new NewSearchCmd();
             cmd.TemplateName =  templateName;
@@ -122,7 +154,7 @@ namespace VampirioCode.Command.Dotnet
             return result;
         }
 
-        public async Task<NewSearchResult> NewSearchAsyc(NewSearchCmd cmd)
+        public async Task<NewSearchResult> NewSearchAsync(NewSearchCmd cmd)
         {
             var result = await cmd.NewSearchAsync();
             CheckCmd(cmd);

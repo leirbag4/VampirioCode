@@ -8,7 +8,6 @@ using VampirioCode.Command.Dotnet.Params;
 using VampirioCode.Command.Dotnet.Result;
 using VampirioCode.Command.Dotnet.Utils;
 using VampirioCode.UI;
-using static System.Windows.Forms.AxHost;
 
 namespace VampirioCode.Command.Dotnet
 {
