@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Dotnet.Params;
 using VampirioCode.Command.Dotnet.Result;
+using VampirioCode.UI;
 
 namespace VampirioCode.Command.Dotnet
 {
@@ -91,6 +92,9 @@ namespace VampirioCode.Command.Dotnet
         /// </summary>
         public string[] Arguments { get; set; } = new string[0];
 
+
+        private bool _dataReceived = false;
+
         public async Task<RunResult> RunAsync()
         {
             SetIfExists("--configuration",      Configuration);
@@ -114,7 +118,13 @@ namespace VampirioCode.Command.Dotnet
 
         protected override void OnDataReceived(string data)
         {
-            Println("data: " + data);
+            if (!_dataReceived)
+            {
+                XConsole.Clear();
+                _dataReceived = true;
+            }
+
+            Println(data);
         }
 
         protected override void OnErrorDataReceived(string data)
@@ -124,7 +134,7 @@ namespace VampirioCode.Command.Dotnet
 
         protected override void OnComplete(BaseResult result)
         {
-            Println("[complete]");
+            //Println("[complete]");
         }
     }
 }

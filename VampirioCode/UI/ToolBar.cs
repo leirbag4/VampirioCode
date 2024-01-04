@@ -12,6 +12,13 @@ namespace VampirioCode.UI
 {
     public partial class ToolBar : UserControl
     {
+
+        public delegate void StartPressedEvent();
+        public delegate void ReloadPressedEvent();
+
+        public event StartPressedEvent StartPressed;
+        public event ReloadPressedEvent ReloadPressed;
+
         public ToolBar()
         {
             InitializeComponent();
@@ -19,12 +26,14 @@ namespace VampirioCode.UI
 
         private void OnStartPressed(object sender, EventArgs e)
         {
-
+            if (StartPressed != null)
+                StartPressed();
         }
 
         private void OnReloadPressed(object sender, EventArgs e)
         {
-
+            if (ReloadPressed != null)
+                ReloadPressed();
         }
     }
 }

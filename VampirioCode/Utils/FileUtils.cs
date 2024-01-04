@@ -10,6 +10,16 @@ namespace VampirioCode.Utils
 {
     public class FileUtils
     {
+        public static void DeleteFilesAndDirs(String dirPath)
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(dirPath);
+
+            foreach (FileInfo file in di.GetFiles())
+                file.Delete();
+
+            foreach (DirectoryInfo dir in di.GetDirectories())
+                dir.Delete(true);
+        }
 
         public static string[] GetFilesAt(string path)
         {

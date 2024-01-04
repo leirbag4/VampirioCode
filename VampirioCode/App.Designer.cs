@@ -31,6 +31,7 @@
             footer = new UI.FooterUI();
             splitContainer = new SplitContainer();
             docManager = new VampDocManager.DocManager();
+            clearButton = new UI.Controls.ButtonAdv();
             xconsole = new UI.XConsole();
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -81,6 +82,7 @@
             // 
             // splitContainer.Panel2
             // 
+            splitContainer.Panel2.Controls.Add(clearButton);
             splitContainer.Panel2.Controls.Add(xconsole);
             splitContainer.Size = new Size(792, 615);
             splitContainer.SplitterDistance = 462;
@@ -95,6 +97,33 @@
             docManager.Size = new Size(792, 462);
             docManager.TabIndex = 0;
             // 
+            // clearButton
+            // 
+            clearButton.BorderColor = Color.FromArgb(20, 20, 20);
+            clearButton.BorderSize = 1;
+            clearButton.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            clearButton.expandImage = false;
+            clearButton.extraText = "";
+            clearButton.extraTextAlign = ContentAlignment.MiddleCenter;
+            clearButton.extraTextColor = Color.Black;
+            clearButton.extraTextFont = null;
+            clearButton.extraTextOffset = new Point(0, 0);
+            clearButton.FocusColor = Color.FromArgb(24, 81, 115);
+            clearButton.FocusEnabled = false;
+            clearButton.ForeColor = Color.Silver;
+            clearButton.Location = new Point(719, 2);
+            clearButton.Name = "clearButton";
+            clearButton.PaintImageOnSelected = true;
+            clearButton.processEnterKey = true;
+            clearButton.resizeImage = new Point(0, 0);
+            clearButton.Selected = false;
+            clearButton.SelectedColor = Color.FromArgb(0, 122, 204);
+            clearButton.Size = new Size(69, 22);
+            clearButton.TabIndex = 1;
+            clearButton.Text = "clear";
+            clearButton.UseVisualStyleBackColor = true;
+            clearButton.Click += OnClearPressed;
+            // 
             // xconsole
             // 
             xconsole.BackColor = Color.FromArgb(40, 40, 40);
@@ -106,13 +135,15 @@
             // 
             // menuStrip
             // 
+            menuStrip.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            menuStrip.AutoSize = false;
+            menuStrip.Dock = DockStyle.None;
             menuStrip.ImageScalingSize = new Size(20, 20);
             menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem });
-            menuStrip.Location = new Point(0, 0);
+            menuStrip.Location = new Point(4, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(800, 28);
+            menuStrip.Size = new Size(792, 28);
             menuStrip.TabIndex = 4;
-            menuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -240,9 +271,9 @@
             // 
             toolBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             toolBar.BackColor = Color.FromArgb(30, 30, 30);
-            toolBar.Location = new Point(0, 28);
+            toolBar.Location = new Point(4, 28);
             toolBar.Name = "toolBar";
-            toolBar.Size = new Size(800, 32);
+            toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
             // 
             // App
@@ -265,7 +296,6 @@
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -289,5 +319,6 @@
         private ToolStripMenuItem closeAllToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private UI.ToolBar toolBar;
+        private UI.Controls.ButtonAdv clearButton;
     }
 }

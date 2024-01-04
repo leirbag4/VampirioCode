@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using VampDocManager;
+using VampirioCode.Builder;
 using VampirioCode.Command.Dotnet;
 using VampirioCode.SaveData;
 using VampirioCode.UI;
@@ -15,6 +16,8 @@ namespace VampirioCode
         public DocumentTab CurrDocumentTab { get { return docManager.CurrDocumentTab; } }
 
         private Dotnet dotnet;
+        private SimpleBuilder simpleBuilder;
+
         public App()
         {
             InitializeComponent();
@@ -30,10 +33,14 @@ namespace VampirioCode
             menuStrip.BackColor = Color.FromArgb(30, 30, 30);
             menuStrip.ForeColor = Color.Silver;
 
+            toolBar.StartPressed += OnStartPressed;
+            toolBar.ReloadPressed += OnReloadPressed;
+
             OpenLastDocuments();
 
 
-            dotnet = new Dotnet();
+            dotnet =            new Dotnet();
+            simpleBuilder =     new SimpleBuilder();
 
             base.OnLoad(e);
         }
@@ -48,21 +55,22 @@ namespace VampirioCode
 
         private void RegisterCmdKeys()
         {
-            HotKeyManager.AddHotKey(New,            Keys.Control | Keys.N);
-            HotKeyManager.AddHotKey(Open,           Keys.Control | Keys.O);
-            HotKeyManager.AddHotKey(CloseDoc,       Keys.Control | Keys.W);
-            HotKeyManager.AddHotKey(Find,           Keys.Control | Keys.F);
+            HotKeyManager.AddHotKey(New, Keys.Control | Keys.N);
+            HotKeyManager.AddHotKey(Open, Keys.Control | Keys.O);
+            HotKeyManager.AddHotKey(CloseDoc, Keys.Control | Keys.W);
+            HotKeyManager.AddHotKey(Find, Keys.Control | Keys.F);
             HotKeyManager.AddHotKey(FindAndReplace, Keys.Control | Keys.H);
-            HotKeyManager.AddHotKey(Save,           Keys.Control | Keys.S);
-            HotKeyManager.AddHotKey(GoTo,           Keys.Control | Keys.G);
-            HotKeyManager.AddHotKey(Duplicate,      Keys.Control | Keys.D);
-            HotKeyManager.AddHotKey(Build,          Keys.F4);
-            HotKeyManager.AddHotKey(BuildAndRun,    Keys.F5);
+            HotKeyManager.AddHotKey(Save, Keys.Control | Keys.S);
+            HotKeyManager.AddHotKey(GoTo, Keys.Control | Keys.G);
+            HotKeyManager.AddHotKey(Duplicate, Keys.Control | Keys.D);
+            HotKeyManager.AddHotKey(Build, Keys.F4);
+            HotKeyManager.AddHotKey(BuildAndRun, Keys.F5);
             //HotKeyManager.AddHotKey(Function,       Keys.Control | Keys.P);
         }
 
         private async void Build()
         {
+            XConsole.Clear();
             var result = await dotnet.BuildAsync(@"C:\dotnet_test\projects\Capitan");
         }
 
@@ -76,25 +84,32 @@ namespace VampirioCode
             //var result = await dotnet.NewSearchAsync("console");
             //XConsole.Println(result.ToString());
 
-            var result = await dotnet.RunAsync(@"C:\dotnet_test\projects\Capitan", new string[] { "malo", "--chipote" });
+            //XConsole.Clear();
+            //var result = await dotnet.RunAsync(@"C:\dotnet_test\projects\Capitan", new string[] { "malo", "--chipote" });
+
+            XConsole.Clear();
+
+            string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+            simpleBuilder.Setup(projName, CurrDocument.Text);
+            await simpleBuilder.Build();
         }
 
         private void OnFilePressed(object sender, EventArgs e)
         {
             string sel = (string)((ToolStripMenuItem)sender).Tag;
 
-                 if (sel == "new")          New();
-            else if (sel == "open")         Open();
-            else if (sel == "save")         Save();
-            else if (sel == "save_as")      SaveAs();
-            else if (sel == "close")        CloseDoc();
-            else if (sel == "close_all")    CloseAll();
-            else if (sel == "exit")         Exit();
+            if (sel == "new") New();
+            else if (sel == "open") Open();
+            else if (sel == "save") Save();
+            else if (sel == "save_as") SaveAs();
+            else if (sel == "close") CloseDoc();
+            else if (sel == "close_all") CloseAll();
+            else if (sel == "exit") Exit();
         }
 
         private void OnEditPressed(object sender, EventArgs e)
         {
-            
+
         }
 
         private void New()
@@ -103,7 +118,7 @@ namespace VampirioCode
         }
 
         private void Open()
-        { 
+        {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Select a File";
 
@@ -162,13 +177,13 @@ namespace VampirioCode
         private void OpenLastDocuments()
         {
             SavedDocument[] docs = Config.LastOpenDocuments;
-            
-            foreach (SavedDocument doc in docs) 
+
+            foreach (SavedDocument doc in docs)
             {
                 docManager.OpenDocument(doc.FullFilePath);
             }
 
-            if(Config.LastSelectedTabIndex < docManager.Documents.Length)
+            if (Config.LastSelectedTabIndex < docManager.Documents.Length)
                 docManager.CurrIndex = Config.LastSelectedTabIndex;
 
             CleanUpTempFiles();
@@ -187,7 +202,7 @@ namespace VampirioCode
                 if (doc.IsTemporary)
                     loadedTempFilesPath.Add(doc.FullFilePath);
             }
-            
+
             foreach (var tempFile in allTempFilesPath)
             {
                 if (!loadedTempFilesPath.Contains(tempFile))
@@ -207,7 +222,7 @@ namespace VampirioCode
             String docsToSaveNames = "\n\n";
             int maxItemsToShow = 5;
 
-            for(int a = 0; a < docs.Length; a++)
+            for (int a = 0; a < docs.Length; a++)
             {
                 Document doc = docs[a];
 
@@ -223,10 +238,10 @@ namespace VampirioCode
                     {
                         docsToSave.Add(doc);
 
-                             // create msgbox string like 'file1, file2 ...'
-                             if (docsToSave.Count == maxItemsToShow)    docsToSaveNames += "   ...";
-                        else if (docsToSave.Count > maxItemsToShow)     {}
-                        else                                            docsToSaveNames += "   " + doc.FileName + "\n";
+                        // create msgbox string like 'file1, file2 ...'
+                        if (docsToSave.Count == maxItemsToShow) docsToSaveNames += "   ...";
+                        else if (docsToSave.Count > maxItemsToShow) { }
+                        else docsToSaveNames += "   " + doc.FileName + "\n";
                     }
                 }
 
@@ -248,15 +263,29 @@ namespace VampirioCode
                 else if ((option == OptionResult.OptionC) || (option == OptionResult.None)) // Cancel
                 {
                     e.Cancel = true;
-                    return; 
+                    return;
                 }
             }
 
-            Config.LastOpenDocuments =      lastOpenDocs;
-            Config.LastSelectedTabIndex =   docManager.CurrIndex;
+            Config.LastOpenDocuments = lastOpenDocs;
+            Config.LastSelectedTabIndex = docManager.CurrIndex;
             Config.Save();
 
             base.OnClosing(e);
+        }
+
+        private void OnStartPressed()
+        {
+            BuildAndRun();
+        }
+        private void OnReloadPressed()
+        {
+            Build();
+        }
+
+        private void OnClearPressed(object sender, EventArgs e)
+        {
+            XConsole.Clear();
         }
     }
 }
