@@ -38,15 +38,16 @@
             openToolStripMenuItem = new ToolStripMenuItem();
             saveToolStripMenuItem = new ToolStripMenuItem();
             saveAsToolStripMenuItem = new ToolStripMenuItem();
+            closeToolStripMenuItem = new ToolStripMenuItem();
+            closeAllToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
             editToolStripMenuItem = new ToolStripMenuItem();
             undoToolStripMenuItem = new ToolStripMenuItem();
             redoToolStripMenuItem = new ToolStripMenuItem();
             cutToolStripMenuItem = new ToolStripMenuItem();
             copyToolStripMenuItem = new ToolStripMenuItem();
             pasteToolStripMenuItem = new ToolStripMenuItem();
-            closeToolStripMenuItem = new ToolStripMenuItem();
-            closeAllToolStripMenuItem = new ToolStripMenuItem();
-            exitToolStripMenuItem = new ToolStripMenuItem();
+            toolBar = new UI.ToolBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -69,7 +70,7 @@
             // 
             splitContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             splitContainer.BackColor = Color.FromArgb(30, 30, 30);
-            splitContainer.Location = new Point(4, 45);
+            splitContainer.Location = new Point(4, 60);
             splitContainer.Margin = new Padding(0);
             splitContainer.Name = "splitContainer";
             splitContainer.Orientation = Orientation.Horizontal;
@@ -81,16 +82,17 @@
             // splitContainer.Panel2
             // 
             splitContainer.Panel2.Controls.Add(xconsole);
-            splitContainer.Size = new Size(792, 630);
-            splitContainer.SplitterDistance = 474;
+            splitContainer.Size = new Size(792, 615);
+            splitContainer.SplitterDistance = 462;
             splitContainer.TabIndex = 3;
             // 
             // docManager
             // 
+            docManager.CurrIndex = -1;
             docManager.Dock = DockStyle.Fill;
             docManager.Location = new Point(0, 0);
             docManager.Name = "docManager";
-            docManager.Size = new Size(792, 474);
+            docManager.Size = new Size(792, 462);
             docManager.TabIndex = 0;
             // 
             // xconsole
@@ -99,7 +101,7 @@
             xconsole.Dock = DockStyle.Fill;
             xconsole.Location = new Point(0, 0);
             xconsole.Name = "xconsole";
-            xconsole.Size = new Size(792, 152);
+            xconsole.Size = new Size(792, 149);
             xconsole.TabIndex = 0;
             // 
             // menuStrip
@@ -123,7 +125,7 @@
             // 
             newToolStripMenuItem.ForeColor = Color.Silver;
             newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new Size(224, 26);
+            newToolStripMenuItem.Size = new Size(152, 26);
             newToolStripMenuItem.Tag = "new";
             newToolStripMenuItem.Text = "New";
             newToolStripMenuItem.Click += OnFilePressed;
@@ -132,7 +134,7 @@
             // 
             openToolStripMenuItem.ForeColor = Color.Silver;
             openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(224, 26);
+            openToolStripMenuItem.Size = new Size(152, 26);
             openToolStripMenuItem.Tag = "open";
             openToolStripMenuItem.Text = "Open";
             openToolStripMenuItem.Click += OnFilePressed;
@@ -141,7 +143,7 @@
             // 
             saveToolStripMenuItem.ForeColor = Color.Silver;
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(224, 26);
+            saveToolStripMenuItem.Size = new Size(152, 26);
             saveToolStripMenuItem.Tag = "save";
             saveToolStripMenuItem.Text = "Save";
             saveToolStripMenuItem.Click += OnFilePressed;
@@ -150,10 +152,37 @@
             // 
             saveAsToolStripMenuItem.ForeColor = Color.Silver;
             saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            saveAsToolStripMenuItem.Size = new Size(224, 26);
+            saveAsToolStripMenuItem.Size = new Size(152, 26);
             saveAsToolStripMenuItem.Tag = "save_as";
             saveAsToolStripMenuItem.Text = "Save As...";
             saveAsToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // closeToolStripMenuItem
+            // 
+            closeToolStripMenuItem.ForeColor = Color.Silver;
+            closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            closeToolStripMenuItem.Size = new Size(152, 26);
+            closeToolStripMenuItem.Tag = "close";
+            closeToolStripMenuItem.Text = "Close";
+            closeToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // closeAllToolStripMenuItem
+            // 
+            closeAllToolStripMenuItem.ForeColor = Color.Silver;
+            closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
+            closeAllToolStripMenuItem.Size = new Size(152, 26);
+            closeAllToolStripMenuItem.Tag = "close_all";
+            closeAllToolStripMenuItem.Text = "Close All";
+            closeAllToolStripMenuItem.Click += OnFilePressed;
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.ForeColor = Color.Silver;
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(152, 26);
+            exitToolStripMenuItem.Tag = "exit";
+            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += OnFilePressed;
             // 
             // editToolStripMenuItem
             // 
@@ -207,32 +236,14 @@
             pasteToolStripMenuItem.Text = "Paste";
             pasteToolStripMenuItem.Click += OnEditPressed;
             // 
-            // closeToolStripMenuItem
+            // toolBar
             // 
-            closeToolStripMenuItem.ForeColor = Color.Silver;
-            closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            closeToolStripMenuItem.Size = new Size(224, 26);
-            closeToolStripMenuItem.Tag = "close";
-            closeToolStripMenuItem.Text = "Close";
-            closeToolStripMenuItem.Click += OnFilePressed;
-            // 
-            // closeAllToolStripMenuItem
-            // 
-            closeAllToolStripMenuItem.ForeColor = Color.Silver;
-            closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            closeAllToolStripMenuItem.Size = new Size(224, 26);
-            closeAllToolStripMenuItem.Tag = "close_all";
-            closeAllToolStripMenuItem.Text = "Close All";
-            closeAllToolStripMenuItem.Click += OnFilePressed;
-            // 
-            // exitToolStripMenuItem
-            // 
-            exitToolStripMenuItem.ForeColor = Color.Silver;
-            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(224, 26);
-            exitToolStripMenuItem.Tag = "exit";
-            exitToolStripMenuItem.Text = "Exit";
-            exitToolStripMenuItem.Click += OnFilePressed;
+            toolBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            toolBar.BackColor = Color.FromArgb(30, 30, 30);
+            toolBar.Location = new Point(0, 28);
+            toolBar.Name = "toolBar";
+            toolBar.Size = new Size(800, 32);
+            toolBar.TabIndex = 5;
             // 
             // App
             // 
@@ -240,6 +251,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(800, 700);
+            Controls.Add(toolBar);
             Controls.Add(splitContainer);
             Controls.Add(footer);
             Controls.Add(menuStrip);
@@ -276,5 +288,6 @@
         private ToolStripMenuItem closeToolStripMenuItem;
         private ToolStripMenuItem closeAllToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
+        private UI.ToolBar toolBar;
     }
 }
