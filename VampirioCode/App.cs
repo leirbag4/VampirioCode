@@ -94,15 +94,30 @@ namespace VampirioCode
             HotKeyManager.AddHotKey(Save, Keys.Control | Keys.S);
             HotKeyManager.AddHotKey(GoTo, Keys.Control | Keys.G);
             HotKeyManager.AddHotKey(Duplicate, Keys.Control | Keys.D);
-            HotKeyManager.AddHotKey(Build, Keys.F4);
             HotKeyManager.AddHotKey(BuildAndRun, Keys.F5);
+            HotKeyManager.AddHotKey(Build, Keys.F6);
             //HotKeyManager.AddHotKey(Function,       Keys.Control | Keys.P);
         }
 
         private async void Build()
         {
             XConsole.Clear();
-            var result = await dotnet.BuildAsync(@"C:\dotnet_test\projects\Capitan");
+            string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+
+            if (CurrDocument.DocType == DocumentType.CSHARP)
+            {
+                //csBuilder.Setup(projName, CurrDocument.Text);
+                //await csBuilder.Build();
+            }
+            else if (CurrDocument.DocType == DocumentType.CPP)
+            {
+                cppBuilder.Setup(projName, CurrDocument.Text);
+                await cppBuilder.Build();
+            }
+            else
+            {
+                MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
+            }
         }
 
         private async void BuildAndRun()
