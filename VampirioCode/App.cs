@@ -103,10 +103,14 @@ namespace VampirioCode
                 csBuilder.Setup(projName, CurrDocument.Text);
                 await csBuilder.Build();
             }
-            else if(CurrDocument.DocType == DocumentType.CPP)
-            { 
+            else if (CurrDocument.DocType == DocumentType.CPP)
+            {
                 cppBuilder.Setup(projName, CurrDocument.Text);
                 await cppBuilder.BuildAndRun();
+            }
+            else
+            { 
+                MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
             }
         }
 
