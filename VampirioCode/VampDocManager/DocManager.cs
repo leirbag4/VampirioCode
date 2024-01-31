@@ -13,6 +13,10 @@ namespace VampDocManager
 {
     public class DocManager : UserControl
     {
+        public delegate void CurrDocumentTabChanged(int index, Document doc);
+
+        public event CurrDocumentTabChanged OnCurrDocumentTabChanged;
+
         public DocumentTab CurrDocumentTab { get { return (DocumentTab)tabControl.SelectedTab; } }
         public Document CurrDocument { get { return CurrDocumentTab.Document; } }
         public DocumentTab[] DocumentTabs { get; set; } = new DocumentTab[0];
@@ -38,8 +42,8 @@ namespace VampDocManager
             tabControl.Margin = new Padding(0);
             tabControl.Padding = new Point(0, 0);
             tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), CColor(170, 60, 85), CColor(255, 255, 255));
-            tabControl.ControlAdded += OnDocumentTabAdded;
-            tabControl.SelectedIndexChanged += OnSelectedIndexChanged;
+            tabControl.ControlAdded +=          OnDocumentTabAdded;
+            tabControl.SelectedIndexChanged +=  OnSelectedIndexChanged;
             CreateContextItems();
 
             //tabControl.DragAndDrop = true;
@@ -51,6 +55,9 @@ namespace VampDocManager
         private void OnSelectedIndexChanged(object? sender, EventArgs e)
         {
             RefreshDocs();
+
+            if (OnCurrDocumentTabChanged != null)
+                OnCurrDocumentTabChanged(CurrIndex, CurrDocument);
         }
 
         private void OnDocumentTabAdded(object? sender, ControlEventArgs e)
@@ -107,11 +114,25 @@ namespace VampDocManager
 
         public Document OpenDocument(string path)
         {
+            return OpenDocument(path, null);
+        }
+
+        public Document OpenDocument(string path, DocumentSettings settings = null)
+        {
             DocumentTab docTab = null;
             Document doc = Document.Load(path);
             
             if (doc != null)
             {
+                // Extra settings for the document that can be stored on a different file or project file
+                if (settings != null)
+                {
+                    // if document type is 'OTHER', the Document.Load() method has automatically setted the document type
+                    // And if Document.Load() can't find one, OTHER will be leave it here anyway
+                    if (settings.DocType != DocumentType.OTHER)
+                        doc.DocType = settings.DocType;
+                }
+
                 docTab = DocumentTab.Create(doc);
                 tabControl.TabPages.Add(docTab);
                 SelectTab(docTab);

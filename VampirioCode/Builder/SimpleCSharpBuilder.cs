@@ -11,7 +11,7 @@ using VampirioCode.Utils;
 
 namespace VampirioCode.Builder
 {
-    public class SimpleBuilder
+    public class SimpleCSharpBuilder
     {
         private string projectName;
         private string code = "";
@@ -24,8 +24,8 @@ namespace VampirioCode.Builder
 
         public async Task Build()
         {
-            string tempDir =        AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build
-            string projDir =        tempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name
+            string tempDir =        AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
+            string projDir =        tempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
             string csprojFilePath = projDir + projectName + ".csproj";  // temp .csproj file ->     \temp_build\proj_name\proj.csproj
             string programFile =    projDir + projectName + ".cs";      // .cs program file ->      \temp_build\proj_name\proj.cs
             string outputDir =      projDir + "bin";                    // output binaries dir ->   \temp_build\proj_name\bin

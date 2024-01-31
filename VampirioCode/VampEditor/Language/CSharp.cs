@@ -1,18 +1,19 @@
-﻿using ScintillaNET;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ScintillaNET;
 
 namespace VampEditor.Language
 {
     public class CSharp : LanguageBase
     {
 
-        private static String CSHARP_COMMON_CLASSES = "Dictionary List String Boolean Decimal Double Char Int16 Int32 Int64 UInt16 UInt32 UInt64";
-        private static String CSHARP_LANG_KEYWORDS = "where var get set value bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void abstract as base break case catch checked continue default delegate do else event explicit extern false finally fixed for foreach goto if implicit in interface internal is lock namespace new null object operator out override params private protected public readonly ref return sealed sizeof stackalloc switch this throw true try typeof unchecked unsafe using virtual while";
-        private static List<String> CSHARP_EXTRA_CLASSES = new List<String>();
+        private static String CSHARP_COMMON_CLASSES =       "Dictionary List String Object Boolean Decimal Double Char Int16 Int32 Int64 UInt16 UInt32 UInt64";
+        private static String CSHARP_COMMON_CLASSES_2 =     "Console Math DateTime Exception IO Threading";
+        private static String CSHARP_LANG_KEYWORDS =        "where var get set value bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void abstract as base break case catch checked continue default delegate do else event explicit extern false finally fixed for foreach goto if implicit in interface internal is lock namespace new null object operator out override params private protected public readonly ref return sealed sizeof stackalloc switch this throw true try typeof unchecked unsafe using virtual while";
+        private static List<String> CSHARP_EXTRA_CLASSES =  new List<String>();
 
         protected override void OnActivate(StyleMode style)
         {
@@ -173,7 +174,7 @@ namespace VampEditor.Language
                 for (int a = 0; a < CSHARP_EXTRA_CLASSES.Count; a++)
                     classes += CSHARP_EXTRA_CLASSES[a] + " ";
 
-                editor.SetKeywords(1, classes + CSHARP_COMMON_CLASSES);
+                editor.SetKeywords(1, classes + CSHARP_COMMON_CLASSES + " " + CSHARP_COMMON_CLASSES_2);
                 //editor.SetKeywordsSafe(1, classes + CSHARP_COMMON_CLASSES);
 
 

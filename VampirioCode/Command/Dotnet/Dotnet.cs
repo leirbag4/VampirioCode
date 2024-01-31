@@ -4,18 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Dotnet.Result;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using VampirioCode.IO;
 using VampirioCode.Command.Dotnet.Params;
 using VampirioCode.UI;
 
 namespace VampirioCode.Command.Dotnet
 {
-    public class Dotnet
+    public class Dotnet : BaseCmdProgram
     {
-        public ErrorInfo ErrorInfo { get; private set; } = null;
-        public bool Error { get; private set; } = false;
-
 
         /// <summary>
         /// Compile code calling 'dotnet build'
@@ -159,15 +154,6 @@ namespace VampirioCode.Command.Dotnet
             var result = await cmd.NewSearchAsync();
             CheckCmd(cmd);
             return result;
-        }
-
-        private void CheckCmd(BaseCmd cmd)
-        {
-            if (cmd.Error)
-            {
-                ErrorInfo = cmd.ErrorInfo;
-                Error = true;
-            }
         }
 
     }

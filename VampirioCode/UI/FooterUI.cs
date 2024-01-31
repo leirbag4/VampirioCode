@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampDocManager;
 
 namespace VampirioCode.UI
 {
@@ -17,6 +18,16 @@ namespace VampirioCode.UI
 
         public int Line { get { return _line; } set { _line = value; this.lineLabel.Text = "Line " + _line; } }
         public int Character { get { return _char; } set { _char = value; this.charLabel.Text = "Char " + _char; } }
+
+        public DocumentType DocType 
+        {
+            set 
+            { 
+                     if (value == DocumentType.OTHER)   languageLabel.Text = "...";
+                else if (value == DocumentType.CSHARP)  languageLabel.Text = "C#";
+                else if (value == DocumentType.CPP)     languageLabel.Text = "C++";
+            } 
+        }
 
         public FooterUI()
         {

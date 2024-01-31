@@ -30,7 +30,7 @@ namespace VampDocManager
             editor = new VampirioEditor();
             editor.Dock = DockStyle.Fill;
             editor.BorderStyle = ScintillaNET.BorderStyle.None;
-            editor.SetLanguage(VampEditor.LangId.CSharp, VampEditor.StyleMode.Dark);
+            editor.SetLanguage(doc.DocType, VampEditor.StyleMode.Dark);
 
             // tab style
             BackColor = Color.FromArgb(30, 30, 30);

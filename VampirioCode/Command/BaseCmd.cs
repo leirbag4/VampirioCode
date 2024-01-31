@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace VampirioCode.Command
     {
         public bool Error { get; private set; }
         public ErrorInfo ErrorInfo { get; private set; } = null;
+        public bool AutoTriggerErrors { get; set; } = true;
+        public bool LogParams { get; set; } = true;
 
         protected CmdRun proc;
         protected BaseResult baseResult = null;
@@ -40,7 +43,8 @@ namespace VampirioCode.Command
             if (param0 != "") arguments += " " + param0;
             if (param1 != "") arguments += " " + param1;
 
-            Println(program + " " + arguments);
+            if(LogParams)
+                Println(program + " " + arguments);
 
             proc = new CmdRun(program, arguments);
             proc.DataReceived += _OnDataReceived;
@@ -84,7 +88,9 @@ namespace VampirioCode.Command
 
         private void _OnErrorDataReceived(string data)
         {
-            CallError("DataReceivedError -> " + data);
+            if(AutoTriggerErrors)
+                CallError("DataReceivedError -> " + data);
+
             OnErrorDataReceived(data);
         }
 
@@ -136,10 +142,15 @@ namespace VampirioCode.Command
             }
         }
 
-        protected void SetIfExists(string argumentName, string value)
+        protected void SetIfExists(string argumentName, string value, bool spaceSeparator = true)
         {
-            if(value != "")
-                cmd += argumentName + " \"" + value + "\" ";
+            if (value != "")
+            {
+                if(spaceSeparator)
+                    cmd += argumentName + " \"" + value + "\" ";
+                else
+                    cmd += argumentName + "\"" + value + "\" ";
+            }
         }
 
         protected void SetIfExists(string value)
@@ -176,6 +187,23 @@ namespace VampirioCode.Command
             return '"' + str + '"';
         }
 
+        //
+        // FIX the last bar that escapes a quote at the end.
+        // Input  -> "C:\tests\"  [BAD] to
+        // Output -> "C:\tests\\" [OK]
+        //
+        // If you don't fix it, this could happened:
+        //   -> [cmd.exe "C:\tests\" "app"]  will be see as
+        //      [cmd.exe "C:\tests\ "app" ]
+        //
+        protected string _fixLastEscapeBar(string str)
+        {
+            if (str.EndsWith("\\") && !str.EndsWith("\\\\"))
+                return (str + "\\");
+            
+            return str;
+        }
+
         protected bool RequireArgument(string value, string internalVariableName)
         {
             if (value == "")
@@ -185,6 +213,11 @@ namespace VampirioCode.Command
             }
             else
                 return true;
+        }
+
+        protected bool CanUse(List<string> list)
+        {
+            return ((list != null) && (list.Count > 0));
         }
 
         protected void CallError(ErrorInfo error)

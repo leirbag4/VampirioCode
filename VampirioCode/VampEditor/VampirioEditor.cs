@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScintillaNET;
+using VampDocManager;
 using VampEditor.Language;
 using VampirioCode.UI;
 
@@ -37,13 +38,13 @@ namespace VampEditor
 
         }
 
-        public void SetLanguage(LangId lang, StyleMode styleMode = StyleMode.Dark)
+        public void SetLanguage(DocumentType docType, StyleMode styleMode = StyleMode.Dark)
         {
             StyleMode = styleMode;
 
-            if (lang == LangId.CSharp)
-                Language = new CSharp();
-
+                 if (docType == DocumentType.CSHARP)    Language = new CSharp();
+            else if (docType == DocumentType.CPP)       Language = new CPP();
+            else                                        Language = new CSharp();
 
             Language.Config(this);
             Language.Activate(StyleMode);

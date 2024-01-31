@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.Command
+namespace VampDocManager
 {
-    public class Builder
+    public class DocumentSettings
     {
-         
+        public DocumentType DocType { get; set; } = DocumentType.OTHER;
+
     }
 }

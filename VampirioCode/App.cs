@@ -16,7 +16,8 @@ namespace VampirioCode
         public DocumentTab CurrDocumentTab { get { return docManager.CurrDocumentTab; } }
 
         private Dotnet dotnet;
-        private SimpleBuilder simpleBuilder;
+        private SimpleCSharpBuilder csBuilder;
+        private SimpleCppBuilder cppBuilder;
 
         public App()
         {
@@ -29,21 +30,28 @@ namespace VampirioCode
             MsgBox.Setup(this);
             RegisterCmdKeys();
 
+            // theme
             menuStrip.Renderer = new VampirioCode.UI.VampGraphics.MenuStripRenderer();
             menuStrip.BackColor = Color.FromArgb(30, 30, 30);
             menuStrip.ForeColor = Color.Silver;
 
-            toolBar.StartPressed += OnStartPressed;
-            toolBar.ReloadPressed += OnReloadPressed;
+            // doc manager events
+            docManager.OnCurrDocumentTabChanged += OnCurrDocumentTabChanged;
+
+            // tool bar events
+            toolBar.StartPressed +=     OnStartPressed;
+            toolBar.ReloadPressed +=    OnReloadPressed;
 
             OpenLastDocuments();
 
 
-            dotnet =            new Dotnet();
-            simpleBuilder =     new SimpleBuilder();
+            dotnet =        new Dotnet();
+            csBuilder =     new SimpleCSharpBuilder();
+            cppBuilder =    new SimpleCppBuilder();
 
             base.OnLoad(e);
         }
+
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keys)
         {
@@ -88,28 +96,50 @@ namespace VampirioCode
             //var result = await dotnet.RunAsync(@"C:\dotnet_test\projects\Capitan", new string[] { "malo", "--chipote" });
 
             XConsole.Clear();
-
             string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
-            simpleBuilder.Setup(projName, CurrDocument.Text);
-            await simpleBuilder.Build();
+
+            if (CurrDocument.DocType == DocumentType.CSHARP)
+            {
+                csBuilder.Setup(projName, CurrDocument.Text);
+                await csBuilder.Build();
+            }
+            else if(CurrDocument.DocType == DocumentType.CPP)
+            { 
+                cppBuilder.Setup(projName, CurrDocument.Text);
+                await cppBuilder.BuildAndRun();
+            }
         }
 
         private void OnFilePressed(object sender, EventArgs e)
         {
             string sel = (string)((ToolStripMenuItem)sender).Tag;
 
-            if (sel == "new") New();
-            else if (sel == "open") Open();
-            else if (sel == "save") Save();
-            else if (sel == "save_as") SaveAs();
-            else if (sel == "close") CloseDoc();
-            else if (sel == "close_all") CloseAll();
-            else if (sel == "exit") Exit();
+                 if (sel == "new")          New();
+            else if (sel == "open")         Open();
+            else if (sel == "save")         Save();
+            else if (sel == "save_as")      SaveAs();
+            else if (sel == "close")        CloseDoc();
+            else if (sel == "close_all")    CloseAll();
+            else if (sel == "exit")         Exit();
         }
 
         private void OnEditPressed(object sender, EventArgs e)
         {
 
+        }
+
+        private void OnLanguagePressed(object sender, EventArgs e)
+        {
+            DocumentType docType = DocumentType.OTHER;
+
+                 if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
+            else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
+
+            CurrDocument.DocType = docType;
+            SelectLanguage(docType);
+
+            // change language at editor (scintilla)
+            CurrDocumentTab.Editor.SetLanguage(docType, VampEditor.StyleMode.Dark);
         }
 
         private void New()
@@ -180,7 +210,7 @@ namespace VampirioCode
 
             foreach (SavedDocument doc in docs)
             {
-                docManager.OpenDocument(doc.FullFilePath);
+                docManager.OpenDocument(doc.FullFilePath, doc.DocumentSettings);
             }
 
             if (Config.LastSelectedTabIndex < docManager.Documents.Length)
@@ -211,6 +241,28 @@ namespace VampirioCode
                     XConsole.PrintWarning("old temporary file deleted: " + tempFile);
                 }
             }
+        }
+
+        private void SelectLanguage(DocumentType docType)
+        {
+            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem };
+
+            foreach (var item in items)
+            {
+                if (item.ForeColor != Color.Silver)
+                    item.ForeColor = Color.Silver;
+            }
+
+                 if (docType == DocumentType.CSHARP)    csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
+
+            footer.DocType = docType;
+        }
+
+        private void OnCurrDocumentTabChanged(int index, Document doc)
+        {
+            if (doc != null)
+                SelectLanguage(doc.DocType);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -245,7 +297,11 @@ namespace VampirioCode
                     }
                 }
 
-                lastOpenDocs[a] = new SavedDocument() { FullFilePath = doc.FullFilePath, IsTemporary = doc.IsTemporary };
+                lastOpenDocs[a] = new SavedDocument()   { 
+                                                            FullFilePath =  doc.FullFilePath, 
+                                                            IsTemporary =   doc.IsTemporary,
+                                                            DocumentSettings = new DocumentSettings() { DocType = doc.DocType }
+                                                        };
             }
 
             // There are modified open documents
@@ -287,5 +343,6 @@ namespace VampirioCode
         {
             XConsole.Clear();
         }
+
     }
 }

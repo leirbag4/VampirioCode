@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampEditor
+namespace VampirioCode.Command.MSVC.Result
 {
-    public enum LangId
+    public class RunResult : BaseResult
     {
-        CSharp,
-        Javascript
+
     }
 }

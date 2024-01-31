@@ -48,6 +48,9 @@
             cutToolStripMenuItem = new ToolStripMenuItem();
             copyToolStripMenuItem = new ToolStripMenuItem();
             pasteToolStripMenuItem = new ToolStripMenuItem();
+            languageToolStripMenuItem = new ToolStripMenuItem();
+            csharpToolStripMenuItem = new ToolStripMenuItem();
+            cppToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
@@ -139,7 +142,7 @@
             menuStrip.AutoSize = false;
             menuStrip.Dock = DockStyle.None;
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, languageToolStripMenuItem });
             menuStrip.Location = new Point(4, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(792, 28);
@@ -226,7 +229,7 @@
             // 
             undoToolStripMenuItem.ForeColor = Color.Silver;
             undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            undoToolStripMenuItem.Size = new Size(128, 26);
+            undoToolStripMenuItem.Size = new Size(224, 26);
             undoToolStripMenuItem.Tag = "undo";
             undoToolStripMenuItem.Text = "Undo";
             undoToolStripMenuItem.Click += OnEditPressed;
@@ -235,7 +238,7 @@
             // 
             redoToolStripMenuItem.ForeColor = Color.Silver;
             redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            redoToolStripMenuItem.Size = new Size(128, 26);
+            redoToolStripMenuItem.Size = new Size(224, 26);
             redoToolStripMenuItem.Tag = "redo";
             redoToolStripMenuItem.Text = "Redo";
             redoToolStripMenuItem.Click += OnEditPressed;
@@ -244,7 +247,7 @@
             // 
             cutToolStripMenuItem.ForeColor = Color.Silver;
             cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            cutToolStripMenuItem.Size = new Size(128, 26);
+            cutToolStripMenuItem.Size = new Size(224, 26);
             cutToolStripMenuItem.Tag = "cut";
             cutToolStripMenuItem.Text = "Cut";
             cutToolStripMenuItem.Click += OnEditPressed;
@@ -253,7 +256,7 @@
             // 
             copyToolStripMenuItem.ForeColor = Color.Silver;
             copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            copyToolStripMenuItem.Size = new Size(128, 26);
+            copyToolStripMenuItem.Size = new Size(224, 26);
             copyToolStripMenuItem.Tag = "copy";
             copyToolStripMenuItem.Text = "Copy";
             copyToolStripMenuItem.Click += OnEditPressed;
@@ -262,10 +265,33 @@
             // 
             pasteToolStripMenuItem.ForeColor = Color.Silver;
             pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            pasteToolStripMenuItem.Size = new Size(128, 26);
+            pasteToolStripMenuItem.Size = new Size(224, 26);
             pasteToolStripMenuItem.Tag = "paste";
             pasteToolStripMenuItem.Text = "Paste";
             pasteToolStripMenuItem.Click += OnEditPressed;
+            // 
+            // languageToolStripMenuItem
+            // 
+            languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { csharpToolStripMenuItem, cppToolStripMenuItem });
+            languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            languageToolStripMenuItem.Size = new Size(88, 24);
+            languageToolStripMenuItem.Text = "Language";
+            // 
+            // csharpToolStripMenuItem
+            // 
+            csharpToolStripMenuItem.ForeColor = Color.Silver;
+            csharpToolStripMenuItem.Name = "csharpToolStripMenuItem";
+            csharpToolStripMenuItem.Size = new Size(224, 26);
+            csharpToolStripMenuItem.Text = "C#";
+            csharpToolStripMenuItem.Click += OnLanguagePressed;
+            // 
+            // cppToolStripMenuItem
+            // 
+            cppToolStripMenuItem.ForeColor = Color.Silver;
+            cppToolStripMenuItem.Name = "cppToolStripMenuItem";
+            cppToolStripMenuItem.Size = new Size(224, 26);
+            cppToolStripMenuItem.Text = "C++";
+            cppToolStripMenuItem.Click += OnLanguagePressed;
             // 
             // toolBar
             // 
@@ -320,5 +346,8 @@
         private ToolStripMenuItem exitToolStripMenuItem;
         private UI.ToolBar toolBar;
         private UI.Controls.ButtonAdv clearButton;
+        private ToolStripMenuItem languageToolStripMenuItem;
+        private ToolStripMenuItem csharpToolStripMenuItem;
+        private ToolStripMenuItem cppToolStripMenuItem;
     }
 }
