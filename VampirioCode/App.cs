@@ -24,6 +24,28 @@ namespace VampirioCode
             InitializeComponent();
         }
 
+        protected override void OnShown(EventArgs e)
+        {
+            // resize the window to the last size
+            if (Config.Maximized)
+            {
+                if((Config.PosX != -1) && (Config.PosY != -1))
+                    Location = new Point(Config.PosX, Config.PosY);
+
+                WindowState =   FormWindowState.Maximized;
+                this.Size =     new Size(Config.Width, Config.Height);
+            }
+            else
+            {
+                if ((Config.PosX != -1) && (Config.PosY != -1))
+                    Location = new Point(Config.PosX, Config.PosY);
+
+                this.Size = new Size(Config.Width, Config.Height);
+            }
+
+            base.OnShown(e);
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             Config.Initialize();
@@ -42,9 +64,10 @@ namespace VampirioCode
             toolBar.StartPressed +=     OnStartPressed;
             toolBar.ReloadPressed +=    OnReloadPressed;
 
+            // open last documents
             OpenLastDocuments();
 
-
+            // start builders
             dotnet =        new Dotnet();
             csBuilder =     new SimpleCSharpBuilder();
             cppBuilder =    new SimpleCppBuilder();
@@ -327,8 +350,34 @@ namespace VampirioCode
                 }
             }
 
-            Config.LastOpenDocuments = lastOpenDocs;
-            Config.LastSelectedTabIndex = docManager.CurrIndex;
+            // Set last documents and last index
+            Config.LastOpenDocuments =      lastOpenDocs;
+            Config.LastSelectedTabIndex =   docManager.CurrIndex;
+
+            // Store last window width and height
+            //Config.Width =  RestoreBounds.Width; 
+            //Config.Height = RestoreBounds.Height;
+
+            if (WindowState == FormWindowState.Maximized)
+            {
+                //Properties.Settings.Default.Location = RestoreBounds.Location;
+                Config.PosX =       RestoreBounds.X; 
+                Config.PosY =       RestoreBounds.Y;
+                Config.Width =      RestoreBounds.Width;
+                Config.Height =     RestoreBounds.Height;
+                Config.Maximized =  true;
+            }
+            else if (WindowState == FormWindowState.Normal)
+            {
+                //Properties.Settings.Default.Location = Location;
+                Config.PosX =       this.Location.X; 
+                Config.PosY =       this.Location.Y;
+                Config.Width =      this.Width;
+                Config.Height =     this.Height;
+                Config.Maximized =  false;
+            }
+
+            // Save config file
             Config.Save();
 
             base.OnClosing(e);

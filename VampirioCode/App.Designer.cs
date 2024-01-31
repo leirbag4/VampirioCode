@@ -102,6 +102,7 @@
             // 
             // clearButton
             // 
+            clearButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             clearButton.BorderColor = Color.FromArgb(20, 20, 20);
             clearButton.BorderSize = 1;
             clearButton.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
@@ -229,7 +230,7 @@
             // 
             undoToolStripMenuItem.ForeColor = Color.Silver;
             undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            undoToolStripMenuItem.Size = new Size(224, 26);
+            undoToolStripMenuItem.Size = new Size(128, 26);
             undoToolStripMenuItem.Tag = "undo";
             undoToolStripMenuItem.Text = "Undo";
             undoToolStripMenuItem.Click += OnEditPressed;
@@ -238,7 +239,7 @@
             // 
             redoToolStripMenuItem.ForeColor = Color.Silver;
             redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            redoToolStripMenuItem.Size = new Size(224, 26);
+            redoToolStripMenuItem.Size = new Size(128, 26);
             redoToolStripMenuItem.Tag = "redo";
             redoToolStripMenuItem.Text = "Redo";
             redoToolStripMenuItem.Click += OnEditPressed;
@@ -247,7 +248,7 @@
             // 
             cutToolStripMenuItem.ForeColor = Color.Silver;
             cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            cutToolStripMenuItem.Size = new Size(224, 26);
+            cutToolStripMenuItem.Size = new Size(128, 26);
             cutToolStripMenuItem.Tag = "cut";
             cutToolStripMenuItem.Text = "Cut";
             cutToolStripMenuItem.Click += OnEditPressed;
@@ -256,7 +257,7 @@
             // 
             copyToolStripMenuItem.ForeColor = Color.Silver;
             copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            copyToolStripMenuItem.Size = new Size(224, 26);
+            copyToolStripMenuItem.Size = new Size(128, 26);
             copyToolStripMenuItem.Tag = "copy";
             copyToolStripMenuItem.Text = "Copy";
             copyToolStripMenuItem.Click += OnEditPressed;
@@ -265,7 +266,7 @@
             // 
             pasteToolStripMenuItem.ForeColor = Color.Silver;
             pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            pasteToolStripMenuItem.Size = new Size(224, 26);
+            pasteToolStripMenuItem.Size = new Size(128, 26);
             pasteToolStripMenuItem.Tag = "paste";
             pasteToolStripMenuItem.Text = "Paste";
             pasteToolStripMenuItem.Click += OnEditPressed;
@@ -281,7 +282,7 @@
             // 
             csharpToolStripMenuItem.ForeColor = Color.Silver;
             csharpToolStripMenuItem.Name = "csharpToolStripMenuItem";
-            csharpToolStripMenuItem.Size = new Size(224, 26);
+            csharpToolStripMenuItem.Size = new Size(121, 26);
             csharpToolStripMenuItem.Text = "C#";
             csharpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -289,7 +290,7 @@
             // 
             cppToolStripMenuItem.ForeColor = Color.Silver;
             cppToolStripMenuItem.Name = "cppToolStripMenuItem";
-            cppToolStripMenuItem.Size = new Size(224, 26);
+            cppToolStripMenuItem.Size = new Size(121, 26);
             cppToolStripMenuItem.Text = "C++";
             cppToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -313,6 +314,7 @@
             Controls.Add(footer);
             Controls.Add(menuStrip);
             MainMenuStrip = menuStrip;
+            MinimumSize = new Size(360, 360);
             Name = "App";
             Text = "Vampirio Code";
             splitContainer.Panel1.ResumeLayout(false);

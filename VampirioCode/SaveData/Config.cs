@@ -15,6 +15,16 @@ namespace VampirioCode.SaveData
         // A save data file version for possible future incompatible properties
         public static string Version { get { return config.version; } set { config.version = value; } }
 
+
+        // Main window posX, posY, width and height of the last use
+        public static int PosX { get { return config.posX; } set { config.posX = value; } }
+        public static int PosY { get { return config.posY; } set { config.posY = value; } }
+        public static int Width { get { return config.width; } set { config.width = value; } }
+        public static int Height { get { return config.height; } set { config.height = value; } }
+
+        // Represent if last time before close, the windows was maximized. Used to restore that state
+        public static bool Maximized { get { return config.maximized; } set { config.maximized = value; } }
+
         // The documents from the previous session that were still opened before close
         public static SavedDocument[] LastOpenDocuments {   get { return config.last_open_documents; }      set { config.last_open_documents = value; } }
         public static int LastSelectedTabIndex {            get { return config.last_selected_tab_index; }  set { config.last_selected_tab_index = value; } }
@@ -22,6 +32,11 @@ namespace VampirioCode.SaveData
         private static Config config = null;
         private const string FILENAME = "config.cfg";
 
+        public int posX { get; set; } = -1;
+        public int posY { get; set; } = -1;
+        public int width { get; set; } = 820;
+        public int height { get; set; } = 750;
+        public bool maximized { get; set; } = false;
         public string version { get; set; } = "";
         public SavedDocument[] last_open_documents { get; set; }
         public int last_selected_tab_index { get; set; } = 0;
