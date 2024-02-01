@@ -1,6 +1,8 @@
 # Vampirio Code
 A versatile code editor that supports syntax highlighting and compilation on many well known languages like C#, C++, Javascript and PHP
 
+![reference image](_RES/logo_med_flat.png)
+
 Its functionalities are:
 
 * One simple file can be compiled with F5 without saving it
