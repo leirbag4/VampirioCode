@@ -120,4 +120,51 @@
   <metadata name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAGBgAAAEAIACICQAAFgAAACgAAAAYAAAAMAAAAAEAIAAAAAAAAAkAAE0SAABNEgAAAAAAAAAA
+        AAD///8A////AP///wD///8A////AIwAaQKMAGl4jABpo4wAaUeMAGkO////AP///wD///8A////AIwA
+        aQ+MAGlIjABpo4wAaXiMAGkB////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wCMAGkPjABpmIwAafeMAGnYjABpnIwAaT6MAGo/jABpnIwAadiMAGn3jABpl4wAaQ////8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AIwAacaMAGn/jQBq/4YA
+        Yv+GAGH/jQBq/4wAaf+MAGnG////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8AjABpBowAaQT///8A////AIwAaUqMAGn/hwBj/6Q5iP+oQo7/iABk/4wAaf+MAGlJ////AP//
+        /wCMAGkEjABpBv///wD///8A////AP///wD///8A////AP///wD///8AjABpTowAaU3///8AjABpA4wA
+        aamMAGj/iANj//To8f/9+vz/jApp/4oAZ/+MAGmpjABpA////wCMAGlNjABpTv///wD///8A////AP//
+        /wD///8A////AP///wD///8AjABpiIwAacOMAGkFjABppowAaf+FAF//qESO////////////sFWY/4MA
+        Xf+MAGn/jABppowAaQWMAGnEjABpif///wD///8A////AP///wD///8A////AP///wD///8AjABptowA
+        af+MAGnPjABp/4wAaf+CAFz/16rL////////////3rfT/4MAXf+MAGn/jABp/4wAac+MAGn/jABptf//
+        /wD///8A////AP///wD///8A////AP///wD///8AjABpy4wAaf+MAGn/jABp/4kAZP+UF3T/+/f6////
+        /////////fv9/5gfeP+IAGP/jABp/4wAaf+MAGn/jABpy////wD///8A////AP///wD///8A////AP//
+        /wD///8AjABpwIwAaf+MAGn/jABp/4IAXP++cqr//////+rQ4//jwNr//////8F7r/+BAFv/jABp/4wA
+        af+MAGn/jABpwP///wD///8A////AP///wD///8A////AP///wD///8AjABptowAaf+MAGn/iwBo/4cB
+        Y//r1eX//////71xqP+sTpL//////+7Z6P+IAmT/iwBo/4wAaf+MAGn/jABptv///wD///8A////AP//
+        /wD///8A////AP///wD///8AjABptowAaf+MAGn/hQBg/6U9iv///////v3+/5kiev+OC2r/+vT4////
+        //+mQIz/hQBg/4wAaf+MAGn/jABptv///wD///8A////AP///wD///8A////AP///wD///8AjABpt4wA
+        af+MAGn/gQBb/9Sjx///////48La/4UAX/+DAFz/2KvM///////Uosb/gQBb/4wAaf+MAGn/jABpt///
+        /wD///8A////AP///wD///8A////AP///wD///8AjABpt4wAaf+JAGX/khRx//rz+P//////tmOg/4IA
+        Xf+EAF//rk+U///////58vf/khJw/4kAZf+MAGn/jABpt////wD///8A////AP///wD///8A////AP//
+        /wD///8AjABpt4wAaf+CAFz/umum///////58vf/kRFv/4oAZv+KAGf/jAhp//Xp8f//////uGWh/4IA
+        XP+MAGn/jABpt////wD///8A////AP///wD///8A////AP///wD///8AjABpt4wAaf+GAGH/6M/i////
+        ///Uo8f/ggBc/4wAaf+MAGn/gQBb/8+XwP//////5cfd/4UAYP+MAGn/jABpt////wD///8A////AP//
+        /wD///8A////AP///wD///8AjABpt4cAYv+jN4f///////////+oQo3/hQBg/4wAacSMAGnEhQBh/6U8
+        if///////////54tgP+HAGL/jABpt////wD///8A////AP///wD///8A////AP///wD///8AjQBqt4IA
+        XP/QnMP//////+/d6v+JBGX/iwBo9YwAaQqMAGkLiwBo9YgDZP/t2ej//////8mMuf+CAFz/jQBqt///
+        /wD///8A////AP///wD///8A////AP///wD///8AhwBitpAPbv/48PX//////8WCs/+CAFz/jABq0P//
+        /wD///8AjABq0IIAXP/FgrP///////Pl7/+MB2n/iQBltv///wD///8A////AP///wD///8A////AP//
+        /wD///8AegBSv7tspv///////////5omfP+HAGP/jABpdf///wD///8AjABpdYcAY/+cKn7/////////
+        //+yWJr/fABUv////wD///8A////AP///wD///8A////AP///wD///8AhQBfk6Q7iP+zXpv/rE2S/4oA
+        Zv+MAGnljABpDv///wD///8AjABpDowAaeWKAGf/rU+T/7Nfm/+iNIX/gwBekv///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AIQAXpiDAF7/hQBf/4wAaf+MAGlu////AP///wD///8A////AIwA
+        aW6MAGn/hQBf/4MAXv+FAGCY////AP///wD///8A////AP///wD///8A////AP///wD///8A////AI0A
+        awyMAGnnjABp/4wAadqMAGlX////AP///wD///8A////AIwAaVeMAGnajABp/4wAaeeNAGsL////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A////AP///wCMAGl6jABpyYwAaQuMAGkL////AP//
+        /wD///8A////AIwAaQuMAGkLjABpyYwAaXr///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wCMAGkkjABpJv///wD///8A////AP///wD///8A////AP///wD///8AjABpJowA
+        aST///8A////AP///wD///8A////AP///wD4PB8A/AA/AP8A/wDzAM8A8gBPAPAADwDwAA8A8AAPAPAA
+        DwDwAA8A8AAPAPAADwDwAA8A8AAPAPAADwDwAA8A8AAPAPAYDwDwGA8A8BgPAPg8HwD4PB8A/Dw/APz/
+        PwA=
+</value>
+  </data>
 </root>

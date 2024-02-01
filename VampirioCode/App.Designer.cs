@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(App));
             footer = new UI.FooterUI();
             splitContainer = new SplitContainer();
             docManager = new VampDocManager.DocManager();
@@ -52,8 +53,8 @@
             csharpToolStripMenuItem = new ToolStripMenuItem();
             cppToolStripMenuItem = new ToolStripMenuItem();
             jsToolStripMenuItem = new ToolStripMenuItem();
-            toolBar = new UI.ToolBar();
             phpToolStripMenuItem = new ToolStripMenuItem();
+            toolBar = new UI.ToolBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -284,7 +285,7 @@
             // 
             csharpToolStripMenuItem.ForeColor = Color.Silver;
             csharpToolStripMenuItem.Name = "csharpToolStripMenuItem";
-            csharpToolStripMenuItem.Size = new Size(224, 26);
+            csharpToolStripMenuItem.Size = new Size(156, 26);
             csharpToolStripMenuItem.Text = "C#";
             csharpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -292,7 +293,7 @@
             // 
             cppToolStripMenuItem.ForeColor = Color.Silver;
             cppToolStripMenuItem.Name = "cppToolStripMenuItem";
-            cppToolStripMenuItem.Size = new Size(224, 26);
+            cppToolStripMenuItem.Size = new Size(156, 26);
             cppToolStripMenuItem.Text = "C++";
             cppToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -300,9 +301,17 @@
             // 
             jsToolStripMenuItem.ForeColor = Color.Silver;
             jsToolStripMenuItem.Name = "jsToolStripMenuItem";
-            jsToolStripMenuItem.Size = new Size(224, 26);
+            jsToolStripMenuItem.Size = new Size(156, 26);
             jsToolStripMenuItem.Text = "Javascript";
             jsToolStripMenuItem.Click += OnLanguagePressed;
+            // 
+            // phpToolStripMenuItem
+            // 
+            phpToolStripMenuItem.ForeColor = Color.Silver;
+            phpToolStripMenuItem.Name = "phpToolStripMenuItem";
+            phpToolStripMenuItem.Size = new Size(156, 26);
+            phpToolStripMenuItem.Text = "PHP";
+            phpToolStripMenuItem.Click += OnLanguagePressed;
             // 
             // toolBar
             // 
@@ -312,14 +321,6 @@
             toolBar.Name = "toolBar";
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
-            // 
-            // phpToolStripMenuItem
-            // 
-            phpToolStripMenuItem.ForeColor = Color.Silver;
-            phpToolStripMenuItem.Name = "phpToolStripMenuItem";
-            phpToolStripMenuItem.Size = new Size(224, 26);
-            phpToolStripMenuItem.Text = "PHP";
-            phpToolStripMenuItem.Click += OnLanguagePressed;
             // 
             // App
             // 
@@ -331,6 +332,7 @@
             Controls.Add(splitContainer);
             Controls.Add(footer);
             Controls.Add(menuStrip);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip;
             MinimumSize = new Size(360, 360);
             Name = "App";
