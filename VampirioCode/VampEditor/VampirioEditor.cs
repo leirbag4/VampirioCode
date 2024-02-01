@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScintillaNET;
@@ -53,7 +54,32 @@ namespace VampEditor
         }
 
 
+        protected override void OnInsertCheck(InsertCheckEventArgs e)
+        {
+            //#################################################################
+            //#############          SMART C# INDENT            ###############
+            //#################################################################
+            //if ((currentLanguage == Language.CSHARP) || (currentLanguage == Language.JS) || (currentLanguage == Language.CPP))
+            {
+                if ((e.Text.EndsWith("\r") || e.Text.EndsWith("\n")))
+                {
+                    var curLine = LineFromPosition(e.Position);
+                    var curLineText = Lines[curLine].Text;
 
+                    var indent = Regex.Match(curLineText, @"^[ \t]*");
+                    e.Text += indent.Value; // Add indent following "\r\n"
+
+                    // Current line end with bracket?
+                    if (Regex.IsMatch(curLineText, @"{\s*$"))
+                        e.Text += '\t'; // Add tab
+                }
+
+            }
+            //#################################################################
+
+
+            base.OnInsertCheck(e);
+        }
 
     }
 }
