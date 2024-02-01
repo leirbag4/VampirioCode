@@ -1,5 +1,5 @@
 # Vampirio Code
-A versatile code editor that supports syntax highlighting and compilation on many well known languages like C# and C++
+A versatile code editor that supports syntax highlighting and compilation on many well known languages like C#, C++ and Javascript
 
 Its functionalities are:
 
