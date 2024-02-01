@@ -19,6 +19,7 @@ namespace VampirioCode
         private SimpleCSharpBuilder csBuilder;
         private SimpleCppBuilder cppBuilder;
         private SimpleJsBuilder jsBuilder;
+        private SimplePhpBuilder phpBuilder;
 
         public App()
         {
@@ -73,6 +74,7 @@ namespace VampirioCode
             csBuilder =     new SimpleCSharpBuilder();
             cppBuilder =    new SimpleCppBuilder();
             jsBuilder =     new SimpleJsBuilder();
+            phpBuilder =    new SimplePhpBuilder();
 
             base.OnLoad(e);
         }
@@ -88,17 +90,17 @@ namespace VampirioCode
 
         private void RegisterCmdKeys()
         {
-            HotKeyManager.AddHotKey(New, Keys.Control | Keys.N);
-            HotKeyManager.AddHotKey(Open, Keys.Control | Keys.O);
-            HotKeyManager.AddHotKey(CloseDoc, Keys.Control | Keys.W);
-            HotKeyManager.AddHotKey(Find, Keys.Control | Keys.F);
+            HotKeyManager.AddHotKey(New,            Keys.Control | Keys.N);
+            HotKeyManager.AddHotKey(Open,           Keys.Control | Keys.O);
+            HotKeyManager.AddHotKey(CloseDoc,       Keys.Control | Keys.W);
+            HotKeyManager.AddHotKey(Find,           Keys.Control | Keys.F);
             HotKeyManager.AddHotKey(FindAndReplace, Keys.Control | Keys.H);
-            HotKeyManager.AddHotKey(Save, Keys.Control | Keys.S);
-            HotKeyManager.AddHotKey(GoTo, Keys.Control | Keys.G);
-            HotKeyManager.AddHotKey(Duplicate, Keys.Control | Keys.D);
-            HotKeyManager.AddHotKey(BuildAndRun, Keys.F5);
-            HotKeyManager.AddHotKey(Build, Keys.F6);
-            //HotKeyManager.AddHotKey(Function,       Keys.Control | Keys.P);
+            HotKeyManager.AddHotKey(Save,           Keys.Control | Keys.S);
+            HotKeyManager.AddHotKey(GoTo,           Keys.Control | Keys.G);
+            HotKeyManager.AddHotKey(Duplicate,      Keys.Control | Keys.D);
+            HotKeyManager.AddHotKey(BuildAndRun,    Keys.F5);
+            HotKeyManager.AddHotKey(Build,          Keys.F6);
+            //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
         }
 
         private async void Build()
@@ -120,6 +122,10 @@ namespace VampirioCode
             {
                 //jsBuilder.Setup(projName, CurrDocument.Text);
                 //await jsBuilder.Build();
+            }
+            else if (CurrDocument.DocType == DocumentType.PHP)
+            { 
+            
             }
             else
             {
@@ -158,6 +164,11 @@ namespace VampirioCode
                 jsBuilder.Setup(projName, CurrDocument.Text);
                 await jsBuilder.Build();
             }
+            else if (CurrDocument.DocType == DocumentType.PHP)
+            {
+                phpBuilder.Setup(projName, CurrDocument.Text);
+                await phpBuilder.Build();
+            }
             else
             { 
                 MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
@@ -189,6 +200,7 @@ namespace VampirioCode
                  if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
             else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
             else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
+            else if (sender == phpToolStripMenuItem)    docType = DocumentType.PHP;
 
             CurrDocument.DocType = docType;
             SelectLanguage(docType);
@@ -300,7 +312,7 @@ namespace VampirioCode
 
         private void SelectLanguage(DocumentType docType)
         {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem };
+            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, phpToolStripMenuItem };
 
             foreach (var item in items)
             {
@@ -311,6 +323,7 @@ namespace VampirioCode
                  if (docType == DocumentType.CSHARP)    csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
             else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
             else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
+            else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
 
             footer.DocType = docType;
         }

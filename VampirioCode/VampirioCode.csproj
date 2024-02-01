@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <Folder Include="Command\Nodejs\Params\" />
+    <Folder Include="Command\PHP\Params\" />
   </ItemGroup>
 
 </Project>

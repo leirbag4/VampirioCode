@@ -45,6 +45,7 @@ namespace VampEditor
                  if (docType == DocumentType.CSHARP)    Language = new CSharp();
             else if (docType == DocumentType.CPP)       Language = new CPP();
             else if (docType == DocumentType.JS)        Language = new Javascript();
+            else if (docType == DocumentType.PHP)       Language = new PHP();
             else                                        Language = new CSharp();
 
             Language.Config(this);

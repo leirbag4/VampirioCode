@@ -14,6 +14,7 @@ namespace VampDocManager
         JS,
         CPP,
         C,
+        PHP,
         H,
         INC
     }
