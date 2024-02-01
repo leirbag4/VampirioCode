@@ -51,6 +51,7 @@
             languageToolStripMenuItem = new ToolStripMenuItem();
             csharpToolStripMenuItem = new ToolStripMenuItem();
             cppToolStripMenuItem = new ToolStripMenuItem();
+            jsToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
@@ -273,7 +274,7 @@
             // 
             // languageToolStripMenuItem
             // 
-            languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { csharpToolStripMenuItem, cppToolStripMenuItem });
+            languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem });
             languageToolStripMenuItem.Name = "languageToolStripMenuItem";
             languageToolStripMenuItem.Size = new Size(88, 24);
             languageToolStripMenuItem.Text = "Language";
@@ -282,7 +283,7 @@
             // 
             csharpToolStripMenuItem.ForeColor = Color.Silver;
             csharpToolStripMenuItem.Name = "csharpToolStripMenuItem";
-            csharpToolStripMenuItem.Size = new Size(121, 26);
+            csharpToolStripMenuItem.Size = new Size(224, 26);
             csharpToolStripMenuItem.Text = "C#";
             csharpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -290,9 +291,17 @@
             // 
             cppToolStripMenuItem.ForeColor = Color.Silver;
             cppToolStripMenuItem.Name = "cppToolStripMenuItem";
-            cppToolStripMenuItem.Size = new Size(121, 26);
+            cppToolStripMenuItem.Size = new Size(224, 26);
             cppToolStripMenuItem.Text = "C++";
             cppToolStripMenuItem.Click += OnLanguagePressed;
+            // 
+            // jsToolStripMenuItem
+            // 
+            jsToolStripMenuItem.ForeColor = Color.Silver;
+            jsToolStripMenuItem.Name = "jsToolStripMenuItem";
+            jsToolStripMenuItem.Size = new Size(224, 26);
+            jsToolStripMenuItem.Text = "Javascript";
+            jsToolStripMenuItem.Click += OnLanguagePressed;
             // 
             // toolBar
             // 
@@ -351,5 +360,6 @@
         private ToolStripMenuItem languageToolStripMenuItem;
         private ToolStripMenuItem csharpToolStripMenuItem;
         private ToolStripMenuItem cppToolStripMenuItem;
+        private ToolStripMenuItem jsToolStripMenuItem;
     }
 }

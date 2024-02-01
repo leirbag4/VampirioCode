@@ -7,22 +7,27 @@ using ScintillaNET;
 
 namespace VampEditor.Language
 {
-    public class CPP : LanguageBase
+    public class Javascript : LanguageBase
     {
-        private const String CPP_STD_COMMON_CLASSES_STRUCTS = "string vector fstream ifstream ofstream rotl rotr pair tuple map set list array deque queue stack priority_queue forward_list unordered_map unordered_set unordered_multimap unordered_multiset multimap multiset iterator function unique_ptr shared_ptr weak_ptr atomic mutex condition_variable";
-
-
-        private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default ";
-        private const String CPP_TYPES =                "bool int double float short signed long void char wchar_t ";
-        private const String CPP_STRUCT_AND_ARR =       "this class delete new using struct enum namespace ";
-        private const String CPP_QUALIFIERS =           "public private protected static virtual ";
-        private const String CPP_OTHERS_1 =             "false true try catch inline throw ";
-        private const String CPP_OTHERS_2 =             "unsigned const ";
-        private const String CPP_OTHERS_3 =             "volatile asm friend operator template mutable explicit static_cast const_cast dynamic_cast typeid typename auto register sizeof typedef union extern reinterpret_cast";
-        private static String CPP_LANG_KEYWORDS =       CPP_CONTROL_STATEMENTS + CPP_TYPES + CPP_STRUCT_AND_ARR + CPP_QUALIFIERS + CPP_OTHERS_1 + CPP_OTHERS_2 + CPP_OTHERS_3;
-
-        private static List<String> CPP_EXTRA_CLASSES = new List<String>();
+        private const String JS_VALUE_PROPERTIES =              "Infinity NaN undefined null ";
+        private const String JS_FUNCTION_PROPERTIES =           "eval uneval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent encodeURI encodeURIComponent ";
+        private const String JS_FUNDAMENTAL_OBJECTS =           "Object Function Boolean Symbol EvalError InternalError ReferenceError SyntaxError TypeError URIError ";
+        private const String JS_NUMBER_AND_DATES =              "Number Math Date ";
+        private const String JS_COMMON_TEXT_PROCESSING =        "String RegExp ";
+        private const String JS_INDEXED_COLLECTIONS =           "Array Int8Array Uint8Array Uint8ClampedArray Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array ";
+        private const String JS_KEYED_COLLECTIONS =             "Map Set WeakMap WearkSet ";
+        private const String JS_STRUCTURED_DATA =               "ArrayBuffer DataView JSON ";
+        private const String JS_CONTROL_ABSTRACTION_OBJECTS =   "Promise Generator GeneratorFunction ";
+        private const String JS_REFLECTION =                    "Reflect Proxy ";
+        private const String JS_INTERNATIONALIZATION =          "Intl Intl.Collator Intl.DateTimeFormat Intl.NumberFormat ";
+        private const String JS_OTHERS =                        "arguments";
+        private static String JS_COMMON_CLASSES =               JS_VALUE_PROPERTIES + JS_FUNCTION_PROPERTIES + JS_FUNDAMENTAL_OBJECTS + JS_NUMBER_AND_DATES + JS_COMMON_TEXT_PROCESSING + JS_INDEXED_COLLECTIONS + JS_KEYED_COLLECTIONS + JS_STRUCTURED_DATA + JS_CONTROL_ABSTRACTION_OBJECTS + JS_REFLECTION + JS_INTERNATIONALIZATION + JS_OTHERS;
+        private static String JS_LANG_KEYWORDS =                "do if in for let new try var case else enum eval null this true void with await break catch class const false super throw while yield delete export import public return static switch typeof default extends finally package private continue debugger function arguments interface protected implements instanceof";
         
+        private static List<String> JS_EXTRA_CLASSES = new List<String>();
+
+
+
         protected override void OnActivate(StyleMode style)
         {
 
@@ -92,14 +97,14 @@ namespace VampEditor.Language
 
                 //editor.Line = Color.Red;
 
-                editor.SetKeywords(0, CPP_LANG_KEYWORDS);
+                editor.SetKeywords(0, JS_LANG_KEYWORDS);
 
                 string classes = "";
 
-                for (int a = 0; a < CPP_EXTRA_CLASSES.Count; a++)
-                    classes += CPP_EXTRA_CLASSES[a] + " ";
+                for (int a = 0; a < JS_EXTRA_CLASSES.Count; a++)
+                    classes += JS_EXTRA_CLASSES[a] + " ";
 
-                editor.SetKeywords(1, classes + CPP_STD_COMMON_CLASSES_STRUCTS);
+                editor.SetKeywords(1, classes + JS_COMMON_CLASSES);
                 //editor.SetKeywordsSafe(1, classes + CSHARP_COMMON_CLASSES);
 
 
@@ -110,5 +115,7 @@ namespace VampEditor.Language
             }
 
         }
+
+
     }
 }

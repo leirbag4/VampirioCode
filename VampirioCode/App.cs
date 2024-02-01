@@ -18,6 +18,7 @@ namespace VampirioCode
         private Dotnet dotnet;
         private SimpleCSharpBuilder csBuilder;
         private SimpleCppBuilder cppBuilder;
+        private SimpleJsBuilder jsBuilder;
 
         public App()
         {
@@ -71,6 +72,7 @@ namespace VampirioCode
             dotnet =        new Dotnet();
             csBuilder =     new SimpleCSharpBuilder();
             cppBuilder =    new SimpleCppBuilder();
+            jsBuilder =     new SimpleJsBuilder();
 
             base.OnLoad(e);
         }
@@ -114,6 +116,11 @@ namespace VampirioCode
                 cppBuilder.Setup(projName, CurrDocument.Text);
                 await cppBuilder.Build();
             }
+            else if (CurrDocument.DocType == DocumentType.JS)
+            {
+                //jsBuilder.Setup(projName, CurrDocument.Text);
+                //await jsBuilder.Build();
+            }
             else
             {
                 MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
@@ -146,6 +153,11 @@ namespace VampirioCode
                 cppBuilder.Setup(projName, CurrDocument.Text);
                 await cppBuilder.BuildAndRun();
             }
+            else if (CurrDocument.DocType == DocumentType.JS)
+            {
+                jsBuilder.Setup(projName, CurrDocument.Text);
+                await jsBuilder.Build();
+            }
             else
             { 
                 MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
@@ -176,6 +188,7 @@ namespace VampirioCode
 
                  if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
             else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
+            else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
 
             CurrDocument.DocType = docType;
             SelectLanguage(docType);
@@ -287,7 +300,7 @@ namespace VampirioCode
 
         private void SelectLanguage(DocumentType docType)
         {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem };
+            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem };
 
             foreach (var item in items)
             {
@@ -297,6 +310,7 @@ namespace VampirioCode
 
                  if (docType == DocumentType.CSHARP)    csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
             else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
+            else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
 
             footer.DocType = docType;
         }
