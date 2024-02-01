@@ -12,14 +12,15 @@ namespace VampEditor.Language
         private const String CPP_STD_COMMON_CLASSES_STRUCTS = "string vector fstream ifstream ofstream rotl rotr pair tuple map set list array deque queue stack priority_queue forward_list unordered_map unordered_set unordered_multimap unordered_multiset multimap multiset iterator function unique_ptr shared_ptr weak_ptr atomic mutex condition_variable";
 
 
-        private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default ";
+        private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default";
+        
         private const String CPP_TYPES =                "bool int double float short signed long void char wchar_t ";
         private const String CPP_STRUCT_AND_ARR =       "this class delete new using struct enum namespace ";
         private const String CPP_QUALIFIERS =           "public private protected static virtual ";
         private const String CPP_OTHERS_1 =             "false true try catch inline throw ";
         private const String CPP_OTHERS_2 =             "unsigned const ";
         private const String CPP_OTHERS_3 =             "volatile asm friend operator template mutable explicit static_cast const_cast dynamic_cast typeid typename auto register sizeof typedef union extern reinterpret_cast";
-        private static String CPP_LANG_KEYWORDS =       CPP_CONTROL_STATEMENTS + CPP_TYPES + CPP_STRUCT_AND_ARR + CPP_QUALIFIERS + CPP_OTHERS_1 + CPP_OTHERS_2 + CPP_OTHERS_3;
+        private static String CPP_LANG_KEYWORDS =       CPP_TYPES + CPP_STRUCT_AND_ARR + CPP_QUALIFIERS + CPP_OTHERS_1 + CPP_OTHERS_2 + CPP_OTHERS_3;
 
         private static List<String> CPP_EXTRA_CLASSES = new List<String>();
         
@@ -67,32 +68,33 @@ namespace VampEditor.Language
 
 
 
-                Styles[Style.Cpp.Identifier].ForeColor = CColor(215, 215, 215); // any other text
+                Styles[Style.Cpp.Identifier].ForeColor =        CColor(215, 215, 215); // any other text
                                                                                 //Styles[Style.Cpp.Default].ForeColor =           Color.Red; //DO NOTHING??? BUG???
-                Styles[Style.Cpp.Comment].ForeColor = CColor(0, 178, 45); // Green
-                Styles[Style.Cpp.CommentLine].ForeColor = CColor(0, 178, 45);//CColor(87, 166, 74);  // Green
-                Styles[Style.Cpp.CommentLineDoc].ForeColor = CColor(128, 128, 128); // Gray
-                Styles[Style.Cpp.Number].ForeColor = CColor(166, 226, 46);
-                Styles[Style.Cpp.Word].ForeColor = CColor(170, 60, 85); //CColor(31, 144, 255);// CColor(57, 135, 214);
-                Styles[Style.Cpp.Word2].ForeColor = CColor(61, 201, 176);
-                Styles[Style.Cpp.String].ForeColor = CColor(214, 157, 65);
-                Styles[Style.Cpp.Character].ForeColor = CColor(163, 21, 21);
-                Styles[Style.Cpp.Verbatim].ForeColor = CColor(214, 157, 65);//CColor(163, 21, 21); // Red
-                Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
-                Styles[Style.Cpp.Operator].ForeColor = Color.White;
-                Styles[Style.Cpp.Preprocessor].ForeColor = Color.Maroon;
+                Styles[Style.Cpp.Comment].ForeColor =           CColor(0, 178, 45);                 
+                Styles[Style.Cpp.CommentLine].ForeColor =       CColor(0, 178, 45);                 
+                Styles[Style.Cpp.CommentLineDoc].ForeColor =    CColor(128, 128, 128);              
+                Styles[Style.Cpp.Number].ForeColor =            CColor(166, 226, 46);
+                Styles[Style.Cpp.Word].ForeColor =              CColor(170, 60, 85);    // void public static             //CColor(31, 144, 255);// CColor(57, 135, 214);
+                Styles[Style.Cpp.Word2].ForeColor =             CColor(61, 201, 176);   // string vector fstream
+                Styles[Style.Cpp.String].ForeColor =            CColor(214, 157, 65);
+                Styles[Style.Cpp.Character].ForeColor =         CColor(163, 21, 21);
+                Styles[Style.Cpp.Verbatim].ForeColor =          CColor(214, 157, 65);               
+                Styles[Style.Cpp.StringEol].BackColor =         Color.Pink;
+                Styles[Style.Cpp.Operator].ForeColor =          CColor(170, 170, 200);  // - + = ( )
+                Styles[Style.Cpp.Preprocessor].ForeColor =      CColor(155, 0, 0);                  //Color.Maroon;// CColor(105, 0, 140);    // #define <iostream>
 
-
+                Styles[19].ForeColor =                          CColor(179, 153, 255);   // if else do while for
 
                 //IndentationGuides = IndentView.LookBoth;
-                Styles[Style.BraceLight].BackColor = CColor(50, 84, 180);
-                Styles[Style.BraceLight].ForeColor = CColor(130, 130, 130);
-                Styles[Style.BraceBad].BackColor = CColor(50, 84, 180);
-                Styles[Style.BraceBad].ForeColor = CColor(170, 170, 170);
+                Styles[Style.BraceLight].BackColor =    CColor(50, 84, 180);
+                Styles[Style.BraceLight].ForeColor =    CColor(130, 130, 130);
+                Styles[Style.BraceBad].BackColor =      CColor(50, 84, 180);
+                Styles[Style.BraceBad].ForeColor =      CColor(170, 170, 170);
 
                 //editor.Line = Color.Red;
 
                 editor.SetKeywords(0, CPP_LANG_KEYWORDS);
+                editor.SetKeywords(3, CPP_CONTROL_STATEMENTS);
 
                 string classes = "";
 
