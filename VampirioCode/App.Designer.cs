@@ -55,13 +55,11 @@
             jsToolStripMenuItem = new ToolStripMenuItem();
             phpToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
-            logoImg = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
             splitContainer.SuspendLayout();
             menuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)logoImg).BeginInit();
             SuspendLayout();
             // 
             // footer
@@ -324,24 +322,12 @@
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
             // 
-            // logoImg
-            // 
-            logoImg.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            logoImg.BackColor = Color.FromArgb(30, 30, 30);
-            logoImg.Image = Properties.Resources.logo_mini_b;
-            logoImg.Location = new Point(706, 10);
-            logoImg.Name = "logoImg";
-            logoImg.Size = new Size(76, 21);
-            logoImg.TabIndex = 6;
-            logoImg.TabStop = false;
-            // 
             // App
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(800, 700);
-            Controls.Add(logoImg);
             Controls.Add(toolBar);
             Controls.Add(splitContainer);
             Controls.Add(footer);
@@ -357,7 +343,6 @@
             splitContainer.ResumeLayout(false);
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)logoImg).EndInit();
             ResumeLayout(false);
         }
 
@@ -388,6 +373,5 @@
         private ToolStripMenuItem cppToolStripMenuItem;
         private ToolStripMenuItem jsToolStripMenuItem;
         private ToolStripMenuItem phpToolStripMenuItem;
-        private PictureBox logoImg;
     }
 }
