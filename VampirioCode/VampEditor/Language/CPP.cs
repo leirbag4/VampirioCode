@@ -15,7 +15,7 @@ namespace VampEditor.Language
         private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default";
         
         private const String CPP_TYPES =                "bool int double float short signed long void char wchar_t ";
-        private const String CPP_TYPES_2 =              "uint16_t int16_t uint32_t int32_t uint64_t int64_t ";
+        private const String CPP_TYPES_2 =              "uint8_t int8_t uint16_t int16_t uint32_t int32_t uint64_t int64_t ";
         private const String CPP_STRUCT_AND_ARR =       "this class delete new using struct enum namespace ";
         private const String CPP_QUALIFIERS =           "public private protected static virtual ";
         private const String CPP_OTHERS_1 =             "false true try catch inline throw ";
