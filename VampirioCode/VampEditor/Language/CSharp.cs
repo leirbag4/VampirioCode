@@ -12,7 +12,7 @@ namespace VampEditor.Language
         private static String CSHARP_LANG_KEYWORDS_CONTROL_FLOW =   "if else do while for foreach switch case break continue return goto try";
 
         private static String CSHARP_COMMON_CLASSES =               "Dictionary List String Object Boolean Decimal Double Char Int16 Int32 Int64 UInt16 UInt32 UInt64";
-        private static String CSHARP_COMMON_CLASSES_2 =             "Console Math DateTime Exception IO Thread";
+        private static String CSHARP_COMMON_CLASSES_2 =             "Console File Math DateTime Exception IO Thread";
         private static String CSHARP_LANG_KEYWORDS =                "where var get set value bool byte char class const decimal double enum float int long sbyte short static string struct uint ulong ushort void abstract as base checked default delegate event explicit extern false finally fixed implicit in interface internal is lock namespace new null object operator out override params private protected public readonly ref sealed sizeof stackalloc this throw true typeof unchecked unsafe using virtual";
         private static List<String> CSHARP_EXTRA_CLASSES =          new List<String>();
 

@@ -166,7 +166,10 @@ namespace VampDocManager
         {
             try
             {
-                Text = File.ReadAllText(FullFilePath);
+                // IMPORTANT: to avoid Bugs, any line ending different to \n will be replaced to \n.
+                //            So windows line breaks like \r\n are converted to \n
+                //            And when saving the file, they will be saved using Environment.NewLine
+                Text = File.ReadAllText(FullFilePath).ReplaceLineEndings("\n");
                 return true;
             }
             catch (Exception ee)
@@ -180,7 +183,11 @@ namespace VampDocManager
         {
             try
             {
-                File.WriteAllText(FullFilePath, Text);
+                // IMPORTANT: when opening a file, line endings like \r\n will be converted to \n
+                //            So if user save the file, by now they will be converted to the line ending
+                //            of their environment.
+                //      TODO: determine at loading the line ending of the file and return them for the save state
+                File.WriteAllText(FullFilePath, Text.ReplaceLineEndings(Environment.NewLine));
                 Modified = false;
 
                 if(OnSaved != null)

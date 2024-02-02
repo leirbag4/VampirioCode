@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using ScintillaNET;
 using VampDocManager;
 using VampEditor.Language;
-using VampirioCode.UI;
 
 namespace VampEditor
 {
@@ -61,7 +60,10 @@ namespace VampEditor
             //#################################################################
             //if ((currentLanguage == Language.CSHARP) || (currentLanguage == Language.JS) || (currentLanguage == Language.CPP))
             {
-                if ((e.Text.EndsWith("\r") || e.Text.EndsWith("\n")))
+                //VampirioCode.UI.XConsole.Println("text: " + e.Text + "|");
+                
+                //if ((e.Text.EndsWith("\r") || e.Text.EndsWith("\n")))
+                if (e.Text.EndsWith("\n"))
                 {
                     var curLine = LineFromPosition(e.Position);
                     var curLineText = Lines[curLine].Text;
