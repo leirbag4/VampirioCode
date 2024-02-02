@@ -9,7 +9,7 @@ using VampirioCode.UI;
 
 namespace VampirioCode.Builder
 {
-    public class SimpleCppBuilder
+    public class SimpleCppBuilder : Builder
     {
         private string projectName;
         private string code = "";

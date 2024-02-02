@@ -11,7 +11,7 @@ using VampirioCode.Utils;
 
 namespace VampirioCode.Builder
 {
-    public class SimpleCSharpBuilder
+    public class SimpleCSharpBuilder : Builder
     {
         private string projectName;
         private string code = "";

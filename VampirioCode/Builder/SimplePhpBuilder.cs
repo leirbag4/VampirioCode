@@ -7,7 +7,7 @@ using VampirioCode.Command.PHP;
 
 namespace VampirioCode.Builder
 {
-    public class SimplePhpBuilder
+    public class SimplePhpBuilder : Builder
     {
         private string projectName;
         private string code = "";

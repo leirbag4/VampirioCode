@@ -7,7 +7,7 @@ using VampirioCode.Command.Nodejs;
 
 namespace VampirioCode.Builder
 {
-    public class SimpleJsBuilder
+    public class SimpleJsBuilder : Builder
     {
         private string projectName;
         private string code = "";

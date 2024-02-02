@@ -114,8 +114,8 @@ namespace VampirioCode.Command.MSVC
 
         protected override void OnDataReceived(string data)
         {
-            if (data.Contains("): error C"))
-                CallError(data);
+                 if (data.Contains("): error C"))       CallError(data);
+            else if (data.Contains(": fatal error C"))  CallError(data);
             else
                 Println("data: " + data);
         }
