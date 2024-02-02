@@ -15,12 +15,13 @@ namespace VampEditor.Language
         private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default";
         
         private const String CPP_TYPES =                "bool int double float short signed long void char wchar_t ";
+        private const String CPP_TYPES_2 =              "uint16_t int16_t uint32_t int32_t uint64_t int64_t ";
         private const String CPP_STRUCT_AND_ARR =       "this class delete new using struct enum namespace ";
         private const String CPP_QUALIFIERS =           "public private protected static virtual ";
         private const String CPP_OTHERS_1 =             "false true try catch inline throw ";
         private const String CPP_OTHERS_2 =             "unsigned const ";
         private const String CPP_OTHERS_3 =             "volatile asm friend operator template mutable explicit static_cast const_cast dynamic_cast typeid typename auto register sizeof typedef union extern reinterpret_cast";
-        private static String CPP_LANG_KEYWORDS =       CPP_TYPES + CPP_STRUCT_AND_ARR + CPP_QUALIFIERS + CPP_OTHERS_1 + CPP_OTHERS_2 + CPP_OTHERS_3;
+        private static String CPP_LANG_KEYWORDS =       CPP_TYPES + CPP_TYPES_2 + CPP_STRUCT_AND_ARR + CPP_QUALIFIERS + CPP_OTHERS_1 + CPP_OTHERS_2 + CPP_OTHERS_3;
 
         private static List<String> CPP_EXTRA_CLASSES = new List<String>();
         
