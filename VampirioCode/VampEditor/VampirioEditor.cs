@@ -60,9 +60,6 @@ namespace VampEditor
             //#################################################################
             //if ((currentLanguage == Language.CSHARP) || (currentLanguage == Language.JS) || (currentLanguage == Language.CPP))
             {
-                //VampirioCode.UI.XConsole.Println("text: " + e.Text + "|");
-                
-                //if ((e.Text.EndsWith("\r") || e.Text.EndsWith("\n")))
                 if (e.Text.EndsWith("\n"))
                 {
                     var curLine = LineFromPosition(e.Position);
@@ -75,7 +72,6 @@ namespace VampEditor
                     if (Regex.IsMatch(curLineText, @"{\s*$"))
                         e.Text += '\t'; // Add tab
                 }
-
             }
             //#################################################################
 
