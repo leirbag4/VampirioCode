@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,12 +38,14 @@ namespace VampDocManager
 
         public DocManager()
         {
+            Color tabColor = CColor(139, 70, 166); // CColor(170, 60, 85);
+
             tabControl = new TabControlVamp();
             tabControl.Dock = DockStyle.Fill;
             tabControl.BackColor = Color.FromArgb(30, 30, 30);
             tabControl.Margin = new Padding(0);
             tabControl.Padding = new Point(0, 0);
-            tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), CColor(170, 60, 85), CColor(52, 53, 45) , CColor(255, 255, 255));
+            tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), tabColor, CColor(52, 53, 45) , CColor(255, 255, 255));
             tabControl.ControlAdded +=          OnDocumentTabAdded;
             tabControl.SelectedIndexChanged +=  OnSelectedIndexChanged;
             CreateContextItems();
@@ -52,7 +55,7 @@ namespace VampDocManager
             this.Controls.Add(tabControl);
 
             horizontalBar = new Control();
-            horizontalBar.BackColor = CColor(170, 60, 85);// CColor(139, 70, 166);
+            horizontalBar.BackColor =   tabColor;
             horizontalBar.Size =        new Size(this.Width - 6, 2);
             horizontalBar.Dock =        DockStyle.Left;
             horizontalBar.Anchor =      AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
