@@ -50,11 +50,11 @@ namespace VampEditor.Language
             editor.SetSelectionBackColor(true, CColor(53, 46, 66));
 
             // Full row color ->    |▓▓▓▓▓▓if(code)▓▓▓▓▓▓▓▓▓▓▓▓|
-            editor.CaretLineBackColor =    CColor(30, 31, 25); // CColor(45, 46, 40); //CColor(34, 35, 29);
-            
+            editor.CaretLineBackColor =     CColor(34, 33, 30);// CColor(30, 31, 25); // CColor(34, 33, 33); // CColor(42, 40, 45); // CColor(45, 46, 40); //CColor(34, 35, 29);
+
             // Caret '|' color and width
-            editor.CaretForeColor =        CColor(102, 51, 153);
-            editor.CaretWidth =            2;
+            editor.CaretForeColor =         CColor(102, 51, 153);
+            editor.CaretWidth =             2;
 
             //                                      data.|   data.ToStr|
             // Allows multiple carets writing ->    data.|   data.ToStr|
@@ -64,7 +64,7 @@ namespace VampEditor.Language
             //                                      data.|  <-- CaretForeColor
             // Additional carets color ->           data.|  <-- AdditionalCaretForeColor
             //                                      data.|  <-- AdditionalCaretForeColor
-            editor.AdditionalCaretForeColor =  CColor(127, 127, 127); //CColor(81, 69, 93);
+            editor.AdditionalCaretForeColor =       CColor(81, 69, 93); //CColor(127, 127, 127);
 
             // Selected Brace using 'BraceHighlight' and 'BraceBadLight' (){}<>[] colors
             Styles[Style.BraceLight].BackColor =    CColor(71, 46, 94);
