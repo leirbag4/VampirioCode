@@ -26,6 +26,7 @@ namespace VampDocManager
 
         // controls
         private TabControlVamp tabControl;
+        private Control horizontalBar;
 
         // context menu
         private ContextMenuStrip contextMenu;
@@ -50,6 +51,18 @@ namespace VampDocManager
             //tabControl.AllowDrop = true;
             this.Controls.Add(tabControl);
 
+            horizontalBar = new Control();
+            horizontalBar.BackColor = CColor(170, 60, 85);// CColor(139, 70, 166);
+            horizontalBar.Size =        new Size(this.Width - 6, 2);
+            horizontalBar.Dock =        DockStyle.Left;
+            horizontalBar.Anchor =      AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            horizontalBar.Location =    new Point(2, 27);
+
+           // horizontalBar.Dock = DockStyle.Fill;
+
+            this.Controls.Add(horizontalBar);
+
+            horizontalBar.BringToFront();
         }
 
         private void OnSelectedIndexChanged(object? sender, EventArgs e)
