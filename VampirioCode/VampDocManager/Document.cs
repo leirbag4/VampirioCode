@@ -109,6 +109,7 @@ namespace VampDocManager
                 else if (doc.Extension == ".c")     doc.DocType = DocumentType.C;
                 else if (doc.Extension == ".h")     doc.DocType = DocumentType.H;
                 else if (doc.Extension == ".inc")   doc.DocType = DocumentType.INC;
+                else if (doc.Extension == ".php")   doc.DocType = DocumentType.PHP;
                 else                                doc.DocType = DocumentType.OTHER;
             }
             catch(Exception e)
