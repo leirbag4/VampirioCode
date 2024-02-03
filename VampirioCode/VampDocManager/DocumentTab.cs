@@ -39,7 +39,7 @@ namespace VampDocManager
 
             // set data
             Document =      doc;
-            Editor.Text =   doc.Text;
+            Editor.SetText(doc.Text);
             SetTitle(Document.FileName);
 
             // events

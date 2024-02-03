@@ -39,7 +39,7 @@ namespace VampEditor
             ClearCmdKey(Keys.Control | Keys.Shift | Keys.Z);
 
             //MarkerEnableHighlight(true);
-
+            
         }
 
         public void SetLanguage(DocumentType docType, StyleMode styleMode = StyleMode.Dark)
@@ -57,6 +57,13 @@ namespace VampEditor
 
         }
 
+        // Use this method to set the 'Text' instead of editr.Text property because this
+        // is the only way to reset the undo to beging just after the input document
+        public void SetText(string text)
+        {
+            this.Text = text;
+            EmptyUndoBuffer();
+        }
 
         protected override void OnUpdateUI(UpdateUIEventArgs e)
         {
