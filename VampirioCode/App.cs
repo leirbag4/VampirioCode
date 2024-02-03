@@ -253,6 +253,7 @@ namespace VampirioCode
 
         private void Find()
         {
+            //CurrDocumentTab.Editor.Undo();
             XConsole.Alert("find");
         }
 

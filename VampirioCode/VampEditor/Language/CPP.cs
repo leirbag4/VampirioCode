@@ -12,7 +12,8 @@ namespace VampEditor.Language
         private const String CPP_STD_COMMON_CLASSES_STRUCTS = "string vector fstream ifstream ofstream rotl rotr pair tuple map set list array deque queue stack priority_queue forward_list unordered_map unordered_set unordered_multimap unordered_multiset multimap multiset iterator function unique_ptr shared_ptr weak_ptr atomic mutex condition_variable";
 
 
-        private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default";
+        private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default ";
+        private const String CPP_COMMON_FUNCTIONS =     "malloc free cout endl";
         
         private const String CPP_TYPES =                "bool int double float short signed long void char wchar_t ";
         private const String CPP_TYPES_2 =              "uint8_t int8_t uint16_t int16_t uint32_t int32_t uint64_t int64_t size_t ";
@@ -87,15 +88,12 @@ namespace VampEditor.Language
                 Styles[19].ForeColor =                          CColor(179, 153, 255);   // if else do while for
 
                 //IndentationGuides = IndentView.LookBoth;
-                Styles[Style.BraceLight].BackColor =    CColor(50, 84, 180);
-                Styles[Style.BraceLight].ForeColor =    CColor(130, 130, 130);
-                Styles[Style.BraceBad].BackColor =      CColor(50, 84, 180);
-                Styles[Style.BraceBad].ForeColor =      CColor(170, 170, 170);
+                
 
                 //editor.Line = Color.Red;
 
                 editor.SetKeywords(0, CPP_LANG_KEYWORDS);
-                editor.SetKeywords(3, CPP_CONTROL_STATEMENTS);
+                editor.SetKeywords(3, CPP_CONTROL_STATEMENTS + CPP_COMMON_FUNCTIONS);
 
                 string classes = "";
 
@@ -108,7 +106,7 @@ namespace VampEditor.Language
 
                 SetFoldMarginStyle();
                 EnableCodeFolding();
-
+                SetSelctionStyle();
                 SetLinesNumber(true, 40);
             }
 

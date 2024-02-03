@@ -129,7 +129,7 @@ namespace VampEditor.Language
 
                 SetFoldMarginStyle();
                 EnableCodeFolding();
-
+                SetSelctionStyle();
                 SetLinesNumber(true, 40);
             }
 

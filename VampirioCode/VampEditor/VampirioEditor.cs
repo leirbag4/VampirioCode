@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,6 +9,7 @@ using System.Windows.Forms;
 using ScintillaNET;
 using VampDocManager;
 using VampEditor.Language;
+using VampirioCode.UI;
 
 namespace VampEditor
 {
@@ -16,7 +18,7 @@ namespace VampEditor
         public LanguageBase Language { get; private set; }
         public StyleMode StyleMode { get; private set; }
 
-        public VampirioEditor() 
+        public VampirioEditor()
         {
             /*AssignCmdKey(Keys.Control | Keys.F, ScintillaNET.Command.Null);
             AssignCmdKey(Keys.Control | Keys.S, ScintillaNET.Command.Null);
@@ -34,7 +36,9 @@ namespace VampEditor
             ClearCmdKey(Keys.Control | Keys.G); // goto
             ClearCmdKey(Keys.Control | Keys.D); // duplicate
             ClearCmdKey(Keys.Control | Keys.P);
+            ClearCmdKey(Keys.Control | Keys.Shift | Keys.Z);
 
+            //MarkerEnableHighlight(true);
 
         }
 
@@ -50,8 +54,64 @@ namespace VampEditor
 
             Language.Config(this);
             Language.Activate(StyleMode);
+
         }
 
+
+        protected override void OnUpdateUI(UpdateUIEventArgs e)
+        {
+            HighlightBraces();
+
+            base.OnUpdateUI(e);
+        }
+
+        private bool HighlightBraces()
+        { 
+            int prevPos = CurrentPosition - 1;
+            int currPos = CurrentPosition;
+
+            char prevChar = prevPos >= 0            ? (char)GetCharAt(prevPos) : '\0';
+            char currChar = currPos < TextLength    ? (char)GetCharAt(currPos) : '\0';
+            int matchPos = -1;
+
+
+            if (currChar != '\0' && IsBrace(currChar))
+            {
+                matchPos =          BraceMatch(currPos);
+                if (matchPos != -1) BraceHighlight(currPos, matchPos);
+                else                BraceBadLight(currPos);
+                return true;
+            }
+            else if (prevChar != '\0' && IsBrace(prevChar))
+            {
+                matchPos =          BraceMatch(prevPos);
+                if (matchPos != -1) BraceHighlight(prevPos, matchPos);
+                else                BraceBadLight(prevPos);
+                return true;
+            }
+            else
+                BraceHighlight(-1, -1);
+
+            return false;
+        }
+
+        private bool IsBrace(int c)
+        {
+            switch (c)
+            {
+                case '(':
+                case ')':
+                case '[':
+                case ']':
+                case '{':
+                case '}':
+                case '<':
+                case '>':
+                    return true;
+            }
+
+            return false;
+        }
 
         protected override void OnInsertCheck(InsertCheckEventArgs e)
         {
@@ -75,9 +135,9 @@ namespace VampEditor
             }
             //#################################################################
 
-
             base.OnInsertCheck(e);
         }
+
 
     }
 }

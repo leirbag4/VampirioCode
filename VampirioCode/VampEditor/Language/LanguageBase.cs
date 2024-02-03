@@ -44,13 +44,42 @@ namespace VampEditor.Language
             OnActivate(style);
         }
 
+        protected void SetSelctionStyle()
+        { 
+            // selected text ->     if(░░░░░░code)
+            editor.SetSelectionBackColor(true, CColor(53, 46, 66));
+
+            // Full row color ->    |▓▓▓▓▓▓if(code)▓▓▓▓▓▓▓▓▓▓▓▓|
+            editor.CaretLineBackColor =    CColor(30, 31, 25); // CColor(45, 46, 40); //CColor(34, 35, 29);
+            
+            // Caret '|' color and width
+            editor.CaretForeColor =        CColor(102, 51, 153);
+            editor.CaretWidth =            2;
+
+            //                                      data.|   data.ToStr|
+            // Allows multiple carets writing ->    data.|   data.ToStr|
+            //                                      data.|   data.ToStr|
+            editor.AdditionalSelectionTyping = true;
+
+            //                                      data.|  <-- CaretForeColor
+            // Additional carets color ->           data.|  <-- AdditionalCaretForeColor
+            //                                      data.|  <-- AdditionalCaretForeColor
+            editor.AdditionalCaretForeColor =  CColor(127, 127, 127); //CColor(81, 69, 93);
+
+            // Selected Brace using 'BraceHighlight' and 'BraceBadLight' (){}<>[] colors
+            Styles[Style.BraceLight].BackColor =    CColor(71, 46, 94);
+            Styles[Style.BraceLight].ForeColor =    CColor(170, 170, 170);
+            Styles[Style.BraceBad].BackColor =      CColor(80, 78, 76); // CColor(79, 44, 39);
+            Styles[Style.BraceBad].ForeColor =      CColor(170, 170, 170);
+        }
+
         protected virtual void OnActivate(StyleMode style)
         { }
 
         protected void SetForcedBackColor(Color color)
         {
             for (int a = 0; a < Styles.Count; a++)
-                Styles[a].BackColor = Color.FromArgb(39, 40, 34);
+                Styles[a].BackColor = CColor(39, 40, 34);
         }
 
         private void ResizeLineNumbMargins()

@@ -78,10 +78,7 @@ namespace VampEditor.Language
                 Styles[19].ForeColor =                          CColor(200, 153, 255);   // if else do while for
 
                             //IndentationGuides = IndentView.LookBoth;
-                            Styles[Style.BraceLight].BackColor =            CColor(50, 84, 180);
-                            Styles[Style.BraceLight].ForeColor =            CColor(130, 130, 130);
-                            Styles[Style.BraceBad].BackColor =              CColor(50, 84, 180);
-                            Styles[Style.BraceBad].ForeColor =              CColor(170, 170, 170);
+
 
                 //editor.Line = Color.Red;
 
@@ -100,7 +97,7 @@ namespace VampEditor.Language
 
                 SetFoldMarginStyle();
                 EnableCodeFolding();
-
+                SetSelctionStyle();
                 SetLinesNumber(true, 40);
             }
 
