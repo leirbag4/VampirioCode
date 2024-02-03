@@ -36,10 +36,11 @@ namespace VampEditor
             ClearCmdKey(Keys.Control | Keys.G); // goto
             ClearCmdKey(Keys.Control | Keys.D); // duplicate
             ClearCmdKey(Keys.Control | Keys.P);
+            ClearCmdKey(Keys.Control | Keys.Z);
             ClearCmdKey(Keys.Control | Keys.Shift | Keys.Z);
 
             //MarkerEnableHighlight(true);
-            
+
         }
 
         public void SetLanguage(DocumentType docType, StyleMode styleMode = StyleMode.Dark)

@@ -48,6 +48,7 @@ namespace VampEditor.Language
         {
             Styles[Style.Default].Font = "Consolas";
             Styles[Style.Default].Size = 10;
+            //Styles[Style.Default].Bold = true;
         }
 
         protected void SetSelctionStyle()
