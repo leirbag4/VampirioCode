@@ -82,12 +82,6 @@ namespace VampEditor.Language
         protected virtual void OnActivate(StyleMode style)
         { }
 
-        protected void SetForcedBackColor(Color color)
-        {
-            for (int a = 0; a < Styles.Count; a++)
-                Styles[a].BackColor = CColor(39, 40, 34);
-        }
-
         private void ResizeLineNumbMargins()
         {
             // from: https://github.com/jacobslusser/ScintillaNET/wiki/Displaying-Line-Numbers
