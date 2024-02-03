@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using VampDocManager;
+using VampEditor;
 using VampirioCode.Builder;
 using VampirioCode.Command.Dotnet;
 using VampirioCode.SaveData;
@@ -14,6 +15,8 @@ namespace VampirioCode
     {
         public Document CurrDocument { get { return docManager.CurrDocument; } }
         public DocumentTab CurrDocumentTab { get { return docManager.CurrDocumentTab; } }
+
+        public VampirioEditor CurrEditor { get { return docManager.CurrDocumentTab.Editor; } }
 
         private Dotnet dotnet;
         private SimpleCSharpBuilder csBuilder;
@@ -100,6 +103,9 @@ namespace VampirioCode
             HotKeyManager.AddHotKey(Duplicate,      Keys.Control | Keys.D);
             HotKeyManager.AddHotKey(BuildAndRun,    Keys.F5);
             HotKeyManager.AddHotKey(Build,          Keys.F6);
+            HotKeyManager.AddHotKey(Undo,           Keys.Control | Keys.Z);
+            HotKeyManager.AddHotKey(Redo,           Keys.Control | Keys.Shift | Keys.Z);
+
             //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
         }
 
@@ -253,7 +259,6 @@ namespace VampirioCode
 
         private void Find()
         {
-            //CurrDocumentTab.Editor.Undo();
             XConsole.Alert("find");
         }
 
@@ -270,6 +275,16 @@ namespace VampirioCode
         private void Duplicate()
         {
             XConsole.Alert("duplicate");
+        }
+
+        private void Undo()
+        {
+            CurrEditor.Undo();
+        }
+
+        private void Redo()
+        {
+            CurrEditor.Redo();
         }
 
         private void OpenLastDocuments()
