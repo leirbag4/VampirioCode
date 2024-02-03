@@ -41,7 +41,7 @@ namespace VampDocManager
             tabControl.BackColor = Color.FromArgb(30, 30, 30);
             tabControl.Margin = new Padding(0);
             tabControl.Padding = new Point(0, 0);
-            tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), CColor(170, 60, 85), CColor(255, 255, 255));
+            tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), CColor(170, 60, 85), CColor(52, 53, 45) , CColor(255, 255, 255));
             tabControl.ControlAdded +=          OnDocumentTabAdded;
             tabControl.SelectedIndexChanged +=  OnSelectedIndexChanged;
             CreateContextItems();
@@ -79,6 +79,11 @@ namespace VampDocManager
         private static Color CColor(int red, int green, int blue)
         {
             return Color.FromArgb(red, green, blue);
+        }
+
+        private static Color CColor(int all)
+        {
+            return Color.FromArgb(all, all, all);
         }
 
         private void CreateContextItems()

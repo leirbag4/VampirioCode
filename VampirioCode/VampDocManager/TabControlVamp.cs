@@ -441,27 +441,27 @@ namespace VampDocManager
         public void SetDefaultSkin()
         {
             //Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            SetSkin(Color.FromArgb(64, 64, 64), Color.FromArgb(30, 30, 30), Color.FromArgb(45, 45, 46), Color.FromArgb(0, 122, 204), Color.White, Color.FromArgb(60, 60, 60), Color.White);
+            SetSkin(Color.FromArgb(64, 64, 64), Color.FromArgb(30, 30, 30), Color.FromArgb(45, 45, 46), Color.FromArgb(0, 122, 204), Color.White, Color.FromArgb(60, 60, 60), Color.FromArgb(60, 60, 60), Color.White);
             FontColor = Color.White;
         }
 
-        public void SetSkin(Color backColor, Color innerBorderColor, Color tabColor, Color selectedTabColor, Color arrowsColor, Color arrowsBackColor, Color fontColor)
+        public void SetSkin(Color backColor, Color innerBorderColor, Color tabColor, Color selectedTabColor, Color arrowsColor, Color arrowsBackColor, Color borderColor, Color fontColor)
         {
             //Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            this.BackColor = backColor;
+            this.BackColor =        backColor;
             this.InnerBorderColor = innerBorderColor;
-            this.TabColor = tabColor;
+            this.TabColor =         tabColor;
             this.TabSelectedColor = selectedTabColor;
-            this.ArrowsColor = arrowsColor;
-            this.ArrowsBackColor = arrowsBackColor;
-            this.TopBorderColor = Color.FromArgb(60, 60, 60);
-            this.FontColor = fontColor;
+            this.ArrowsColor =      arrowsColor;
+            this.ArrowsBackColor =  arrowsBackColor;
+            this.TopBorderColor =   borderColor;
+            this.FontColor =        fontColor;
         }
 
-        public void SetSkin(int tabHeight, Color backColor, Color tabColor, Color selectedTabColor, Color fontColor)
+        public void SetSkin(int tabHeight, Color backColor, Color tabColor, Color selectedTabColor, Color borderColor, Color fontColor)
         {
             //Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-            SetSkin(backColor, backColor, tabColor, selectedTabColor, Color.White, Color.FromArgb(60, 60, 60), fontColor);
+            SetSkin(backColor, backColor, tabColor, selectedTabColor, Color.White, Color.FromArgb(60, 60, 60), borderColor, fontColor);
             SetTabSizeAuto(tabHeight);
         }
 
