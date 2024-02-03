@@ -30,36 +30,17 @@ namespace VampEditor.Language
 
                 editor.LexerName = "cpp";
 
-                //Styles[ScintillaNET.Style.Default].BackColor = Color.FromArgb(39, 40, 34);
-                //Styles[ScintillaNET.Style.Default].ForeColor = Color.FromArgb(39, 40, 34);
-
-                Styles[Style.Default].Font = "Consolas";
-                Styles[Style.Default].Size = 10;
-
                 //
                 // This Should be before 'StyleClearAll' to work!!!
                 //
+                SetFontSyle();
                 Styles[Style.Default].BackColor = CColor(39, 40, 34);
-                
 
-
+                // clear command
                 editor.StyleClearAll();
-                //editor.StyleResetDefault();
-                
-                //editor.Styles[ScintillaNET.Style.Default].BackColor = Color.Red;
-
-                editor.SetSelectionBackColor(true, CColor(73, 72, 62));
-                
-                editor.CaretLineBackColorAlpha = 256;
-                editor.CaretForeColor = Color.White;
-                editor.CaretLineBackColor = CColor(15, 15, 15);
 
 
-                //SetForcedBackColor(CColor(39, 40, 34));
-                Styles[Style.Default].BackColor = CColor(39, 40, 34);
-                
-
-
+                // Custom Style
                 Styles[Style.Cpp.Identifier].ForeColor =        CColor(215, 215, 215); // any other text
                 //Styles[Style.Cpp.Default].ForeColor =           Color.Red; //DO NOTHING??? BUG???
                 Styles[Style.Cpp.Comment].ForeColor =           CColor(0, 178, 45); // Green
@@ -77,10 +58,7 @@ namespace VampEditor.Language
 
                 Styles[19].ForeColor =                          CColor(200, 153, 255);   // if else do while for
 
-                            //IndentationGuides = IndentView.LookBoth;
-
-
-                //editor.Line = Color.Red;
+                //IndentationGuides = IndentView.LookBoth;
 
                 editor.SetKeywords(0, CSHARP_LANG_KEYWORDS);
                 editor.SetKeywords(3, CSHARP_LANG_KEYWORDS_CONTROL_FLOW);

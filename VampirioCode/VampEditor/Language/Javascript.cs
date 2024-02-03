@@ -42,50 +42,31 @@ namespace VampEditor.Language
 
                 editor.LexerName = "cpp";
 
-                //Styles[ScintillaNET.Style.Default].BackColor = Color.FromArgb(39, 40, 34);
-                //Styles[ScintillaNET.Style.Default].ForeColor = Color.FromArgb(39, 40, 34);
-
-                Styles[Style.Default].Font = "Consolas";
-                Styles[Style.Default].Size = 10;
-
                 //
                 // This Should be before 'StyleClearAll' to work!!!
                 //
+                SetFontSyle();
                 Styles[Style.Default].BackColor = CColor(39, 40, 34);
 
-
-
+                // clear command
                 editor.StyleClearAll();
-                //editor.StyleResetDefault();
-
-                //editor.Styles[ScintillaNET.Style.Default].BackColor = Color.Red;
-
-                editor.SetSelectionBackColor(true, CColor(73, 72, 62));
-
-                editor.CaretLineBackColorAlpha = 256;
-                editor.CaretForeColor = Color.White;
-                editor.CaretLineBackColor = CColor(15, 15, 15);
 
 
-                //SetForcedBackColor(CColor(39, 40, 34));
-                Styles[Style.Default].BackColor = CColor(39, 40, 34);
-
-
-
-                Styles[Style.Cpp.Identifier].ForeColor = CColor(215, 215, 215); // any other text
+                // Custom Style
+                Styles[Style.Cpp.Identifier].ForeColor =        CColor(215, 215, 215); // any other text
                                                                                 //Styles[Style.Cpp.Default].ForeColor =           Color.Red; //DO NOTHING??? BUG???
-                Styles[Style.Cpp.Comment].ForeColor = CColor(0, 178, 45); // Green
-                Styles[Style.Cpp.CommentLine].ForeColor = CColor(0, 178, 45);//CColor(87, 166, 74);  // Green
-                Styles[Style.Cpp.CommentLineDoc].ForeColor = CColor(128, 128, 128); // Gray
-                Styles[Style.Cpp.Number].ForeColor = CColor(166, 226, 46);
-                Styles[Style.Cpp.Word].ForeColor = CColor(170, 60, 85); //CColor(31, 144, 255);// CColor(57, 135, 214);
-                Styles[Style.Cpp.Word2].ForeColor = CColor(61, 201, 176);
-                Styles[Style.Cpp.String].ForeColor = CColor(214, 157, 65);
-                Styles[Style.Cpp.Character].ForeColor = CColor(163, 21, 21);
-                Styles[Style.Cpp.Verbatim].ForeColor = CColor(214, 157, 65);//CColor(163, 21, 21); // Red
-                Styles[Style.Cpp.StringEol].BackColor = Color.Pink;
-                Styles[Style.Cpp.Operator].ForeColor = Color.White;
-                Styles[Style.Cpp.Preprocessor].ForeColor = Color.Maroon;
+                Styles[Style.Cpp.Comment].ForeColor =           CColor(0, 178, 45); // Green
+                Styles[Style.Cpp.CommentLine].ForeColor =       CColor(0, 178, 45);//CColor(87, 166, 74);  // Green
+                Styles[Style.Cpp.CommentLineDoc].ForeColor =    CColor(128, 128, 128); // Gray
+                Styles[Style.Cpp.Number].ForeColor =            CColor(166, 226, 46);
+                Styles[Style.Cpp.Word].ForeColor =              CColor(170, 60, 85); //CColor(31, 144, 255);// CColor(57, 135, 214);
+                Styles[Style.Cpp.Word2].ForeColor =             CColor(61, 201, 176);
+                Styles[Style.Cpp.String].ForeColor =            CColor(214, 157, 65);
+                Styles[Style.Cpp.Character].ForeColor =         CColor(163, 21, 21);
+                Styles[Style.Cpp.Verbatim].ForeColor =          CColor(214, 157, 65);//CColor(163, 21, 21); // Red
+                Styles[Style.Cpp.StringEol].BackColor =         Color.Pink;
+                Styles[Style.Cpp.Operator].ForeColor =          Color.White;
+                Styles[Style.Cpp.Preprocessor].ForeColor =      Color.Maroon;
 
 
 

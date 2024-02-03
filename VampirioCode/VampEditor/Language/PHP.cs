@@ -58,36 +58,17 @@ namespace VampEditor.Language
 
                 editor.LexerName = "phpscript";
 
-                //Styles[ScintillaNET.Style.Default].BackColor = Color.FromArgb(39, 40, 34);
-                //Styles[ScintillaNET.Style.Default].ForeColor = Color.FromArgb(39, 40, 34);
-
-                Styles[Style.Default].Font = "Consolas";
-                Styles[Style.Default].Size = 10;
-
                 //
                 // This Should be before 'StyleClearAll' to work!!!
                 //
+                SetFontSyle();
                 Styles[Style.Default].BackColor = CColor(39, 40, 34);
 
-
-
+                // clear command
                 editor.StyleClearAll();
-                //editor.StyleResetDefault();
-
-                //editor.Styles[ScintillaNET.Style.Default].BackColor = Color.Red;
-
-                editor.SetSelectionBackColor(true, CColor(73, 72, 62));
-
-                editor.CaretLineBackColorAlpha = 256;
-                editor.CaretForeColor = Color.White;
-                editor.CaretLineBackColor = CColor(15, 15, 15);
 
 
-                //SetForcedBackColor(CColor(39, 40, 34));
-                //Styles[Style.Default].BackColor = CColor(39, 40, 34);
-
-
-
+                // Custom Style
                 Styles[Style.PhpScript.Default].ForeColor =         CColor(179, 153, 255);  // default like MyFunc()
                 Styles[Style.PhpScript.HString].ForeColor =         CColor(185, 255, 115);  // "hello php"
                 Styles[Style.PhpScript.SimpleString].ForeColor =    CColor(200, 200, 130);  // 'hello php'

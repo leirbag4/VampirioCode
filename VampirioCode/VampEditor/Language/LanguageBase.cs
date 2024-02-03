@@ -44,6 +44,12 @@ namespace VampEditor.Language
             OnActivate(style);
         }
 
+        protected void SetFontSyle()
+        {
+            Styles[Style.Default].Font = "Consolas";
+            Styles[Style.Default].Size = 10;
+        }
+
         protected void SetSelctionStyle()
         { 
             // selected text ->     if(░░░░░░code)
