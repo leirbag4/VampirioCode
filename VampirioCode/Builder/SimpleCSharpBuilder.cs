@@ -13,30 +13,30 @@ namespace VampirioCode.Builder
 {
     public class SimpleCSharpBuilder : Builder
     {
-        private string projectName;
-        private string code = "";
+        private string csprojFilePath;
+        private string outputDir;
 
-        public void Setup(string projectName, string code)
+        public override void Prepare()
         { 
-            this.projectName =  projectName;
-            this.code =         code;
+            TempDir =               AppInfo.TemporaryBuildPath;                         // temporary directory ->   \temp_build\
+            ProjectDir =            TempDir + projectName + "\\";                       // temporary project dir -> \temp_build\proj_name\
+            ProgramFile =           ProjectDir + projectName + ".cs";                   // .cs program file ->      \temp_build\proj_name\proj.cs
+            csprojFilePath =        ProjectDir + projectName + ".csproj";               // temp .csproj file ->     \temp_build\proj_name\proj.csproj
+            outputDir =             ProjectDir + "bin";                                 // output binaries dir ->   \temp_build\proj_name\bin
+            OutputFilename =        outputDir + "\\net8.0\\" + projectName + ".exe";    // output filename ->       \temp_build\proj_name\bin\net8.0\proj.exe
         }
 
-        public async Task Build()
+        public override async Task BuildAndRun()
         {
-            string tempDir =        AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            string projDir =        tempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            string csprojFilePath = projDir + projectName + ".csproj";  // temp .csproj file ->     \temp_build\proj_name\proj.csproj
-            string programFile =    projDir + projectName + ".cs";      // .cs program file ->      \temp_build\proj_name\proj.cs
-            string outputDir =      projDir + "bin";                    // output binaries dir ->   \temp_build\proj_name\bin
+            Prepare();
 
             // if '\temp_build' dir does not exist, just create it for the first time
-            if (!Directory.Exists(tempDir))
-                Directory.CreateDirectory(tempDir);
+            if (!Directory.Exists(TempDir))
+                Directory.CreateDirectory(TempDir);
 
             // if '\temp_build\proj_name' dir does not exist, just create it for the first time
-            if (!Directory.Exists(projDir))
-                Directory.CreateDirectory(projDir);
+            if (!Directory.Exists(ProjectDir))
+                Directory.CreateDirectory(ProjectDir);
 
             // delete all content of '\temp_build\proj_name\' 
             //FileUtils.DeleteFilesAndDirs(projDirPath);
@@ -46,7 +46,7 @@ namespace VampirioCode.Builder
                 File.WriteAllText(csprojFilePath, GetCsprojData());
 
             // write all code to '\temp_build\proj_name\proj.cs' main program file
-            File.WriteAllText(programFile, code);
+            File.WriteAllText(ProgramFile, code);
 
             // [ COMPILATION PROCESS ]
             Dotnet dotnet = new Dotnet();

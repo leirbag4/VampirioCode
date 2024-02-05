@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -22,11 +23,22 @@ namespace VampEditor
         Paste,
         Delete,
         SelectAll,
-        OpenFolder
+        OpenFileLocation,
+        OpenBinDirLocation
+    }
+
+    public enum EditorEventType
+    { 
+        OpenFileLocation,
+        OpenOutputFilename
     }
 
     public class VampirioEditor : Scintilla
     {
+        public delegate void ContextItemPressedEvent(EditorEventType eventType);
+
+        public event ContextItemPressedEvent ContextItemPressed;
+
         public LanguageBase Language { get; private set; }
         public StyleMode StyleMode { get; private set; }
 
@@ -56,16 +68,17 @@ namespace VampEditor
             //MarkerEnableHighlight(true);
 
             menu = new ContextMenu<ItemType>();
-            menu.AddItem(ItemType.Cut,          "Cut",                  VampirioCode.Properties.Resources.omenu_mini_cut);
-            menu.AddItem(ItemType.Copy,         "Copy",                 VampirioCode.Properties.Resources.mmenu_mini_copy_path);
-            menu.AddItem(ItemType.Paste,        "Paste",                VampirioCode.Properties.Resources.omenu_mini_paste);
+            menu.AddItem(ItemType.Cut,                  "Cut",                      VampirioCode.Properties.Resources.omenu_mini_cut);
+            menu.AddItem(ItemType.Copy,                 "Copy",                     VampirioCode.Properties.Resources.mmenu_mini_copy_path);
+            menu.AddItem(ItemType.Paste,                "Paste",                    VampirioCode.Properties.Resources.omenu_mini_paste);
             menu.AddSeparator();
-            menu.AddItem(ItemType.Delete,       "Delete",               VampirioCode.Properties.Resources.omenu_mini_delete);
-            menu.AddItem(ItemType.SelectAll,    "Select all",           VampirioCode.Properties.Resources.omenu_mini_select_all);
+            menu.AddItem(ItemType.Delete,               "Delete",                   VampirioCode.Properties.Resources.omenu_mini_delete);
+            menu.AddItem(ItemType.SelectAll,            "Select all",               VampirioCode.Properties.Resources.omenu_mini_select_all);
             menu.AddSeparator();
-            menu.AddItem(ItemType.OpenFolder,   "Open file location",   VampirioCode.Properties.Resources.mmenu_mini_folder);
+            menu.AddItem(ItemType.OpenFileLocation,     "Open file location",       VampirioCode.Properties.Resources.mmenu_mini_folder);
+            menu.AddItem(ItemType.OpenBinDirLocation,   "Open bin dir location",    VampirioCode.Properties.Resources.mmenu_mini_folder);
             menu.OnItemPressed += OnContextItemPressed;
-            menu.OnOpening += OnContextOpening;
+            menu.OnOpening +=     OnContextOpening;
             this.ContextMenuStrip = menu.Context;
 
         }
@@ -81,11 +94,13 @@ namespace VampEditor
 
         private void OnContextItemPressed(ItemType selection)
         {
-                 if(selection == ItemType.Cut)          { this.Cut(); }
-            else if(selection == ItemType.Copy)         { this.Copy(); }
-            else if(selection == ItemType.Paste)        { this.Paste(); }
-            else if(selection == ItemType.Delete)       { this.DeleteRange(this.SelectionStart, this.SelectedText.Length); }
-            else if(selection == ItemType.SelectAll)    { this.SelectAll(); }
+                 if(selection == ItemType.Cut)                  { this.Cut(); }
+            else if(selection == ItemType.Copy)                 { this.Copy(); }
+            else if(selection == ItemType.Paste)                { this.Paste(); }
+            else if(selection == ItemType.Delete)               { this.DeleteRange(this.SelectionStart, this.SelectedText.Length); }
+            else if(selection == ItemType.SelectAll)            { this.SelectAll(); }
+            else if(selection == ItemType.OpenFileLocation)     { if (ContextItemPressed != null) ContextItemPressed(EditorEventType.OpenFileLocation); }
+            else if(selection == ItemType.OpenBinDirLocation)   { if (ContextItemPressed != null) ContextItemPressed(EditorEventType.OpenOutputFilename); }
         }
 
         public void SetLanguage(DocumentType docType, StyleMode styleMode = StyleMode.Dark)

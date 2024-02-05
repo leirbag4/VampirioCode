@@ -9,38 +9,35 @@ namespace VampirioCode.Builder
 {
     public class SimpleJsBuilder : Builder
     {
-        private string projectName;
-        private string code = "";
-
-        public void Setup(string projectName, string code)
-        {
-            this.projectName = projectName;
-            this.code = code;
+        public override void Prepare()
+        { 
+            TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
+            ProjectDir =            TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
+            ProgramFile =           ProjectDir + projectName + ".js";   // .js program file ->      \temp_build\proj_name\proj.js
+            OutputFilename =        "";
         }
 
-        public async Task Build()
+        public override async Task BuildAndRun()
         {
-            string tempDir =        AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            string projDir =        tempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            string programFile =    projDir + projectName + ".js";      // .js program file ->      \temp_build\proj_name\proj.js
+            Prepare();
 
             // if '\temp_build' dir does not exist, just create it for the first time
-            if (!Directory.Exists(tempDir))
-                Directory.CreateDirectory(tempDir);
+            if (!Directory.Exists(TempDir))
+                Directory.CreateDirectory(TempDir);
 
             // if '\temp_build\proj_name' dir does not exist, just create it for the first time
-            if (!Directory.Exists(projDir))
-                Directory.CreateDirectory(projDir);
+            if (!Directory.Exists(ProjectDir))
+                Directory.CreateDirectory(ProjectDir);
 
             // delete all content of '\temp_build\proj_name\' 
             //FileUtils.DeleteFilesAndDirs(projDirPath);
 
             // write all code to '\temp_build\proj_name\proj.cs' main program file
-            File.WriteAllText(programFile, code);
+            File.WriteAllText(ProgramFile, code);
 
             // [ COMPILATION PROCESS ]
             Nodejs nodejs = new Nodejs();
-            await nodejs.RunAsync(programFile);
+            await nodejs.RunAsync(ProgramFile);
         }
     }
 }

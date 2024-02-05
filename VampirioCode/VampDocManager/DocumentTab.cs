@@ -10,6 +10,10 @@ namespace VampDocManager
 {
     public class DocumentTab : TabPage
     {
+        public delegate void ContextItemPressedEvent(EditorEventType eventType, Document document);
+
+        public event ContextItemPressedEvent ContextItemPressed;
+
         //public string Text { get { return _editor.Text; } set { _editor.Text = value; } }
         public string Text { get { return ""; } set { } } // remove title behaviour
         public string Title { get { return base.Text; } }
@@ -43,11 +47,18 @@ namespace VampDocManager
             SetTitle(Document.FileName);
 
             // events
-            Editor.TextChanged +=   OnEditorTextChanged;
-            Document.OnSaved +=     OnSaved;
-            Document.OnModified +=  OnModified;
+            Editor.TextChanged +=           OnEditorTextChanged;
+            Editor.ContextItemPressed +=    OnContextItemPressed;
+            Document.OnSaved +=             OnSaved;
+            Document.OnModified +=          OnModified;
 
             return this;
+        }
+
+        private void OnContextItemPressed(EditorEventType eventType)
+        {
+            if (ContextItemPressed != null)
+                ContextItemPressed(eventType, Document);
         }
 
         private void SetTitle(string title)

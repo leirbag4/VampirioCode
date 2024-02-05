@@ -11,18 +11,23 @@ namespace VampirioCode.Builder
 {
     public class SimpleCppBuilder : Builder
     {
-        private string projectName;
-        private string code = "";
 
-        public void Setup(string projectName, string code)
-        { 
-            this.projectName =  projectName;
-            this.code =         code;
+        private string objsDir;
+        private string outputDir;
+
+        public override void Prepare()
+        {
+            TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
+            ProjectDir =            TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
+            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\proj.cpp
+            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\obj\
+            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
+            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\bin\proj.exe
         }
 
-        public async Task<RunResult> BuildAndRun()
+        public override async Task BuildAndRun()
         {
-            var result = await Build();
+            var result = await _Build();
             RunResult runResult;
 
             if (result.IsOk)
@@ -30,32 +35,26 @@ namespace VampirioCode.Builder
                 XConsole.Clear();
                 MSVC msvc = new MSVC();
                 runResult = await msvc.RunAsync(result.OutputFilename);
-                return runResult;
+                //return runResult;
             }
 
             runResult = new RunResult();
             runResult.SetError(result.ErrorInfo);
-            return runResult;
+            //return runResult;
         }
 
 
-        public async Task<BuildResult> Build()
+        public async Task<BuildResult> _Build()
         {
-            string tempDir =        AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            string projDir =        tempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            string programFile =    projDir + projectName + ".cpp";     // .cpp program file ->     \temp_build\proj_name\proj.cpp
-            string objsDir =        projDir + "obj\\";                  // output binaries dir ->   \temp_build\proj_name\obj\
-            string outputDir =      projDir + "bin\\";                  // output binaries dir ->   \temp_build\proj_name\bin\
-            string outputFilename = outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\bin\proj.exe
-
+            Prepare();
 
             // if '\temp_build' dir does not exist, just create it for the first time
-            if (!Directory.Exists(tempDir))
-                Directory.CreateDirectory(tempDir);
+            if (!Directory.Exists(TempDir))
+                Directory.CreateDirectory(TempDir);
 
             // if '\temp_build\proj_name' dir does not exist, just create it for the first time
-            if (!Directory.Exists(projDir))
-                Directory.CreateDirectory(projDir);
+            if (!Directory.Exists(ProjectDir))
+                Directory.CreateDirectory(ProjectDir);
 
             // if '\temp_build\proj_name\obj' dir does not exist, just create it for the first time
             if (!Directory.Exists(objsDir))
@@ -69,11 +68,11 @@ namespace VampirioCode.Builder
             //FileUtils.DeleteFilesAndDirs(projDirPath);
 
             // write all code to '\temp_build\proj_name\proj.cpp' main program file
-            File.WriteAllText(programFile, code);
+            File.WriteAllText(ProgramFile, code);
 
 
             // [ COMPILATION PROCESS ]
-            List<string> sourceFiles = new string[] { programFile }.ToList();
+            List<string> sourceFiles = new string[] { ProgramFile }.ToList();
 
             List<string> includes = new string[] {
                 @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include",
@@ -93,8 +92,8 @@ namespace VampirioCode.Builder
             }.ToList();
 
             MSVC msvc = new MSVC();
-            var result = await msvc.BuildAsync(sourceFiles, outputFilename, objsDir, includes, libPaths, libFiles);
-            result.OutputFilename = outputFilename;
+            var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, includes, libPaths, libFiles);
+            result.OutputFilename = OutputFilename;
 
             return result;
         }

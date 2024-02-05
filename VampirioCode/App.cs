@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using VampDocManager;
@@ -62,7 +63,8 @@ namespace VampirioCode
             menuStrip.ForeColor = Color.Silver;
 
             // doc manager events
-            docManager.OnCurrDocumentTabChanged += OnCurrDocumentTabChanged;
+            docManager.OnCurrDocumentTabChanged +=  OnCurrDocumentTabChanged;
+            docManager.EditorContextItemPressed +=  OnEditorContextItemPressed;
 
             // tool bar events
             toolBar.StartPressed +=     OnStartPressed;
@@ -80,7 +82,6 @@ namespace VampirioCode
 
             base.OnLoad(e);
         }
-
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keys)
         {
@@ -113,28 +114,15 @@ namespace VampirioCode
             XConsole.Clear();
             string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
 
-            if (CurrDocument.DocType == DocumentType.CSHARP)
+            if (CurrDocument.DocType == DocumentType.OTHER)
             {
-                //csBuilder.Setup(projName, CurrDocument.Text);
-                //await csBuilder.Build();
-            }
-            else if (CurrDocument.DocType == DocumentType.CPP)
-            {
-                cppBuilder.Setup(projName, CurrDocument.Text);
-                await cppBuilder.Build();
-            }
-            else if (CurrDocument.DocType == DocumentType.JS)
-            {
-                //jsBuilder.Setup(projName, CurrDocument.Text);
-                //await jsBuilder.Build();
-            }
-            else if (CurrDocument.DocType == DocumentType.PHP)
-            { 
-            
+                MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
             }
             else
             {
-                MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
+                Builder.Builder builder = GetSimpleBuilder(CurrDocument.DocType);
+                builder.Setup(projName, CurrDocument.Text);
+                await builder.Build();
             }
         }
 
@@ -154,29 +142,15 @@ namespace VampirioCode
             XConsole.Clear();
             string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
 
-            if (CurrDocument.DocType == DocumentType.CSHARP)
+            if (CurrDocument.DocType == DocumentType.OTHER)
             {
-                csBuilder.Setup(projName, CurrDocument.Text);
-                await csBuilder.Build();
-            }
-            else if (CurrDocument.DocType == DocumentType.CPP)
-            {
-                cppBuilder.Setup(projName, CurrDocument.Text);
-                await cppBuilder.BuildAndRun();
-            }
-            else if (CurrDocument.DocType == DocumentType.JS)
-            {
-                jsBuilder.Setup(projName, CurrDocument.Text);
-                await jsBuilder.Build();
-            }
-            else if (CurrDocument.DocType == DocumentType.PHP)
-            {
-                phpBuilder.Setup(projName, CurrDocument.Text);
-                await phpBuilder.Build();
+                MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
             }
             else
-            { 
-                MsgBox.Show(this, "No language", "No language selected.\n\n    Please select a language from the top bar before compiling.");
+            {
+                Builder.Builder builder = GetSimpleBuilder(CurrDocument.DocType);
+                builder.Setup(projName, CurrDocument.Text);
+                await builder.BuildAndRun();
             }
         }
 
@@ -196,6 +170,39 @@ namespace VampirioCode
         private void OnEditPressed(object sender, EventArgs e)
         {
 
+        }
+
+        private void OnEditorContextItemPressed(EditorEventType eventType, Document document)
+        {
+            if (eventType == VampEditor.EditorEventType.OpenFileLocation)
+            { 
+                Process.Start("explorer.exe", string.Format("/select,\"{0}\"", document.FullFilePath));
+            }
+            else if (eventType == VampEditor.EditorEventType.OpenOutputFilename)
+            {
+                if (CurrDocument.DocType == DocumentType.OTHER)
+                {
+                    MsgBox.Show(this, "Language not selected", "Language was not selected. This feature only works with a language. Select one from the top.");
+                }
+                else
+                {
+                    string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+
+                    Builder.Builder builder = GetSimpleBuilder(CurrDocument.DocType);
+                    builder.Setup(projName, CurrDocument.Text);
+                    builder.Prepare();
+
+                    if (builder.OutputFilename != "")
+                    {
+                        if (File.Exists(builder.OutputFilename))
+                            Process.Start("explorer.exe", string.Format("/select,\"{0}\"", builder.OutputFilename));
+                        else
+                            MsgBox.Show(this, "File does not exist", "File '" + builder.OutputFilename + "' does not exist yet.\n\nCompile it first");
+                    }
+                    else
+                        MsgBox.Show(this, "Not available", "The output file for this document is not available.\nIt may be an interpreted file extension that doesn't need a compilation process. Try opening the file path instead.");
+                }
+            }
         }
 
         private void OnLanguagePressed(object sender, EventArgs e)
@@ -341,6 +348,15 @@ namespace VampirioCode
             else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
 
             footer.DocType = docType;
+        }
+
+        private Builder.Builder GetSimpleBuilder(DocumentType docType)
+        {
+                 if (docType == DocumentType.CSHARP)    return csBuilder;
+            else if (docType == DocumentType.CPP)       return cppBuilder;
+            else if (docType == DocumentType.JS)        return jsBuilder;
+            else if (docType == DocumentType.PHP)       return phpBuilder;
+            return null;
         }
 
         private void OnCurrDocumentTabChanged(int index, Document doc)

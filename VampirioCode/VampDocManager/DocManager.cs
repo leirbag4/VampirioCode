@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampEditor;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 using VampirioCode.UI.Style;
@@ -15,8 +17,10 @@ namespace VampDocManager
     public class DocManager : UserControl
     {
         public delegate void CurrDocumentTabChanged(int index, Document doc);
+        public delegate void EditorContextItemPressedEvent(EditorEventType eventType, Document document);
 
         public event CurrDocumentTabChanged OnCurrDocumentTabChanged;
+        public event EditorContextItemPressedEvent EditorContextItemPressed;
 
         public DocumentTab CurrDocumentTab { get { return (DocumentTab)tabControl.SelectedTab; } }
         public Document CurrDocument { get { return CurrDocumentTab.Document; } }
@@ -126,6 +130,7 @@ namespace VampDocManager
             if (doc != null)
             {
                 docTab = DocumentTab.Create(doc);
+                docTab.ContextItemPressed += OnContextItemPressed;
                 tabControl.TabPages.Add(docTab);
                 SelectTab(docTab);
             }
@@ -155,11 +160,18 @@ namespace VampDocManager
                 }
 
                 docTab = DocumentTab.Create(doc);
+                docTab.ContextItemPressed += OnContextItemPressed;
                 tabControl.TabPages.Add(docTab);
                 SelectTab(docTab);
             }
 
             return doc;
+        }
+
+        private void OnContextItemPressed(VampEditor.EditorEventType eventType, Document document)
+        {
+            if (EditorContextItemPressed != null)
+                EditorContextItemPressed(eventType, document);
         }
 
         public void Close()
