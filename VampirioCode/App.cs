@@ -265,12 +265,12 @@ namespace VampirioCode
 
         private void Find()
         {
-            XConsole.Alert("find");
+            CurrDocumentTab.ShowFind();
         }
 
         private void FindAndReplace()
         {
-            XConsole.Alert("find and replace");
+            CurrDocumentTab.ShowFind(true);
         }
 
         private void GoTo()

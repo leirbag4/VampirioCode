@@ -11,8 +11,6 @@ using ScintillaNET;
 using VampDocManager;
 using VampEditor.Language;
 using VampirioCode.UI;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-//using VampirioCode.UI;
 
 namespace VampEditor
 {
@@ -36,13 +34,14 @@ namespace VampEditor
     public class VampirioEditor : Scintilla
     {
         public delegate void ContextItemPressedEvent(EditorEventType eventType);
-
         public event ContextItemPressedEvent ContextItemPressed;
 
+        public bool IsVerticalScrollVisible { get { return (Lines.Count > LinesOnScreen); } }
         public LanguageBase Language { get; private set; }
         public StyleMode StyleMode { get; private set; }
 
         private ContextMenu<ItemType> menu;
+        private bool _highlighted = false;
 
         public VampirioEditor()
         {
@@ -206,6 +205,59 @@ namespace VampEditor
             base.OnInsertCheck(e);
         }
 
+        public void StartHighlight(String str, SearchFlags searchFlags = SearchFlags.None)
+        {
+            if (str == "")
+                return;
 
+            //---------- highlight ------------
+            IndicatorCurrent = 8;
+            Indicators[8].Style = ScintillaNET.IndicatorStyle.RoundBox;
+            Indicators[8].Under = false;
+            Indicators[8].ForeColor = Color.FromArgb(38, 147, 255);
+            Indicators[8].OutlineAlpha = 50;
+            Indicators[8].Alpha = 100;
+            //----------------------------------
+
+            IndicatorClearRange(0, TextLength);
+
+            // Search the document
+            TargetStart = 0;
+            TargetEnd = TextLength;
+            SearchFlags = searchFlags;
+
+            while (SearchInTarget(str) != -1)
+            {
+                // Mark the search results with the current indicator
+                IndicatorFillRange(TargetStart, TargetEnd - TargetStart);
+
+                // Search the remainder of the document
+                TargetStart = TargetEnd;
+                TargetEnd = TextLength;
+            }
+
+            _highlighted = true;
+        }
+
+        public void StopHighlight()
+        {
+            if (_highlighted)
+            {
+                IndicatorCurrent = 8;
+                IndicatorClearRange(0, TextLength);
+
+                _highlighted = false;
+            }
+        }
+
+        public void SetSelectionStyle()
+        {
+            SetSelectionBackColor(true, Color.FromArgb(90, 90, 250));
+        }
+
+        public void ResetSelectionStyle()
+        {
+            SetSelectionBackColor(true, Color.FromArgb(73, 72, 62));
+        }
     }
 }

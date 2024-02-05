@@ -20,8 +20,10 @@ namespace VampDocManager
 
         public Document Document { get; private set; }
         public VampirioEditor Editor { get { return editor; } }
+        public bool IsFindActive { get; set; } = false;
 
         private VampirioEditor editor;
+        private Find find;
 
         public static DocumentTab Create(Document doc)
         {
@@ -88,6 +90,38 @@ namespace VampDocManager
         private void OnSaved()
         {
             //Document.Modified = false;
+        }
+
+        public void ShowFind(bool replace = false)
+        {
+            if (IsFindActive)
+                return;
+
+            int x, y = -2;
+            
+            find = new Find(Editor, replace);
+
+            if (Editor.IsVerticalScrollVisible) x = this.Width - find.Width - SystemInformation.VerticalScrollBarWidth;
+            else                                x = this.Width - find.Width;
+
+            find.Location = new Point(x, y);
+            find.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            find.Close += OnFindClose;
+
+            this.Controls.Add(find);
+            find.BringToFront();
+
+            IsFindActive = true;
+        }
+
+        private void OnFindClose()
+        {
+            if (IsFindActive)
+            {
+                this.Controls.Remove(find);
+                IsFindActive = false;
+                Editor.Focus();
+            }
         }
     }
 }

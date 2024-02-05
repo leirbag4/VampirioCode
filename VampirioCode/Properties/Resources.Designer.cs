@@ -133,6 +133,16 @@ namespace VampirioCode.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mmenu_mini_find {
+            get {
+                object obj = ResourceManager.GetObject("mmenu_mini_find", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mmenu_mini_folder {
             get {
                 object obj = ResourceManager.GetObject("mmenu_mini_folder", resourceCulture);
@@ -146,6 +156,16 @@ namespace VampirioCode.Properties {
         internal static System.Drawing.Bitmap mmenu_mini_folder_b {
             get {
                 object obj = ResourceManager.GetObject("mmenu_mini_folder_b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mmenu_mini_remove {
+            get {
+                object obj = ResourceManager.GetObject("mmenu_mini_remove", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
