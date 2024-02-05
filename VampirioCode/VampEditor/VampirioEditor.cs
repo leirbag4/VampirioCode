@@ -23,8 +23,8 @@ namespace VampEditor
         Paste,
         Delete,
         SelectAll,
-        OpenFileLocation,
-        OpenBinDirLocation
+        OpenBinDirLocation,
+        OpenFileLocation
     }
 
     public enum EditorEventType
@@ -75,8 +75,8 @@ namespace VampEditor
             menu.AddItem(ItemType.Delete,               "Delete",                   VampirioCode.Properties.Resources.omenu_mini_delete);
             menu.AddItem(ItemType.SelectAll,            "Select all",               VampirioCode.Properties.Resources.omenu_mini_select_all);
             menu.AddSeparator();
+            menu.AddItem(ItemType.OpenBinDirLocation,   "Open output file",         VampirioCode.Properties.Resources.mmenu_mini_folder_b);
             menu.AddItem(ItemType.OpenFileLocation,     "Open file location",       VampirioCode.Properties.Resources.mmenu_mini_folder);
-            menu.AddItem(ItemType.OpenBinDirLocation,   "Open bin dir location",    VampirioCode.Properties.Resources.mmenu_mini_folder);
             menu.OnItemPressed += OnContextItemPressed;
             menu.OnOpening +=     OnContextOpening;
             this.ContextMenuStrip = menu.Context;
