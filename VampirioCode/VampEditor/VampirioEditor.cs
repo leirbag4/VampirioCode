@@ -10,13 +10,27 @@ using ScintillaNET;
 using VampDocManager;
 using VampEditor.Language;
 using VampirioCode.UI;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+//using VampirioCode.UI;
 
 namespace VampEditor
 {
+    public enum ItemType
+    {
+        Cut,
+        Copy,
+        Paste,
+        Delete,
+        SelectAll,
+        OpenFolder
+    }
+
     public class VampirioEditor : Scintilla
     {
         public LanguageBase Language { get; private set; }
         public StyleMode StyleMode { get; private set; }
+
+        private ContextMenu<ItemType> menu;
 
         public VampirioEditor()
         {
@@ -41,6 +55,37 @@ namespace VampEditor
 
             //MarkerEnableHighlight(true);
 
+            menu = new ContextMenu<ItemType>();
+            menu.AddItem(ItemType.Cut,          "Cut",                  VampirioCode.Properties.Resources.omenu_mini_cut);
+            menu.AddItem(ItemType.Copy,         "Copy",                 VampirioCode.Properties.Resources.mmenu_mini_copy_path);
+            menu.AddItem(ItemType.Paste,        "Paste",                VampirioCode.Properties.Resources.omenu_mini_paste);
+            menu.AddSeparator();
+            menu.AddItem(ItemType.Delete,       "Delete",               VampirioCode.Properties.Resources.omenu_mini_delete);
+            menu.AddItem(ItemType.SelectAll,    "Select all",           VampirioCode.Properties.Resources.omenu_mini_select_all);
+            menu.AddSeparator();
+            menu.AddItem(ItemType.OpenFolder,   "Open file location",   VampirioCode.Properties.Resources.mmenu_mini_folder);
+            menu.OnItemPressed += OnContextItemPressed;
+            menu.OnOpening += OnContextOpening;
+            this.ContextMenuStrip = menu.Context;
+
+        }
+
+        private void OnContextOpening(System.ComponentModel.CancelEventArgs e)
+        {
+            bool anyTextSelected = this.SelectedText.Length > 0;
+            menu.SetEnable(ItemType.Cut,        anyTextSelected);
+            menu.SetEnable(ItemType.Copy,       anyTextSelected);
+            menu.SetEnable(ItemType.Delete,     anyTextSelected);
+            menu.SetEnable(ItemType.SelectAll,  (this.TextLength > 0) && (this.TextLength != this.SelectedText.Length));
+        }
+
+        private void OnContextItemPressed(ItemType selection)
+        {
+                 if(selection == ItemType.Cut)          { this.Cut(); }
+            else if(selection == ItemType.Copy)         { this.Copy(); }
+            else if(selection == ItemType.Paste)        { this.Paste(); }
+            else if(selection == ItemType.Delete)       { this.DeleteRange(this.SelectionStart, this.SelectedText.Length); }
+            else if(selection == ItemType.SelectAll)    { this.SelectAll(); }
         }
 
         public void SetLanguage(DocumentType docType, StyleMode styleMode = StyleMode.Dark)

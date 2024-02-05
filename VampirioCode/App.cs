@@ -15,7 +15,6 @@ namespace VampirioCode
     {
         public Document CurrDocument { get { return docManager.CurrDocument; } }
         public DocumentTab CurrDocumentTab { get { return docManager.CurrDocumentTab; } }
-
         public VampirioEditor CurrEditor { get { return docManager.CurrDocumentTab.Editor; } }
 
         private Dotnet dotnet;
