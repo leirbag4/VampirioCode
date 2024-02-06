@@ -250,14 +250,5 @@ namespace VampEditor
             }
         }
 
-        public void SetSelectionStyle()
-        {
-            SetSelectionBackColor(true, Color.FromArgb(90, 90, 250));
-        }
-
-        public void ResetSelectionStyle()
-        {
-            SetSelectionBackColor(true, Color.FromArgb(73, 72, 62));
-        }
     }
 }

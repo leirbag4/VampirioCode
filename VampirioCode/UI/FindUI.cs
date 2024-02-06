@@ -24,6 +24,9 @@ namespace VampirioCode.UI
         public delegate void CloseEvent();
         public event CloseEvent Close;
 
+        private static List<String> lastSearchList =    new List<string>();
+        private static List<String> lastReplaceList =   new List<string>();
+
         private string FindText { get { return findInput.Text; } set { findInput.Text = value; } }
         private string ReplaceText { get { return replaceInput.Text; } set { replaceInput.Text = value; } }
 
@@ -66,17 +69,20 @@ namespace VampirioCode.UI
             }
 
             ResetPointer();
-            Find(FindText);
+            Find();
         }
 
-        public void Find(String str)
+        public void Find()
         {
-            int pos = FindNext(str);
+            ProcessLastList(FindText.Trim(),    lastSearchList);
+            ProcessLastList(ReplaceText.Trim(), lastReplaceList);
+
+            int pos = FindNext(FindText);
 
             if (pos == -1)
             {
                 editor.GotoPosition(0);
-                pos = FindNext(str);
+                pos = FindNext(FindText);
 
                 if (pos == -1)
                     MsgBox.Show("Find", "No more occurrences.", DialogButtons.OK, DialogIcon.Info);
@@ -96,6 +102,34 @@ namespace VampirioCode.UI
             if (pos >= 0)
                 editor.SetSel(editor.TargetStart, editor.TargetEnd);
 
+            return pos;
+        }
+
+        private void Replace()
+        {
+            if (FindText == "")
+                return;
+
+            ProcessLastList(FindText.Trim(),    lastSearchList);
+            ProcessLastList(ReplaceText.Trim(), lastReplaceList);
+
+            ResetPointer();
+
+            int pos = ReplaceNext(FindText, ReplaceText);
+
+            if (pos == -1)
+                MsgBox.Show("Find", "No more occurrences.", DialogButtons.OK, DialogIcon.Info);
+            else
+                Find();
+            
+        }
+
+        private int ReplaceNext(string findText, string replaceText)
+        {
+            // Find the text and, if found, replace the selection
+            var pos = FindNext(findText);
+            if (pos >= 0)
+                editor.ReplaceSelection(replaceText);
             return pos;
         }
 
@@ -124,6 +158,49 @@ namespace VampirioCode.UI
             return flags;
         }
 
+        private String ProcessLastList(String inText, List<String> list)
+        {
+            String str = inText;
+            String toFind = "";
+
+            if (str != "")
+            {
+                toFind = str;
+
+                for (int a = 0; a < list.Count; a++)
+                {
+                    if (list[a] == toFind)
+                    {
+                        list.RemoveAt(a);
+                        break;
+                    }
+                }
+
+                list.Insert(0, toFind);
+            }
+            else
+            {
+                if (list.Count > 0)
+                    toFind = list[0];
+            }
+
+            if (list.Count > 12)
+                list.RemoveAt(list.Count - 1);
+
+            if (list == lastSearchList)
+            {
+                findInput.Items.Clear();
+                findInput.Items.AddRange(list.ToArray());
+            }
+            else if (list == lastReplaceList)
+            {
+                replaceInput.Items.Clear();
+                replaceInput.Items.AddRange(list.ToArray());
+            }
+
+            return toFind;
+        }
+
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
@@ -139,12 +216,12 @@ namespace VampirioCode.UI
 
         private void OnFindEnterPressed(object sender, VampirioCode.UI.Controls.Events.KeyPressedEventArgs e)
         {
-            Find(FindText);
+            Find();
         }
 
         private void OnReplaceEnterPressed(object sender, VampirioCode.UI.Controls.Events.KeyPressedEventArgs e)
         {
-            XConsole.Println("replace");
+            Replace();
         }
 
         protected override void OnPaint(PaintEventArgs e)
