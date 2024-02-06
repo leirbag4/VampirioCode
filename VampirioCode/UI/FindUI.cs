@@ -32,8 +32,8 @@ namespace VampirioCode.UI
         private string ReplaceText { get { return replaceInput.Text; } set { replaceInput.Text = value; } }
         private ComboBoxAdv lastFocusedInput = null;
 
-        public bool OptionsVisible 
-        { 
+        public bool OptionsVisible
+        {
             get { return optionsGBox.Visible; }
             set
             {
@@ -43,17 +43,17 @@ namespace VampirioCode.UI
                 {
                     if (mode == Mode.Find)
                     {
-                        this.Height =           SizeFindOptions;
-                        this.optionsGBox.Top =  OptionsYFind;
+                        this.Height = SizeFindOptions;
+                        this.optionsGBox.Top = OptionsYFind;
                     }
                     else if (mode == Mode.FindAndReplace)
                     {
-                        this.Height =           SizeFindAndReplaceOptions;
-                        this.optionsGBox.Top =  OptionsYFindAndReplace;
+                        this.Height = SizeFindAndReplaceOptions;
+                        this.optionsGBox.Top = OptionsYFindAndReplace;
                     }
                 }
                 else
-                { 
+                {
                     if (mode == Mode.Find)
                         this.Height = SizeFind;
                     else if (mode == Mode.FindAndReplace)
@@ -61,7 +61,7 @@ namespace VampirioCode.UI
                 }
 
                 this.Invalidate();
-            } 
+            }
         }
 
         private VampirioEditor editor;
@@ -69,12 +69,12 @@ namespace VampirioCode.UI
         private Color _borderColor = Color.FromArgb(139, 70, 166);
         private Mode mode = Mode.Find;
 
-        private const int SizeFind =                    42;
-        private const int SizeFindAndReplace =          78;
-        private const int SizeFindOptions =             120;
-        private const int SizeFindAndReplaceOptions =   156;
-        private const int OptionsYFind =                40;
-        private const int OptionsYFindAndReplace =      76;
+        private const int SizeFind = 42;
+        private const int SizeFindAndReplace = 78;
+        private const int SizeFindOptions = 120;
+        private const int SizeFindAndReplaceOptions = 156;
+        private const int OptionsYFind = 40;
+        private const int OptionsYFindAndReplace = 76;
 
         public FindUI(VampirioEditor editor, bool replace = false) : base()
         {
@@ -159,9 +159,9 @@ namespace VampirioCode.UI
             editor.StartHighlight(FindText);
             //editor.SetSelectionStyle();
 
-            editor.SearchFlags = GetFlags();
-            editor.TargetStart = Math.Max(editor.CurrentPosition, editor.AnchorPosition);
-            editor.TargetEnd = editor.TextLength;
+            editor.SearchFlags =    GetFlags();
+            editor.TargetStart =    Math.Max(editor.CurrentPosition, editor.AnchorPosition);
+            editor.TargetEnd =      editor.TextLength;
 
             var pos = editor.SearchInTarget(text);
             if (pos >= 0)
@@ -283,6 +283,37 @@ namespace VampirioCode.UI
             Replace();
         }
 
+        private void OnReplaceAllPressed(object sender, EventArgs e)
+        {
+            int pos = 0;
+            int currentPos =            editor.CurrentPosition;
+            int currentAnchorPos =      editor.AnchorPosition;
+            int count = 0;
+
+            if (FindText == "")
+                return;
+
+            // Start search at the beginning of the control text
+            editor.CurrentPosition =    0;
+            editor.AnchorPosition =     0;
+            
+            // Call Replace All
+            while (pos >= 0)
+            {
+                pos = ReplaceNext(FindText, ReplaceText);
+                count++;
+            }
+
+            XConsole.FooterInfo("replaced " + count + " searches");
+
+            // Restore the position and anchor
+            editor.CurrentPosition =    currentPos;
+            editor.AnchorPosition =     currentAnchorPos;
+
+            // Restore last input focus
+            RestoreFocusToInput();
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (_borderSize > 0)
@@ -297,8 +328,8 @@ namespace VampirioCode.UI
         // Return focus to inputs. Otherwise, Escape key won't be detected
         private void RestoreFocusToInput()
         {
-                 if(lastFocusedInput == findInput)     findInput.Focus();
-            else if(lastFocusedInput == replaceInput)  replaceInput.Focus();
+                 if (lastFocusedInput == findInput)     findInput.Focus();
+            else if (lastFocusedInput == replaceInput)  replaceInput.Focus();
         }
 
         private void Exit()
@@ -319,5 +350,6 @@ namespace VampirioCode.UI
             OptionsVisible = !OptionsVisible;
             RestoreFocusToInput();
         }
+
     }
 }

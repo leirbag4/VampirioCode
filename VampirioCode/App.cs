@@ -55,6 +55,7 @@ namespace VampirioCode
         {
             Config.Initialize();
             MsgBox.Setup(this);
+            XConsole.Setup(footer);
             RegisterCmdKeys();
 
             // theme

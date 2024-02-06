@@ -15,6 +15,7 @@ namespace VampirioCode.UI
     {
         private static RichTextBox _outp;
         private static RichTextBox _savedOutp;
+        private static FooterUI _footer;
 
         public XConsole()
         {
@@ -23,6 +24,11 @@ namespace VampirioCode.UI
             tabControl.SetSkin(22, CColor(40, 40, 40), CColor(39, 40, 34), CColor(170, 60, 85), CColor(255, 255, 255));
 
             SetOutput(outp);
+        }
+
+        public static void Setup(FooterUI footer)
+        {
+            _footer = footer;
         }
 
         private static Color CColor(int red, int green, int blue)
@@ -179,5 +185,11 @@ namespace VampirioCode.UI
             _outp.AppendText(str);
             _outp.ScrollToCaret();
         }
+
+        public static void FooterInfo(String str)
+        {
+            _footer.SetInfo(str);
+        }
+
     }
 }

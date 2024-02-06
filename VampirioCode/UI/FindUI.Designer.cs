@@ -36,6 +36,7 @@
             matchWholeWordCKBox = new CheckBox();
             matchCaseCKBox = new CheckBox();
             optionsButton = new Controls.ButtonAdv();
+            replaceAllButton = new Controls.ButtonAdv();
             optionsGBox.SuspendLayout();
             SuspendLayout();
             // 
@@ -169,11 +170,39 @@
             optionsButton.UseVisualStyleBackColor = true;
             optionsButton.Click += OnOptionsPressed;
             // 
+            // replaceAllButton
+            // 
+            replaceAllButton.BackColor = Color.FromArgb(34, 34, 34);
+            replaceAllButton.BorderColor = Color.FromArgb(57, 57, 57);
+            replaceAllButton.BorderSize = 2;
+            replaceAllButton.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            replaceAllButton.expandImage = false;
+            replaceAllButton.extraText = "all";
+            replaceAllButton.extraTextAlign = ContentAlignment.MiddleCenter;
+            replaceAllButton.extraTextColor = Color.FromArgb(130, 130, 130);
+            replaceAllButton.extraTextFont = new Font("Segoe UI", 7F);
+            replaceAllButton.extraTextOffset = new Point(0, 0);
+            replaceAllButton.FocusColor = Color.FromArgb(24, 81, 115);
+            replaceAllButton.FocusEnabled = false;
+            replaceAllButton.ForeColor = SystemColors.ControlText;
+            replaceAllButton.Location = new Point(194, 43);
+            replaceAllButton.Name = "replaceAllButton";
+            replaceAllButton.PaintImageOnSelected = true;
+            replaceAllButton.processEnterKey = true;
+            replaceAllButton.resizeImage = new Point(0, 0);
+            replaceAllButton.Selected = false;
+            replaceAllButton.SelectedColor = Color.FromArgb(0, 122, 204);
+            replaceAllButton.Size = new Size(28, 28);
+            replaceAllButton.TabIndex = 7;
+            replaceAllButton.UseVisualStyleBackColor = false;
+            replaceAllButton.Click += OnReplaceAllPressed;
+            // 
             // FindUI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(45, 45, 45);
+            Controls.Add(replaceAllButton);
             Controls.Add(optionsButton);
             Controls.Add(optionsGBox);
             Controls.Add(replaceInput);
@@ -196,5 +225,6 @@
         private CheckBox matchCaseCKBox;
         private CheckBox useRegexCKBox;
         private Controls.ButtonAdv optionsButton;
+        private Controls.ButtonAdv replaceAllButton;
     }
 }

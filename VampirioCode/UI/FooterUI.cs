@@ -41,5 +41,15 @@ namespace VampirioCode.UI
             Line =      line;
             Character = character;
         }
+
+        public void SetInfo(string str)
+        {
+            if (infoLabel.InvokeRequired)
+            {
+                infoLabel.Invoke(new MethodInvoker(delegate { infoLabel.Text = str; }));
+            }
+            else
+                infoLabel.Text = str;
+        }
     }
 }
