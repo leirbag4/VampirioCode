@@ -29,29 +29,31 @@
         private void InitializeComponent()
         {
             lineLabel = new Label();
-            charLabel = new Label();
+            columnLabel = new Label();
             infoLabel = new Label();
             languageLabel = new Label();
             label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
             SuspendLayout();
             // 
             // lineLabel
             // 
             lineLabel.ForeColor = Color.Silver;
-            lineLabel.Location = new Point(7, 4);
+            lineLabel.Location = new Point(40, 4);
             lineLabel.Name = "lineLabel";
-            lineLabel.Size = new Size(75, 19);
+            lineLabel.Size = new Size(42, 19);
             lineLabel.TabIndex = 0;
-            lineLabel.Text = "Line 0";
+            lineLabel.Text = "1";
             // 
-            // charLabel
+            // columnLabel
             // 
-            charLabel.ForeColor = Color.Silver;
-            charLabel.Location = new Point(88, 4);
-            charLabel.Name = "charLabel";
-            charLabel.Size = new Size(75, 19);
-            charLabel.TabIndex = 1;
-            charLabel.Text = "Char 0";
+            columnLabel.ForeColor = Color.Silver;
+            columnLabel.Location = new Point(131, 4);
+            columnLabel.Name = "columnLabel";
+            columnLabel.Size = new Size(42, 19);
+            columnLabel.TabIndex = 1;
+            columnLabel.Text = "1";
             // 
             // infoLabel
             // 
@@ -83,15 +85,35 @@
             label1.TabIndex = 4;
             label1.Text = "Info:";
             // 
+            // label2
+            // 
+            label2.ForeColor = Color.Silver;
+            label2.Location = new Point(3, 4);
+            label2.Name = "label2";
+            label2.Size = new Size(38, 19);
+            label2.TabIndex = 5;
+            label2.Text = "Line";
+            // 
+            // label3
+            // 
+            label3.ForeColor = Color.Silver;
+            label3.Location = new Point(88, 4);
+            label3.Name = "label3";
+            label3.Size = new Size(43, 19);
+            label3.TabIndex = 6;
+            label3.Text = "Char";
+            // 
             // FooterUI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(20, 20, 20);
+            Controls.Add(label3);
+            Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(languageLabel);
             Controls.Add(infoLabel);
-            Controls.Add(charLabel);
+            Controls.Add(columnLabel);
             Controls.Add(lineLabel);
             Name = "FooterUI";
             Size = new Size(562, 30);
@@ -101,9 +123,11 @@
         #endregion
 
         private Label lineLabel;
-        private Label charLabel;
+        private Label columnLabel;
         private Label infoLabel;
         private Label languageLabel;
         private Label label1;
+        private Label label2;
+        private Label label3;
     }
 }

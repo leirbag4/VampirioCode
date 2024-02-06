@@ -34,8 +34,11 @@ namespace VampEditor
     public class VampirioEditor : Scintilla
     {
         public delegate void ContextItemPressedEvent(EditorEventType eventType);
+        public delegate void PositionChangedEvent(VampirioEditor editor, int lineNumber, int columnNumber, int position);
         public event ContextItemPressedEvent ContextItemPressed;
+        public event PositionChangedEvent PositionChanged;
 
+        public int CurrentColumn { get { return GetColumn(CurrentPosition); } }
         public bool IsVerticalScrollVisible { get { return (Lines.Count > LinesOnScreen); } }
         public LanguageBase Language { get; private set; }
         public StyleMode StyleMode { get; private set; }
@@ -181,6 +184,7 @@ namespace VampEditor
             else if (e.Control && (e.KeyCode == Keys.V))
             {
                 this.Paste();
+                
             }
 
             base.OnKeyDown(e);
@@ -188,9 +192,16 @@ namespace VampEditor
 
         protected override void OnUpdateUI(UpdateUIEventArgs e)
         {
+            RaiseEvents();
             HighlightBraces();
 
             base.OnUpdateUI(e);
+        }
+
+        private void RaiseEvents()
+        {
+            if (PositionChanged != null)
+                PositionChanged(this, CurrentLine, CurrentColumn, CurrentPosition);
         }
 
         private bool HighlightBraces()

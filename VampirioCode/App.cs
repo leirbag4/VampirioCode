@@ -29,6 +29,41 @@ namespace VampirioCode
             InitializeComponent();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            Config.Initialize();
+            MsgBox.Setup(this);
+            XConsole.Setup(footer);
+            RegisterCmdKeys();
+
+            // theme
+            menuStrip.Renderer = new VampirioCode.UI.VampGraphics.MenuStripRenderer();
+            menuStrip.BackColor = Color.FromArgb(30, 30, 30);
+            menuStrip.ForeColor = Color.Silver;
+
+            // doc manager events
+            docManager.CurrDocumentTabChanged +=    OnCurrDocumentTabChanged;
+            docManager.EditorContextItemPressed +=  OnEditorContextItemPressed;
+            docManager.DocumentCreated +=           OnDocumentCreated;
+            docManager.DocumentRemoved +=           OnDocumentRemoved;
+
+            // tool bar events
+            toolBar.StartPressed +=     OnStartPressed;
+            toolBar.ReloadPressed +=    OnReloadPressed;
+
+            // open last documents
+            OpenLastDocuments();
+
+            // start builders
+            dotnet =        new Dotnet();
+            csBuilder =     new SimpleCSharpBuilder();
+            cppBuilder =    new SimpleCppBuilder();
+            jsBuilder =     new SimpleJsBuilder();
+            phpBuilder =    new SimplePhpBuilder();
+
+            base.OnLoad(e);
+        }
+
         protected override void OnShown(EventArgs e)
         {
             // resize the window to the last size
@@ -49,39 +84,6 @@ namespace VampirioCode
             }
 
             base.OnShown(e);
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            Config.Initialize();
-            MsgBox.Setup(this);
-            XConsole.Setup(footer);
-            RegisterCmdKeys();
-
-            // theme
-            menuStrip.Renderer = new VampirioCode.UI.VampGraphics.MenuStripRenderer();
-            menuStrip.BackColor = Color.FromArgb(30, 30, 30);
-            menuStrip.ForeColor = Color.Silver;
-
-            // doc manager events
-            docManager.OnCurrDocumentTabChanged +=  OnCurrDocumentTabChanged;
-            docManager.EditorContextItemPressed +=  OnEditorContextItemPressed;
-
-            // tool bar events
-            toolBar.StartPressed +=     OnStartPressed;
-            toolBar.ReloadPressed +=    OnReloadPressed;
-
-            // open last documents
-            OpenLastDocuments();
-
-            // start builders
-            dotnet =        new Dotnet();
-            csBuilder =     new SimpleCSharpBuilder();
-            cppBuilder =    new SimpleCppBuilder();
-            jsBuilder =     new SimpleJsBuilder();
-            phpBuilder =    new SimplePhpBuilder();
-
-            base.OnLoad(e);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keys)
@@ -364,6 +366,21 @@ namespace VampirioCode
         {
             if (doc != null)
                 SelectLanguage(doc.DocType);
+        }
+
+        private void OnDocumentCreated(Document document, DocumentTab documentTab, CreateMode mode)
+        {
+            documentTab.Editor.PositionChanged += OnEditorPositionChanged;
+        }
+
+        private void OnDocumentRemoved(Document document, DocumentTab documentTab, CloseMode mode)
+        {
+
+        }
+
+        private void OnEditorPositionChanged(VampirioEditor editor, int lineNumber, int columnNumber, int position)
+        {
+            footer.SetLineColumn(lineNumber, columnNumber);
         }
 
         protected override void OnClosing(CancelEventArgs e)

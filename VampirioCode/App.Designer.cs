@@ -66,8 +66,6 @@
             // 
             footer.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             footer.BackColor = Color.FromArgb(20, 20, 20);
-            footer.Character = 0;
-            footer.Line = 0;
             footer.Location = new Point(4, 673);
             footer.Name = "footer";
             footer.Size = new Size(792, 26);

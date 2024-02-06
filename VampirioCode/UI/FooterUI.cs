@@ -13,11 +13,6 @@ namespace VampirioCode.UI
 {
     public partial class FooterUI : UserControl
     {
-        private int _line = 0;
-        private int _char = 0;
-
-        public int Line { get { return _line; } set { _line = value; this.lineLabel.Text = "Line " + _line; } }
-        public int Character { get { return _char; } set { _char = value; this.charLabel.Text = "Char " + _char; } }
 
         public DocumentType DocType 
         {
@@ -31,15 +26,44 @@ namespace VampirioCode.UI
             } 
         }
 
+        private int _line =     1;
+        private int _column =   1;
+
         public FooterUI()
         {
             InitializeComponent();
         }
 
-        public void SetLineChar(int line, int character)
-        { 
-            Line =      line;
-            Character = character;
+        public void SetLineColumn(int line, int column)
+        {
+            line +=     1;
+            column +=   1;
+
+            // update only if value has changed
+            if (_line != line)
+            {
+                if (lineLabel.InvokeRequired)
+                {
+                    lineLabel.Invoke(new MethodInvoker(delegate { lineLabel.Text = line.ToString(); }));
+                }
+                else
+                    lineLabel.Text = line.ToString();
+                
+                _line = line;
+            }
+
+            // update only if value has changed
+            if (_column != column)
+            {
+                if (columnLabel.InvokeRequired)
+                {
+                    columnLabel.Invoke(new MethodInvoker(delegate { columnLabel.Text = column.ToString(); }));
+                }
+                else
+                    columnLabel.Text = column.ToString();
+
+                _column = column;
+            }
         }
 
         public void SetInfo(string str)

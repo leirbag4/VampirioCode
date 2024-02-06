@@ -14,12 +14,30 @@ using VampirioCode.Utils;
 
 namespace VampDocManager
 {
+    public enum CreateMode
+    { 
+        NewDocument,
+        OpenDocument
+    }
+
+    public enum CloseMode
+    { 
+        Normal,
+        Deleted,
+        Saved
+    }
+
     public class DocManager : UserControl
     {
-        public delegate void CurrDocumentTabChanged(int index, Document doc);
+
+        public delegate void DocumentCreatedEvent(Document document, DocumentTab documentTab, CreateMode mode);
+        public delegate void DocumentRemovedEvent(Document document, DocumentTab documentTab, CloseMode mode);
+        public delegate void CurrDocumentTabChangedEvent(int index, Document doc);
         public delegate void EditorContextItemPressedEvent(EditorEventType eventType, Document document);
 
-        public event CurrDocumentTabChanged OnCurrDocumentTabChanged;
+        public event DocumentCreatedEvent DocumentCreated;
+        public event DocumentRemovedEvent DocumentRemoved;
+        public event CurrDocumentTabChangedEvent CurrDocumentTabChanged;
         public event EditorContextItemPressedEvent EditorContextItemPressed;
 
         public DocumentTab CurrDocumentTab { get { return (DocumentTab)tabControl.SelectedTab; } }
@@ -44,11 +62,11 @@ namespace VampDocManager
         {
             Color tabColor = CColor(139, 70, 166); // CColor(170, 60, 85);
 
-            tabControl = new TabControlVamp();
-            tabControl.Dock = DockStyle.Fill;
-            tabControl.BackColor = Color.FromArgb(30, 30, 30);
-            tabControl.Margin = new Padding(0);
-            tabControl.Padding = new Point(0, 0);
+            tabControl =                        new TabControlVamp();
+            tabControl.Dock =                   DockStyle.Fill;
+            tabControl.BackColor =              Color.FromArgb(30, 30, 30);
+            tabControl.Margin =                 new Padding(0);
+            tabControl.Padding =                new Point(0, 0);
             tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), tabColor, CColor(52, 53, 45) , CColor(255, 255, 255));
             tabControl.ControlAdded +=          OnDocumentTabAdded;
             tabControl.SelectedIndexChanged +=  OnSelectedIndexChanged;
@@ -76,8 +94,8 @@ namespace VampDocManager
         {
             RefreshDocs();
 
-            if (OnCurrDocumentTabChanged != null)
-                OnCurrDocumentTabChanged(CurrIndex, CurrDocument);
+            if (CurrDocumentTabChanged != null)
+                CurrDocumentTabChanged(CurrIndex, CurrDocument);
         }
 
         private void OnDocumentTabAdded(object? sender, ControlEventArgs e)
@@ -122,17 +140,25 @@ namespace VampDocManager
             tabControl.ContextMenuStrip.Renderer =  new VampirioCode.UI.VampGraphics.ToolStripRendererVamp();
         }
 
+        private DocumentTab CreateDocument(Document doc)
+        {
+            DocumentTab docTab =            DocumentTab.Create(doc);
+            docTab.ContextItemPressed +=    OnContextItemPressed;
+            tabControl.TabPages.Add(docTab);
+            SelectTab(docTab);
+            return docTab;
+        }
+
         public DocumentTab NewDocument()
         {
             DocumentTab docTab = null;
             Document doc = Document.NewTemporary();
-            
+
             if (doc != null)
             {
-                docTab = DocumentTab.Create(doc);
-                docTab.ContextItemPressed += OnContextItemPressed;
-                tabControl.TabPages.Add(docTab);
-                SelectTab(docTab);
+                docTab = CreateDocument(doc);
+                if (DocumentCreated != null)
+                    DocumentCreated(doc, docTab, CreateMode.NewDocument);
             }
 
             return docTab;
@@ -159,10 +185,9 @@ namespace VampDocManager
                         doc.DocType = settings.DocType;
                 }
 
-                docTab = DocumentTab.Create(doc);
-                docTab.ContextItemPressed += OnContextItemPressed;
-                tabControl.TabPages.Add(docTab);
-                SelectTab(docTab);
+                docTab = CreateDocument(doc);
+                if (DocumentCreated != null)
+                    DocumentCreated(doc, docTab, CreateMode.OpenDocument);
             }
 
             return doc;
@@ -202,9 +227,10 @@ namespace VampDocManager
         {
             //Document doc = Documents[index];
             SelectTabAt(index);
-            Document doc = CurrDocument;
-            int newIndex = index > 0 ? (index - 1) : 0;
-            bool saved;
+            Document doc =  CurrDocument;
+            int newIndex =  index > 0 ? (index - 1) : 0;
+            bool saved =    false;
+            bool deleted =  false;
 
 
             if (doc.Modified)
@@ -220,7 +246,7 @@ namespace VampDocManager
                 else if (result == OptionResult.OptionB) // Don't Save
                 {
                     if (doc.IsTemporary)
-                        Document.Delete(doc);
+                        deleted = Document.Delete(doc);
                 }
                 else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
                 {
@@ -232,7 +258,7 @@ namespace VampDocManager
                 // Doc is empty. User never write anything
                 if (CurrDocument.Text == "")
                 {
-                    Document.Delete(doc);
+                    deleted = Document.Delete(doc);
                 }
                 else
                 {
@@ -246,7 +272,7 @@ namespace VampDocManager
                     }
                     else if (result == OptionResult.OptionB) // Don't Save
                     {
-                        Document.Delete(doc);
+                        deleted = Document.Delete(doc);
                     }
                     else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
                     {
@@ -255,6 +281,17 @@ namespace VampDocManager
                 }
             }
 
+            // Removed Event
+            CloseMode closeMode =   CloseMode.Normal;
+            if (saved && deleted)   throw new Exception("Can't save and delete a document at the same time. Check for bug here");
+            else if (saved)         closeMode = CloseMode.Saved;
+            else if (deleted)       closeMode = CloseMode.Deleted;
+
+            if (DocumentRemoved != null)
+                DocumentRemoved(Documents[index], DocToDocTab(Documents[index]), closeMode);
+
+
+            // Remove from tabs
             tabControl.TabPages.RemoveAt(index);
             RefreshDocs();
 
@@ -342,6 +379,17 @@ namespace VampDocManager
         public int DocToIndex(Document document)
         {
             return Documents.ToList().IndexOf(document);
+        }
+
+        public DocumentTab DocToDocTab(Document doc)
+        {
+            foreach (DocumentTab docTab in DocumentTabs)
+            { 
+                if(docTab.Document == doc)
+                    return docTab;
+            }
+
+            return null;
         }
 
         private void OnCloseTabPressed(object sender, EventArgs e)
