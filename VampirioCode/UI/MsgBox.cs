@@ -91,7 +91,7 @@ namespace VampirioCode.UI
 
         public static DialogResult Show(String title, String description, DialogButtons buttons = DialogButtons.OK, DialogIcon dialogIcon = DialogIcon.Question)
         {
-            return Show(null, title, description, buttons, dialogIcon);
+            return Show(mainControl, title, description, buttons, dialogIcon);
         }
 
         public static DialogResult Show(ContainerControl parent, String title, String description, DialogButtons buttons = DialogButtons.OK, DialogIcon dialogIcon = DialogIcon.Question)
