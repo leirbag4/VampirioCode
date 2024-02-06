@@ -83,16 +83,20 @@ namespace VampirioCode.UI
             mode = replace ? Mode.FindAndReplace : Mode.Find;
 
             this.editor = editor;
-            this.editor.KeyDown -=          OnKeyDown;
-            this.findInput.KeyDown -=       OnKeyDown;
-            this.replaceInput.KeyDown -=    OnKeyDown;
+            this.editor.KeyDown -=              OnKeyDown;
+            this.findInput.KeyDown -=           OnKeyDown;
+            this.replaceInput.KeyDown -=        OnKeyDown;
+            this.closeButton.KeyDown -=         OnKeyDown;
+            this.replaceAllButton.KeyDown -=    OnKeyDown;
 
-            this.editor.KeyDown +=          OnKeyDown;
-            this.findInput.KeyDown +=       OnKeyDown;
-            this.replaceInput.KeyDown +=    OnKeyDown;
+            this.editor.KeyDown +=              OnKeyDown;
+            this.findInput.KeyDown +=           OnKeyDown;
+            this.replaceInput.KeyDown +=        OnKeyDown;
+            this.closeButton.KeyDown +=         OnKeyDown;
+            this.replaceAllButton.KeyDown +=    OnKeyDown;
 
-            this.findInput.GotFocus +=      OnInputsGotFocus;
-            this.replaceInput.GotFocus +=   OnInputsGotFocus;
+            this.findInput.GotFocus +=          OnInputsGotFocus;
+            this.replaceInput.GotFocus +=       OnInputsGotFocus;
 
             this.matchCaseCKBox.CheckedChanged +=       OnOptionCheckedChanged;
             this.matchWholeWordCKBox.CheckedChanged +=  OnOptionCheckedChanged;
@@ -100,7 +104,8 @@ namespace VampirioCode.UI
 
             if (mode == Mode.Find)
             {
-                this.replaceInput.Visible = false;
+                this.replaceInput.Visible =     false;
+                this.replaceAllButton.Visible = false;
                 this.Height = 42;
                 mode = Mode.Find;
             }
@@ -108,6 +113,7 @@ namespace VampirioCode.UI
             OptionsVisible = false;
 
             FindText = editor.SelectedText;
+
         }
 
         private void OnOptionCheckedChanged(object sender, EventArgs e)

@@ -65,8 +65,8 @@
             closeButton.extraTextColor = Color.Black;
             closeButton.extraTextFont = null;
             closeButton.extraTextOffset = new Point(0, 0);
-            closeButton.FocusColor = Color.FromArgb(24, 81, 115);
-            closeButton.FocusEnabled = false;
+            closeButton.FocusColor = Color.FromArgb(0, 122, 204);
+            closeButton.FocusEnabled = true;
             closeButton.Image = Properties.Resources.mmenu_mini_remove;
             closeButton.Location = new Point(192, 6);
             closeButton.Name = "closeButton";
@@ -76,7 +76,7 @@
             closeButton.Selected = false;
             closeButton.SelectedColor = Color.FromArgb(0, 122, 204);
             closeButton.Size = new Size(30, 30);
-            closeButton.TabIndex = 1;
+            closeButton.TabIndex = 3;
             closeButton.UseVisualStyleBackColor = true;
             closeButton.Click += OnCloseButtonPressed;
             // 
@@ -182,8 +182,8 @@
             replaceAllButton.extraTextColor = Color.FromArgb(130, 130, 130);
             replaceAllButton.extraTextFont = new Font("Segoe UI", 7F);
             replaceAllButton.extraTextOffset = new Point(0, 0);
-            replaceAllButton.FocusColor = Color.FromArgb(24, 81, 115);
-            replaceAllButton.FocusEnabled = false;
+            replaceAllButton.FocusColor = Color.FromArgb(0, 122, 204);
+            replaceAllButton.FocusEnabled = true;
             replaceAllButton.ForeColor = SystemColors.ControlText;
             replaceAllButton.Location = new Point(194, 43);
             replaceAllButton.Name = "replaceAllButton";
@@ -193,7 +193,7 @@
             replaceAllButton.Selected = false;
             replaceAllButton.SelectedColor = Color.FromArgb(0, 122, 204);
             replaceAllButton.Size = new Size(28, 28);
-            replaceAllButton.TabIndex = 7;
+            replaceAllButton.TabIndex = 2;
             replaceAllButton.UseVisualStyleBackColor = false;
             replaceAllButton.Click += OnReplaceAllPressed;
             // 
