@@ -1,6 +1,6 @@
 ﻿namespace VampirioCode.UI
 {
-    partial class Find
+    partial class FindUI
     {
         /// <summary> 
         /// Required designer variable.

@@ -215,8 +215,8 @@ namespace VampEditor
             Indicators[8].Style = ScintillaNET.IndicatorStyle.RoundBox;
             Indicators[8].Under = false;
             Indicators[8].ForeColor = Color.FromArgb(38, 147, 255);
-            Indicators[8].OutlineAlpha = 50;
-            Indicators[8].Alpha = 100;
+            Indicators[8].OutlineAlpha = 70;
+            Indicators[8].Alpha = 40;
             //----------------------------------
 
             IndicatorClearRange(0, TextLength);

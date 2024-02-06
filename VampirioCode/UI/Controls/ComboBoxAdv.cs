@@ -137,11 +137,15 @@ namespace VampirioCode.UI.Controls
                 {
                     SelectAll();
                 });
-                e.Handled = false;
+                e.Handled = true;
 
                 //EVENT
                 if (EnterPressed != null)
                     EnterPressed(this, new KeyPressedEventArgs(prevTxt != Text, SelectionLength != 0));
+            }
+            else if (e.KeyChar == (char)Keys.Escape)
+            {
+                e.Handled = true;
             }
 
             base.OnKeyPress(e);

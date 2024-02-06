@@ -23,7 +23,7 @@ namespace VampDocManager
         public bool IsFindActive { get; set; } = false;
 
         private VampirioEditor editor;
-        private Find find;
+        private FindUI find;
 
         public static DocumentTab Create(Document doc)
         {
@@ -99,7 +99,7 @@ namespace VampDocManager
 
             int x, y = -2;
             
-            find = new Find(Editor, replace);
+            find = new FindUI(Editor, replace);
 
             if (Editor.IsVerticalScrollVisible) x = this.Width - find.Width - SystemInformation.VerticalScrollBarWidth;
             else                                x = this.Width - find.Width;

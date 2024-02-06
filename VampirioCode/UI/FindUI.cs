@@ -13,7 +13,7 @@ using VampEditor;
 namespace VampirioCode.UI
 {
 
-    public partial class Find : UserControl
+    public partial class FindUI : UserControl
     {
         enum Mode
         {
@@ -32,7 +32,7 @@ namespace VampirioCode.UI
         private Color _borderColor = Color.FromArgb(139, 70, 166);
         private Mode mode = Mode.Find;
 
-        public Find(VampirioEditor editor, bool replace = false) : base()
+        public FindUI(VampirioEditor editor, bool replace = false) : base()
         {
             InitializeComponent();
 
@@ -65,10 +65,11 @@ namespace VampirioCode.UI
                 replaceInput.Focus();
             }
 
-            FindNow(FindText);
+            ResetPointer();
+            Find(FindText);
         }
 
-        public void FindNow(String str)
+        public void Find(String str)
         {
             int pos = FindNext(str);
 
@@ -78,37 +79,14 @@ namespace VampirioCode.UI
                 pos = FindNext(str);
 
                 if (pos == -1)
-                    MessageBox.Show("No more occurrences.", "Find", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MsgBox.Show("Find", "No more occurrences.", DialogButtons.OK, DialogIcon.Info);
             }
-        }
-
-        private void OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                Exit();
-            }
-        }
-
-        private void OnCloseButtonPressed(object sender, EventArgs e)
-        {
-            Exit();
-        }
-
-        private void OnFindEnterPressed(object sender, VampirioCode.UI.Controls.Events.KeyPressedEventArgs e)
-        {
-            FindNext(FindText);
-        }
-
-        private void OnReplaceEnterPressed(object sender, VampirioCode.UI.Controls.Events.KeyPressedEventArgs e)
-        {
-            XConsole.Println("replace");
         }
 
         private int FindNext(string text)
         {
             editor.StartHighlight(FindText);
-            editor.SetSelectionStyle();
+            //editor.SetSelectionStyle();
 
             editor.SearchFlags =    GetFlags();
             editor.TargetStart =    Math.Max(editor.CurrentPosition, editor.AnchorPosition);
@@ -119,6 +97,14 @@ namespace VampirioCode.UI
                 editor.SetSel(editor.TargetStart, editor.TargetEnd);
 
             return pos;
+        }
+
+        private void ResetPointer()
+        {
+            if(editor.SelectionStart < editor.SelectionEnd)
+                editor.SelectionEnd = editor.SelectionStart;
+            else
+                editor.SelectionStart = editor.SelectionEnd;
         }
 
         private SearchFlags GetFlags()
@@ -138,6 +124,29 @@ namespace VampirioCode.UI
             return flags;
         }
 
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Exit();
+            }
+        }
+
+        private void OnCloseButtonPressed(object sender, EventArgs e)
+        {
+            Exit();
+        }
+
+        private void OnFindEnterPressed(object sender, VampirioCode.UI.Controls.Events.KeyPressedEventArgs e)
+        {
+            Find(FindText);
+        }
+
+        private void OnReplaceEnterPressed(object sender, VampirioCode.UI.Controls.Events.KeyPressedEventArgs e)
+        {
+            XConsole.Println("replace");
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (_borderSize > 0)
@@ -152,7 +161,7 @@ namespace VampirioCode.UI
         private void Exit()
         {
             editor.StopHighlight();
-            editor.ResetSelectionStyle();
+            //editor.ResetSelectionStyle();
             editor.SearchFlags = SearchFlags.None;
 
             if (Close != null)
