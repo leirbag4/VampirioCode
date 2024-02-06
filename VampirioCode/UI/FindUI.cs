@@ -42,6 +42,11 @@ namespace VampirioCode.UI
             mode = replace ? Mode.FindAndReplace : Mode.Find;
 
             this.editor = editor;
+            this.editor.KeyDown -=          OnKeyDown;
+            this.findInput.KeyDown -=       OnKeyDown;
+            this.replaceInput.KeyDown -=    OnKeyDown;
+
+            this.editor.KeyDown +=          OnKeyDown;
             this.findInput.KeyDown +=       OnKeyDown;
             this.replaceInput.KeyDown +=    OnKeyDown;
 
@@ -238,8 +243,11 @@ namespace VampirioCode.UI
         private void Exit()
         {
             editor.StopHighlight();
-            //editor.ResetSelectionStyle();
             editor.SearchFlags = SearchFlags.None;
+
+            this.editor.KeyDown -=          OnKeyDown;
+            this.findInput.KeyDown -=       OnKeyDown;
+            this.replaceInput.KeyDown -=    OnKeyDown;
 
             if (Close != null)
                 Close();
