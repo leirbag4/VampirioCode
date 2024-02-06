@@ -25,7 +25,7 @@ namespace VampirioCode.Builder
             OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\bin\proj.exe
         }
 
-        public override async Task BuildAndRun()
+        protected override async Task OnBuildAndRun()
         {
             var result = await _Build();
             RunResult runResult;
@@ -41,6 +41,7 @@ namespace VampirioCode.Builder
             runResult = new RunResult();
             runResult.SetError(result.ErrorInfo);
             //return runResult;
+            CheckResult(result);
         }
 
 

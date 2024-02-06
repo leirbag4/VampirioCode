@@ -17,7 +17,7 @@ namespace VampirioCode.Builder
             OutputFilename =        "";
         }
 
-        public override async Task BuildAndRun()
+        protected override async Task OnBuildAndRun()
         {
             Prepare();
 
@@ -37,7 +37,9 @@ namespace VampirioCode.Builder
 
             // [ COMPILATION PROCESS ]
             Nodejs nodejs = new Nodejs();
-            await nodejs.RunAsync(ProgramFile);
+            var result = await nodejs.RunAsync(ProgramFile);
+
+            CheckResult(result);
         }
     }
 }

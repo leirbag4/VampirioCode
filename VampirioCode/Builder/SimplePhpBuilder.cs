@@ -17,7 +17,7 @@ namespace VampirioCode.Builder
             OutputFilename =        "";
         }
 
-        public override async Task BuildAndRun()
+        protected override async Task OnBuildAndRun()
         {
             Prepare();
 
@@ -36,8 +36,10 @@ namespace VampirioCode.Builder
             File.WriteAllText(ProgramFile, code);
 
             // [ COMPILATION PROCESS ]
-            PHP nodejs = new PHP();
-            await nodejs.RunAsync(ProgramFile);
+            PHP php = new PHP();
+            var result = await php.RunAsync(ProgramFile);
+
+            CheckResult(result);
         }
     }
 }

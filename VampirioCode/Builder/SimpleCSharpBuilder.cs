@@ -26,7 +26,7 @@ namespace VampirioCode.Builder
             OutputFilename =        outputDir + "\\net8.0\\" + projectName + ".exe";    // output filename ->       \temp_build\proj_name\bin\net8.0\proj.exe
         }
 
-        public override async Task BuildAndRun()
+        protected override async Task OnBuildAndRun()
         {
             Prepare();
 
@@ -50,7 +50,9 @@ namespace VampirioCode.Builder
 
             // [ COMPILATION PROCESS ]
             Dotnet dotnet = new Dotnet();
-            await dotnet.RunAsync(csprojFilePath);
+            var result = await dotnet.RunAsync(csprojFilePath);
+
+            CheckResult(result);
         }
 
         private string GetCsprojData()
