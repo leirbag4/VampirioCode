@@ -94,6 +94,10 @@ namespace VampDocManager
         {
             RefreshDocs();
 
+            // Focus to the editor to gain user control
+            CurrDocumentTab.Editor.Focus();
+
+            // Events
             if (CurrDocumentTabChanged != null)
                 CurrDocumentTabChanged(CurrIndex, CurrDocument);
         }
@@ -288,7 +292,7 @@ namespace VampDocManager
             else if (deleted)       closeMode = CloseMode.Deleted;
 
             if (DocumentRemoved != null)
-                DocumentRemoved(Documents[index], DocToDocTab(Documents[index]), closeMode);
+                DocumentRemoved(Documents[index], DocumentTabs[index], closeMode);
 
 
             // Remove from tabs
@@ -379,17 +383,6 @@ namespace VampDocManager
         public int DocToIndex(Document document)
         {
             return Documents.ToList().IndexOf(document);
-        }
-
-        public DocumentTab DocToDocTab(Document doc)
-        {
-            foreach (DocumentTab docTab in DocumentTabs)
-            { 
-                if(docTab.Document == doc)
-                    return docTab;
-            }
-
-            return null;
         }
 
         private void OnCloseTabPressed(object sender, EventArgs e)
