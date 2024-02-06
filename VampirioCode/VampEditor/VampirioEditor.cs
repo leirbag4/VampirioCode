@@ -51,7 +51,9 @@ namespace VampEditor
             AssignCmdKey(Keys.Control | Keys.P, ScintillaNET.Command.Null);
             AssignCmdKey(Keys.Control | Keys.D, ScintillaNET.Command.Null);*/
 
-
+            ClearCmdKey(Keys.Control | Keys.X); // cut
+            ClearCmdKey(Keys.Control | Keys.C); // copy
+            ClearCmdKey(Keys.Control | Keys.V); // paste
             ClearCmdKey(Keys.Control | Keys.N); // new
             ClearCmdKey(Keys.Control | Keys.O); // open
             ClearCmdKey(Keys.Control | Keys.W); // close
@@ -123,6 +125,65 @@ namespace VampEditor
         {
             this.Text = text;
             EmptyUndoBuffer();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            //
+            // Cut
+            //
+            if (e.Control && (e.KeyCode == Keys.X))
+            {
+                // if no text is selected, then cut the entire line
+                if (SelectedText == "")
+                {
+                    // Clipboard.SetText() doesn't allow an empty string
+                    // so we have to insert at least a new line
+                    string str = Lines[CurrentLine].Text.Trim();
+                    if (str == "")
+                        str = "\n";
+                    
+                    Clipboard.SetText(str);
+
+                    int pos =       CurrentPosition;
+                    int start =     Lines[CurrentLine].Position;
+                    int length =    Lines[CurrentLine].Length;
+                    //int end =     Lines[CurrentLine].EndPosition;
+                    DeleteRange(start, length);
+                    //GotoPosition(pos);
+                }
+                else
+                    this.Cut();
+            }
+            //
+            // Copy
+            //
+            else if (e.Control && (e.KeyCode == Keys.C))
+            {
+                // if no text is selected, then copy the entire line
+                if (SelectedText == "")
+                {
+                    // Clipboard.SetText() doesn't allow an empty string
+                    // so we have to insert at least a new line
+                    string str = Lines[CurrentLine].Text.Trim();
+                    if (str == "")
+                        str = "\n";
+                    
+                    Clipboard.SetText(str);
+                    //this.CopyAllowLine(); // also works but different
+                }
+                else
+                    this.Copy();
+            }
+            //
+            // Paste
+            //
+            else if (e.Control && (e.KeyCode == Keys.V))
+            {
+                this.Paste();
+            }
+
+            base.OnKeyDown(e);
         }
 
         protected override void OnUpdateUI(UpdateUIEventArgs e)
