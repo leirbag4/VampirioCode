@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampEditor;
+using VampirioCode.UI.Controls;
 
 namespace VampirioCode.UI
 {
@@ -24,16 +25,56 @@ namespace VampirioCode.UI
         public delegate void CloseEvent();
         public event CloseEvent Close;
 
-        private static List<String> lastSearchList =    new List<string>();
-        private static List<String> lastReplaceList =   new List<string>();
+        private static List<String> lastSearchList = new List<string>();
+        private static List<String> lastReplaceList = new List<string>();
 
         private string FindText { get { return findInput.Text; } set { findInput.Text = value; } }
         private string ReplaceText { get { return replaceInput.Text; } set { replaceInput.Text = value; } }
+        private ComboBoxAdv lastFocusedInput = null;
+
+        public bool OptionsVisible 
+        { 
+            get { return optionsGBox.Visible; }
+            set
+            {
+                optionsGBox.Visible = value;
+
+                if (optionsGBox.Visible)
+                {
+                    if (mode == Mode.Find)
+                    {
+                        this.Height =           SizeFindOptions;
+                        this.optionsGBox.Top =  OptionsYFind;
+                    }
+                    else if (mode == Mode.FindAndReplace)
+                    {
+                        this.Height =           SizeFindAndReplaceOptions;
+                        this.optionsGBox.Top =  OptionsYFindAndReplace;
+                    }
+                }
+                else
+                { 
+                    if (mode == Mode.Find)
+                        this.Height = SizeFind;
+                    else if (mode == Mode.FindAndReplace)
+                        this.Height = SizeFindAndReplace;
+                }
+
+                this.Invalidate();
+            } 
+        }
 
         private VampirioEditor editor;
         private int _borderSize = 2;
         private Color _borderColor = Color.FromArgb(139, 70, 166);
         private Mode mode = Mode.Find;
+
+        private const int SizeFind =                    42;
+        private const int SizeFindAndReplace =          78;
+        private const int SizeFindOptions =             120;
+        private const int SizeFindAndReplaceOptions =   156;
+        private const int OptionsYFind =                40;
+        private const int OptionsYFindAndReplace =      76;
 
         public FindUI(VampirioEditor editor, bool replace = false) : base()
         {
@@ -50,14 +91,33 @@ namespace VampirioCode.UI
             this.findInput.KeyDown +=       OnKeyDown;
             this.replaceInput.KeyDown +=    OnKeyDown;
 
-            if(mode == Mode.Find)
+            this.findInput.GotFocus +=      OnInputsGotFocus;
+            this.replaceInput.GotFocus +=   OnInputsGotFocus;
+
+            this.matchCaseCKBox.CheckedChanged +=       OnOptionCheckedChanged;
+            this.matchWholeWordCKBox.CheckedChanged +=  OnOptionCheckedChanged;
+            this.useRegexCKBox.CheckedChanged +=        OnOptionCheckedChanged;
+
+            if (mode == Mode.Find)
             {
                 this.replaceInput.Visible = false;
                 this.Height = 42;
                 mode = Mode.Find;
             }
 
+            OptionsVisible = false;
+
             FindText = editor.SelectedText;
+        }
+
+        private void OnOptionCheckedChanged(object sender, EventArgs e)
+        {
+            RestoreFocusToInput();
+        }
+
+        private void OnInputsGotFocus(object sender, EventArgs e)
+        {
+            lastFocusedInput = sender as ComboBoxAdv;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -79,7 +139,7 @@ namespace VampirioCode.UI
 
         public void Find()
         {
-            ProcessLastList(FindText.Trim(),    lastSearchList);
+            ProcessLastList(FindText.Trim(), lastSearchList);
             ProcessLastList(ReplaceText.Trim(), lastReplaceList);
 
             int pos = FindNext(FindText);
@@ -99,9 +159,9 @@ namespace VampirioCode.UI
             editor.StartHighlight(FindText);
             //editor.SetSelectionStyle();
 
-            editor.SearchFlags =    GetFlags();
-            editor.TargetStart =    Math.Max(editor.CurrentPosition, editor.AnchorPosition);
-            editor.TargetEnd =      editor.TextLength;
+            editor.SearchFlags = GetFlags();
+            editor.TargetStart = Math.Max(editor.CurrentPosition, editor.AnchorPosition);
+            editor.TargetEnd = editor.TextLength;
 
             var pos = editor.SearchInTarget(text);
             if (pos >= 0)
@@ -115,7 +175,7 @@ namespace VampirioCode.UI
             if (FindText == "")
                 return;
 
-            ProcessLastList(FindText.Trim(),    lastSearchList);
+            ProcessLastList(FindText.Trim(), lastSearchList);
             ProcessLastList(ReplaceText.Trim(), lastReplaceList);
 
             ResetPointer();
@@ -126,7 +186,7 @@ namespace VampirioCode.UI
                 MsgBox.Show("Find", "No more occurrences.", DialogButtons.OK, DialogIcon.Info);
             else
                 Find();
-            
+
         }
 
         private int ReplaceNext(string findText, string replaceText)
@@ -140,7 +200,7 @@ namespace VampirioCode.UI
 
         private void ResetPointer()
         {
-            if(editor.SelectionStart < editor.SelectionEnd)
+            if (editor.SelectionStart < editor.SelectionEnd)
                 editor.SelectionEnd = editor.SelectionStart;
             else
                 editor.SelectionStart = editor.SelectionEnd;
@@ -148,17 +208,11 @@ namespace VampirioCode.UI
 
         private SearchFlags GetFlags()
         {
-            SearchFlags flags;
+            SearchFlags flags = SearchFlags.None;
 
-            /*flags = ScintillaNET.SearchFlags.None;
-            if (matchCaseCKBox.Checked)
-                flags |= ScintillaNET.SearchFlags.MatchCase;
-            if (matchWholeWordCKBox.Checked)
-                flags |= ScintillaNET.SearchFlags.WholeWord;
-            if (useRegularExpCKBox.Checked)
-                flags |= ScintillaNET.SearchFlags.Regex;*/
-
-            flags = SearchFlags.None;
+            if (matchCaseCKBox.Checked)         flags |= SearchFlags.MatchCase;
+            if (matchWholeWordCKBox.Checked)    flags |= SearchFlags.WholeWord;
+            if (useRegexCKBox.Checked)          flags |= SearchFlags.Regex;
 
             return flags;
         }
@@ -240,6 +294,13 @@ namespace VampirioCode.UI
             base.OnPaint(e);
         }
 
+        // Return focus to inputs. Otherwise, Escape key won't be detected
+        private void RestoreFocusToInput()
+        {
+                 if(lastFocusedInput == findInput)     findInput.Focus();
+            else if(lastFocusedInput == replaceInput)  replaceInput.Focus();
+        }
+
         private void Exit()
         {
             editor.StopHighlight();
@@ -253,5 +314,10 @@ namespace VampirioCode.UI
                 Close();
         }
 
+        private void OnOptionsPressed(object sender, EventArgs e)
+        {
+            OptionsVisible = !OptionsVisible;
+            RestoreFocusToInput();
+        }
     }
 }

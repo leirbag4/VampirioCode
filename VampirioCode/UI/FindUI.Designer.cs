@@ -30,9 +30,13 @@
         {
             findInput = new Controls.ComboBoxAdv();
             closeButton = new Controls.ButtonAdv();
-            pictureBoxAdv1 = new Controls.PictureBoxAdv();
             replaceInput = new Controls.ComboBoxAdv();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).BeginInit();
+            optionsGBox = new Controls.GroupBoxAdv();
+            useRegexCKBox = new CheckBox();
+            matchWholeWordCKBox = new CheckBox();
+            matchCaseCKBox = new CheckBox();
+            optionsButton = new Controls.ButtonAdv();
+            optionsGBox.SuspendLayout();
             SuspendLayout();
             // 
             // findInput
@@ -75,15 +79,6 @@
             closeButton.UseVisualStyleBackColor = true;
             closeButton.Click += OnCloseButtonPressed;
             // 
-            // pictureBoxAdv1
-            // 
-            pictureBoxAdv1.Image = Properties.Resources.mmenu_mini_find;
-            pictureBoxAdv1.Location = new Point(8, 12);
-            pictureBoxAdv1.Name = "pictureBoxAdv1";
-            pictureBoxAdv1.Size = new Size(16, 16);
-            pictureBoxAdv1.TabIndex = 3;
-            pictureBoxAdv1.TabStop = false;
-            // 
             // replaceInput
             // 
             replaceInput.BackColor = Color.FromArgb(52, 52, 52);
@@ -98,18 +93,96 @@
             replaceInput.TabIndex = 1;
             replaceInput.EnterPressed += OnReplaceEnterPressed;
             // 
-            // Find
+            // optionsGBox
+            // 
+            optionsGBox.BorderColor = Color.DarkGray;
+            optionsGBox.BorderSize = 1;
+            optionsGBox.Controls.Add(useRegexCKBox);
+            optionsGBox.Controls.Add(matchWholeWordCKBox);
+            optionsGBox.Controls.Add(matchCaseCKBox);
+            optionsGBox.CStyle = UI.Controls.GroupBoxAdv.CustomStyle.SOLID_NO_BORDERS;
+            optionsGBox.Location = new Point(30, 56);
+            optionsGBox.Name = "optionsGBox";
+            optionsGBox.Size = new Size(188, 75);
+            optionsGBox.TabIndex = 5;
+            optionsGBox.TabStop = false;
+            // 
+            // useRegexCKBox
+            // 
+            useRegexCKBox.AutoSize = true;
+            useRegexCKBox.Font = new Font("Segoe UI", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            useRegexCKBox.ForeColor = Color.FromArgb(224, 224, 224);
+            useRegexCKBox.Location = new Point(5, 51);
+            useRegexCKBox.Name = "useRegexCKBox";
+            useRegexCKBox.Size = new Size(171, 21);
+            useRegexCKBox.TabIndex = 7;
+            useRegexCKBox.Text = "Use regular expressions";
+            useRegexCKBox.UseVisualStyleBackColor = true;
+            // 
+            // matchWholeWordCKBox
+            // 
+            matchWholeWordCKBox.AutoSize = true;
+            matchWholeWordCKBox.Font = new Font("Segoe UI", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            matchWholeWordCKBox.ForeColor = Color.FromArgb(224, 224, 224);
+            matchWholeWordCKBox.Location = new Point(6, 26);
+            matchWholeWordCKBox.Name = "matchWholeWordCKBox";
+            matchWholeWordCKBox.Size = new Size(138, 21);
+            matchWholeWordCKBox.TabIndex = 6;
+            matchWholeWordCKBox.Text = "Match whole word";
+            matchWholeWordCKBox.UseVisualStyleBackColor = true;
+            // 
+            // matchCaseCKBox
+            // 
+            matchCaseCKBox.AutoSize = true;
+            matchCaseCKBox.Font = new Font("Segoe UI", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            matchCaseCKBox.ForeColor = Color.FromArgb(224, 224, 224);
+            matchCaseCKBox.Location = new Point(6, 3);
+            matchCaseCKBox.Name = "matchCaseCKBox";
+            matchCaseCKBox.Size = new Size(96, 21);
+            matchCaseCKBox.TabIndex = 5;
+            matchCaseCKBox.Text = "Match case";
+            matchCaseCKBox.UseVisualStyleBackColor = true;
+            // 
+            // optionsButton
+            // 
+            optionsButton.BorderColor = Color.DarkGray;
+            optionsButton.BorderSize = 1;
+            optionsButton.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID_NO_BORDERS;
+            optionsButton.expandImage = false;
+            optionsButton.extraText = "";
+            optionsButton.extraTextAlign = ContentAlignment.MiddleCenter;
+            optionsButton.extraTextColor = Color.Black;
+            optionsButton.extraTextFont = null;
+            optionsButton.extraTextOffset = new Point(0, 0);
+            optionsButton.FocusColor = Color.FromArgb(24, 81, 115);
+            optionsButton.FocusEnabled = false;
+            optionsButton.Image = Properties.Resources.mmenu_mini_find;
+            optionsButton.Location = new Point(6, 8);
+            optionsButton.Name = "optionsButton";
+            optionsButton.PaintImageOnSelected = true;
+            optionsButton.processEnterKey = true;
+            optionsButton.resizeImage = new Point(0, 0);
+            optionsButton.Selected = false;
+            optionsButton.SelectedColor = Color.FromArgb(0, 122, 204);
+            optionsButton.Size = new Size(26, 26);
+            optionsButton.TabIndex = 6;
+            optionsButton.UseVisualStyleBackColor = true;
+            optionsButton.Click += OnOptionsPressed;
+            // 
+            // FindUI
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(45, 45, 45);
+            Controls.Add(optionsButton);
+            Controls.Add(optionsGBox);
             Controls.Add(replaceInput);
-            Controls.Add(pictureBoxAdv1);
             Controls.Add(closeButton);
             Controls.Add(findInput);
-            Name = "Find";
+            Name = "FindUI";
             Size = new Size(229, 78);
-            ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).EndInit();
+            optionsGBox.ResumeLayout(false);
+            optionsGBox.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -117,7 +190,11 @@
 
         private Controls.ComboBoxAdv findInput;
         private Controls.ButtonAdv closeButton;
-        private Controls.PictureBoxAdv pictureBoxAdv1;
         private Controls.ComboBoxAdv replaceInput;
+        private Controls.GroupBoxAdv optionsGBox;
+        private CheckBox matchWholeWordCKBox;
+        private CheckBox matchCaseCKBox;
+        private CheckBox useRegexCKBox;
+        private Controls.ButtonAdv optionsButton;
     }
 }
