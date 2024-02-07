@@ -146,6 +146,11 @@ namespace VampirioCode.UI.VampGraphics
 
         }
 
+        public static void FillRect(Graphics g, Color backColor, int x, int y, int width, int height)
+        {
+            g.FillRectangle(new SolidBrush(backColor), new Rectangle(x, y, width, height));
+        }
+
         public static void FillRect(Graphics g, Color backColor, Color borderColor, int borderSize, int x, int y, int width, int height)
         {
             FillRect(g, backColor, borderColor, borderSize, new Rectangle(x, y, width, height));
@@ -180,6 +185,37 @@ namespace VampirioCode.UI.VampGraphics
         public static void DrawImage(Graphics g, Bitmap img, int x, int y, int width, int height)
         {
             g.DrawImage(img, x, y, width, height);
+        }
+
+        public static void DrawString(Graphics g, Font font, string str, Color color, int x, int y)
+        {
+            //TextRenderer.DrawText(g, str, font, new Point(x, y), color);
+            //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.DrawString(str, font, new SolidBrush(color), x, y);
+        }
+
+        public static void DrawString(Graphics g, Font font, string str, Color color, int x, int y, ContentAlignment align)
+        {
+            g.DrawString(str, font, new SolidBrush(color), x, y, GetFormat(align));
+        }
+
+        public static void DrawString(Graphics g, Font font, string str, Color color, int x, int y, int width, int height, ContentAlignment align)
+        {
+            g.DrawString(str, font, new SolidBrush(color), new RectangleF(x, y, width, height), GetFormat(align));
+        }
+
+        public static void GetStringSize(Graphics g, Font font, string str)
+        {
+            g.MeasureString(str, font);
+        }
+
+        protected static StringFormat GetFormat(ContentAlignment align)
+        {
+            StringFormat format = new StringFormat();
+            Int32 lNum =            (Int32)Math.Log((Double)align, 2);
+            format.LineAlignment =  (StringAlignment)(lNum / 4);
+            format.Alignment =      (StringAlignment)(lNum % 4);
+            return format;
         }
     }
 }
