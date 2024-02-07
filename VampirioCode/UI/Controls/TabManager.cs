@@ -109,7 +109,7 @@ namespace VampirioCode.UI.Controls
             if (dragging)
             {
                 dragging = false;
-                manager.CancelDragSelection();
+                manager.StopDragging();
             }
 
             state = State.Up;
@@ -128,6 +128,7 @@ namespace VampirioCode.UI.Controls
         public void Paint(Graphics g)
         {
             Color backColor = Color.White;
+            int _x_ = manager.OFFSET_X + x;
 
             //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
@@ -141,16 +142,18 @@ namespace VampirioCode.UI.Controls
                     backColor = Color.DarkGray;
             }
 
-            VampirioGraphics.FillRect(g, backColor, Color.Gray, 2, x, y, width, height);
-            VampirioGraphics.DrawString(g, font, item.Name, Color.Black, x, y, width, height, ContentAlignment.MiddleCenter);
+            VampirioGraphics.FillRect(g, backColor, Color.Gray, 2, _x_, y, width, height);
+            VampirioGraphics.DrawString(g, font, item.Name, Color.Black, _x_, y, width, height, ContentAlignment.MiddleCenter);
 
-            VampirioGraphics.FillRect(g, Color.Black, x + (width >> 1) - 1, y, 3, 4);
+            VampirioGraphics.FillRect(g, Color.Black, _x_ + (width >> 1) - 1, y, 3, 4);
         }
 
     }
 
     public class TabManager
     {
+        public int OFFSET_X = -50;
+
         private int mouseX = -1;
         private int mouseY = -1;
         private bool mouseDown = false;
@@ -169,17 +172,17 @@ namespace VampirioCode.UI.Controls
         private bool IsAnySelected { get { return (SelectedTab != null); } }
 
         public TabManager()
-        { 
+        {
             font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
         }
 
-        public void Add(TabItem item) 
+        public void Add(TabItem item)
         {
             Tab tab = new Tab(item, font, this);
             Tab lastTab = LastTab;
             tabs.Add(tab);
 
-            if(lastTab != null)
+            if (lastTab != null)
                 tab.SetPos(lastTab.x + lastTab.width, 0);
             else
                 tab.SetPos(0, 0);
@@ -192,43 +195,43 @@ namespace VampirioCode.UI.Controls
 
         public void MouseDown(int x, int y)
         {
-            this.mouseX = x;
+            this.mouseX = x - OFFSET_X;
             this.mouseY = y;
             this.mouseDown = true;
 
             foreach (Tab tab in tabs)
             {
-                tab.OnMouseDown(x, y);
+                tab.OnMouseDown(mouseX, mouseY);
             }
             //XConsole.Println("mouse down");
         }
 
         public void MouseMove(int x, int y, bool mouseDown)
         {
-            this.mouseX = x;
+            this.mouseX = x - OFFSET_X;
             this.mouseY = y;
             this.mouseDown = mouseDown;
 
             if (IsAnySelected)
             {
-                SelectedTab.OnMouseMove(x, y, mouseDown);
+                SelectedTab.OnMouseMove(mouseX, mouseY, mouseDown);
             }
             else
             {
                 foreach (Tab tab in tabs)
                 {
-                    tab.OnMouseMove(x, y, mouseDown);
+                    tab.OnMouseMove(mouseX, mouseY, mouseDown);
                 }
             }
 
         }
 
         public void MouseUp(int x, int y)
-        { 
-            this.mouseX = x;
+        {
+            this.mouseX = x - OFFSET_X;
             this.mouseY = y;
             this.mouseDown = false;
-            foreach (Tab tab in tabs) tab.OnMouseUp(x, y);
+            foreach (Tab tab in tabs) tab.OnMouseUp(mouseX, mouseY);
             //XConsole.Println("mouse up")
         }
 
@@ -254,10 +257,12 @@ namespace VampirioCode.UI.Controls
             SelectedTab.BringToFront();
         }
 
-        public void CancelDragSelection()
+        public void StopDragging()
         {
             SelectedTab = null;
             NonSelectedTabs = new List<Tab>();
+
+            RecalculatePositions();
         }
 
         // Get previous tab. The currTab must be contained inside tabList
@@ -272,126 +277,17 @@ namespace VampirioCode.UI.Controls
                 return tabList[index - 1];
         }
 
-        
 
-        public void Update()
+        // Calculate Global position from Local one
+        private int LocalToGlobal(int position)
         {
-
-            int index = 0;
-            bool passesSelected = false;
-            int offsetX;
-
-            if (IsAnySelected)
-            {
-                SelectedTab.y = 4;
-
-
-                offsetX = SelectedTab.x - selTabPreviousX;
-                selTabPreviousX = SelectedTab.x;
-
-                XConsole.Println("o: " + offsetX);
-
-                foreach (Tab nonSelTab in NonSelectedTabs)
-                {
-                    if (offsetX < 0)
-                    {
-                        if (SelectedTab.Left < nonSelTab.CenterX)
-                        {
-                            Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
-
-                            if (prevTab == null)
-                            {
-                                nonSelTab.SetPos(SelectedTab.width, 0);
-                                passesSelected = true;
-                            }
-                            else if (!passesSelected)
-                            {
-                                nonSelTab.SetPos(prevTab.Right + SelectedTab.width, 0);
-                                passesSelected = true;
-                            }
-                            else
-                                nonSelTab.SetPos(prevTab.Right, 0);
-                        }
-                    }
-
-                    if (offsetX > 0)
-                    {
-                        if (SelectedTab.Right > nonSelTab.CenterX)
-                        {
-                            Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
-
-                            // No previous tab. Start from the beginning
-                            if (prevTab == null)
-                                nonSelTab.SetPos(0, 0);
-                            else
-                                nonSelTab.SetPos(prevTab.x + prevTab.width, 0);
-
-                            //tabs.Remove(nonSelTab);
-                            //tabs.Insert(index, nonSelTab);
-
-                            index++;
-                        }
-                    }
-                }
-
-                RecalcIndices();
-            }
-
+            return (position + OFFSET_X);
         }
 
-        public void Update2()
-        {
 
-            int index = 0;
-            bool passesSelected = false;
-
-            if (IsAnySelected)
-            {
-                SelectedTab.y = 4;
-
-                foreach (Tab nonSelTab in NonSelectedTabs)
-                {
-                    if (SelectedTab.CenterX < nonSelTab.Right)
-                    {
-                        Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
-
-                        if (prevTab == null)
-                        {
-                            nonSelTab.SetPos(SelectedTab.width, 0);
-                            passesSelected = true;
-                        }
-                        else if (!passesSelected)
-                        {
-                            nonSelTab.SetPos(prevTab.Right + SelectedTab.width, 0);
-                            passesSelected = true;
-                        }
-                        else
-                            nonSelTab.SetPos(prevTab.Right, 0);
-                    }
-
-
-                    if (SelectedTab.CenterX > nonSelTab.Left)
-                    {
-                        Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
-
-                        // No previous tab. Start from the beginning
-                        if (prevTab == null)
-                            nonSelTab.SetPos(0, 0);
-                        else
-                            nonSelTab.SetPos(prevTab.x + prevTab.width, 0);
-
-                        //tabs.Remove(nonSelTab);
-                        //tabs.Insert(index, nonSelTab);
-
-                        index++;
-                    }
-                }
-
-                RecalcIndices();
-            }
-
-        }
-
+        //
+        // Recalculate tabs index positions inside tabs array 
+        // 
         private void RecalcIndices()
         {
             List<Tab> newList = new List<Tab>();
@@ -422,6 +318,100 @@ namespace VampirioCode.UI.Controls
             tabs = newList;
         }
 
+
+        //
+        // Recalculate visual positions but do not touch the tabs array
+        //
+        private void RecalculatePositions()
+        {
+            // Recalculate x positions
+            for (int a = 0; a < tabs.Count; a++)
+            {
+                Tab tab = tabs[a];
+
+                if (a == 0)
+                    tab.SetPos(0, 0);
+                else
+                    tab.SetPos(tabs[a - 1].Right, 0);
+            }
+        }
+
+        //
+        // Update method
+        //
+        public void Update()
+        {
+            bool passesSelected = false;
+            int movDirection;
+
+            if (IsAnySelected)
+            {
+                SelectedTab.y = 4;
+
+
+                // Calculate moving direction to know if moving to the left or right
+                movDirection = SelectedTab.x - selTabPreviousX;
+                selTabPreviousX = SelectedTab.x;
+
+
+                /*if (LocalToGlobal(SelectedTab.Right) > 300)
+                    OFFSET_X -= movDirection >> 1;
+                else if (LocalToGlobal(SelectedTab.Left) < 0)
+                    OFFSET_X -= movDirection >> 1;
+
+                if (OFFSET_X > 0)
+                    OFFSET_X = 0;*/
+
+
+                // Main loop to move tabs
+                foreach (Tab nonSelTab in NonSelectedTabs)
+                {
+                    // If is moving to the left
+                    if (movDirection < 0)
+                    {
+                        if (SelectedTab.Left < nonSelTab.CenterX)
+                        {
+                            Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
+
+                            if (prevTab == null)
+                            {
+                                nonSelTab.SetPos(SelectedTab.width, 0);
+                                passesSelected = true;
+                            }
+                            else if (!passesSelected)
+                            {
+                                nonSelTab.SetPos(prevTab.Right + SelectedTab.width, 0);
+                                passesSelected = true;
+                            }
+                            else
+                                nonSelTab.SetPos(prevTab.Right, 0);
+                        }
+                    }
+                    // If is moving to the right
+                    else if (movDirection > 0)
+                    {
+                        if (SelectedTab.Right > nonSelTab.CenterX)
+                        {
+                            Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
+
+                            // No previous tab. Start from the beginning
+                            if (prevTab == null)
+                                nonSelTab.SetPos(0, 0);
+                            else
+                                nonSelTab.SetPos(prevTab.x + prevTab.width, 0);
+                        }
+                    }
+                }
+
+                RecalcIndices();
+            }
+
+        }
+
+
+        //
+        // Paint method
+        //
         public void Paint(Graphics g)
         {
             Tab drawAtTopTab = null;
@@ -442,7 +432,12 @@ namespace VampirioCode.UI.Controls
                 drawAtTopTab.Paint(g);
 
 
+            // Debug painting
+            PrintDebug(g);
+        }
 
+        private void PrintDebug(Graphics g) 
+        {
             // -------------------------
             int _startY_ = 100;
 
@@ -456,7 +451,7 @@ namespace VampirioCode.UI.Controls
                     Tab nonSelTab = NonSelectedTabs[a];
                     Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
                     string prevStr = "  prev: ";
-                    if(prevTab != null)
+                    if (prevTab != null)
                         prevStr += prevTab.item.Name;
 
                     VampirioGraphics.DrawString(g, font, nonSelTab.item.Name + prevStr, Color.Red, 10, _startY_);
@@ -473,17 +468,13 @@ namespace VampirioCode.UI.Controls
                 Tab tab = tabs[a];
                 Color color = Color.Blue;
 
-                if(tab == SelectedTab)
+                if (tab == SelectedTab)
                     color = Color.Green;
 
                 VampirioGraphics.DrawString(g, font, tab.item.Name + "     x: " + tab.x, color, 180, _startY_);
                 _startY_ += 15;
             }
-
-            //for(int a = 0; a < )
         }
-
-
 
     }
 }
