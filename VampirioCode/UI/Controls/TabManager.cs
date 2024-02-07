@@ -154,6 +154,8 @@ namespace VampirioCode.UI.Controls
     {
         public int OFFSET_X = -50;
 
+        private int width = 400;
+        private int height = 30;
         private int mouseX = -1;
         private int mouseY = -1;
         private bool mouseDown = false;
@@ -342,7 +344,7 @@ namespace VampirioCode.UI.Controls
         public void Update()
         {
             bool passesSelected = false;
-            int movDirection;
+            int moveDirection;
 
             if (IsAnySelected)
             {
@@ -350,8 +352,8 @@ namespace VampirioCode.UI.Controls
 
 
                 // Calculate moving direction to know if moving to the left or right
-                movDirection = SelectedTab.x - selTabPreviousX;
-                selTabPreviousX = SelectedTab.x;
+                moveDirection = LocalToGlobal(SelectedTab.x) - selTabPreviousX;
+                selTabPreviousX = LocalToGlobal(SelectedTab.x);
 
 
                 /*if (LocalToGlobal(SelectedTab.Right) > 300)
@@ -362,12 +364,25 @@ namespace VampirioCode.UI.Controls
                 if (OFFSET_X > 0)
                     OFFSET_X = 0;*/
 
+                //XConsole.Println("dir: " + moveDirection);
+
+                if (moveDirection < 0)
+                {
+                    if (LocalToGlobal(SelectedTab.Left) < 0)
+                        OFFSET_X -= moveDirection;
+                }
+                else if (moveDirection > 0)
+                { 
+                    if(LocalToGlobal(SelectedTab.Right) > width)
+                        OFFSET_X -= moveDirection;
+                }
+
 
                 // Main loop to move tabs
                 foreach (Tab nonSelTab in NonSelectedTabs)
                 {
                     // If is moving to the left
-                    if (movDirection < 0)
+                    if (moveDirection < 0)
                     {
                         if (SelectedTab.Left < nonSelTab.CenterX)
                         {
@@ -388,7 +403,7 @@ namespace VampirioCode.UI.Controls
                         }
                     }
                     // If is moving to the right
-                    else if (movDirection > 0)
+                    else if (moveDirection > 0)
                     {
                         if (SelectedTab.Right > nonSelTab.CenterX)
                         {
@@ -414,6 +429,8 @@ namespace VampirioCode.UI.Controls
         //
         public void Paint(Graphics g)
         {
+            VampirioGraphics.FillRect(g, Color.FromArgb(90, 90, 90), 0, 0, width, height);
+
             Tab drawAtTopTab = null;
 
             for (int a = 0; a < tabs.Count; a++)
