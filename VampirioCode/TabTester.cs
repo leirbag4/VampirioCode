@@ -53,13 +53,19 @@ namespace VampirioCode
                 AddItem();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        int counter2 = 0;
+
+        private void WinAdd(object sender, EventArgs e)
         {
-            tabControlWin.TabPages.Insert(0, "some");
-            //tabControlWin.TabPages.Insert()
+            tabControlWin.TabPages.Add("some " + counter2++);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void WinInsert0(object sender, EventArgs e)
+        {
+            tabControlWin.TabPages.Insert(0, "some" + counter2++);
+        }
+
+        private void WinRemove(object sender, EventArgs e)
         {
             tabControlWin.TabPages.RemoveAt(0);
         }
@@ -90,6 +96,30 @@ namespace VampirioCode
         private void OnClearPressed(object sender, EventArgs e)
         {
             XConsole.Clear();
+        }
+
+        private void OnRemoveItemNumb(object sender, EventArgs e)
+        {
+            int numb = int.Parse(((Button)sender).Tag.ToString());
+            tabControl.Items.RemoveAt(numb);
+        }
+
+        private void OnInsertItemNumb(object sender, EventArgs e)
+        {
+            int numb = int.Parse(((Button)sender).Tag.ToString());
+            tabControl.Items.Insert(numb, new TabItem("item " + counter++));
+        }
+
+        private void OnWinRemovePressed(object sender, EventArgs e)
+        {
+            int numb = int.Parse(((Button)sender).Tag.ToString());
+            tabControlWin.TabPages.RemoveAt(numb);
+        }
+
+        private void OnWinInsertPressed(object sender, EventArgs e)
+        {
+            int numb = int.Parse(((Button)sender).Tag.ToString());
+            tabControlWin.TabPages.Insert(numb, new TabPage("item " + counter++));
         }
     }
 }

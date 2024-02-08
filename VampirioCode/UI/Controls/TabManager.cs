@@ -62,6 +62,31 @@ namespace VampirioCode.UI.Controls
             Selected = false;
         }
 
+        public int Index()
+        {
+            return manager.tabs.IndexOf(this);
+        }
+
+        public Tab Prev()
+        {
+            int index = Index();
+            
+            if (index == 0) 
+                return null;
+            else 
+                return manager.tabs[index - 1];
+        }
+
+        public Tab Next()
+        {
+            int index = Index();
+
+            if (index >= (manager.tabs.Count - 1))
+                return null;
+            else
+                return manager.tabs[index + 1];
+        }
+
         public void OnMouseDown(int mx, int my)
         {
             if (IsInside(mx, my))
@@ -152,22 +177,19 @@ namespace VampirioCode.UI.Controls
         private int mouseX = -1;
         private int mouseY = -1;
         private bool mouseDown = false;
-        // The complete tabs list including the selected and dragged tab
-        private List<Tab> tabs = new List<Tab>();
+
+        public List<Tab> tabs = new List<Tab>();                // The complete tabs list including the selected and dragged tab
+        private Tab SelectedTab = null;                         // The tab the user is dragging or moving from left to right
+        private List<Tab> NonSelectedTabs = new List<Tab>();    // This list include all the other tabs rather than the selected one that is being dragged
+        private int selTabPreviousX = 0;                        // Register the start x position of the selected tab on MouseDown or Start Drag to calculate in which direction it is moving. On every Update loop it is reset again.
         private Font font;
-        // The tab the user is dragging or moving from left to right
-        private Tab SelectedTab = null;
-        // This list include all the other tabs rather than the selected one that is being dragged
-        private List<Tab> NonSelectedTabs = new List<Tab>();
-        // Register the start x position of the selected tab on MouseDown or Start Drag to
-        // calculate in which direction it is moving. On every Update loop it is reset again.
-        private int selTabPreviousX = 0;
 
-        public Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
-        public int TotalTabs { get { return tabs.Count; } }
-        public bool IsDragging { get; set; } = false;
-        public bool IsAnySelected { get { return (SelectedTab != null); } }  
-
+        public int TotalTabs { get { return tabs.Count; } }                         // Total amount of tabs
+        public bool IsDragging { get; set; } = false;                               // SelectedTab is being dragged
+        public bool IsAnySelected { get { return (SelectedTab != null); } }         // There is a selected tab
+        public bool IsOutsideBounds { get { return (TotalWidth(tabs) > width); } }  // Any or many tabs are outside screen because they can't fit inside it
+        public bool TabsFitOnScreen { get { return !IsOutsideBounds; } }            // All tabs fit inside the screen. No tab is outside 
+        
         public TabManager()
         {
             font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -175,25 +197,61 @@ namespace VampirioCode.UI.Controls
 
         public void Add(TabItem item)
         {
+            Insert(TotalTabs, item);
+        }
+
+
+        public void Insert(int index, TabItem item)
+        {
             Tab tab = new Tab(item, font, this);
-            Tab lastTab = LastTab;
-            tabs.Add(tab);
+            int totals = TotalTabs;
 
-            if (lastTab != null)
-                tab.SetPos(lastTab.x + lastTab.width, 0);
-            else
-                tab.SetPos(0, 0);
+            tabs.Insert(index, tab);
+            ResetPositionsFrom(index);
 
-            if(!IsAnySelected)
+            if (!IsAnySelected)
                 Select(tab);
         }
 
         public void RemoveAt(int index)
         {
-            tabs.RemoveAt(index);
+            if (TotalTabs <= 0)
+            {
+                throw new Exception("Can't remove an item because array is empty");
+            }
+            else if (TotalTabs == 1)
+            {
+                tabs.RemoveAt(index);
+                SelectedTab = null;
+                OFFSET_X = 0;
+            }
+            else // TotalTabs > 1
+            {
+                // current tab to remove is the selected one
+                if (SelectedTab == tabs[index])
+                {
+                    tabs.RemoveAt(index);
 
-            // Recalc Positions
-            
+                    // SelectedTab was at index 0
+                    if (index == 0)
+                        Select(tabs[0]);
+                    else // index > 0
+                        Select(tabs[index - 1]);
+                }
+                else
+                {
+                    tabs.RemoveAt(index);
+                }
+
+                ResetPositionsFrom(index);
+
+                // if all tabs fit inside screen
+                if (TabsFitOnScreen)
+                    OFFSET_X = 0;
+            }
+
+
+
         }
 
         public void MouseDown(int x, int y)
@@ -246,6 +304,10 @@ namespace VampirioCode.UI.Controls
             //XConsole.Println("mouse up")
         }
 
+        public void MouseScroll(int direction)
+        {
+            OFFSET_X -= direction;
+        }
 
         private void Select(Tab selTab)
         {
@@ -279,7 +341,7 @@ namespace VampirioCode.UI.Controls
             IsDragging =        false;
             NonSelectedTabs =   new List<Tab>();
 
-            RecalculatePositions();
+            ResetPositions();
         }
 
         // Get previous tab. The currTab must be contained inside tabList
@@ -347,12 +409,26 @@ namespace VampirioCode.UI.Controls
 
 
         //
-        // Recalculate visual positions but do not touch the tabs array
+        // Reset visual positions but do not touch the tabs array
         //
-        private void RecalculatePositions()
+        private void ResetPositions()
         {
             // Recalculate x positions
             for (int a = 0; a < tabs.Count; a++)
+            {
+                Tab tab = tabs[a];
+
+                if (a == 0)
+                    tab.SetPos(0, 0);
+                else
+                    tab.SetPos(tabs[a - 1].Right, 0);
+            }
+        }
+
+        private void ResetPositionsFrom(int index)
+        {
+            // Recalculate x positions
+            for (int a = index; a < tabs.Count; a++)
             {
                 Tab tab = tabs[a];
 
@@ -525,6 +601,8 @@ namespace VampirioCode.UI.Controls
 
         private void PrintDebug(Graphics g) 
         {
+            VampirioGraphics.DrawString(g, font, "OFFSET_X: " + OFFSET_X, Color.Magenta, 180, 100);
+
             // -------------------------
             int _startY_ = 100;
 
@@ -561,6 +639,9 @@ namespace VampirioCode.UI.Controls
                 VampirioGraphics.DrawString(g, font, tab.item.Name + "     x: " + tab.x, color, 180, _startY_);
                 _startY_ += 15;
             }
+            // --------------------------
+
+            
         }
 
     }

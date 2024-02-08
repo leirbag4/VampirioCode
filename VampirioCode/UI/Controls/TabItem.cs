@@ -13,6 +13,7 @@ namespace VampirioCode.UI.Controls
         public TabItem(string name) 
         {
             this.Name = name;
+            this.Width = 80;
         }
 
     }

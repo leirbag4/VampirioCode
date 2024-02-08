@@ -9,8 +9,8 @@ namespace VampirioCode.UI.Controls
 {
     public class TabItemCollection : Collection<TabItem>
     {
-        public delegate void ItemAddedEvent(TabItem item);
-        public delegate void ItemRemovedEvent(TabItem item);
+        public delegate void ItemAddedEvent(int index, TabItem item);
+        public delegate void ItemRemovedEvent(int index, TabItem item);
         public delegate void ItemModifiedEvent(TabItem oldItem, TabItem newItem);
         public delegate void ItemsClearedEvent();
         public event ItemAddedEvent ItemAdded;
@@ -24,7 +24,7 @@ namespace VampirioCode.UI.Controls
             base.InsertItem(index, item);
             
             if(ItemAdded != null)
-                ItemAdded(item);
+                ItemAdded(index, item);
         }
 
         protected override void RemoveItem(int index)
@@ -33,7 +33,7 @@ namespace VampirioCode.UI.Controls
             base.RemoveItem(index);
 
             if (ItemRemoved != null)
-                ItemRemoved(item);
+                ItemRemoved(index, item);
         }
 
         protected override void SetItem(int index, TabItem item)
@@ -85,17 +85,18 @@ namespace VampirioCode.UI.Controls
         }
 
 
-        private void OnItemAdded(TabItem item)
+        private void OnItemAdded(int index, TabItem item)
         {
-            XConsole.Println("item added: " + item.Name);
-            manager.Add(item);
+            XConsole.Println("item added: " + item.Name + " at " + index);
+            //manager.Add(item);
+            manager.Insert(index, item);
             Invalidate();
         }
 
-        private void OnItemRemoved(TabItem item)
+        private void OnItemRemoved(int index, TabItem item)
         {
             XConsole.Println("item removed: " + item.Name);
-            manager.RemoveAt(0);
+            manager.RemoveAt(index);
             Invalidate();
         }
 
@@ -143,6 +144,13 @@ namespace VampirioCode.UI.Controls
         {
             manager.MouseLeave();
             base.OnMouseLeave(e);
+            Invalidate();
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            manager.MouseScroll(e.Delta > 0 ? 1 : 0);
+            base.OnMouseWheel(e);
             Invalidate();
         }
 

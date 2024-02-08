@@ -39,6 +39,27 @@
             console = new UI.XConsole();
             button5 = new Button();
             clearButton = new UI.Controls.ButtonAdv();
+            button6 = new Button();
+            button7 = new Button();
+            button8 = new Button();
+            button9 = new Button();
+            button10 = new Button();
+            button11 = new Button();
+            button12 = new Button();
+            button13 = new Button();
+            button14 = new Button();
+            button15 = new Button();
+            button16 = new Button();
+            button17 = new Button();
+            button18 = new Button();
+            button19 = new Button();
+            button20 = new Button();
+            button21 = new Button();
+            button22 = new Button();
+            button23 = new Button();
+            button24 = new Button();
+            button25 = new Button();
+            button26 = new Button();
             tabControlWin.SuspendLayout();
             SuspendLayout();
             // 
@@ -47,7 +68,7 @@
             tabControlWin.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tabControlWin.Controls.Add(tabPage1);
             tabControlWin.Controls.Add(tabPage2);
-            tabControlWin.Location = new Point(760, 386);
+            tabControlWin.Location = new Point(741, 194);
             tabControlWin.Name = "tabControlWin";
             tabControlWin.SelectedIndex = 0;
             tabControlWin.Size = new Size(364, 153);
@@ -75,23 +96,23 @@
             // 
             // button1
             // 
-            button1.Location = new Point(760, 545);
+            button1.Location = new Point(861, 353);
             button1.Name = "button1";
             button1.Size = new Size(114, 29);
             button1.TabIndex = 1;
             button1.Text = "add";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button1.Click += WinAdd;
             // 
             // button2
             // 
-            button2.Location = new Point(880, 545);
+            button2.Location = new Point(979, 353);
             button2.Name = "button2";
             button2.Size = new Size(122, 29);
             button2.TabIndex = 2;
             button2.Text = "remove";
             button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            button2.Click += WinRemove;
             // 
             // tabControl
             // 
@@ -105,9 +126,9 @@
             // 
             // button3
             // 
-            button3.Location = new Point(146, 361);
+            button3.Location = new Point(104, 361);
             button3.Name = "button3";
-            button3.Size = new Size(122, 29);
+            button3.Size = new Size(80, 29);
             button3.TabIndex = 5;
             button3.Text = "remove";
             button3.UseVisualStyleBackColor = true;
@@ -117,17 +138,17 @@
             // 
             button4.Location = new Point(26, 361);
             button4.Name = "button4";
-            button4.Size = new Size(114, 29);
+            button4.Size = new Size(72, 29);
             button4.TabIndex = 4;
             button4.Text = "add";
             button4.UseVisualStyleBackColor = true;
             button4.Click += OnAdd;
             // 
-            // xConsole1
+            // console
             // 
             console.BackColor = Color.FromArgb(40, 40, 40);
             console.Location = new Point(25, 415);
-            console.Name = "xConsole1";
+            console.Name = "console";
             console.Size = new Size(686, 193);
             console.TabIndex = 6;
             // 
@@ -169,12 +190,263 @@
             clearButton.UseVisualStyleBackColor = true;
             clearButton.Click += OnClearPressed;
             // 
+            // button6
+            // 
+            button6.Location = new Point(209, 361);
+            button6.Name = "button6";
+            button6.Size = new Size(34, 29);
+            button6.TabIndex = 9;
+            button6.Tag = "0";
+            button6.Text = "R0";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += OnRemoveItemNumb;
+            // 
+            // button7
+            // 
+            button7.Location = new Point(249, 361);
+            button7.Name = "button7";
+            button7.Size = new Size(34, 29);
+            button7.TabIndex = 10;
+            button7.Tag = "1";
+            button7.Text = "R1";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += OnRemoveItemNumb;
+            // 
+            // button8
+            // 
+            button8.Location = new Point(289, 361);
+            button8.Name = "button8";
+            button8.Size = new Size(34, 29);
+            button8.TabIndex = 11;
+            button8.Tag = "2";
+            button8.Text = "R2";
+            button8.UseVisualStyleBackColor = true;
+            button8.Click += OnRemoveItemNumb;
+            // 
+            // button9
+            // 
+            button9.Location = new Point(329, 361);
+            button9.Name = "button9";
+            button9.Size = new Size(34, 29);
+            button9.TabIndex = 12;
+            button9.Tag = "3";
+            button9.Text = "R3";
+            button9.UseVisualStyleBackColor = true;
+            button9.Click += OnRemoveItemNumb;
+            // 
+            // button10
+            // 
+            button10.Location = new Point(369, 361);
+            button10.Name = "button10";
+            button10.Size = new Size(34, 29);
+            button10.TabIndex = 13;
+            button10.Tag = "4";
+            button10.Text = "R4";
+            button10.UseVisualStyleBackColor = true;
+            button10.Click += OnRemoveItemNumb;
+            // 
+            // button11
+            // 
+            button11.Location = new Point(369, 396);
+            button11.Name = "button11";
+            button11.Size = new Size(34, 29);
+            button11.TabIndex = 18;
+            button11.Tag = "4";
+            button11.Text = "I4";
+            button11.UseVisualStyleBackColor = true;
+            button11.Click += OnInsertItemNumb;
+            // 
+            // button12
+            // 
+            button12.Location = new Point(329, 396);
+            button12.Name = "button12";
+            button12.Size = new Size(34, 29);
+            button12.TabIndex = 17;
+            button12.Tag = "3";
+            button12.Text = "I3";
+            button12.UseVisualStyleBackColor = true;
+            button12.Click += OnInsertItemNumb;
+            // 
+            // button13
+            // 
+            button13.Location = new Point(289, 396);
+            button13.Name = "button13";
+            button13.Size = new Size(34, 29);
+            button13.TabIndex = 16;
+            button13.Tag = "2";
+            button13.Text = "I2";
+            button13.UseVisualStyleBackColor = true;
+            button13.Click += OnInsertItemNumb;
+            // 
+            // button14
+            // 
+            button14.Location = new Point(249, 396);
+            button14.Name = "button14";
+            button14.Size = new Size(34, 29);
+            button14.TabIndex = 15;
+            button14.Tag = "1";
+            button14.Text = "I1";
+            button14.UseVisualStyleBackColor = true;
+            button14.Click += OnInsertItemNumb;
+            // 
+            // button15
+            // 
+            button15.Location = new Point(209, 396);
+            button15.Name = "button15";
+            button15.Size = new Size(34, 29);
+            button15.TabIndex = 14;
+            button15.Tag = "0";
+            button15.Text = "I0";
+            button15.UseVisualStyleBackColor = true;
+            button15.Click += OnInsertItemNumb;
+            // 
+            // button16
+            // 
+            button16.Location = new Point(742, 353);
+            button16.Name = "button16";
+            button16.Size = new Size(114, 29);
+            button16.TabIndex = 19;
+            button16.Text = "insert";
+            button16.UseVisualStyleBackColor = true;
+            button16.Click += WinInsert0;
+            // 
+            // button17
+            // 
+            button17.Location = new Point(905, 431);
+            button17.Name = "button17";
+            button17.Size = new Size(34, 29);
+            button17.TabIndex = 29;
+            button17.Tag = "4";
+            button17.Text = "I4";
+            button17.UseVisualStyleBackColor = true;
+            button17.Click += OnWinInsertPressed;
+            // 
+            // button18
+            // 
+            button18.Location = new Point(865, 431);
+            button18.Name = "button18";
+            button18.Size = new Size(34, 29);
+            button18.TabIndex = 28;
+            button18.Tag = "3";
+            button18.Text = "I3";
+            button18.UseVisualStyleBackColor = true;
+            button18.Click += OnWinInsertPressed;
+            // 
+            // button19
+            // 
+            button19.Location = new Point(825, 431);
+            button19.Name = "button19";
+            button19.Size = new Size(34, 29);
+            button19.TabIndex = 27;
+            button19.Tag = "2";
+            button19.Text = "I2";
+            button19.UseVisualStyleBackColor = true;
+            button19.Click += OnWinInsertPressed;
+            // 
+            // button20
+            // 
+            button20.Location = new Point(785, 431);
+            button20.Name = "button20";
+            button20.Size = new Size(34, 29);
+            button20.TabIndex = 26;
+            button20.Tag = "1";
+            button20.Text = "I1";
+            button20.UseVisualStyleBackColor = true;
+            button20.Click += OnWinInsertPressed;
+            // 
+            // button21
+            // 
+            button21.Location = new Point(745, 431);
+            button21.Name = "button21";
+            button21.Size = new Size(34, 29);
+            button21.TabIndex = 25;
+            button21.Tag = "0";
+            button21.Text = "I0";
+            button21.UseVisualStyleBackColor = true;
+            button21.Click += OnWinInsertPressed;
+            // 
+            // button22
+            // 
+            button22.Location = new Point(905, 396);
+            button22.Name = "button22";
+            button22.Size = new Size(34, 29);
+            button22.TabIndex = 24;
+            button22.Tag = "4";
+            button22.Text = "R4";
+            button22.UseVisualStyleBackColor = true;
+            button22.Click += OnWinRemovePressed;
+            // 
+            // button23
+            // 
+            button23.Location = new Point(865, 396);
+            button23.Name = "button23";
+            button23.Size = new Size(34, 29);
+            button23.TabIndex = 23;
+            button23.Tag = "3";
+            button23.Text = "R3";
+            button23.UseVisualStyleBackColor = true;
+            button23.Click += OnWinRemovePressed;
+            // 
+            // button24
+            // 
+            button24.Location = new Point(825, 396);
+            button24.Name = "button24";
+            button24.Size = new Size(34, 29);
+            button24.TabIndex = 22;
+            button24.Tag = "2";
+            button24.Text = "R2";
+            button24.UseVisualStyleBackColor = true;
+            button24.Click += OnWinRemovePressed;
+            // 
+            // button25
+            // 
+            button25.Location = new Point(785, 396);
+            button25.Name = "button25";
+            button25.Size = new Size(34, 29);
+            button25.TabIndex = 21;
+            button25.Tag = "1";
+            button25.Text = "R1";
+            button25.UseVisualStyleBackColor = true;
+            button25.Click += OnWinRemovePressed;
+            // 
+            // button26
+            // 
+            button26.Location = new Point(745, 396);
+            button26.Name = "button26";
+            button26.Size = new Size(34, 29);
+            button26.TabIndex = 20;
+            button26.Tag = "0";
+            button26.Text = "R0";
+            button26.UseVisualStyleBackColor = true;
+            button26.Click += OnWinRemovePressed;
+            // 
             // TabTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(1157, 620);
+            Controls.Add(button17);
+            Controls.Add(button18);
+            Controls.Add(button19);
+            Controls.Add(button20);
+            Controls.Add(button21);
+            Controls.Add(button22);
+            Controls.Add(button23);
+            Controls.Add(button24);
+            Controls.Add(button25);
+            Controls.Add(button26);
+            Controls.Add(button16);
+            Controls.Add(button11);
+            Controls.Add(button12);
+            Controls.Add(button13);
+            Controls.Add(button14);
+            Controls.Add(button15);
+            Controls.Add(button10);
+            Controls.Add(button9);
+            Controls.Add(button8);
+            Controls.Add(button7);
+            Controls.Add(button6);
             Controls.Add(clearButton);
             Controls.Add(button5);
             Controls.Add(console);
@@ -203,5 +475,26 @@
         private UI.XConsole console;
         private Button button5;
         private UI.Controls.ButtonAdv clearButton;
+        private Button button6;
+        private Button button7;
+        private Button button8;
+        private Button button9;
+        private Button button10;
+        private Button button11;
+        private Button button12;
+        private Button button13;
+        private Button button14;
+        private Button button15;
+        private Button button16;
+        private Button button17;
+        private Button button18;
+        private Button button19;
+        private Button button20;
+        private Button button21;
+        private Button button22;
+        private Button button23;
+        private Button button24;
+        private Button button25;
+        private Button button26;
     }
 }
