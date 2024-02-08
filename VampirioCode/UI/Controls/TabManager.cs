@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.UI.VampGraphics;
@@ -18,7 +19,6 @@ namespace VampirioCode.UI.Controls
         }
 
         public bool IsDragging { get { return dragging; } }
-        public bool DrawAtTop { get; set; }
         public bool Selected { get; set; }
         public int CenterX { get { return (x + (width >> 1)); } }
         public int Left { get { return x; } }
@@ -43,7 +43,6 @@ namespace VampirioCode.UI.Controls
             this.font = font;
             this.dragging = false;
             this.startDragX = 0;
-            this.DrawAtTop = false;
             this.Selected = false;
             this.manager = manager;
         }
@@ -63,25 +62,13 @@ namespace VampirioCode.UI.Controls
             Selected = false;
         }
 
-        // set this item at the top for drawing
-        public void BringToFront()
-        {
-            DrawAtTop = true;
-            Selected = true;
-        }
-
-        public void BringToBack()
-        {
-            DrawAtTop = false;
-        }
-
         public void OnMouseDown(int mx, int my)
         {
             if (IsInside(mx, my))
             {
                 startDragX = mx;
                 dragging = true;
-                manager.SelectAndBringToFront(this);
+                manager.StartDragging(this);
             }
         }
 
@@ -113,6 +100,12 @@ namespace VampirioCode.UI.Controls
             }
 
             state = State.Up;
+        }
+
+        public void OnMouseLeave()
+        {
+            if (!Selected)
+                state = State.Up;
         }
 
         private bool IsInside(int mx, int my)
@@ -171,9 +164,9 @@ namespace VampirioCode.UI.Controls
         private int selTabPreviousX = 0;
 
         public Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
-        private bool IsAnySelected { get { return (SelectedTab != null); } }
         public int TotalTabs { get { return tabs.Count; } }
-
+        public bool IsDragging { get; set; } = false;
+        public bool IsAnySelected { get { return (SelectedTab != null); } }  
 
         public TabManager()
         {
@@ -190,11 +183,17 @@ namespace VampirioCode.UI.Controls
                 tab.SetPos(lastTab.x + lastTab.width, 0);
             else
                 tab.SetPos(0, 0);
+
+            if(!IsAnySelected)
+                Select(tab);
         }
 
         public void RemoveAt(int index)
         {
             tabs.RemoveAt(index);
+
+            // Recalc Positions
+            
         }
 
         public void MouseDown(int x, int y)
@@ -216,7 +215,7 @@ namespace VampirioCode.UI.Controls
             this.mouseY = y;
             this.mouseDown = mouseDown;
 
-            if (IsAnySelected)
+            if (IsDragging)
             {
                 SelectedTab.OnMouseMove(mouseX, mouseY, mouseDown);
             }
@@ -235,11 +234,20 @@ namespace VampirioCode.UI.Controls
             this.mouseX = x - OFFSET_X;
             this.mouseY = y;
             this.mouseDown = false;
-            foreach (Tab tab in tabs) tab.OnMouseUp(mouseX, mouseY);
+            foreach (Tab tab in tabs) 
+                tab.OnMouseUp(mouseX, mouseY);
             //XConsole.Println("mouse up")
         }
 
-        public void SelectAndBringToFront(Tab selTab)
+        public void MouseLeave()
+        {
+            foreach (Tab tab in tabs)
+                tab.OnMouseLeave();
+            //XConsole.Println("mouse up")
+        }
+
+
+        private void Select(Tab selTab)
         {
             NonSelectedTabs = new List<Tab>();
 
@@ -249,22 +257,27 @@ namespace VampirioCode.UI.Controls
                     SelectedTab = tab;
                 else
                 {
-                    tab.BringToBack();
                     tab.Unselect();
                     NonSelectedTabs.Add(tab);
                 }
             }
 
-            selTabPreviousX = LocalToGlobal(SelectedTab.x);
+            //selTabPreviousX = LocalToGlobal(SelectedTab.x);
 
             SelectedTab.Select();
-            SelectedTab.BringToFront();
+        }
+
+        public void StartDragging(Tab selTab)
+        {
+            Select(selTab);
+            selTabPreviousX =   LocalToGlobal(selTab.x);
+            IsDragging =        true;
         }
 
         public void StopDragging()
         {
-            SelectedTab = null;
-            NonSelectedTabs = new List<Tab>();
+            IsDragging =        false;
+            NonSelectedTabs =   new List<Tab>();
 
             RecalculatePositions();
         }
@@ -358,7 +371,7 @@ namespace VampirioCode.UI.Controls
             bool passesSelected = false;
             int moveDirection;
 
-            if (IsAnySelected)
+            if (IsDragging)
             {
                 SelectedTab.y = 4;
 
@@ -475,31 +488,21 @@ namespace VampirioCode.UI.Controls
             VampirioGraphics.FillRect(g, Color.FromArgb(90, 90, 90), 0, 0, width, height);
 
             Tab drawAtTopTab = null;
-            int coun = 0;
-            for (int a = 0; a < tabs.Count; a++)
-            {
-                Tab tab = tabs[a];
 
-                if (tab.DrawAtTop)
-                    drawAtTopTab = tab;
-                else
+                foreach (Tab tab in tabs)
                 {
-                    if (IsInsideScreen(tabs[a]))
-                    {
-                        coun++;
-                        tabs[a].Paint(g);
-                    }
+                    if (tab.Selected)
+                        drawAtTopTab = tab;
+                    if (IsInsideScreen(tab))
+                        tab.Paint(g);
                 }
-            }
 
-            // leave this to draw at the end to bring 
-            // it in front of the others
-            if (drawAtTopTab != null)
-            {
-                if(IsInsideScreen(drawAtTopTab))
+                // leave this to draw at the end to bring 
+                // it in front of the others
+                if ((drawAtTopTab != null) && IsInsideScreen(drawAtTopTab))
                     drawAtTopTab.Paint(g);
-            }
 
+            
 
             // Debug painting
             PrintDebug(g);
@@ -525,7 +528,7 @@ namespace VampirioCode.UI.Controls
             // -------------------------
             int _startY_ = 100;
 
-            if (IsAnySelected)
+            if (IsDragging)
             {
                 VampirioGraphics.DrawString(g, font, SelectedTab.item.Name, Color.Orange, 10, _startY_);
                 _startY_ += 25;

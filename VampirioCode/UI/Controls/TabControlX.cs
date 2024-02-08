@@ -141,6 +141,7 @@ namespace VampirioCode.UI.Controls
 
         protected override void OnMouseLeave(EventArgs e)
         {
+            manager.MouseLeave();
             base.OnMouseLeave(e);
             Invalidate();
         }
