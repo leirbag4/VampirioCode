@@ -253,7 +253,7 @@ namespace VampirioCode.UI.Controls
                 }
             }
 
-            selTabPreviousX = SelectedTab.x;
+            selTabPreviousX = LocalToGlobal(SelectedTab.x);
 
             SelectedTab.Select();
             SelectedTab.BringToFront();
@@ -364,7 +364,7 @@ namespace VampirioCode.UI.Controls
                 if (OFFSET_X > 0)
                     OFFSET_X = 0;*/
 
-                //XConsole.Println("dir: " + moveDirection);
+                XConsole.Println("dir: " + moveDirection);
 
                 if (moveDirection < 0)
                 {
