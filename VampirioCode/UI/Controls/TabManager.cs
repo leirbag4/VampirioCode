@@ -286,6 +286,16 @@ namespace VampirioCode.UI.Controls
             return (position + OFFSET_X);
         }
 
+        // Calculate total width of all input tabs
+        private int TotalWidth(List<Tab> tabsList)
+        { 
+            int totalWidth = 0;
+
+            foreach (Tab tab in tabsList)
+                totalWidth += tab.width;
+
+            return totalWidth;
+        }
 
         //
         // Recalculate tabs index positions inside tabs array 
@@ -352,36 +362,58 @@ namespace VampirioCode.UI.Controls
 
 
                 // Calculate moving direction to know if moving to the left or right
-                moveDirection = LocalToGlobal(SelectedTab.x) - selTabPreviousX;
-                selTabPreviousX = LocalToGlobal(SelectedTab.x);
+                moveDirection =     LocalToGlobal(SelectedTab.x) - selTabPreviousX;
+                selTabPreviousX =   LocalToGlobal(SelectedTab.x);
 
 
-                /*if (LocalToGlobal(SelectedTab.Right) > 300)
-                    OFFSET_X -= movDirection >> 1;
-                else if (LocalToGlobal(SelectedTab.Left) < 0)
-                    OFFSET_X -= movDirection >> 1;
+                //
+                // Out of the screen shift
+                //
 
-                if (OFFSET_X > 0)
-                    OFFSET_X = 0;*/
-
-                XConsole.Println("dir: " + moveDirection);
-
+                // Mouse is moving to the left
                 if (moveDirection < 0)
                 {
                     if (LocalToGlobal(SelectedTab.Left) < 0)
                         OFFSET_X -= moveDirection;
+
+                    // If we reach the end, stop and clamp the offset to 0
+                    if (OFFSET_X > 0)
+                        OFFSET_X = 0;
                 }
+                // Mouse is moving to the right
                 else if (moveDirection > 0)
                 { 
                     if(LocalToGlobal(SelectedTab.Right) > width)
                         OFFSET_X -= moveDirection;
+
+                    int lastPos = LocalToGlobal(NonSelectedTabs[NonSelectedTabs.Count - 1].Right);
+
+                    int totalWidth =        TotalWidth(tabs);
+                    int nonSelTotWidth =    totalWidth - SelectedTab.width;
+
+                    // All tabs enter inside the control
+                    if (totalWidth < width)
+                    {
+                        if (lastPos < (width - SelectedTab.width))
+                            OFFSET_X = 0;
+                    }
+                    // Not all tabs enter inside the control
+                    else
+                    {
+                        if (lastPos < (width - SelectedTab.width))
+                            OFFSET_X = -nonSelTotWidth + width - SelectedTab.width;
+                    }
+
                 }
 
+                //XConsole.Println("offsetX: "+ OFFSET_X);
 
+                //
                 // Main loop to move tabs
+                //
                 foreach (Tab nonSelTab in NonSelectedTabs)
                 {
-                    // If is moving to the left
+                    // Mouse is moving to the left
                     if (moveDirection < 0)
                     {
                         if (SelectedTab.Left < nonSelTab.CenterX)
@@ -402,7 +434,7 @@ namespace VampirioCode.UI.Controls
                                 nonSelTab.SetPos(prevTab.Right, 0);
                         }
                     }
-                    // If is moving to the right
+                    // Mouse is moving to the right
                     else if (moveDirection > 0)
                     {
                         if (SelectedTab.Right > nonSelTab.CenterX)
