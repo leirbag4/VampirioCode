@@ -172,6 +172,8 @@ namespace VampirioCode.UI.Controls
 
         public Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
         private bool IsAnySelected { get { return (SelectedTab != null); } }
+        public int TotalTabs { get { return tabs.Count; } }
+
 
         public TabManager()
         {
@@ -349,9 +351,9 @@ namespace VampirioCode.UI.Controls
         }
 
         //
-        // Update method
+        // Update switching locations to left or right when dragging
         //
-        public void Update()
+        private void UpdateSwitching()
         {
             bool passesSelected = false;
             int moveDirection;
@@ -362,8 +364,8 @@ namespace VampirioCode.UI.Controls
 
 
                 // Calculate moving direction to know if moving to the left or right
-                moveDirection =     LocalToGlobal(SelectedTab.x) - selTabPreviousX;
-                selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                moveDirection = LocalToGlobal(SelectedTab.x) - selTabPreviousX;
+                selTabPreviousX = LocalToGlobal(SelectedTab.x);
 
 
                 //
@@ -382,14 +384,14 @@ namespace VampirioCode.UI.Controls
                 }
                 // Mouse is moving to the right
                 else if (moveDirection > 0)
-                { 
-                    if(LocalToGlobal(SelectedTab.Right) > width)
+                {
+                    if (LocalToGlobal(SelectedTab.Right) > width)
                         OFFSET_X -= moveDirection;
 
                     int lastPos = LocalToGlobal(NonSelectedTabs[NonSelectedTabs.Count - 1].Right);
 
-                    int totalWidth =        TotalWidth(tabs);
-                    int nonSelTotWidth =    totalWidth - SelectedTab.width;
+                    int totalWidth = TotalWidth(tabs);
+                    int nonSelTotWidth = totalWidth - SelectedTab.width;
 
                     // All tabs enter inside the control
                     if (totalWidth < width)
@@ -452,7 +454,16 @@ namespace VampirioCode.UI.Controls
 
                 RecalcIndices();
             }
+        }
 
+        //
+        // Update method
+        //
+        public void Update()
+        {
+
+            if (TotalTabs > 1)
+                UpdateSwitching();
         }
 
 
@@ -464,7 +475,7 @@ namespace VampirioCode.UI.Controls
             VampirioGraphics.FillRect(g, Color.FromArgb(90, 90, 90), 0, 0, width, height);
 
             Tab drawAtTopTab = null;
-
+            int coun = 0;
             for (int a = 0; a < tabs.Count; a++)
             {
                 Tab tab = tabs[a];
@@ -472,17 +483,41 @@ namespace VampirioCode.UI.Controls
                 if (tab.DrawAtTop)
                     drawAtTopTab = tab;
                 else
-                    tabs[a].Paint(g);
+                {
+                    if (IsInsideScreen(tabs[a]))
+                    {
+                        coun++;
+                        tabs[a].Paint(g);
+                    }
+                }
             }
 
             // leave this to draw at the end to bring 
             // it in front of the others
-            if(drawAtTopTab != null)
-                drawAtTopTab.Paint(g);
+            if (drawAtTopTab != null)
+            {
+                if(IsInsideScreen(drawAtTopTab))
+                    drawAtTopTab.Paint(g);
+            }
 
 
             // Debug painting
             PrintDebug(g);
+        }
+
+        private bool IsInsideScreen(Tab tab)
+        {
+            int left =  LocalToGlobal(tab.Left);
+            int right = LocalToGlobal(tab.Right);
+
+            if ((left >= 0) && (left <= width))
+                return true;
+            else if((right <= width) && (right >= 0))
+                return true;
+            else if((left <= 0) && (right >= 0))
+                return true;
+            else
+                return false;
         }
 
         private void PrintDebug(Graphics g) 
