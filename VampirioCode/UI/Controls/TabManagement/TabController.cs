@@ -21,7 +21,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
 
-        public int OFFSET_X = 0;
+        public int OFFSET_X = -1100;
 
         private int width = 400;
         private int height = 30;
@@ -356,6 +356,12 @@ namespace VampirioCode.UI.Controls.TabManagement
             return position + OFFSET_X;
         }
 
+        // Calculate Local position from Local one
+        private int GlobalToLocal(int position)
+        { 
+            return position - OFFSET_X;
+        }
+
         // Calculate total width of all input tabs
         private int TotalWidth(List<Tab> tabsList)
         {
@@ -471,7 +477,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 // Out of the screen shift
                 //
 
-                // Mouse is moving to the left
+                // Mouse is moving to the left  <--
                 if (moveDirection < 0)
                 {
                     if (LocalToGlobal(SelectedTab.Left) < 0)
@@ -481,7 +487,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                     if (OFFSET_X > 0)
                         OFFSET_X = 0;
                 }
-                // Mouse is moving to the right
+                // Mouse is moving to the right  -->
                 else if (moveDirection > 0)
                 {
                     if (LocalToGlobal(SelectedTab.Right) > width)
@@ -560,6 +566,18 @@ namespace VampirioCode.UI.Controls.TabManagement
         //
         public void Update()
         {
+            /*if (IsAnySelected)
+            {
+                if (SelectedTab.IsDragging)
+                {
+                    if (LocalToGlobal(SelectedTab.Right) < 10)
+                    {
+                        XConsole.Println("moving");
+                        SelectedTab.x = GlobalToLocal(-(SelectedTab.width - 10));
+                        OFFSET_X += 2;
+                    }
+                }
+            }*/
 
             if (TotalTabs > 1)
                 UpdateSwitching();
