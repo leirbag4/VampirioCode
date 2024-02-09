@@ -5,172 +5,23 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.UI.VampGraphics;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace VampirioCode.UI.Controls
+namespace VampirioCode.UI.Controls.TabManagement
 {
-
-    public class Tab
+    public class TabController
     {
-        enum State
-        { 
-            Over,
-            Up
-        }
+        public delegate void SelectedTabChangedEvent(int index, TabItem item);
+        public delegate void TabAddedEvent(int index, TabItem item);
+        public delegate void TabRemovedEvent(int index, TabItem item);
+        public delegate void StartDragTabEvent(int index, TabItem item);
+        public delegate void StopDragTabEvent(int index, TabItem item);
+        public event SelectedTabChangedEvent SelectedTabChanged;
+        public event TabAddedEvent TabAdded;
+        public event TabRemovedEvent TabRemoved;
+        public event StartDragTabEvent StartDragTab;
+        public event StopDragTabEvent StopDragTab;
 
-        public bool IsDragging { get { return dragging; } }
-        public bool Selected { get; set; }
-        public int CenterX { get { return (x + (width >> 1)); } }
-        public int Left { get { return x; } }
-        public int Right { get { return (x + width); } }
-
-        public int x, y, width, height;
-        private State state = State.Up;
-        public TabItem item;
-        private Font font;
-        private bool dragging;
-        private int startDragX;
-        private TabManager manager;
-        //private Rectangle Rect { get { return new Rectangle(x, y, width, height); } }
-
-        public Tab(TabItem item, Font font, TabManager manager)
-        {
-            this.x = 0;
-            this.y = 0;
-            this.width = item.Width;
-            this.height = 25;
-            this.item = item;
-            this.font = font;
-            this.dragging = false;
-            this.startDragX = 0;
-            this.Selected = false;
-            this.manager = manager;
-        }
-
-        public void SetPos(int x, int y)
-        { 
-            this.x = x; this.y = y;
-        }
-
-        public void Select()
-        {
-            Selected = true;
-        }
-
-        public void Unselect()
-        { 
-            Selected = false;
-        }
-
-        public int Index()
-        {
-            return manager.tabs.IndexOf(this);
-        }
-
-        public Tab Prev()
-        {
-            int index = Index();
-            
-            if (index == 0) 
-                return null;
-            else 
-                return manager.tabs[index - 1];
-        }
-
-        public Tab Next()
-        {
-            int index = Index();
-
-            if (index >= (manager.tabs.Count - 1))
-                return null;
-            else
-                return manager.tabs[index + 1];
-        }
-
-        public void OnMouseDown(int mx, int my)
-        {
-            if (IsInside(mx, my))
-            {
-                startDragX = mx;
-                dragging = true;
-                manager.StartDragging(this);
-            }
-        }
-
-        public void OnMouseMove(int mx, int my, bool mouseDown)
-        {
-            if (dragging)
-            {
-                int offset = mx - startDragX;
-                startDragX = mx;
-
-                SetPos(x + offset, 0);
-            }
-            else if (IsInside(mx, my))
-            {
-                state = State.Over;
-            }
-            else
-            {
-                state = State.Up;
-            }
-        }
-
-        public void OnMouseUp(int mx, int my)
-        {
-            if (dragging)
-            {
-                dragging = false;
-                manager.StopDragging();
-            }
-
-            state = State.Up;
-        }
-
-        public void OnMouseLeave()
-        {
-            if (!Selected)
-                state = State.Up;
-        }
-
-        private bool IsInside(int mx, int my)
-        {
-            return ((mx >= x) && (mx <= (x + width)) && (my >= y) && (my <= (y + height)));
-        }
-
-        public void Update()
-        {
-
-        }
-
-        public void Paint(Graphics g)
-        {
-            Color backColor = Color.White;
-            int _x_ = manager.OFFSET_X + x;
-
-            //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-            if (Selected)
-                backColor = Color.DimGray;
-            else
-            {
-                if (state == State.Up)
-                    backColor = Color.LightGray;
-                else if (state == State.Over)
-                    backColor = Color.DarkGray;
-            }
-
-            VampirioGraphics.FillRect(g, backColor, Color.Gray, 2, _x_, y, width, height);
-            VampirioGraphics.DrawString(g, font, item.Name, Color.Black, _x_, y, width, height, ContentAlignment.MiddleCenter);
-
-            VampirioGraphics.FillRect(g, Color.Black, _x_ + (width >> 1) - 1, y, 3, 4);
-        }
-
-    }
-
-    public class TabManager
-    {
-        public int OFFSET_X = -50;
+        public int OFFSET_X = 0;
 
         private int width = 400;
         private int height = 30;
@@ -182,47 +33,69 @@ namespace VampirioCode.UI.Controls
         private Tab SelectedTab = null;                         // The tab the user is dragging or moving from left to right
         private List<Tab> NonSelectedTabs = new List<Tab>();    // This list include all the other tabs rather than the selected one that is being dragged
         private int selTabPreviousX = 0;                        // Register the start x position of the selected tab on MouseDown or Start Drag to calculate in which direction it is moving. On every Update loop it is reset again.
+        private Tab prevSelectedTab = null;                     // Used to trigger events on tab changed
         private Font font;
 
         public int TotalTabs { get { return tabs.Count; } }                         // Total amount of tabs
         public bool IsDragging { get; set; } = false;                               // SelectedTab is being dragged
-        public bool IsAnySelected { get { return (SelectedTab != null); } }         // There is a selected tab
-        public bool IsOutsideBounds { get { return (TotalWidth(tabs) > width); } }  // Any or many tabs are outside screen because they can't fit inside it
+        public bool IsAnySelected { get { return SelectedTab != null; } }           // There is a selected tab
+        public bool IsOutsideBounds { get { return TotalWidth(tabs) > width; } }    // Any or many tabs are outside screen because they can't fit inside it
         public bool TabsFitOnScreen { get { return !IsOutsideBounds; } }            // All tabs fit inside the screen. No tab is outside 
-        
-        public TabManager()
+        public int SelectedIndex { get { if (SelectedTab == null) return -1; else return SelectedTab.Index(); } set { if (TotalTabs > 0) { PushSelTabForEvent(); SimpleSelect(tabs[value]); PopSelTabChangedEvent();  } else throw new Exception("Tab index doesn't exist. Can't be selected."); } }
+
+        public TabController()
         {
             font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
         }
 
+        #region BasicActions
         public void Add(TabItem item)
         {
             Insert(TotalTabs, item);
         }
-
 
         public void Insert(int index, TabItem item)
         {
             Tab tab = new Tab(item, font, this);
             int totals = TotalTabs;
 
+            // store current selected tab
+            PushSelTabForEvent();
+
             tabs.Insert(index, tab);
             ResetPositionsFrom(index);
 
             if (!IsAnySelected)
-                Select(tab);
+                SimpleSelect(tab);
+
+            // added event
+            if (TabAdded != null)
+                TabAdded(tab.Index(), item);
+
+            // event trigger
+            PopSelTabChangedEvent();
         }
 
         public void RemoveAt(int index)
         {
+            Tab removedTab = null;
+
+            // store current selected tab
+            PushSelTabForEvent();
+
             if (TotalTabs <= 0)
             {
                 throw new Exception("Can't remove an item because array is empty");
             }
-            else if (TotalTabs == 1)
+
+
+            removedTab = tabs[index];
+
+            if (TotalTabs == 1)
             {
+                
                 tabs.RemoveAt(index);
-                SelectedTab = null;
+                SimpleSelect(null);// SelectedTab = null;
                 OFFSET_X = 0;
             }
             else // TotalTabs > 1
@@ -234,9 +107,9 @@ namespace VampirioCode.UI.Controls
 
                     // SelectedTab was at index 0
                     if (index == 0)
-                        Select(tabs[0]);
+                        SimpleSelect(tabs[0]);
                     else // index > 0
-                        Select(tabs[index - 1]);
+                        SimpleSelect(tabs[index - 1]);
                 }
                 else
                 {
@@ -250,15 +123,71 @@ namespace VampirioCode.UI.Controls
                     OFFSET_X = 0;
             }
 
+            // remove event
+            if (TabRemoved != null)
+                TabRemoved(index, removedTab.item);
 
+            // event trigger
+            PopSelTabChangedEvent();
 
         }
 
+        private void PushSelTabForEvent()
+        {
+            prevSelectedTab = SelectedTab;
+        }
+
+        private void PopSelTabChangedEvent()
+        {
+            if (SelectedTab == null)
+            {
+                SelectedTabChanged(-1, null);
+            }
+            else if (prevSelectedTab != SelectedTab)
+            {
+                if (SelectedTabChanged != null)
+                    SelectedTabChanged(SelectedTab.Index(), SelectedTab.item);
+            }
+        }
+        #endregion
+
+        #region Events
+        // --------------------------------------------------------
+        //
+        // External Events
+        //
+        // --------------------------------------------------------
+
+        // Triggered by the parent container when he changes his size
+        public void SizeChange(int width, int height)
+        {
+            int prevWidth = this.width;
+
+            //
+            // Rearange Tabs positions when enlarging container to the right
+            //
+            if (width > prevWidth)
+            {
+                XConsole.Println("IsOutsideBounds: " + IsOutsideBounds + " OFFSET_X: " + OFFSET_X);
+                if (IsOutsideBounds)
+                {
+                    OFFSET_X += width - prevWidth;
+                    if (OFFSET_X > 0)
+                        OFFSET_X = 0;
+                }
+            }
+
+            // Set new size
+            this.width =    width;
+            this.height =   height;
+        }
+
+        // Triggered by the parent container when the mouse is down
         public void MouseDown(int x, int y)
         {
-            this.mouseX = x - OFFSET_X;
-            this.mouseY = y;
-            this.mouseDown = true;
+            mouseX = x - OFFSET_X;
+            mouseY = y;
+            mouseDown = true;
 
             foreach (Tab tab in tabs)
             {
@@ -267,10 +196,11 @@ namespace VampirioCode.UI.Controls
             //XConsole.Println("mouse down");
         }
 
+        // Triggered by the parent container when the mouse moves
         public void MouseMove(int x, int y, bool mouseDown)
         {
-            this.mouseX = x - OFFSET_X;
-            this.mouseY = y;
+            mouseX = x - OFFSET_X;
+            mouseY = y;
             this.mouseDown = mouseDown;
 
             if (IsDragging)
@@ -287,28 +217,106 @@ namespace VampirioCode.UI.Controls
 
         }
 
+        // Triggered by the parent container when the mouse is up
         public void MouseUp(int x, int y)
         {
-            this.mouseX = x - OFFSET_X;
-            this.mouseY = y;
-            this.mouseDown = false;
-            foreach (Tab tab in tabs) 
+            mouseX = x - OFFSET_X;
+            mouseY = y;
+            mouseDown = false;
+            foreach (Tab tab in tabs)
                 tab.OnMouseUp(mouseX, mouseY);
-            //XConsole.Println("mouse up")
         }
 
+        // Triggered by the parent container when the mouse leaves
         public void MouseLeave()
         {
             foreach (Tab tab in tabs)
                 tab.OnMouseLeave();
-            //XConsole.Println("mouse up")
         }
 
-        public void MouseScroll(int direction)
+        // Triggered by the parent container when the mouse scrolls
+        public void MouseScroll(int x, int y, int direction)
         {
-            OFFSET_X -= direction;
+            mouseX = x - OFFSET_X;
+            mouseY = y;
+
+            if (IsOutsideBounds)
+            {
+                OFFSET_X += direction * 25;
+
+                // move to the right -->
+                if (direction >= 1)
+                {
+                    if (OFFSET_X > 0)
+                        OFFSET_X = 0;
+                }
+                // move to the left <--
+                else
+                {
+                    int diff = TotalWidth(tabs) + OFFSET_X;
+
+                    if(diff < width)
+                        OFFSET_X =  - (TotalWidth(tabs) - width);
+
+                    XConsole.Println("diff is: " + diff);
+                }
+            }
+
+            MouseMove(x, y, false);
+
+        }
+        // --------------------------------------------------------
+
+
+        // --------------------------------------------------------
+        //
+        // Internal Tab Events
+        //
+        // --------------------------------------------------------
+        public void StartDragging(Tab selTab)
+        {
+            PushSelTabForEvent();
+
+            Select(selTab);
+            selTabPreviousX = LocalToGlobal(selTab.x);
+            IsDragging = true;
+
+            PopSelTabChangedEvent();
+
+            if (StartDragTab != null)
+                StartDragTab(selTab.Index(), selTab.item);
+
         }
 
+        public void StopDragging()
+        {
+            IsDragging = false;
+            NonSelectedTabs = new List<Tab>();
+
+            ResetPositions();
+
+            if (StopDragTab != null)
+                StopDragTab(SelectedTab.Index(), SelectedTab.item);
+        }
+        // --------------------------------------------------------
+        #endregion
+
+        #region Utils
+        // A simple version of Select() that do not perform
+        // a loop to unselect other tabs.
+        // Only use it when you know that other tabs aren't selected
+        private void SimpleSelect(Tab selTab)
+        {
+            NonSelectedTabs = new List<Tab>();
+            SelectedTab = selTab;
+
+            if (SelectedTab != null)
+                SelectedTab.Select();
+        }
+
+        // Select a Tab so it can be highlighted and easy to process.
+        // Also the non selected tabs are separated on a different list
+        // for the same reason
         private void Select(Tab selTab)
         {
             NonSelectedTabs = new List<Tab>();
@@ -329,25 +337,10 @@ namespace VampirioCode.UI.Controls
             SelectedTab.Select();
         }
 
-        public void StartDragging(Tab selTab)
-        {
-            Select(selTab);
-            selTabPreviousX =   LocalToGlobal(selTab.x);
-            IsDragging =        true;
-        }
-
-        public void StopDragging()
-        {
-            IsDragging =        false;
-            NonSelectedTabs =   new List<Tab>();
-
-            ResetPositions();
-        }
-
         // Get previous tab. The currTab must be contained inside tabList
         // If there is no previous tab, null will be returned
         private Tab GetPrevious(Tab currTab, List<Tab> tabList)
-        { 
+        {
             int index = tabList.IndexOf(currTab);
 
             if (index == 0)
@@ -360,12 +353,12 @@ namespace VampirioCode.UI.Controls
         // Calculate Global position from Local one
         private int LocalToGlobal(int position)
         {
-            return (position + OFFSET_X);
+            return position + OFFSET_X;
         }
 
         // Calculate total width of all input tabs
         private int TotalWidth(List<Tab> tabsList)
-        { 
+        {
             int totalWidth = 0;
 
             foreach (Tab tab in tabsList)
@@ -401,7 +394,7 @@ namespace VampirioCode.UI.Controls
 
             // If selectedTab reach the end, it won't be added to the list
             // so check that and add it to the end
-            if(!selectedAdded)
+            if (!selectedAdded)
                 newList.Add(SelectedTab);
 
             tabs = newList;
@@ -439,6 +432,23 @@ namespace VampirioCode.UI.Controls
             }
         }
 
+        private bool IsInsideScreen(Tab tab)
+        {
+            int left = LocalToGlobal(tab.Left);
+            int right = LocalToGlobal(tab.Right);
+
+            if (left >= 0 && left <= width)
+                return true;
+            else if (right <= width && right >= 0)
+                return true;
+            else if (left <= 0 && right >= 0)
+                return true;
+            else
+                return false;
+        }
+        #endregion
+
+        #region UpdateAndPaint
         //
         // Update switching locations to left or right when dragging
         //
@@ -485,13 +495,13 @@ namespace VampirioCode.UI.Controls
                     // All tabs enter inside the control
                     if (totalWidth < width)
                     {
-                        if (lastPos < (width - SelectedTab.width))
+                        if (lastPos < width - SelectedTab.width)
                             OFFSET_X = 0;
                     }
                     // Not all tabs enter inside the control
                     else
                     {
-                        if (lastPos < (width - SelectedTab.width))
+                        if (lastPos < width - SelectedTab.width)
                             OFFSET_X = -nonSelTotWidth + width - SelectedTab.width;
                     }
 
@@ -565,41 +575,28 @@ namespace VampirioCode.UI.Controls
 
             Tab drawAtTopTab = null;
 
-                foreach (Tab tab in tabs)
-                {
-                    if (tab.Selected)
-                        drawAtTopTab = tab;
-                    if (IsInsideScreen(tab))
-                        tab.Paint(g);
-                }
+            foreach (Tab tab in tabs)
+            {
+                if (tab.Selected)
+                    drawAtTopTab = tab;
+                if (IsInsideScreen(tab))
+                    tab.Paint(g);
+            }
 
-                // leave this to draw at the end to bring 
-                // it in front of the others
-                if ((drawAtTopTab != null) && IsInsideScreen(drawAtTopTab))
-                    drawAtTopTab.Paint(g);
+            // leave this to draw at the end to bring 
+            // it in front of the others
+            if (drawAtTopTab != null && IsInsideScreen(drawAtTopTab))
+                drawAtTopTab.Paint(g);
 
-            
+
 
             // Debug painting
             PrintDebug(g);
         }
+        #endregion
 
-        private bool IsInsideScreen(Tab tab)
-        {
-            int left =  LocalToGlobal(tab.Left);
-            int right = LocalToGlobal(tab.Right);
-
-            if ((left >= 0) && (left <= width))
-                return true;
-            else if((right <= width) && (right >= 0))
-                return true;
-            else if((left <= 0) && (right >= 0))
-                return true;
-            else
-                return false;
-        }
-
-        private void PrintDebug(Graphics g) 
+        #region Debug
+        private void PrintDebug(Graphics g)
         {
             VampirioGraphics.DrawString(g, font, "OFFSET_X: " + OFFSET_X, Color.Magenta, 180, 100);
 
@@ -608,7 +605,7 @@ namespace VampirioCode.UI.Controls
 
             if (IsDragging)
             {
-                VampirioGraphics.DrawString(g, font, SelectedTab.item.Name, Color.Orange, 10, _startY_);
+                VampirioGraphics.DrawString(g, font, SelectedTab.item.Text, Color.Orange, 10, _startY_);
                 _startY_ += 25;
 
                 for (int a = 0; a < NonSelectedTabs.Count; a++)
@@ -617,9 +614,9 @@ namespace VampirioCode.UI.Controls
                     Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
                     string prevStr = "  prev: ";
                     if (prevTab != null)
-                        prevStr += prevTab.item.Name;
+                        prevStr += prevTab.item.Text;
 
-                    VampirioGraphics.DrawString(g, font, nonSelTab.item.Name + prevStr, Color.Red, 10, _startY_);
+                    VampirioGraphics.DrawString(g, font, nonSelTab.item.Text + prevStr, Color.Red, 10, _startY_);
                     _startY_ += 15;
                 }
             }
@@ -636,13 +633,14 @@ namespace VampirioCode.UI.Controls
                 if (tab == SelectedTab)
                     color = Color.Green;
 
-                VampirioGraphics.DrawString(g, font, tab.item.Name + "     x: " + tab.x, color, 180, _startY_);
+                VampirioGraphics.DrawString(g, font, tab.item.Text + "     x: " + tab.x, color, 180, _startY_);
                 _startY_ += 15;
             }
             // --------------------------
 
-            
+
         }
+        #endregion
 
     }
 }

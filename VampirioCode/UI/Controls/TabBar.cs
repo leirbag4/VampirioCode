@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VampirioCode.UI.Controls.TabManagement;
 
 namespace VampirioCode.UI.Controls
 {
@@ -62,18 +63,38 @@ namespace VampirioCode.UI.Controls
 
 
 
-    public class TabControlX : Control
+    public class TabBar : Control
     {
+        public delegate void SelectedTabChangedEvent(int index, TabItem item);
+        public delegate void TabAddedEvent(int index, TabItem item);
+        public delegate void TabRemovedEvent(int index, TabItem item);
+        public delegate void StartDragTabEvent(int index, TabItem item);
+        public delegate void StopDragTabEvent(int index, TabItem item);
+        public event SelectedTabChangedEvent SelectedTabChanged;
+        public event TabAddedEvent TabAdded;
+        public event TabRemovedEvent TabRemoved;
+        public event StartDragTabEvent StartDragTab;
+        public event StopDragTabEvent StopDragTab;
 
         public TabItemCollection Items { get { return items; } set { items = value; } }
 
         private TabItemCollection items = new TabItemCollection();
         private List<Tab> tabs = new List<Tab>();
-        private TabManager manager = new TabManager();
+        private TabController controller;
 
 
-        public TabControlX() 
+        public TabBar() 
         {
+            controller = new TabController();
+
+            // controller events
+            controller.SelectedTabChanged +=    OnSelectedIndexChanged;
+            controller.TabAdded +=              OnTabAdded;
+            controller.TabRemoved +=            OnTabRemoved;
+            controller.StartDragTab +=          OnStartDragTab;
+            controller.StopDragTab +=           OnStopDragTab;
+
+            // items events
             items.ItemAdded +=      OnItemAdded;
             items.ItemRemoved +=    OnItemRemoved;
             items.ItemModified +=   OnItemModified;
@@ -84,25 +105,64 @@ namespace VampirioCode.UI.Controls
             DoubleBuffered = true;
         }
 
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            controller.SizeChange(this.Width, this.Height);
+            base.OnSizeChanged(e);
+            Invalidate();
+        }
 
+
+        // Controller Events
+        private void OnSelectedIndexChanged(int index, TabItem item)
+        {
+            if(SelectedTabChanged != null)
+                SelectedTabChanged(index, item);
+        }
+
+        private void OnTabAdded(int index, TabItem item)
+        {
+            if(TabAdded != null)
+                TabAdded(index, item);
+        }
+
+        private void OnTabRemoved(int index, TabItem item)
+        {
+            if(TabRemoved != null)
+                TabRemoved(index, item);
+        }
+
+        private void OnStartDragTab(int index, TabItem item)
+        {
+            if(StartDragTab != null)
+                StartDragTab(index, item);
+        }
+
+        private void OnStopDragTab(int index, TabItem item)
+        {
+            if(StopDragTab != null)
+                StopDragTab(index, item);
+        }
+
+        // Item Events
         private void OnItemAdded(int index, TabItem item)
         {
-            XConsole.Println("item added: " + item.Name + " at " + index);
+            //XConsole.Println("item added: " + item.Name + " at " + index);
             //manager.Add(item);
-            manager.Insert(index, item);
+            controller.Insert(index, item);
             Invalidate();
         }
 
         private void OnItemRemoved(int index, TabItem item)
         {
-            XConsole.Println("item removed: " + item.Name);
-            manager.RemoveAt(index);
+            //XConsole.Println("item removed: " + item.Name);
+            controller.RemoveAt(index);
             Invalidate();
         }
 
         private void OnItemModified(TabItem oldItem, TabItem newItem)
         {
-            XConsole.Println("item modified: " + newItem.Name);
+            XConsole.Println("item modified: " + newItem.Text);
             Invalidate();
         }
 
@@ -121,47 +181,45 @@ namespace VampirioCode.UI.Controls
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            manager.MouseDown(e.X, e.Y);
+            controller.MouseDown(e.X, e.Y);
             base.OnMouseDown(e);
             Invalidate();
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            manager.MouseMove(e.X, e.Y, e.Button == MouseButtons.Left);
+            controller.MouseMove(e.X, e.Y, e.Button == MouseButtons.Left);
             base.OnMouseMove(e);
             Invalidate();
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            manager.MouseUp(e.X, e.Y);
+            controller.MouseUp(e.X, e.Y);
             base.OnMouseUp(e);
             Invalidate();
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
-            manager.MouseLeave();
+            controller.MouseLeave();
             base.OnMouseLeave(e);
             Invalidate();
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            manager.MouseScroll(e.Delta > 0 ? 1 : 0);
+            controller.MouseScroll(e.X, e.Y, e.Delta > 0 ? 1 : -1);
             base.OnMouseWheel(e);
             Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //base.OnPaint(e);
-
             e.Graphics.FillRectangle(new SolidBrush(BackColor), ClientRectangle);
 
-            manager.Update();
-            manager.Paint(e.Graphics);
+            controller.Update();
+            controller.Paint(e.Graphics);
         }
 
     }

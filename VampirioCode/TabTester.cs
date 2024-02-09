@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.UI;
-using VampirioCode.UI.Controls;
+using VampirioCode.UI.Controls.TabManagement;
 
 namespace VampirioCode
 {
@@ -23,7 +23,65 @@ namespace VampirioCode
         public TabTester()
         {
             InitializeComponent();
+            
+            tabControl.SelectedTabChanged +=        OnSelectedIndexChanged;
+            tabControl.TabAdded +=                  OnTabAdded;
+            tabControl.TabRemoved +=                OnTabRemoved;
+            tabControl.StartDragTab +=              OnStartDragTab;
+            tabControl.StopDragTab +=               OnStopDragTab;
+
+            tabControlWin.SelectedIndexChanged +=   OnWinSelIndexChanged;
+            tabControlWin.ControlAdded +=           OnWinControlAdded;
+            tabControlWin.ControlRemoved +=         OnWinControlRemoved;
         }
+
+
+        // ------------------------------------------------------------------------
+
+        private void OnSelectedIndexChanged(int index, TabItem item)
+        {
+            XConsole.PrintWarning("SelIndexChanged: " + index + " item: " + item?.Text);
+        }
+
+        private void OnTabAdded(int index, TabItem item)
+        {
+            XConsole.PrintWarning("tab added: " + index + " item: " + item.Text);
+        }
+
+        private void OnTabRemoved(int index, TabItem item)
+        {
+            XConsole.PrintWarning("tab removed: " + index + " item: " + item.Text);
+        }
+
+        private void OnStartDragTab(int index, TabItem item)
+        {
+            XConsole.PrintWarning("start drag: " + index + " item: " + item.Text);
+        }
+
+        private void OnStopDragTab(int index, TabItem item)
+        {
+            XConsole.PrintWarning("stop drag: " + index + " item: " + item.Text);
+        }
+
+        // ------------------------------------------------------------------------
+
+        private void OnWinControlAdded(object sender, ControlEventArgs e)
+        {
+            XConsole.PrintError("doc added: " + e.Control.Text);
+        }
+
+        private void OnWinControlRemoved(object sender, ControlEventArgs e)
+        {
+            XConsole.PrintError("doc removed: " + e.Control.Text);
+        }
+
+        private void OnWinSelIndexChanged(object sender, EventArgs e)
+        {
+            XConsole.PrintWarning("index changed: " + tabControlWin.SelectedIndex);
+        }
+
+        // ------------------------------------------------------------------------
+
 
         private void AddItem()
         {
@@ -96,6 +154,19 @@ namespace VampirioCode
         private void OnClearPressed(object sender, EventArgs e)
         {
             XConsole.Clear();
+            /*Button b = new Button();
+            b.TabIndex
+            b.TabIndexChanged*/
+            //tabControlWin.TabIndexChanged
+            //tabControlWin.TabIndex
+
+            /*tabControlWin.SelectedIndexChanged
+             tabControlWin.Selected
+             tabControlWin.SelectedIndex
+             tabControlWin.SelectedTab
+             tabControlWin.SelectTab(index)
+             tabControlWin.TabPages
+             tabControlWin.tab*/
         }
 
         private void OnRemoveItemNumb(object sender, EventArgs e)
@@ -120,6 +191,12 @@ namespace VampirioCode
         {
             int numb = int.Parse(((Button)sender).Tag.ToString());
             tabControlWin.TabPages.Insert(numb, new TabPage("item " + counter++));
+        }
+
+        private void OnManualSelectWinIndex(object sender, EventArgs e)
+        {
+            int numb = int.Parse(((Button)sender).Tag.ToString());
+            tabControlWin.SelectedIndex = numb;
         }
     }
 }

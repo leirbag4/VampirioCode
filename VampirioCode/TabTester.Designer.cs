@@ -33,7 +33,7 @@
             tabPage2 = new TabPage();
             button1 = new Button();
             button2 = new Button();
-            tabControl = new UI.Controls.TabControlX();
+            tabControl = new UI.Controls.TabBar();
             button3 = new Button();
             button4 = new Button();
             console = new UI.XConsole();
@@ -60,6 +60,10 @@
             button24 = new Button();
             button25 = new Button();
             button26 = new Button();
+            button27 = new Button();
+            button28 = new Button();
+            button29 = new Button();
+            button30 = new Button();
             tabControlWin.SuspendLayout();
             SuspendLayout();
             // 
@@ -420,12 +424,60 @@
             button26.UseVisualStyleBackColor = true;
             button26.Click += OnWinRemovePressed;
             // 
+            // button27
+            // 
+            button27.Location = new Point(745, 479);
+            button27.Name = "button27";
+            button27.Size = new Size(50, 29);
+            button27.TabIndex = 30;
+            button27.Tag = "0";
+            button27.Text = "sel 0";
+            button27.UseVisualStyleBackColor = true;
+            button27.Click += OnManualSelectWinIndex;
+            // 
+            // button28
+            // 
+            button28.Location = new Point(803, 479);
+            button28.Name = "button28";
+            button28.Size = new Size(50, 29);
+            button28.TabIndex = 31;
+            button28.Tag = "1";
+            button28.Text = "sel 1";
+            button28.UseVisualStyleBackColor = true;
+            button28.Click += OnManualSelectWinIndex;
+            // 
+            // button29
+            // 
+            button29.Location = new Point(859, 479);
+            button29.Name = "button29";
+            button29.Size = new Size(50, 29);
+            button29.TabIndex = 32;
+            button29.Tag = "2";
+            button29.Text = "sel 2";
+            button29.UseVisualStyleBackColor = true;
+            button29.Click += OnManualSelectWinIndex;
+            // 
+            // button30
+            // 
+            button30.Location = new Point(915, 479);
+            button30.Name = "button30";
+            button30.Size = new Size(50, 29);
+            button30.TabIndex = 33;
+            button30.Tag = "3";
+            button30.Text = "sel 3";
+            button30.UseVisualStyleBackColor = true;
+            button30.Click += OnManualSelectWinIndex;
+            // 
             // TabTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(1157, 620);
+            Controls.Add(button30);
+            Controls.Add(button29);
+            Controls.Add(button28);
+            Controls.Add(button27);
             Controls.Add(button17);
             Controls.Add(button18);
             Controls.Add(button19);
@@ -469,7 +521,7 @@
         private TabPage tabPage2;
         private Button button1;
         private Button button2;
-        private UI.Controls.TabControlX tabControl;
+        private UI.Controls.TabBar tabControl;
         private Button button3;
         private Button button4;
         private UI.XConsole console;
@@ -496,5 +548,9 @@
         private Button button24;
         private Button button25;
         private Button button26;
+        private Button button27;
+        private Button button28;
+        private Button button29;
+        private Button button30;
     }
 }
