@@ -25,7 +25,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         // IMPORTANT: A global offset position used to shift all the tabs to the left or right
         //            This variable is used to calculate LocalToGlobal() and GlobalToLocal()
-        public int OFFSET_X = -1100; 
+        public int OFFSET_X = 0; 
 
         private int width = 400;
         private int height = 30;
