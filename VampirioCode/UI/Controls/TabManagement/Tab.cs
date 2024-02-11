@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define TAB_CONTROLLER_DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -167,10 +169,12 @@ namespace VampirioCode.UI.Controls.TabManagement
             VampirioGraphics.FillRect(g, backColor, Color.Gray, 2, _x_, y, width, height);
             VampirioGraphics.DrawString(g, font, item.Text, Color.Black, _x_, y, width, height, ContentAlignment.MiddleCenter);
 
+#if TAB_CONTROLLER_DEBUG
             VampirioGraphics.FillRect(g, Color.Black, _x_ + (width >> 1) - 1, y, 3, 4);
 
             if(Selected)
                 VampirioGraphics.FillRect(g, Color.Red, _x_ + dragOffsetPointX - 1, y + height - 3, 3, 3);
+#endif
         }
 
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define TAB_CONTROLLER_DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -295,8 +297,18 @@ namespace VampirioCode.UI.Controls.TabManagement
             IsDragging = false;
             NonSelectedTabs = new List<Tab>();
 
+            // Reset local (relative) tab positions
             ResetPositions();
 
+            // If released tab is outside the screen, on the left, then scroll OFFSET_X up to its position
+            if (LocalToGlobal(SelectedTab.x) < 0)
+                OFFSET_X -= LocalToGlobal(SelectedTab.x);
+
+            // If released tab is outside the screen, on the right, then scroll OFFSET_X up to its position
+            if (LocalToGlobal(SelectedTab.Right) > width)
+                OFFSET_X -= LocalToGlobal(SelectedTab.Right) - width;
+
+            // Event
             if (StopDragTab != null)
                 StopDragTab(SelectedTab.Index(), SelectedTab.item);
         }
@@ -792,7 +804,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                 drawAtTopTab.Paint(g);
 
             // Debug painting
+#if TAB_CONTROLLER_DEBUG
             PrintDebug(g);
+#endif
         }
         #endregion
 
