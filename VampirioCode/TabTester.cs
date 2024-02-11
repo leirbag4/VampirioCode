@@ -109,6 +109,14 @@ namespace VampirioCode
 
             for (int a = 0; a < 15; a++)
                 AddItem();
+
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+
+            tabControl.Focus();
         }
 
         int counter2 = 0;

@@ -21,27 +21,29 @@ namespace VampirioCode.UI.Controls.TabManagement
         public int Left { get { return x; } }
         public int Right { get { return x + width; } }
 
+        public TabItem item;
         public int x, y, width, height;
         private State state = State.Up;
-        public TabItem item;
         private Font font;
-        private bool dragging;
-        private int startDragX;
-        private TabController controller;
+        private bool dragging;              // Tell if Tab is being dragged
+        private int startDragX;             // Used to calculate on each movement how long the mouse moves
+        public int dragOffsetPointX = 0;    // Register the offset position inside a selected tab that is going to be dragged
+        private TabController controller;   // Main tabs controller and container
 
         public Tab(TabItem item, Font font, TabController manager)
         {
             item.tab = this;
-            x = 0;
-            y = 0;
-            width = item.Width;
-            height = 25;
-            this.item = item;
-            this.font = font;
-            dragging = false;
-            startDragX = 0;
-            Selected = false;
-            this.controller = manager;
+
+            this.x =            0;
+            this.y =            0;
+            this.width =        item.Width;
+            this.height =       25;
+            this.item =         item;
+            this.font =         font;
+            this.dragging =     false;
+            this.startDragX =   0;
+            this.Selected =     false;
+            this.controller =   manager;
         }
 
         public void SetPos(int x, int y)
@@ -84,10 +86,13 @@ namespace VampirioCode.UI.Controls.TabManagement
                 return controller.tabs[index + 1];
         }
 
+        
         public void OnMouseDown(int mx, int my)
         {
             if (IsInside(mx, my))
             {
+                dragOffsetPointX = mx - x;
+
                 startDragX = mx;
                 dragging = true;
                 controller.StartDragging(this);
@@ -98,6 +103,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             if (dragging)
             {
+                //x = mx - mouseOffsetX;
+
                 int offset = mx - startDragX;
                 startDragX = mx;
 
@@ -161,6 +168,9 @@ namespace VampirioCode.UI.Controls.TabManagement
             VampirioGraphics.DrawString(g, font, item.Text, Color.Black, _x_, y, width, height, ContentAlignment.MiddleCenter);
 
             VampirioGraphics.FillRect(g, Color.Black, _x_ + (width >> 1) - 1, y, 3, 4);
+
+            if(Selected)
+                VampirioGraphics.FillRect(g, Color.Red, _x_ + dragOffsetPointX - 1, y + height - 3, 3, 3);
         }
 
     }

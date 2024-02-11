@@ -21,7 +21,9 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
 
-        public int OFFSET_X = -1100;
+        // IMPORTANT: A global offset position used to shift all the tabs to the left or right
+        //            This variable is used to calculate LocalToGlobal() and GlobalToLocal()
+        public int OFFSET_X = -1100; 
 
         private int width = 400;
         private int height = 30;
@@ -35,6 +37,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         private int selTabPreviousX = 0;                        // Register the start x position of the selected tab on MouseDown or Start Drag to calculate in which direction it is moving. On every Update loop it is reset again.
         private Tab prevSelectedTab = null;                     // Used to trigger events on tab changed
         private Font font;
+        private bool freezeMoveLeft = false;
+        private bool freezeMoveRight = false;
 
         public int TotalTabs { get { return tabs.Count; } }                         // Total amount of tabs
         public bool IsDragging { get; set; } = false;                               // SelectedTab is being dragged
@@ -42,6 +46,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public bool IsOutsideBounds { get { return TotalWidth(tabs) > width; } }    // Any or many tabs are outside screen because they can't fit inside it
         public bool TabsFitOnScreen { get { return !IsOutsideBounds; } }            // All tabs fit inside the screen. No tab is outside 
         public int SelectedIndex { get { if (SelectedTab == null) return -1; else return SelectedTab.Index(); } set { if (TotalTabs > 0) { PushSelTabForEvent(); SimpleSelect(tabs[value]); PopSelTabChangedEvent();  } else throw new Exception("Tab index doesn't exist. Can't be selected."); } }
+        public int TabVisibleLimit { get; set; } = 10; // Represents a fixed number of pixels that determines a minimum visible part of the tab when it is out of the screen.
 
         public TabController()
         {
@@ -168,7 +173,6 @@ namespace VampirioCode.UI.Controls.TabManagement
             //
             if (width > prevWidth)
             {
-                XConsole.Println("IsOutsideBounds: " + IsOutsideBounds + " OFFSET_X: " + OFFSET_X);
                 if (IsOutsideBounds)
                 {
                     OFFSET_X += width - prevWidth;
@@ -257,8 +261,6 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                     if(diff < width)
                         OFFSET_X =  - (TotalWidth(tabs) - width);
-
-                    XConsole.Println("diff is: " + diff);
                 }
             }
 
@@ -458,6 +460,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         //
         // Update switching locations to left or right when dragging
         //
+
         private void UpdateSwitching()
         {
             bool passesSelected = false;
@@ -467,14 +470,163 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 SelectedTab.y = 4;
 
-
+                #region MovingDirection
                 // Calculate moving direction to know if moving to the left or right
-                moveDirection = LocalToGlobal(SelectedTab.x) - selTabPreviousX;
-                selTabPreviousX = LocalToGlobal(SelectedTab.x);
+                moveDirection =     LocalToGlobal(SelectedTab.x) - selTabPreviousX;
+                selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                #endregion
+
+
+                #region MouseOffsetReset
+                #region help
+                // 
+                // Mouse Offset Reset:
+                //        When a tab is dragged and passes the limits of the screen, if the mouse returns, then
+                //        the dragged offset change and the tab is moving but the mouse is not inside the tab.
+                //        So to fix this issue we must reset and lock these offsets when mouse is outside range
+                //        and still not return to the first dragged position of the tab
+                //
+                //
+                // Example:
+                //   
+                //         
+                //              ___________________________________
+                //             |    |███████████|██████|██████|    |
+                //                       ▲ 
+                //
+                //             1. user pick up a tab
+                //
+                //                                
+                //             0         ┌ dragOffsetPointX
+                //             ↓_________↓_________________________
+                //             |    |▓▓▓▓▒▓▓▓▓▓▓|██████|██████|    |
+                //                       ▲
+                //                     Mouse
+                //
+                //             2. drag a tab to the left. (check out that the arrow denotes the dragOffsetPointX)
+                //
+                //             0
+                //             ↓___________________________________
+                //     |▓▓▓▓▒▓▓|▓▓▓▓|           |██████|██████|    |   freezeMoveLeft = true
+                //          ▲     ↑
+                //        Mouse   TabVisibleLimit
+                //
+                //             3. mouse has passed the left screen limit and also reach TabVisibleLimit so tab stay frozen
+                //                and we register 'freezeMoveLeft' to TRUE. This is very important. Later 'freezeMoveLeft' will be used
+                //                
+                //              ___________________________________
+                //     |▓▓▓▓▒▓▓|▓▓▓▓|           |██████|██████|    |
+                //   ▲            ↑
+                // Mouse          TabVisibleLimit
+                //   
+                //             4. Tab can't be moved further to the left but the mouse has no limits,
+                //                so it continues to the left
+                //   
+                //    [ BAD ]    ___________________________________
+                //    [ BAD ]   |    |▓▓▓▓▒▓▓▓▓▓▓|██████|██████|    |   
+                //    [ BAD ]      ▲            
+                //               Mouse          
+                //
+                //             5. If we don't fix it, and mouse moves now to the right, then mouse will not be inside tab
+                //                and will be dragging an empty space and after this is the tab. So it's not okay
+                //
+                //          ┌ dragOffsetPointX
+                //          ↓   ___________________________________
+                //     |▓▓▓▓▒▓▓|▓▓▓▓|           |██████|██████|    |
+                //          ▲     ↑
+                //        Mouse   TabVisibleLimit
+                //
+                //             6. To fix the issue we must continue freezing the tab while 'freezeMoveLeft' is TRUE
+                //             The mouse continue to the right until it reaches the 'dragOffsetPointX' again and unlock the freeze.
+                //             
+                //
+                //    [ OK ]             ┌ dragOffsetPointX
+                //    [ OK ]    _________↓_________________________
+                //    [ OK ]   |    |▓▓▓▓▒▓▓▓▓▓▓|██████|██████|    |
+                //                       ▲
+                //                     Mouse
+                //
+                //             7. Finally the mouse will drag the tab again using the same start drag position (dragOffsetPointX)
+                //
+                #endregion
+                
+                //
+                // Frozen Tab with mouse on the left and out of the screen
+                //
+                if (freezeMoveLeft)
+                {
+                    // 
+                    // dragOffsetPointX  0                              dragOffsetPointX  0                               
+                    //                ↓  ↓_________________________                    ↓  ↓_________________________       
+                    //           |▓▓▓▓▒▓▓|▓▓▓▓|      |██████|██████|              |▓▓▓▓▒▓▓|▓▓▓▓|      |██████|██████|         
+                    //       ▲               IF( FALSE )                               ▲      IF( TRUE )             
+                    //    [Mouse]                                                   [Mouse]                                       
+                    if (LocalToGlobal(mouseX) > (LocalToGlobal(SelectedTab.x + SelectedTab.dragOffsetPointX)))
+                    {
+                        // Mouse returns to the 'dragOffsetPointX' so we can release the freeze of the tab
+                        SelectedTab.x =     mouseX - SelectedTab.dragOffsetPointX;
+                        selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                        freezeMoveLeft =    false;
+                    }
+                    // 
+                    // dragOffsetPointX  0                           
+                    //                ↓  ↓_________________________  
+                    //           |▓▓▓▓▒▓▓|▓▓▓▓|      |██████|██████| 
+                    //             ▲                  
+                    //          [Mouse]
+                    else if (moveDirection > 0)
+                    {
+                        // Mouse moving to the right but not reach 'dragOffsetPointX' yet so we must freeze the tab in its position
+                        SelectedTab.x -=    moveDirection;
+                        selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                    }
+
+                }
+                // Tab is outside screen to the left and dragged point of the tab also passed
+                //
+                // dragOffsetPointX  0
+                //                ↓  ↓___________________________________
+                //           |▓▓▓▓▒▓▓|▓▓▓▓|           |██████|██████|    |   freezeMoveLeft = true
+                //           x    ▲     ↑
+                //             [Mouse]  TabVisibleLimit
+                //       
+                else if (LocalToGlobal(SelectedTab.x + SelectedTab.dragOffsetPointX) < 0)
+                {
+                    freezeMoveLeft = true;
+                }
 
 
                 //
-                // Out of the screen shift
+                // Frozen Tab with mouse on the right and out of the screen
+                //
+                if (freezeMoveRight)
+                {
+                    if (LocalToGlobal(mouseX) < (LocalToGlobal(SelectedTab.x + SelectedTab.dragOffsetPointX)))
+                    {
+                        SelectedTab.x =     mouseX - SelectedTab.dragOffsetPointX;
+                        selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                        freezeMoveRight =   false;
+                    }
+                    else if (moveDirection < 0)
+                    {
+                        SelectedTab.x -= moveDirection;
+                        selTabPreviousX = LocalToGlobal(SelectedTab.x);
+                    }
+
+                }
+                else if (LocalToGlobal(SelectedTab.x + SelectedTab.dragOffsetPointX) > width)
+                {
+                    freezeMoveRight = true;
+                }
+                #endregion
+
+
+                #region Shifting
+                //
+                // Shifting:
+                //           when a dragged tab goes to the left or right and there are more tabs
+                //           outside screen, then we increment or decrement a global variable called
+                //           OFFSET_X to reach those tabs, so all tabs are shifted to the left or right
                 //
 
                 // Mouse is moving to the left  <--
@@ -493,10 +645,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                     if (LocalToGlobal(SelectedTab.Right) > width)
                         OFFSET_X -= moveDirection;
 
-                    int lastPos = LocalToGlobal(NonSelectedTabs[NonSelectedTabs.Count - 1].Right);
-
-                    int totalWidth = TotalWidth(tabs);
-                    int nonSelTotWidth = totalWidth - SelectedTab.width;
+                    int lastPos =           LocalToGlobal(NonSelectedTabs[NonSelectedTabs.Count - 1].Right);
+                    int totalWidth =        TotalWidth(tabs);
+                    int nonSelTotWidth =    totalWidth - SelectedTab.width;
 
                     // All tabs enter inside the control
                     if (totalWidth < width)
@@ -512,17 +663,48 @@ namespace VampirioCode.UI.Controls.TabManagement
                     }
 
                 }
+                #endregion
 
-                //XConsole.Println("offsetX: "+ OFFSET_X);
 
+                #region TabOutScreenLock
                 //
-                // Main loop to move tabs
+                // Lock a dragged tab to a fixed position in order to maintain 
+                // the tab visible on screen when the user drag the tab out the
+                // screen to the left or right
+                //
+                // [out screen]     [inner screen]
+                //       ______ _____________________________
+                //      |▓▓▓▓▓▓|▓▓▓|    |██████|██████|██████|
+                //             | ▲                           |
+                //             | TabVisibleLimit             |
+                //             |                             |
+                //
+                if (LocalToGlobal(SelectedTab.Right) < TabVisibleLimit)
+                {
+                    // 
+                    SelectedTab.x =     GlobalToLocal(-SelectedTab.width + TabVisibleLimit);
+                    selTabPreviousX =   LocalToGlobal(SelectedTab.x); //selTabPreviousX = -SelectedTab.width + 10; // this line works also here
+                }
+                else if (LocalToGlobal(SelectedTab.Left) > (width - TabVisibleLimit))
+                {
+                    SelectedTab.x =     GlobalToLocal(width - TabVisibleLimit);
+                    selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                }
+                #endregion
+
+
+                #region SwapTabs
+                //
+                // Swap tabs:
+                //           A tab is swapped when the left or right border of the
+                //           dragged tab passes the center of the next tab
                 //
                 foreach (Tab nonSelTab in NonSelectedTabs)
                 {
-                    // Mouse is moving to the left
+                    // Mouse is moving to the left <--
                     if (moveDirection < 0)
                     {
+                        // Left border of the dragged tab passes the center of the next tab
                         if (SelectedTab.Left < nonSelTab.CenterX)
                         {
                             Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
@@ -541,9 +723,10 @@ namespace VampirioCode.UI.Controls.TabManagement
                                 nonSelTab.SetPos(prevTab.Right, 0);
                         }
                     }
-                    // Mouse is moving to the right
+                    // Mouse is moving to the right -->
                     else if (moveDirection > 0)
                     {
+                        // Right border of the dragged tab passes the center of the next tab
                         if (SelectedTab.Right > nonSelTab.CenterX)
                         {
                             Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
@@ -556,6 +739,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                         }
                     }
                 }
+                #endregion
+
 
                 RecalcIndices();
             }
@@ -597,7 +782,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 if (tab.Selected)
                     drawAtTopTab = tab;
-                if (IsInsideScreen(tab))
+                else if (IsInsideScreen(tab))
                     tab.Paint(g);
             }
 
@@ -605,8 +790,6 @@ namespace VampirioCode.UI.Controls.TabManagement
             // it in front of the others
             if (drawAtTopTab != null && IsInsideScreen(drawAtTopTab))
                 drawAtTopTab.Paint(g);
-
-
 
             // Debug painting
             PrintDebug(g);

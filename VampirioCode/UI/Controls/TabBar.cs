@@ -178,9 +178,12 @@ namespace VampirioCode.UI.Controls
             base.OnMouseEnter(e);
             Invalidate();
         }
-
+        private int mouseSavedX;
+        private int mouseSavedY;
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            mouseSavedX = e.X;
+            mouseSavedY = e.Y;
             controller.MouseDown(e.X, e.Y);
             base.OnMouseDown(e);
             Invalidate();
@@ -211,6 +214,24 @@ namespace VampirioCode.UI.Controls
         {
             controller.MouseScroll(e.X, e.Y, e.Delta > 0 ? 1 : -1);
             base.OnMouseWheel(e);
+            Invalidate();
+        }
+
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            if(e.KeyChar == 'a')
+                controller.MouseMove(mouseSavedX -= 1, mouseSavedY, false);
+            else if (e.KeyChar == 's')
+                controller.MouseMove(mouseSavedX -= 2, mouseSavedY, false);
+            else if (e.KeyChar == 'd')
+                controller.MouseMove(mouseSavedX -= 3, mouseSavedY, false);
+
+            else if (e.KeyChar == 'q')
+                controller.MouseMove(mouseSavedX, mouseSavedY += 1, false);
+            else if (e.KeyChar == 'w')
+                controller.MouseMove(mouseSavedX, mouseSavedY += 2, false);
+
+            base.OnKeyPress(e);
             Invalidate();
         }
 
