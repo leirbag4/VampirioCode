@@ -1,4 +1,4 @@
-﻿#define TAB_CONTROLLER_DEBUG
+﻿//#define TAB_CONTROLLER_DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -245,6 +245,9 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Triggered by the parent container when the mouse moves
         public void MouseMove(int x, int y, bool mouseDown)
         {
+            if (!mouseDown)
+                return;
+
             mouseX = x - OFFSET_X;
             mouseY = y;
             this.mouseDown = mouseDown;

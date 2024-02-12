@@ -26,15 +26,16 @@ namespace VampirioCode
         {
             InitializeComponent();
 
-            tabBar.SelectedTabChanged += OnSelectedIndexChanged;
-            tabBar.TabAdded += OnTabAdded;
-            tabBar.TabRemoved += OnTabRemoved;
-            tabBar.StartDragTab += OnStartDragTab;
-            tabBar.StopDragTab += OnStopDragTab;
+            tabBar.SelectedTabChanged +=    OnSelectedIndexChanged;
+            tabBar.TabAdded +=              OnTabAdded;
+            tabBar.TabRemoved +=            OnTabRemoved;
+            tabBar.StartDragTab +=          OnStartDragTab;
+            tabBar.StopDragTab +=           OnStopDragTab;
+            tabBar.RightClickContext +=     OnRightClickContext;
 
-            tabControlWin.SelectedIndexChanged += OnWinSelIndexChanged;
-            tabControlWin.ControlAdded += OnWinControlAdded;
-            tabControlWin.ControlRemoved += OnWinControlRemoved;
+            tabControlWin.SelectedIndexChanged +=   OnWinSelIndexChanged;
+            tabControlWin.ControlAdded +=           OnWinControlAdded;
+            tabControlWin.ControlRemoved +=         OnWinControlRemoved;
         }
 
 
@@ -63,6 +64,11 @@ namespace VampirioCode
         private void OnStopDragTab(int index, TabItem item)
         {
             XConsole.PrintWarning("stop drag: " + index + " item: " + item.Text);
+        }
+
+        private void OnRightClickContext(TabItem item)
+        {
+            XConsole.PrintWarning("Right click: " + item.Text);
         }
 
         // ------------------------------------------------------------------------

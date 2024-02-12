@@ -70,12 +70,13 @@ namespace VampirioCode.UI.Controls
         public delegate void TabRemovedEvent(int index, TabItem item);
         public delegate void StartDragTabEvent(int index, TabItem item);
         public delegate void StopDragTabEvent(int index, TabItem item);
+        public delegate void RightClickContextEvent(TabItem item);
         public event SelectedTabChangedEvent SelectedTabChanged;
         public event TabAddedEvent TabAdded;
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
-
+        public event RightClickContextEvent RightClickContext;
 
         public TabItemCollection Items { get { return items; } set { items = value; } }
         public int SelectedIndex { get { return controller.SelectedIndex; } set { controller.SelectedIndex = value; Invalidate(); } }
@@ -240,6 +241,9 @@ namespace VampirioCode.UI.Controls
             controller.MouseUp(e.X, e.Y);
             base.OnMouseUp(e);
             Invalidate();
+
+            if ((e.Button == MouseButtons.Right) && (RightClickContext != null) && (controller.SelectedTab != null))
+                RightClickContext(controller.SelectedTab.item);
         }
 
         protected override void OnMouseLeave(EventArgs e)
