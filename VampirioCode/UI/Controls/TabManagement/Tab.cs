@@ -98,6 +98,12 @@ namespace VampirioCode.UI.Controls.TabManagement
                 startDragX = mx;
                 dragging = true;
                 controller.StartDragging(this);
+
+                if (!controller.AllowDragging)
+                {
+                    controller.StopDragging();
+                    dragging = false;
+                }
             }
         }
 
@@ -105,8 +111,6 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             if (dragging)
             {
-                //x = mx - mouseOffsetX;
-
                 int offset = mx - startDragX;
                 startDragX = mx;
 

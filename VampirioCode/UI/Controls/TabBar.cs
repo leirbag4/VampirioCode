@@ -76,10 +76,12 @@ namespace VampirioCode.UI.Controls
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
 
+
         public TabItemCollection Items { get { return items; } set { items = value; } }
+        public int SelectedIndex { get { return controller.SelectedIndex; } set { controller.SelectedIndex = value; Invalidate(); } }
+        public TabItem SelectedTab { get { return controller.SelectedTab.item; } set { controller.SelectedTab = value.tab; Invalidate(); } }
 
         private TabItemCollection items = new TabItemCollection();
-        private List<Tab> tabs = new List<Tab>();
         private TabController controller;
 
 
@@ -103,6 +105,47 @@ namespace VampirioCode.UI.Controls
             BackColor = Color.FromArgb(60, 60, 60);
 
             DoubleBuffered = true;
+        }
+
+        public void Add(TabItem item)
+        {
+            controller.Add(item);
+            Invalidate();
+        }
+
+        public void Insert(int index, TabItem item) 
+        {
+            controller.Insert(index, item);
+            Invalidate();
+        }
+
+        public void RemoveAt(int index)
+        { 
+            controller.RemoveAt(index);
+            Invalidate();
+        }
+
+        public void Remove(TabItem tab)
+        { 
+            controller.Remove(tab);
+            Invalidate();
+        }
+
+        public void RemoveAllTabs()
+        { 
+            controller.RemoveAllTabs();
+            Invalidate();
+        }
+
+        public TabItem GetTabAt(int index)
+        { 
+            return controller.GetTabAt(index).item;
+        }
+
+        public void BringTabToScreen(TabItem tab)
+        {
+            controller.BringTabIntoScreen(tab.tab);
+            Invalidate();
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -147,17 +190,12 @@ namespace VampirioCode.UI.Controls
         // Item Events
         private void OnItemAdded(int index, TabItem item)
         {
-            //XConsole.Println("item added: " + item.Name + " at " + index);
-            //manager.Add(item);
-            controller.Insert(index, item);
-            Invalidate();
+            Insert(index, item);
         }
 
         private void OnItemRemoved(int index, TabItem item)
         {
-            //XConsole.Println("item removed: " + item.Name);
-            controller.RemoveAt(index);
-            Invalidate();
+            RemoveAt(index);
         }
 
         private void OnItemModified(TabItem oldItem, TabItem newItem)
@@ -169,6 +207,7 @@ namespace VampirioCode.UI.Controls
         private void OnItemsCleared()
         {
             XConsole.Println("items cleared");
+            RemoveAllTabs();
             Invalidate();
         }
 

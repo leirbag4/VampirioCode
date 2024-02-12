@@ -33,7 +33,7 @@
             tabPage2 = new TabPage();
             button1 = new Button();
             button2 = new Button();
-            tabControl = new UI.Controls.TabBar();
+            tabBar = new UI.Controls.TabBar();
             button3 = new Button();
             button4 = new Button();
             console = new UI.XConsole();
@@ -64,6 +64,11 @@
             button28 = new Button();
             button29 = new Button();
             button30 = new Button();
+            button31 = new Button();
+            button32 = new Button();
+            button33 = new Button();
+            button34 = new Button();
+            button35 = new Button();
             tabControlWin.SuspendLayout();
             SuspendLayout();
             // 
@@ -118,15 +123,16 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += WinRemove;
             // 
-            // tabControl
+            // tabBar
             // 
-            tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tabControl.BackColor = Color.FromArgb(60, 60, 60);
-            tabControl.Location = new Point(25, 12);
-            tabControl.Name = "tabControl";
-            tabControl.Size = new Size(552, 335);
-            tabControl.TabIndex = 3;
-            tabControl.Text = "tabControlx1";
+            tabBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tabBar.BackColor = Color.FromArgb(60, 60, 60);
+            tabBar.Location = new Point(25, 12);
+            tabBar.Name = "tabBar";
+            tabBar.SelectedIndex = -1;
+            tabBar.Size = new Size(552, 335);
+            tabBar.TabIndex = 3;
+            tabBar.Text = "tabControlx1";
             // 
             // button3
             // 
@@ -468,12 +474,68 @@
             button30.UseVisualStyleBackColor = true;
             button30.Click += OnManualSelectWinIndex;
             // 
+            // button31
+            // 
+            button31.ForeColor = Color.IndianRed;
+            button31.Location = new Point(455, 396);
+            button31.Name = "button31";
+            button31.Size = new Size(122, 29);
+            button31.TabIndex = 34;
+            button31.Text = "- selected";
+            button31.UseVisualStyleBackColor = true;
+            button31.Click += OnRemoveSelected;
+            // 
+            // button32
+            // 
+            button32.Location = new Point(584, 12);
+            button32.Name = "button32";
+            button32.Size = new Size(122, 29);
+            button32.TabIndex = 35;
+            button32.Text = "save selected";
+            button32.UseVisualStyleBackColor = true;
+            button32.Click += OnSaveSelectedPressed;
+            // 
+            // button33
+            // 
+            button33.Location = new Point(584, 47);
+            button33.Name = "button33";
+            button33.Size = new Size(122, 29);
+            button33.TabIndex = 36;
+            button33.Text = "restore selected";
+            button33.UseVisualStyleBackColor = true;
+            button33.Click += OnRestoreSelectedPressed;
+            // 
+            // button34
+            // 
+            button34.Location = new Point(583, 108);
+            button34.Name = "button34";
+            button34.Size = new Size(122, 29);
+            button34.TabIndex = 37;
+            button34.Text = "bring to screen";
+            button34.UseVisualStyleBackColor = true;
+            button34.Click += OnBringToScreenPressed;
+            // 
+            // button35
+            // 
+            button35.Location = new Point(584, 318);
+            button35.Name = "button35";
+            button35.Size = new Size(122, 29);
+            button35.TabIndex = 38;
+            button35.Text = "clear";
+            button35.UseVisualStyleBackColor = true;
+            button35.Click += OnClearItemsPressed;
+            // 
             // TabTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(1157, 620);
+            Controls.Add(button35);
+            Controls.Add(button34);
+            Controls.Add(button33);
+            Controls.Add(button32);
+            Controls.Add(button31);
             Controls.Add(button30);
             Controls.Add(button29);
             Controls.Add(button28);
@@ -504,7 +566,7 @@
             Controls.Add(console);
             Controls.Add(button3);
             Controls.Add(button4);
-            Controls.Add(tabControl);
+            Controls.Add(tabBar);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(tabControlWin);
@@ -521,7 +583,7 @@
         private TabPage tabPage2;
         private Button button1;
         private Button button2;
-        private UI.Controls.TabBar tabControl;
+        private UI.Controls.TabBar tabBar;
         private Button button3;
         private Button button4;
         private UI.XConsole console;
@@ -552,5 +614,10 @@
         private Button button28;
         private Button button29;
         private Button button30;
+        private Button button31;
+        private Button button32;
+        private Button button33;
+        private Button button34;
+        private Button button35;
     }
 }

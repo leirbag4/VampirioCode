@@ -20,19 +20,21 @@ namespace VampirioCode
 
     public partial class TabTester : Form
     {
+        private TabItem saveSelected;
+
         public TabTester()
         {
             InitializeComponent();
-            
-            tabControl.SelectedTabChanged +=        OnSelectedIndexChanged;
-            tabControl.TabAdded +=                  OnTabAdded;
-            tabControl.TabRemoved +=                OnTabRemoved;
-            tabControl.StartDragTab +=              OnStartDragTab;
-            tabControl.StopDragTab +=               OnStopDragTab;
 
-            tabControlWin.SelectedIndexChanged +=   OnWinSelIndexChanged;
-            tabControlWin.ControlAdded +=           OnWinControlAdded;
-            tabControlWin.ControlRemoved +=         OnWinControlRemoved;
+            tabBar.SelectedTabChanged += OnSelectedIndexChanged;
+            tabBar.TabAdded += OnTabAdded;
+            tabBar.TabRemoved += OnTabRemoved;
+            tabBar.StartDragTab += OnStartDragTab;
+            tabBar.StopDragTab += OnStopDragTab;
+
+            tabControlWin.SelectedIndexChanged += OnWinSelIndexChanged;
+            tabControlWin.ControlAdded += OnWinControlAdded;
+            tabControlWin.ControlRemoved += OnWinControlRemoved;
         }
 
 
@@ -95,12 +97,12 @@ namespace VampirioCode
             if (counter == 5) item.Width = 60;
 
 
-            tabControl.Items.Add(item);
+            tabBar.Items.Add(item);
         }
 
         private void RemoveItem()
         {
-            tabControl.Items.RemoveAt(0);
+            tabBar.Items.RemoveAt(0);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -116,7 +118,7 @@ namespace VampirioCode
         {
             base.OnShown(e);
 
-            tabControl.Focus();
+            tabBar.Focus();
         }
 
         int counter2 = 0;
@@ -162,31 +164,18 @@ namespace VampirioCode
         private void OnClearPressed(object sender, EventArgs e)
         {
             XConsole.Clear();
-            /*Button b = new Button();
-            b.TabIndex
-            b.TabIndexChanged*/
-            //tabControlWin.TabIndexChanged
-            //tabControlWin.TabIndex
-
-            /*tabControlWin.SelectedIndexChanged
-             tabControlWin.Selected
-             tabControlWin.SelectedIndex
-             tabControlWin.SelectedTab
-             tabControlWin.SelectTab(index)
-             tabControlWin.TabPages
-             tabControlWin.tab*/
         }
 
         private void OnRemoveItemNumb(object sender, EventArgs e)
         {
             int numb = int.Parse(((Button)sender).Tag.ToString());
-            tabControl.Items.RemoveAt(numb);
+            tabBar.Items.RemoveAt(numb);
         }
 
         private void OnInsertItemNumb(object sender, EventArgs e)
         {
             int numb = int.Parse(((Button)sender).Tag.ToString());
-            tabControl.Items.Insert(numb, new TabItem("item " + counter++));
+            tabBar.Items.Insert(numb, new TabItem("item " + counter++));
         }
 
         private void OnWinRemovePressed(object sender, EventArgs e)
@@ -205,6 +194,36 @@ namespace VampirioCode
         {
             int numb = int.Parse(((Button)sender).Tag.ToString());
             tabControlWin.SelectedIndex = numb;
+        }
+
+        private void OnRemoveSelected(object sender, EventArgs e)
+        {
+            int index = tabBar.SelectedIndex;
+            tabBar.SelectedIndex = 3;
+
+            XConsole.Println("i: " + index);
+        }
+
+        private void OnSaveSelectedPressed(object sender, EventArgs e)
+        {
+            saveSelected = tabBar.SelectedTab;
+            XConsole.Println(saveSelected.Text + " saved");
+        }
+
+        private void OnRestoreSelectedPressed(object sender, EventArgs e)
+        {
+            tabBar.SelectedTab = saveSelected;
+            XConsole.Println(saveSelected.Text + " retore at: " + saveSelected.Index);
+        }
+
+        private void OnBringToScreenPressed(object sender, EventArgs e)
+        {
+            tabBar.BringTabToScreen(tabBar.SelectedTab);
+        }
+
+        private void OnClearItemsPressed(object sender, EventArgs e)
+        {
+            tabBar.Items.Clear();
         }
     }
 }

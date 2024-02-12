@@ -1,4 +1,4 @@
-﻿//#define TAB_CONTROLLER_DEBUG
+﻿#define TAB_CONTROLLER_DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -34,8 +34,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         private bool mouseDown = false;
 
         public List<Tab> tabs = new List<Tab>();                // The complete tabs list including the selected and dragged tab
-        private Tab SelectedTab = null;                         // The tab the user is dragging or moving from left to right
-        private List<Tab> NonSelectedTabs = new List<Tab>();    // This list include all the other tabs rather than the selected one that is being dragged
+        private Tab selectedTab = null;                         // The tab the user is dragging or moving from left to right
+        private List<Tab> nonSelectedTabs = new List<Tab>();    // This list include all the other tabs rather than the selected one that is being dragged
         private int selTabPreviousX = 0;                        // Register the start x position of the selected tab on MouseDown or Start Drag to calculate in which direction it is moving. On every Update loop it is reset again.
         private Tab prevSelectedTab = null;                     // Used to trigger events on tab changed
         private Font font;
@@ -44,11 +44,14 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public int TotalTabs { get { return tabs.Count; } }                         // Total amount of tabs
         public bool IsDragging { get; set; } = false;                               // SelectedTab is being dragged
-        public bool IsAnySelected { get { return SelectedTab != null; } }           // There is a selected tab
+        public bool IsAnySelected { get { return selectedTab != null; } }           // There is a selected tab
         public bool IsOutsideBounds { get { return TotalWidth(tabs) > width; } }    // Any or many tabs are outside screen because they can't fit inside it
         public bool TabsFitOnScreen { get { return !IsOutsideBounds; } }            // All tabs fit inside the screen. No tab is outside 
-        public int SelectedIndex { get { if (SelectedTab == null) return -1; else return SelectedTab.Index(); } set { if (TotalTabs > 0) { PushSelTabForEvent(); SimpleSelect(tabs[value]); PopSelTabChangedEvent();  } else throw new Exception("Tab index doesn't exist. Can't be selected."); } }
         public int TabVisibleLimit { get; set; } = 10; // Represents a fixed number of pixels that determines a minimum visible part of the tab when it is out of the screen.
+        public int SelectedIndex { get { if (selectedTab == null) return -1; else return selectedTab.Index(); } set { if (TotalTabs > 0) { PushSelTabForEvent(); SimpleSelect(tabs[value]); PopSelTabChangedEvent();  } } }
+        public Tab SelectedTab { get { return selectedTab; } set { PushSelTabForEvent(); SimpleSelect(value); PopSelTabChangedEvent(); } }
+        public bool AllowDragging { get; set; } = true;
+        private Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
 
         public TabController()
         {
@@ -83,6 +86,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             PopSelTabChangedEvent();
         }
 
+        public void Remove(TabItem tab)
+        {
+            RemoveAt(tab.Index);
+        }
+
         public void RemoveAt(int index)
         {
             Tab removedTab = null;
@@ -100,7 +108,6 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (TotalTabs == 1)
             {
-                
                 tabs.RemoveAt(index);
                 SimpleSelect(null);// SelectedTab = null;
                 OFFSET_X = 0;
@@ -108,7 +115,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             else // TotalTabs > 1
             {
                 // current tab to remove is the selected one
-                if (SelectedTab == tabs[index])
+                if (selectedTab == tabs[index])
                 {
                     tabs.RemoveAt(index);
 
@@ -128,6 +135,11 @@ namespace VampirioCode.UI.Controls.TabManagement
                 // if all tabs fit inside screen
                 if (TabsFitOnScreen)
                     OFFSET_X = 0;
+                else
+                {
+                    if (LocalToGlobal(LastTab.Right) < width)
+                        AdjustFromRightToLeft();
+                }
             }
 
             // remove event
@@ -139,21 +151,49 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         }
 
+        public void RemoveAllTabs()
+        {
+            selectedTab =       null;
+            tabs =              new List<Tab>();
+            nonSelectedTabs =   new List<Tab>();
+            selTabPreviousX =   0;
+            OFFSET_X =          0;
+        }
+
+        public Tab GetTabAt(int index)
+        { 
+            return tabs[index];
+        }
+
+        public void BringTabIntoScreen(Tab tab)
+        {
+            // If released tab is outside the screen, on the left, then scroll OFFSET_X up to its position
+            if (LocalToGlobal(tab.x) < 0)
+            {
+                OFFSET_X -= LocalToGlobal(tab.x);
+            }
+            // If released tab is outside the screen, on the right, then scroll OFFSET_X up to its position
+            else if (LocalToGlobal(tab.Right) > width)
+            {
+                OFFSET_X -= LocalToGlobal(tab.Right) - width;
+            }
+        }
+
         private void PushSelTabForEvent()
         {
-            prevSelectedTab = SelectedTab;
+            prevSelectedTab = selectedTab;
         }
 
         private void PopSelTabChangedEvent()
         {
-            if (SelectedTab == null)
+            if (selectedTab == null)
             {
                 SelectedTabChanged(-1, null);
             }
-            else if (prevSelectedTab != SelectedTab)
+            else if (prevSelectedTab != selectedTab)
             {
                 if (SelectedTabChanged != null)
-                    SelectedTabChanged(SelectedTab.Index(), SelectedTab.item);
+                    SelectedTabChanged(selectedTab.Index(), selectedTab.item);
             }
         }
         #endregion
@@ -211,7 +251,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (IsDragging)
             {
-                SelectedTab.OnMouseMove(mouseX, mouseY, mouseDown);
+                selectedTab.OnMouseMove(mouseX, mouseY, mouseDown);
             }
             else
             {
@@ -295,22 +335,16 @@ namespace VampirioCode.UI.Controls.TabManagement
         public void StopDragging()
         {
             IsDragging = false;
-            NonSelectedTabs = new List<Tab>();
+            nonSelectedTabs = new List<Tab>();
 
             // Reset local (relative) tab positions
             ResetPositions();
 
-            // If released tab is outside the screen, on the left, then scroll OFFSET_X up to its position
-            if (LocalToGlobal(SelectedTab.x) < 0)
-                OFFSET_X -= LocalToGlobal(SelectedTab.x);
-
-            // If released tab is outside the screen, on the right, then scroll OFFSET_X up to its position
-            if (LocalToGlobal(SelectedTab.Right) > width)
-                OFFSET_X -= LocalToGlobal(SelectedTab.Right) - width;
+            BringTabIntoScreen(selectedTab);
 
             // Event
             if (StopDragTab != null)
-                StopDragTab(SelectedTab.Index(), SelectedTab.item);
+                StopDragTab(selectedTab.Index(), selectedTab.item);
         }
         // --------------------------------------------------------
         #endregion
@@ -321,11 +355,14 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Only use it when you know that other tabs aren't selected
         private void SimpleSelect(Tab selTab)
         {
-            NonSelectedTabs = new List<Tab>();
-            SelectedTab = selTab;
+            if(selectedTab != null)
+                selectedTab.Unselect();
 
-            if (SelectedTab != null)
-                SelectedTab.Select();
+            nonSelectedTabs = new List<Tab>();
+            selectedTab = selTab;
+
+            if (selectedTab != null)
+                selectedTab.Select();
         }
 
         // Select a Tab so it can be highlighted and easy to process.
@@ -333,22 +370,22 @@ namespace VampirioCode.UI.Controls.TabManagement
         // for the same reason
         private void Select(Tab selTab)
         {
-            NonSelectedTabs = new List<Tab>();
+            nonSelectedTabs = new List<Tab>();
 
             foreach (Tab tab in tabs)
             {
                 if (tab == selTab)
-                    SelectedTab = tab;
+                    selectedTab = tab;
                 else
                 {
                     tab.Unselect();
-                    NonSelectedTabs.Add(tab);
+                    nonSelectedTabs.Add(tab);
                 }
             }
 
             //selTabPreviousX = LocalToGlobal(SelectedTab.x);
 
-            SelectedTab.Select();
+            selectedTab.Select();
         }
 
         // Get previous tab. The currTab must be contained inside tabList
@@ -395,15 +432,15 @@ namespace VampirioCode.UI.Controls.TabManagement
             List<Tab> newList = new List<Tab>();
             bool selectedAdded = false;
 
-            foreach (Tab nonSelTab in NonSelectedTabs)
+            foreach (Tab nonSelTab in nonSelectedTabs)
             {
                 if (!selectedAdded)
                 {
-                    if (nonSelTab.x < SelectedTab.x)
+                    if (nonSelTab.x < selectedTab.x)
                         newList.Add(nonSelTab);
                     else
                     {
-                        newList.Add(SelectedTab);
+                        newList.Add(selectedTab);
                         newList.Add(nonSelTab);
                         selectedAdded = true;
                     }
@@ -415,7 +452,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             // If selectedTab reach the end, it won't be added to the list
             // so check that and add it to the end
             if (!selectedAdded)
-                newList.Add(SelectedTab);
+                newList.Add(selectedTab);
 
             tabs = newList;
         }
@@ -452,6 +489,13 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
         }
 
+        // Adjust tabs from right to left in the global or absolute position
+        // system using OFFSET_X
+        private void AdjustFromRightToLeft()
+        {
+            OFFSET_X = width - TotalWidth(tabs);
+        }
+
         private bool IsInsideScreen(Tab tab)
         {
             int left = LocalToGlobal(tab.Left);
@@ -468,7 +512,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         }
         #endregion
 
-        #region UpdateAndPaint
+        #region Update
         //
         // Update switching locations to left or right when dragging
         //
@@ -480,12 +524,12 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (IsDragging)
             {
-                SelectedTab.y = 4;
+                selectedTab.y = 4;
 
                 #region MovingDirection
                 // Calculate moving direction to know if moving to the left or right
-                moveDirection =     LocalToGlobal(SelectedTab.x) - selTabPreviousX;
-                selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                moveDirection =     LocalToGlobal(selectedTab.x) - selTabPreviousX;
+                selTabPreviousX =   LocalToGlobal(selectedTab.x);
                 #endregion
 
 
@@ -573,11 +617,11 @@ namespace VampirioCode.UI.Controls.TabManagement
                     //           |▓▓▓▓▒▓▓|▓▓▓▓|      |██████|██████|              |▓▓▓▓▒▓▓|▓▓▓▓|      |██████|██████|         
                     //       ▲               IF( FALSE )                               ▲      IF( TRUE )             
                     //    [Mouse]                                                   [Mouse]                                       
-                    if (LocalToGlobal(mouseX) > (LocalToGlobal(SelectedTab.x + SelectedTab.dragOffsetPointX)))
+                    if (LocalToGlobal(mouseX) > (LocalToGlobal(selectedTab.x + selectedTab.dragOffsetPointX)))
                     {
                         // Mouse returns to the 'dragOffsetPointX' so we can release the freeze of the tab
-                        SelectedTab.x =     mouseX - SelectedTab.dragOffsetPointX;
-                        selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                        selectedTab.x =     mouseX - selectedTab.dragOffsetPointX;
+                        selTabPreviousX =   LocalToGlobal(selectedTab.x);
                         freezeMoveLeft =    false;
                     }
                     // 
@@ -589,8 +633,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                     else if (moveDirection > 0)
                     {
                         // Mouse moving to the right but not reach 'dragOffsetPointX' yet so we must freeze the tab in its position
-                        SelectedTab.x -=    moveDirection;
-                        selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                        selectedTab.x -=    moveDirection;
+                        selTabPreviousX =   LocalToGlobal(selectedTab.x);
                     }
 
                 }
@@ -602,7 +646,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 //           x    ▲     ↑
                 //             [Mouse]  TabVisibleLimit
                 //       
-                else if (LocalToGlobal(SelectedTab.x + SelectedTab.dragOffsetPointX) < 0)
+                else if (LocalToGlobal(selectedTab.x + selectedTab.dragOffsetPointX) < 0)
                 {
                     freezeMoveLeft = true;
                 }
@@ -613,20 +657,20 @@ namespace VampirioCode.UI.Controls.TabManagement
                 //
                 if (freezeMoveRight)
                 {
-                    if (LocalToGlobal(mouseX) < (LocalToGlobal(SelectedTab.x + SelectedTab.dragOffsetPointX)))
+                    if (LocalToGlobal(mouseX) < (LocalToGlobal(selectedTab.x + selectedTab.dragOffsetPointX)))
                     {
-                        SelectedTab.x =     mouseX - SelectedTab.dragOffsetPointX;
-                        selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                        selectedTab.x =     mouseX - selectedTab.dragOffsetPointX;
+                        selTabPreviousX =   LocalToGlobal(selectedTab.x);
                         freezeMoveRight =   false;
                     }
                     else if (moveDirection < 0)
                     {
-                        SelectedTab.x -= moveDirection;
-                        selTabPreviousX = LocalToGlobal(SelectedTab.x);
+                        selectedTab.x -= moveDirection;
+                        selTabPreviousX = LocalToGlobal(selectedTab.x);
                     }
 
                 }
-                else if (LocalToGlobal(SelectedTab.x + SelectedTab.dragOffsetPointX) > width)
+                else if (LocalToGlobal(selectedTab.x + selectedTab.dragOffsetPointX) > width)
                 {
                     freezeMoveRight = true;
                 }
@@ -644,7 +688,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 // Mouse is moving to the left  <--
                 if (moveDirection < 0)
                 {
-                    if (LocalToGlobal(SelectedTab.Left) < 0)
+                    if (LocalToGlobal(selectedTab.Left) < 0)
                         OFFSET_X -= moveDirection;
 
                     // If we reach the end, stop and clamp the offset to 0
@@ -654,24 +698,24 @@ namespace VampirioCode.UI.Controls.TabManagement
                 // Mouse is moving to the right  -->
                 else if (moveDirection > 0)
                 {
-                    if (LocalToGlobal(SelectedTab.Right) > width)
+                    if (LocalToGlobal(selectedTab.Right) > width)
                         OFFSET_X -= moveDirection;
 
-                    int lastPos =           LocalToGlobal(NonSelectedTabs[NonSelectedTabs.Count - 1].Right);
+                    int lastPos =           LocalToGlobal(nonSelectedTabs[nonSelectedTabs.Count - 1].Right);
                     int totalWidth =        TotalWidth(tabs);
-                    int nonSelTotWidth =    totalWidth - SelectedTab.width;
+                    int nonSelTotWidth =    totalWidth - selectedTab.width;
 
                     // All tabs enter inside the control
                     if (totalWidth < width)
                     {
-                        if (lastPos < width - SelectedTab.width)
+                        if (lastPos < width - selectedTab.width)
                             OFFSET_X = 0;
                     }
                     // Not all tabs enter inside the control
                     else
                     {
-                        if (lastPos < width - SelectedTab.width)
-                            OFFSET_X = -nonSelTotWidth + width - SelectedTab.width;
+                        if (lastPos < width - selectedTab.width)
+                            OFFSET_X = -nonSelTotWidth + width - selectedTab.width;
                     }
 
                 }
@@ -691,16 +735,16 @@ namespace VampirioCode.UI.Controls.TabManagement
                 //             | TabVisibleLimit             |
                 //             |                             |
                 //
-                if (LocalToGlobal(SelectedTab.Right) < TabVisibleLimit)
+                if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
                 {
                     // 
-                    SelectedTab.x =     GlobalToLocal(-SelectedTab.width + TabVisibleLimit);
-                    selTabPreviousX =   LocalToGlobal(SelectedTab.x); //selTabPreviousX = -SelectedTab.width + 10; // this line works also here
+                    selectedTab.x =     GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                    selTabPreviousX =   LocalToGlobal(selectedTab.x); //selTabPreviousX = -SelectedTab.width + 10; // this line works also here
                 }
-                else if (LocalToGlobal(SelectedTab.Left) > (width - TabVisibleLimit))
+                else if (LocalToGlobal(selectedTab.Left) > (width - TabVisibleLimit))
                 {
-                    SelectedTab.x =     GlobalToLocal(width - TabVisibleLimit);
-                    selTabPreviousX =   LocalToGlobal(SelectedTab.x);
+                    selectedTab.x =     GlobalToLocal(width - TabVisibleLimit);
+                    selTabPreviousX =   LocalToGlobal(selectedTab.x);
                 }
                 #endregion
 
@@ -711,24 +755,24 @@ namespace VampirioCode.UI.Controls.TabManagement
                 //           A tab is swapped when the left or right border of the
                 //           dragged tab passes the center of the next tab
                 //
-                foreach (Tab nonSelTab in NonSelectedTabs)
+                foreach (Tab nonSelTab in nonSelectedTabs)
                 {
                     // Mouse is moving to the left <--
                     if (moveDirection < 0)
                     {
                         // Left border of the dragged tab passes the center of the next tab
-                        if (SelectedTab.Left < nonSelTab.CenterX)
+                        if (selectedTab.Left < nonSelTab.CenterX)
                         {
-                            Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
+                            Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
 
                             if (prevTab == null)
                             {
-                                nonSelTab.SetPos(SelectedTab.width, 0);
+                                nonSelTab.SetPos(selectedTab.width, 0);
                                 passesSelected = true;
                             }
                             else if (!passesSelected)
                             {
-                                nonSelTab.SetPos(prevTab.Right + SelectedTab.width, 0);
+                                nonSelTab.SetPos(prevTab.Right + selectedTab.width, 0);
                                 passesSelected = true;
                             }
                             else
@@ -739,9 +783,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                     else if (moveDirection > 0)
                     {
                         // Right border of the dragged tab passes the center of the next tab
-                        if (SelectedTab.Right > nonSelTab.CenterX)
+                        if (selectedTab.Right > nonSelTab.CenterX)
                         {
-                            Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
+                            Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
 
                             // No previous tab. Start from the beginning
                             if (prevTab == null)
@@ -779,8 +823,9 @@ namespace VampirioCode.UI.Controls.TabManagement
             if (TotalTabs > 1)
                 UpdateSwitching();
         }
+        #endregion
 
-
+        #region Paint
         //
         // Paint method
         //
@@ -820,13 +865,13 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (IsDragging)
             {
-                VampirioGraphics.DrawString(g, font, SelectedTab.item.Text, Color.Orange, 10, _startY_);
+                VampirioGraphics.DrawString(g, font, selectedTab.item.Text, Color.Orange, 10, _startY_);
                 _startY_ += 25;
 
-                for (int a = 0; a < NonSelectedTabs.Count; a++)
+                for (int a = 0; a < nonSelectedTabs.Count; a++)
                 {
-                    Tab nonSelTab = NonSelectedTabs[a];
-                    Tab prevTab = GetPrevious(nonSelTab, NonSelectedTabs);
+                    Tab nonSelTab = nonSelectedTabs[a];
+                    Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
                     string prevStr = "  prev: ";
                     if (prevTab != null)
                         prevStr += prevTab.item.Text;
@@ -845,7 +890,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 Tab tab = tabs[a];
                 Color color = Color.Blue;
 
-                if (tab == SelectedTab)
+                if (tab == selectedTab)
                     color = Color.Green;
 
                 VampirioGraphics.DrawString(g, font, tab.item.Text + "     x: " + tab.x, color, 180, _startY_);
