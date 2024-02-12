@@ -215,7 +215,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             //
             if (width > prevWidth)
             {
-                if (IsOutsideBounds)
+                if ((LastTab != null) && (LocalToGlobal(LastTab.Right) < width))
                 {
                     OFFSET_X += width - prevWidth;
                     if (OFFSET_X > 0)

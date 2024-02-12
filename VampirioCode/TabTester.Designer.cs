@@ -174,7 +174,6 @@
             // 
             // clearButton
             // 
-            clearButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             clearButton.BorderColor = Color.FromArgb(20, 20, 20);
             clearButton.BorderSize = 1;
             clearButton.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
@@ -487,6 +486,7 @@
             // 
             // button32
             // 
+            button32.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button32.Location = new Point(584, 12);
             button32.Name = "button32";
             button32.Size = new Size(122, 29);
@@ -497,6 +497,7 @@
             // 
             // button33
             // 
+            button33.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button33.Location = new Point(584, 47);
             button33.Name = "button33";
             button33.Size = new Size(122, 29);
@@ -507,6 +508,7 @@
             // 
             // button34
             // 
+            button34.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button34.Location = new Point(583, 108);
             button34.Name = "button34";
             button34.Size = new Size(122, 29);
@@ -517,6 +519,7 @@
             // 
             // button35
             // 
+            button35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button35.Location = new Point(584, 318);
             button35.Name = "button35";
             button35.Size = new Size(122, 29);
