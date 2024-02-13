@@ -245,16 +245,14 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Triggered by the parent container when the mouse moves
         public void MouseMove(int x, int y, bool mouseDown)
         {
-            if (!mouseDown)
-                return;
-
             mouseX = x - OFFSET_X;
             mouseY = y;
             this.mouseDown = mouseDown;
 
             if (IsDragging)
             {
-                selectedTab.OnMouseMove(mouseX, mouseY, mouseDown);
+                if(mouseDown)
+                    selectedTab.OnMouseMove(mouseX, mouseY, mouseDown);
             }
             else
             {
