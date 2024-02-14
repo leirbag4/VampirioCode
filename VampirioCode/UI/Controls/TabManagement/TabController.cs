@@ -44,6 +44,11 @@ namespace VampirioCode.UI.Controls.TabManagement
         private Font font;
         private bool freezeMoveLeft = false;
         private bool freezeMoveRight = false;
+
+        // auto shift/scroll timer
+        private bool autoShiftTimer = false;
+        private int timerPosX = 0;
+        private int timerCount = 0;
         private bool timerMoveLeft = false;
         private bool timerMoveRight = false;
         private System.Windows.Forms.Timer timer;
@@ -530,10 +535,6 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Update switching locations to left or right when dragging
         //
 
-        private bool autoShiftTimer = false;
-        private int timerPosX = 0;
-        private int timerCount = 0;
-
         private void OnTimerTick(object? sender, EventArgs e)
         {
             if (!autoShiftTimer)
@@ -602,7 +603,6 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         }
 
-
         public void UpdateTimer()
         {
             if (IsDragging)
@@ -663,6 +663,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                                 int diff = selectedTab.x - newX;
                                 selectedTab.GlobalMoveX(-diff);
                             }
+
+                            //selTabPreviousX = LocalToGlobal(selectedTab.x);
 
                             SwapTabs(-1);
                             RecalcIndices();
@@ -1052,7 +1054,6 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
         }
 
-
         //
         // Update method
         //
@@ -1062,11 +1063,14 @@ namespace VampirioCode.UI.Controls.TabManagement
                 return;
 
 
-            if (autoShiftTimer)
+            if (autoShiftTimer && selectedTab.IsDragging)
             {
                 if (timerMoveLeft)
                 {
                     XConsole.Println("LEFFFFFFFFFFFFFFFT");
+
+                    selectedTab.x = mouseX - selectedTab.dragOffsetPointX;
+                    selTabPreviousX = LocalToGlobal(selectedTab.x);
 
                     if (LocalToGlobal(selectedTab.x) >= 0)
                     {
@@ -1106,6 +1110,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                 {
                     //XConsole.Println("RIIIIIIIIIIIIIIIIIIIGHT");
 
+                    selectedTab.x = mouseX - selectedTab.dragOffsetPointX;
+                    selTabPreviousX = LocalToGlobal(selectedTab.x);
+
                     if (LocalToGlobal(selectedTab.Right) <= width)
                     {
                         XConsole.Println("[STOPPPPPPPPPPPPPPPPP]");
@@ -1122,24 +1129,11 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                         if (LocalToGlobal(selectedTab.Left) > (width - TabVisibleLimit))
                         {
-                                            //selectedTab.x = GlobalToLocal(width - TabVisibleLimit);
-                                            //selTabPreviousX = LocalToGlobal(selectedTab.x);
-
-                            
-                            //int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
-                            //int diff = selectedTab.x - newX;
-                            //selectedTab.GlobalMoveX(-diff);
-
                             int newX = GlobalToLocal(width - TabVisibleLimit);
                             int diff = selectedTab.x - newX;
                             selectedTab.GlobalMoveX(-diff);
                             XConsole.Println("----- newXx: " + newX  + " diff: " + diff);
-
-                            //selectedTab.x = GlobalToLocal(width - TabVisibleLimit);
-                            //selTabPreviousX = LocalToGlobal(selectedTab.x);
                         }
-
-                        //XConsole.Println("sapoooooooo");
 
                         return;
                     }

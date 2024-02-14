@@ -1,4 +1,4 @@
-﻿//#define TAB_CONTROLLER_DEBUG
+﻿#define TAB_CONTROLLER_DEBUG
 
 using System;
 using System.Collections.Generic;
