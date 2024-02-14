@@ -594,7 +594,6 @@ namespace VampirioCode.UI.Controls.TabManagement
             else
             {
                 timerCount++;
-                XConsole.PrintError("[data] : " + timerCount);
 
                 if (TimerRepaintNeeded != null)
                     TimerRepaintNeeded();
@@ -633,9 +632,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                 }
                 else // if (autoShiftTimer)
                 {
-                    XConsole.Println("[][]");
 
                     selectedTab.y = 4;
+
 
                     if (timerMoveLeft)
                     {
@@ -648,19 +647,15 @@ namespace VampirioCode.UI.Controls.TabManagement
                         }
                         else
                         {
-
-
                             OFFSET_X += 10;
                             selectedTab.GlobalMoveX(-10);
 
 
                             if (OFFSET_X > 0)
                             {
-                                XConsole.PrintWarning("META: " + OFFSET_X);
                                 selectedTab.GlobalMoveX(OFFSET_X);
                                 OFFSET_X = 0;
                             }
-
 
                             if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
                             {
@@ -685,8 +680,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                         }
                         else
                         {
-
-
                             OFFSET_X -= 10;
                             selectedTab.GlobalMoveX(+10);
 
@@ -695,49 +688,24 @@ namespace VampirioCode.UI.Controls.TabManagement
                             int totalWidth = TotalWidth(tabs);
                             int nonSelTotWidth = totalWidth - selectedTab.width;
 
-                            // All tabs enter inside the control
-                            if (totalWidth < width)
+                            if (lastPos < width - selectedTab.width)
                             {
-                                XConsole.PrintWarning("CON: " + OFFSET_X);
-                                if (lastPos < width - selectedTab.width)
-                                {
-                                    //selectedTab.GlobalMoveX(OFFSET_X);
-                                    OFFSET_X = 0;
-                                }
+                                int diff = totalWidth + OFFSET_X - width;
+                                selectedTab.GlobalMoveX(diff);
+                                OFFSET_X = -nonSelTotWidth + width - selectedTab.width;
                             }
-                            // Not all tabs enter inside the control
-                            else
-                            {
-                                if (lastPos < width - selectedTab.width)
-                                {
-                                    int numb = totalWidth + OFFSET_X - width;
-                                    XConsole.PrintWarning("SIN: " + OFFSET_X + "  totalWidth: " + totalWidth + " w: " + width);
 
-                                    selectedTab.GlobalMoveX(numb);
-                                    OFFSET_X = -nonSelTotWidth + width - selectedTab.width;
-                                }
+
+                            if (LocalToGlobal(selectedTab.Left) > (width - TabVisibleLimit))
+                            {
+                                int newX = GlobalToLocal(width - TabVisibleLimit);
+                                int diff2 = selectedTab.x - newX;
+                                selectedTab.GlobalMoveX(-diff2);
                             }
 
                             SwapTabs(+1);
                             RecalcIndices();
 
-                            /*
-                            if (OFFSET_X > 0)
-                            {
-                                selectedTab.GlobalMoveX(OFFSET_X);
-                                OFFSET_X = 0;
-                            }
-
-
-                            if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
-                            {
-                                int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
-                                int diff = selectedTab.x - newX;
-                                selectedTab.GlobalMoveX(-diff);
-                            }
-
-                            SwapTabs(+1);
-                            RecalcIndices();*/
                         }
                     }
                 }
@@ -1098,8 +1066,12 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 if (timerMoveLeft)
                 {
+                    XConsole.Println("LEFFFFFFFFFFFFFFFT");
+
                     if (LocalToGlobal(selectedTab.x) >= 0)
                     {
+                        XConsole.Println("[stooooooooooooppp]");
+
                         timer.Stop();
                         timerCount = 0;
                         timerMoveLeft = false; 
@@ -1118,9 +1090,13 @@ namespace VampirioCode.UI.Controls.TabManagement
                         //        Mouse   TabVisibleLimit
                         if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
                         {
+
                             int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
                             int diff = selectedTab.x - newX;
                             selectedTab.GlobalMoveX(-diff);
+
+                            XConsole.Println("----- newX: " + newX + " -dif: " + (-diff));
+
                         }
 
                         return;
@@ -1128,8 +1104,11 @@ namespace VampirioCode.UI.Controls.TabManagement
                 }
                 else if (timerMoveRight)
                 {
-                    if (LocalToGlobal(selectedTab.Right) >= width)
+                    //XConsole.Println("RIIIIIIIIIIIIIIIIIIIGHT");
+
+                    if (LocalToGlobal(selectedTab.Right) <= width)
                     {
+                        XConsole.Println("[STOPPPPPPPPPPPPPPPPP]");
                         timer.Stop();
                         timerCount = 0;
                         timerMoveRight = false;
@@ -1146,11 +1125,21 @@ namespace VampirioCode.UI.Controls.TabManagement
                                             //selectedTab.x = GlobalToLocal(width - TabVisibleLimit);
                                             //selTabPreviousX = LocalToGlobal(selectedTab.x);
 
-                            XConsole.Println("xright");
-                            /*int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                            
+                            //int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                            //int diff = selectedTab.x - newX;
+                            //selectedTab.GlobalMoveX(-diff);
+
+                            int newX = GlobalToLocal(width - TabVisibleLimit);
                             int diff = selectedTab.x - newX;
-                            selectedTab.GlobalMoveX(-diff);*/
+                            selectedTab.GlobalMoveX(-diff);
+                            XConsole.Println("----- newXx: " + newX  + " diff: " + diff);
+
+                            //selectedTab.x = GlobalToLocal(width - TabVisibleLimit);
+                            //selTabPreviousX = LocalToGlobal(selectedTab.x);
                         }
+
+                        //XConsole.Println("sapoooooooo");
 
                         return;
                     }
