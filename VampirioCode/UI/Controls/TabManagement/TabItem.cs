@@ -15,6 +15,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public int Index { get { return tab.Index(); } }
 
+        public TabItem Prev { get { return tab.Prev().item; } }
+        public TabItem Next { get { return tab.Next().item; } }
+
         public TabItem(string name)
         {
             Text = name;

@@ -1,7 +1,8 @@
-﻿//#define TAB_CONTROLLER_DEBUG
+﻿#define TAB_CONTROLLER_DEBUG
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -17,15 +18,17 @@ namespace VampirioCode.UI.Controls.TabManagement
         public delegate void TabRemovedEvent(int index, TabItem item);
         public delegate void StartDragTabEvent(int index, TabItem item);
         public delegate void StopDragTabEvent(int index, TabItem item);
+        public delegate void TimerRepaintNeededEvent();
         public event SelectedTabChangedEvent SelectedTabChanged;
         public event TabAddedEvent TabAdded;
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
+        public event TimerRepaintNeededEvent TimerRepaintNeeded;
 
         // IMPORTANT: A global offset position used to shift all the tabs to the left or right
         //            This variable is used to calculate LocalToGlobal() and GlobalToLocal()
-        public int OFFSET_X = 0; 
+        public int OFFSET_X = 0;
 
         private int width = 400;
         private int height = 30;
@@ -41,6 +44,9 @@ namespace VampirioCode.UI.Controls.TabManagement
         private Font font;
         private bool freezeMoveLeft = false;
         private bool freezeMoveRight = false;
+        private bool timerMoveLeft = false;
+        private bool timerMoveRight = false;
+        private System.Windows.Forms.Timer timer;
 
         public int TotalTabs { get { return tabs.Count; } }                         // Total amount of tabs
         public bool IsDragging { get; set; } = false;                               // SelectedTab is being dragged
@@ -48,7 +54,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public bool IsOutsideBounds { get { return TotalWidth(tabs) > width; } }    // Any or many tabs are outside screen because they can't fit inside it
         public bool TabsFitOnScreen { get { return !IsOutsideBounds; } }            // All tabs fit inside the screen. No tab is outside 
         public int TabVisibleLimit { get; set; } = 10; // Represents a fixed number of pixels that determines a minimum visible part of the tab when it is out of the screen.
-        public int SelectedIndex { get { if (selectedTab == null) return -1; else return selectedTab.Index(); } set { if (TotalTabs > 0) { PushSelTabForEvent(); SimpleSelect(tabs[value]); PopSelTabChangedEvent();  } } }
+        public int SelectedIndex { get { if (selectedTab == null) return -1; else return selectedTab.Index(); } set { if (TotalTabs > 0) { PushSelTabForEvent(); SimpleSelect(tabs[value]); PopSelTabChangedEvent(); } } }
         public Tab SelectedTab { get { return selectedTab; } set { PushSelTabForEvent(); SimpleSelect(value); PopSelTabChangedEvent(); } }
         public bool AllowDragging { get; set; } = true;
         private Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
@@ -56,6 +62,10 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabController()
         {
             font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
+
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = 50;
+            timer.Tick += OnTimerTick;
         }
 
         #region BasicActions
@@ -153,15 +163,15 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public void RemoveAllTabs()
         {
-            selectedTab =       null;
-            tabs =              new List<Tab>();
-            nonSelectedTabs =   new List<Tab>();
-            selTabPreviousX =   0;
-            OFFSET_X =          0;
+            selectedTab = null;
+            tabs = new List<Tab>();
+            nonSelectedTabs = new List<Tab>();
+            selTabPreviousX = 0;
+            OFFSET_X = 0;
         }
 
         public Tab GetTabAt(int index)
-        { 
+        {
             return tabs[index];
         }
 
@@ -224,8 +234,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
 
             // Set new size
-            this.width =    width;
-            this.height =   height;
+            this.width = width;
+            this.height = height;
         }
 
         // Triggered by the parent container when the mouse is down
@@ -251,7 +261,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (IsDragging)
             {
-                if(mouseDown)
+                if (mouseDown)
                     selectedTab.OnMouseMove(mouseX, mouseY, mouseDown);
             }
             else
@@ -302,8 +312,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                 {
                     int diff = TotalWidth(tabs) + OFFSET_X;
 
-                    if(diff < width)
-                        OFFSET_X =  - (TotalWidth(tabs) - width);
+                    if (diff < width)
+                        OFFSET_X = -(TotalWidth(tabs) - width);
                 }
             }
 
@@ -338,6 +348,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             IsDragging = false;
             nonSelectedTabs = new List<Tab>();
 
+            //StopTimer();
+
             // Reset local (relative) tab positions
             ResetPositions();
 
@@ -356,7 +368,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Only use it when you know that other tabs aren't selected
         private void SimpleSelect(Tab selTab)
         {
-            if(selectedTab != null)
+            if (selectedTab != null)
                 selectedTab.Unselect();
 
             nonSelectedTabs = new List<Tab>();
@@ -410,7 +422,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         // Calculate Local position from Local one
         private int GlobalToLocal(int position)
-        { 
+        {
             return position - OFFSET_X;
         }
 
@@ -518,6 +530,223 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Update switching locations to left or right when dragging
         //
 
+        private bool autoShiftTimer = false;
+        private int timerPosX = 0;
+        private int timerCount = 0;
+
+        private void OnTimerTick(object? sender, EventArgs e)
+        {
+            if (!autoShiftTimer)
+            {
+                if (timerMoveLeft)
+                {
+                    if (LocalToGlobal(selectedTab.x) >= 0)
+                    {
+                        timer.Stop();
+                        timerCount = 0;
+                        return;
+                    }
+
+                    if (timerPosX != LocalToGlobal(selectedTab.x))
+                    {
+                        timerPosX = LocalToGlobal(selectedTab.x);
+                        timerCount = 0;
+                        return;
+                    }
+
+                    XConsole.Println("left: " + timerCount);
+
+                    timerCount++;
+
+                    if (timerCount == 10)
+                    {
+                        timerCount = 10;
+                        autoShiftTimer = true;
+                    }
+                }
+                else if (timerMoveRight)
+                {
+                    if (LocalToGlobal(selectedTab.Right) <= width)
+                    {
+                        timer.Stop();
+                        timerCount = 0;
+                        return;
+                    }
+
+                    if (timerPosX != LocalToGlobal(selectedTab.x))
+                    {
+                        timerPosX = LocalToGlobal(selectedTab.x);
+                        timerCount = 0;
+                        return;
+                    }
+
+                    XConsole.Println("right: " + timerCount);
+
+                    timerCount++;
+
+                    if (timerCount == 10)
+                    {
+                        timerCount = 10;
+                        autoShiftTimer = true;
+                    }
+                }
+            }
+            else
+            {
+                timerCount++;
+                XConsole.PrintError("[data] : " + timerCount);
+
+                if (TimerRepaintNeeded != null)
+                    TimerRepaintNeeded();
+            }
+
+
+        }
+
+
+        public void UpdateTimer()
+        {
+            if (IsDragging)
+            {
+
+                if (!autoShiftTimer)
+                {
+                    if (LocalToGlobal(selectedTab.x) < 0)
+                    {
+                        timer.Stop();
+                        timer.Start();
+                        timerMoveLeft = true;
+                    }
+                    else if ((LocalToGlobal(selectedTab.Right) > width) && (TotalWidth(tabs) > width))
+                    {
+                        timer.Stop();
+                        timer.Start();
+                        timerMoveRight = true;
+                    }
+                    else
+                    {
+                        timer.Stop();
+                        timerCount = 0;
+                        timerMoveLeft = false;
+                        timerMoveRight = false;
+                    }
+                }
+                else // if (autoShiftTimer)
+                {
+                    XConsole.Println("[][]");
+
+                    selectedTab.y = 4;
+
+                    if (timerMoveLeft)
+                    {
+                        if (LocalToGlobal(selectedTab.x) >= 0)
+                        {
+                            timer.Stop();
+                            timerCount = 0;
+                            autoShiftTimer = false;
+                            timerMoveLeft = false;
+                        }
+                        else
+                        {
+
+
+                            OFFSET_X += 10;
+                            selectedTab.GlobalMoveX(-10);
+
+
+                            if (OFFSET_X > 0)
+                            {
+                                XConsole.PrintWarning("META: " + OFFSET_X);
+                                selectedTab.GlobalMoveX(OFFSET_X);
+                                OFFSET_X = 0;
+                            }
+
+
+                            if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
+                            {
+                                int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                                int diff = selectedTab.x - newX;
+                                selectedTab.GlobalMoveX(-diff);
+                            }
+
+                            SwapTabs(-1);
+                            RecalcIndices();
+                        }
+
+                    }
+                    else if (timerMoveRight)
+                    { 
+                        if (LocalToGlobal(selectedTab.Right) <= width)
+                        {
+                            timer.Stop();
+                            timerCount = 0;
+                            autoShiftTimer = false;
+                            timerMoveRight = false;
+                        }
+                        else
+                        {
+
+
+                            OFFSET_X -= 10;
+                            selectedTab.GlobalMoveX(+10);
+
+
+                            int lastPos = LocalToGlobal(nonSelectedTabs[nonSelectedTabs.Count - 1].Right);
+                            int totalWidth = TotalWidth(tabs);
+                            int nonSelTotWidth = totalWidth - selectedTab.width;
+
+                            // All tabs enter inside the control
+                            if (totalWidth < width)
+                            {
+                                XConsole.PrintWarning("CON: " + OFFSET_X);
+                                if (lastPos < width - selectedTab.width)
+                                {
+                                    //selectedTab.GlobalMoveX(OFFSET_X);
+                                    OFFSET_X = 0;
+                                }
+                            }
+                            // Not all tabs enter inside the control
+                            else
+                            {
+                                if (lastPos < width - selectedTab.width)
+                                {
+                                    int numb = totalWidth + OFFSET_X - width;
+                                    XConsole.PrintWarning("SIN: " + OFFSET_X + "  totalWidth: " + totalWidth + " w: " + width);
+
+                                    selectedTab.GlobalMoveX(numb);
+                                    OFFSET_X = -nonSelTotWidth + width - selectedTab.width;
+                                }
+                            }
+
+                            SwapTabs(+1);
+                            RecalcIndices();
+
+                            /*
+                            if (OFFSET_X > 0)
+                            {
+                                selectedTab.GlobalMoveX(OFFSET_X);
+                                OFFSET_X = 0;
+                            }
+
+
+                            if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
+                            {
+                                int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                                int diff = selectedTab.x - newX;
+                                selectedTab.GlobalMoveX(-diff);
+                            }
+
+                            SwapTabs(+1);
+                            RecalcIndices();*/
+                        }
+                    }
+                }
+
+            }
+
+
+        }
+
         private void UpdateSwitching()
         {
             bool passesSelected = false;
@@ -527,10 +756,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 selectedTab.y = 4;
 
+
                 #region MovingDirection
                 // Calculate moving direction to know if moving to the left or right
-                moveDirection =     LocalToGlobal(selectedTab.x) - selTabPreviousX;
-                selTabPreviousX =   LocalToGlobal(selectedTab.x);
+                moveDirection = LocalToGlobal(selectedTab.x) - selTabPreviousX;
+                selTabPreviousX = LocalToGlobal(selectedTab.x);
                 #endregion
 
 
@@ -606,7 +836,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 //             7. Finally the mouse will drag the tab again using the same start drag position (dragOffsetPointX)
                 //
                 #endregion
-                
+
                 //
                 // Frozen Tab with mouse on the left and out of the screen
                 //
@@ -621,9 +851,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                     if (LocalToGlobal(mouseX) > (LocalToGlobal(selectedTab.x + selectedTab.dragOffsetPointX)))
                     {
                         // Mouse returns to the 'dragOffsetPointX' so we can release the freeze of the tab
-                        selectedTab.x =     mouseX - selectedTab.dragOffsetPointX;
-                        selTabPreviousX =   LocalToGlobal(selectedTab.x);
-                        freezeMoveLeft =    false;
+                        selectedTab.x = mouseX - selectedTab.dragOffsetPointX;
+                        selTabPreviousX = LocalToGlobal(selectedTab.x);
+                        freezeMoveLeft = false;
                     }
                     // 
                     // dragOffsetPointX  0                           
@@ -634,8 +864,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                     else if (moveDirection > 0)
                     {
                         // Mouse moving to the right but not reach 'dragOffsetPointX' yet so we must freeze the tab in its position
-                        selectedTab.x -=    moveDirection;
-                        selTabPreviousX =   LocalToGlobal(selectedTab.x);
+                        selectedTab.x -= moveDirection;
+                        selTabPreviousX = LocalToGlobal(selectedTab.x);
                     }
 
                 }
@@ -660,9 +890,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                 {
                     if (LocalToGlobal(mouseX) < (LocalToGlobal(selectedTab.x + selectedTab.dragOffsetPointX)))
                     {
-                        selectedTab.x =     mouseX - selectedTab.dragOffsetPointX;
-                        selTabPreviousX =   LocalToGlobal(selectedTab.x);
-                        freezeMoveRight =   false;
+                        selectedTab.x = mouseX - selectedTab.dragOffsetPointX;
+                        selTabPreviousX = LocalToGlobal(selectedTab.x);
+                        freezeMoveRight = false;
                     }
                     else if (moveDirection < 0)
                     {
@@ -702,9 +932,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                     if (LocalToGlobal(selectedTab.Right) > width)
                         OFFSET_X -= moveDirection;
 
-                    int lastPos =           LocalToGlobal(nonSelectedTabs[nonSelectedTabs.Count - 1].Right);
-                    int totalWidth =        TotalWidth(tabs);
-                    int nonSelTotWidth =    totalWidth - selectedTab.width;
+                    int lastPos = LocalToGlobal(nonSelectedTabs[nonSelectedTabs.Count - 1].Right);
+                    int totalWidth = TotalWidth(tabs);
+                    int nonSelTotWidth = totalWidth - selectedTab.width;
 
                     // All tabs enter inside the control
                     if (totalWidth < width)
@@ -739,13 +969,13 @@ namespace VampirioCode.UI.Controls.TabManagement
                 if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
                 {
                     // 
-                    selectedTab.x =     GlobalToLocal(-selectedTab.width + TabVisibleLimit);
-                    selTabPreviousX =   LocalToGlobal(selectedTab.x); //selTabPreviousX = -SelectedTab.width + 10; // this line works also here
+                    selectedTab.x = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                    selTabPreviousX = LocalToGlobal(selectedTab.x); //selTabPreviousX = -SelectedTab.width + 10; // this line works also here
                 }
                 else if (LocalToGlobal(selectedTab.Left) > (width - TabVisibleLimit))
                 {
-                    selectedTab.x =     GlobalToLocal(width - TabVisibleLimit);
-                    selTabPreviousX =   LocalToGlobal(selectedTab.x);
+                    selectedTab.x = GlobalToLocal(width - TabVisibleLimit);
+                    selTabPreviousX = LocalToGlobal(selectedTab.x);
                 }
                 #endregion
 
@@ -803,26 +1033,134 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
         }
 
+        private void SwapTabs(int moveDirection)
+        {
+            bool passesSelected = false;
+
+            //
+            // Swap tabs:
+            //           A tab is swapped when the left or right border of the
+            //           dragged tab passes the center of the next tab
+            //
+            foreach (Tab nonSelTab in nonSelectedTabs)
+            {
+                // Mouse is moving to the left <--
+                if (moveDirection < 0)
+                {
+                    // Left border of the dragged tab passes the center of the next tab
+                    if (selectedTab.Left < nonSelTab.CenterX)
+                    {
+                        Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
+
+                        if (prevTab == null)
+                        {
+                            nonSelTab.SetPos(selectedTab.width, 0);
+                            passesSelected = true;
+                        }
+                        else if (!passesSelected)
+                        {
+                            nonSelTab.SetPos(prevTab.Right + selectedTab.width, 0);
+                            passesSelected = true;
+                        }
+                        else
+                            nonSelTab.SetPos(prevTab.Right, 0);
+                    }
+                }
+                // Mouse is moving to the right -->
+                else if (moveDirection > 0)
+                {
+                    // Right border of the dragged tab passes the center of the next tab
+                    if (selectedTab.Right > nonSelTab.CenterX)
+                    {
+                        Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
+
+                        // No previous tab. Start from the beginning
+                        if (prevTab == null)
+                            nonSelTab.SetPos(0, 0);
+                        else
+                            nonSelTab.SetPos(prevTab.x + prevTab.width, 0);
+                    }
+                }
+            }
+        }
+
+
         //
         // Update method
         //
         public void Update()
         {
-            /*if (IsAnySelected)
+            if (TotalTabs <= 1)
+                return;
+
+
+            if (autoShiftTimer)
             {
-                if (SelectedTab.IsDragging)
+                if (timerMoveLeft)
                 {
-                    if (LocalToGlobal(SelectedTab.Right) < 10)
+                    if (LocalToGlobal(selectedTab.x) >= 0)
                     {
-                        XConsole.Println("moving");
-                        SelectedTab.x = GlobalToLocal(-(SelectedTab.width - 10));
-                        OFFSET_X += 2;
+                        timer.Stop();
+                        timerCount = 0;
+                        timerMoveLeft = false; 
+                        autoShiftTimer = false;
+                    }
+                    // Code will pass down here on mouse events like 'OnMove' at the same time
+                    // our timer loop for auto move is running
+                    else
+                    {
+                        selectedTab.y = 4;
+
+                        //             0
+                        //             ↓___________________________________
+                        //     |▓▓▓▓▒▓▓|▓▓▓▓|           |██████|██████|    |   freezeMoveLeft = true
+                        //          ▲     ↑
+                        //        Mouse   TabVisibleLimit
+                        if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
+                        {
+                            int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                            int diff = selectedTab.x - newX;
+                            selectedTab.GlobalMoveX(-diff);
+                        }
+
+                        return;
                     }
                 }
-            }*/
+                else if (timerMoveRight)
+                {
+                    if (LocalToGlobal(selectedTab.Right) >= width)
+                    {
+                        timer.Stop();
+                        timerCount = 0;
+                        timerMoveRight = false;
+                        autoShiftTimer = false;
+                    }
+                    // Code will pass down here on mouse events like 'OnMove' at the same time
+                    // our timer loop for auto move is running
+                    else
+                    {
+                        selectedTab.y = 4;
 
-            if (TotalTabs > 1)
-                UpdateSwitching();
+                        if (LocalToGlobal(selectedTab.Left) > (width - TabVisibleLimit))
+                        {
+                                            //selectedTab.x = GlobalToLocal(width - TabVisibleLimit);
+                                            //selTabPreviousX = LocalToGlobal(selectedTab.x);
+
+                            XConsole.Println("xright");
+                            /*int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                            int diff = selectedTab.x - newX;
+                            selectedTab.GlobalMoveX(-diff);*/
+                        }
+
+                        return;
+                    }
+                }
+            }
+
+            UpdateSwitching();
+
+            UpdateTimer();
+
         }
         #endregion
 

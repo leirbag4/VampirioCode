@@ -48,9 +48,17 @@ namespace VampirioCode.UI.Controls.TabManagement
             this.controller =   manager;
         }
 
+        // set the local position of tab
         public void SetPos(int x, int y)
         {
             this.x = x; this.y = y;
+        }
+
+        // shift the tab using its global position taking care of the dragging point also
+        public void GlobalMoveX(int amount)
+        {
+            this.x += amount;
+            this.startDragX += amount;
         }
 
         public void Select()

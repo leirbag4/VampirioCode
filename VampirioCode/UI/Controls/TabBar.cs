@@ -84,7 +84,7 @@ namespace VampirioCode.UI.Controls
 
         private TabItemCollection items = new TabItemCollection();
         private TabController controller;
-
+        private bool timerUpdateNeeded = false;
 
         public TabBar() 
         {
@@ -96,6 +96,7 @@ namespace VampirioCode.UI.Controls
             controller.TabRemoved +=            OnTabRemoved;
             controller.StartDragTab +=          OnStartDragTab;
             controller.StopDragTab +=           OnStopDragTab;
+            controller.TimerRepaintNeeded +=    OnTimerRepaintNeeded;
 
             // items events
             items.ItemAdded +=      OnItemAdded;
@@ -186,6 +187,12 @@ namespace VampirioCode.UI.Controls
         {
             if(StopDragTab != null)
                 StopDragTab(index, item);
+        }
+
+        private void OnTimerRepaintNeeded()
+        {
+            timerUpdateNeeded = true;
+            Invalidate();
         }
 
         // Item Events
@@ -282,7 +289,14 @@ namespace VampirioCode.UI.Controls
         {
             e.Graphics.FillRectangle(new SolidBrush(BackColor), ClientRectangle);
 
-            controller.Update();
+            if(timerUpdateNeeded)
+            {
+                controller.UpdateTimer();
+                timerUpdateNeeded = false;
+            }
+            else
+                controller.Update();
+
             controller.Paint(e.Graphics);
         }
 
