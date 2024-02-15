@@ -6,8 +6,8 @@
 
 #define TAB_CONTROLLER_DEBUG    // This will paint some debug info. IMPORTANT: note that the debugged text could be printed out of screen or canvas, so make this rendering context big
 #define USE_AUTO_SHIFT_TIMERS   // USE_AUTO_SHIFT_TIMERS: can be removed because the auto shift features with timers is a little complex and if you want to port the code, maybe a good idea is to write it again.
-#define AUTO_SHIFT_VERSION_B    // VERSION_A: will compute more resources because it will use a numeri counter and a smallest timer. It could be easier to implement in other languages like C++
-// VERSION_B: will use less resources because it will have a longer initial interval timer and then it will be set to a smaller one. Maybe best for C#, just test it.
+#define AUTO_SHIFT_VERSION_B    // VERSION_A (ver_b commented): will compute more resources because it will use a numeri counter and a smallest timer. It could be easier to implement in other languages like C++
+                                // VERSION_B: will use less resources because it will have a longer initial interval timer and then it will be set to a smaller one. Maybe best for C#, just test it.
 
 using System;
 using System.Collections.Generic;
@@ -34,34 +34,9 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event StopDragTabEvent StopDragTab;
 
 
-        // IMPORTANT: A global offset position used to shift all the tabs to the left or right
-        //            This variable is used to calculate LocalToGlobal() and GlobalToLocal()
-        public int OFFSET_X = 0;
-
-        private int width = 400;
-        private int height = 30;
-        private int mouseX = -1;
-        private int mouseY = -1;
-        private bool mouseDown = false;
-
-        public List<Tab> tabs = new List<Tab>();                // The complete tabs list including the selected and dragged tab
-        private Tab selectedTab = null;                         // The tab the user is dragging or moving from left to right
-        private List<Tab> nonSelectedTabs = new List<Tab>();    // This list include all the other tabs rather than the selected one that is being dragged
-        private int selTabPreviousX = 0;                        // Register the start x position of the selected tab on MouseDown or Start Drag to calculate in which direction it is moving. On every Update loop it is reset again.
-        private Tab prevSelectedTab = null;                     // Used to trigger events on tab changed
-        private int savedTotalWidth = 0;                        // Will be calculated only at StartDrag event in order to reduce compute time
-        private Font font;
-        private bool freezeMoveLeft = false;
-        private bool freezeMoveRight = false;
-
-        // auto shift/scroll timer
-        private bool autoShiftTimer = false;
-        private int timerPosX = 0;
-        private int timerCount = 0;
-        private bool timerMoveLeft = false;
-        private bool timerMoveRight = false;
-        private System.Windows.Forms.Timer timer;
-
+        public int TabHeight { get; set; } = 25;
+        public int TabPosY { get; set; } = 0;                                       // default y position of the tabs
+        public int DraggedTabPosY { get; set; } = 4;                                // y position for a tab that is being dragged
         public int TotalTabs { get { return tabs.Count; } }                         // Total amount of tabs
         public bool IsDragging { get; set; } = false;                               // SelectedTab is being dragged
         public bool IsAnySelected { get { return selectedTab != null; } }           // There is a selected tab
@@ -93,8 +68,38 @@ namespace VampirioCode.UI.Controls.TabManagement
         public int TimerMinStepsToShift { get; set; } = 35; // [VERSION_A only]: for example if 10, then after (10 * TimerStepsMillis), the auto shifting process starts and then just one step or TimerStepsMillis will be used for each frame and shift
     #endif
 #endif
+                // auto shift/scroll timer
+        private bool autoShiftTimer = false;
+        private int timerPosX = 0;
+        private int timerCount = 0;
+        private bool timerMoveLeft = false;
+        private bool timerMoveRight = false;
+        private System.Windows.Forms.Timer timer;
         // -----------------------------------------------
         #endregion
+
+
+        // IMPORTANT: A global offset position used to shift all the tabs to the left or right
+        //            This variable is used to calculate LocalToGlobal() and GlobalToLocal()
+        public int OFFSET_X = 0;
+
+        private int width = 400;
+        private int height = 30;
+        private int mouseX = -1;
+        private int mouseY = -1;
+        private bool mouseDown = false;
+
+        public List<Tab> tabs = new List<Tab>();                // The complete tabs list including the selected and dragged tab
+        private Tab selectedTab = null;                         // The tab the user is dragging or moving from left to right
+        private List<Tab> nonSelectedTabs = new List<Tab>();    // This list include all the other tabs rather than the selected one that is being dragged
+        private int selTabPreviousX = 0;                        // Register the start x position of the selected tab on MouseDown or Start Drag to calculate in which direction it is moving. On every Update loop it is reset again.
+        private Tab prevSelectedTab = null;                     // Used to trigger events on tab changed
+        private int savedTotalWidth = 0;                        // Will be calculated only at StartDrag event in order to reduce compute time
+        private Font font;
+        private bool freezeMoveLeft = false;
+        private bool freezeMoveRight = false;
+
+
 
         public TabController()
         {
@@ -120,6 +125,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public void Insert(int index, TabItem item)
         {
             Tab tab = new Tab(item, font, this);
+            tab.height = TabHeight;
             int totals = TotalTabs;
 
             // store current selected tab
@@ -371,6 +377,12 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Internal Tab Events
         //
         // --------------------------------------------------------
+        private void OnDraggingAnim(Tab tab)
+        {
+            selectedTab.y = DraggedTabPosY;
+        }
+
+
         public void StartDragging(Tab selTab)
         {
             PushSelTabForEvent();
@@ -505,16 +517,16 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                         if (prevTab == null)
                         {
-                            nonSelTab.SetPos(selectedTab.width, 0);
+                            nonSelTab.SetPos(selectedTab.width, TabPosY);
                             passesSelected = true;
                         }
                         else if (!passesSelected)
                         {
-                            nonSelTab.SetPos(prevTab.Right + selectedTab.width, 0);
+                            nonSelTab.SetPos(prevTab.Right + selectedTab.width, TabPosY);
                             passesSelected = true;
                         }
                         else
-                            nonSelTab.SetPos(prevTab.Right, 0);
+                            nonSelTab.SetPos(prevTab.Right, TabPosY);
                     }
                 }
                 // Mouse is moving to the right -->
@@ -527,9 +539,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                         // No previous tab. Start from the beginning
                         if (prevTab == null)
-                            nonSelTab.SetPos(0, 0);
+                            nonSelTab.SetPos(0, TabPosY);
                         else
-                            nonSelTab.SetPos(prevTab.x + prevTab.width, 0);
+                            nonSelTab.SetPos(prevTab.x + prevTab.width, TabPosY);
                     }
                 }
             }
@@ -580,9 +592,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                 Tab tab = tabs[a];
 
                 if (a == 0)
-                    tab.SetPos(0, 0);
+                    tab.SetPos(0, TabPosY);
                 else
-                    tab.SetPos(tabs[a - 1].Right, 0);
+                    tab.SetPos(tabs[a - 1].Right, TabPosY);
             }
         }
 
@@ -594,9 +606,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                 Tab tab = tabs[a];
 
                 if (a == 0)
-                    tab.SetPos(0, 0);
+                    tab.SetPos(0, TabPosY);
                 else
-                    tab.SetPos(tabs[a - 1].Right, 0);
+                    tab.SetPos(tabs[a - 1].Right, TabPosY);
             }
         }
 
@@ -678,8 +690,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                         return;
                     }
 
-                    XConsole.Println("left: " + timerCount);
-
                     autoShiftTimer = true;
 
                 }
@@ -698,16 +708,12 @@ namespace VampirioCode.UI.Controls.TabManagement
                         return;
                     }
 
-                    XConsole.Println("right: " + timerCount);
-
                     autoShiftTimer = true;
                     
                 }
             }
             else
             {
-
-                XConsole.PrintWarning("TTT: " + timerCount);
 
                 if (TimerRepaintNeeded != null)
                 {
@@ -737,8 +743,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                         return;
                     }
 
-                    XConsole.Println("left: " + timerCount);
-
                     timerCount++;
 
                     if (timerCount == TimerMinStepsToShift)
@@ -763,8 +767,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                         return;
                     }
 
-                    XConsole.Println("right: " + timerCount);
-
                     timerCount++;
 
                     if (timerCount == TimerMinStepsToShift)
@@ -781,8 +783,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                 if (timerCount > TimerMinStepsToShift)
                     timerCount = TimerMinStepsToShift;
 
-                XConsole.PrintWarning("TTT: " + timerCount);
-
                 if (TimerRepaintNeeded != null)
                 {
                     _updateTimerNeeded = true;
@@ -796,18 +796,15 @@ namespace VampirioCode.UI.Controls.TabManagement
         { 
             if (autoShiftTimer && selectedTab.IsDragging)
             {
-                selectedTab.y = 4;
+                OnDraggingAnim(selectedTab);
 
 
                 if (timerMoveLeft)
                 {
-                    XConsole.Println("LEFFFFFFFFFFFFFFFT");
-
                     FixPositionToMouse();
 
                     if (LocalToGlobal(selectedTab.x) >= 0)
                     {
-                        XConsole.Println("[stooooooooooooppp]");
                         StopAutoShift();
                     }
                     // Code will pass down here on mouse events like 'OnMove' at the same time
@@ -826,9 +823,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                             int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
                             int diff = selectedTab.x - newX;
                             selectedTab.GlobalMoveX(-diff);
-
-                            XConsole.Println("----- newX: " + newX + " -dif: " + (-diff));
-
                         }
 
                         return false;
@@ -842,7 +836,6 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                     if (LocalToGlobal(selectedTab.Right) <= width)
                     {
-                        XConsole.Println("[STOPPPPPPPPPPPPPPPPP]");
                         StopAutoShift();
                     }
                     // Code will pass down here on mouse events like 'OnMove' at the same time
@@ -855,7 +848,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                             int newX = GlobalToLocal(width - TabVisibleLimit);
                             int diff = selectedTab.x - newX;
                             selectedTab.GlobalMoveX(-diff);
-                            XConsole.Println("----- newXx: " + newX  + " diff: " + diff);
                         }
 
                         return false;
@@ -898,7 +890,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 else // if (autoShiftTimer)
                 {
 
-                    selectedTab.y = 4;
+                    OnDraggingAnim(selectedTab);
 
 #if AUTO_SHIFT_VERSION_B
                     timer.Interval = ShiftStepsMillis;
@@ -912,8 +904,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                         }
                         else
                         {
-                            XConsole.PrintWarning("move: " + timerCount);
-
                             OFFSET_X += PixelsShiftsPerStep;
                             selectedTab.GlobalMoveX(-PixelsShiftsPerStep);
 
@@ -993,7 +983,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (IsDragging)
             {
-                selectedTab.y = 4;
+                OnDraggingAnim(selectedTab);
 
 
                 #region MovingDirection

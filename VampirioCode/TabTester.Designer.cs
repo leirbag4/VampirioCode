@@ -69,6 +69,8 @@
             button33 = new Button();
             button34 = new Button();
             button35 = new Button();
+            tabNameInput = new TextBox();
+            button36 = new Button();
             tabControlWin.SuspendLayout();
             SuspendLayout();
             // 
@@ -528,12 +530,32 @@
             button35.UseVisualStyleBackColor = true;
             button35.Click += OnClearItemsPressed;
             // 
+            // tabNameInput
+            // 
+            tabNameInput.Location = new Point(583, 194);
+            tabNameInput.Name = "tabNameInput";
+            tabNameInput.Size = new Size(125, 27);
+            tabNameInput.TabIndex = 39;
+            // 
+            // button36
+            // 
+            button36.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button36.Location = new Point(583, 227);
+            button36.Name = "button36";
+            button36.Size = new Size(125, 29);
+            button36.TabIndex = 40;
+            button36.Text = "set text";
+            button36.UseVisualStyleBackColor = true;
+            button36.Click += OnSetTabTextPressed;
+            // 
             // TabTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(1157, 620);
+            Controls.Add(button36);
+            Controls.Add(tabNameInput);
             Controls.Add(button35);
             Controls.Add(button34);
             Controls.Add(button33);
@@ -577,6 +599,7 @@
             Text = "TabTester";
             tabControlWin.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -622,5 +645,7 @@
         private Button button33;
         private Button button34;
         private Button button35;
+        private TextBox tabNameInput;
+        private Button button36;
     }
 }

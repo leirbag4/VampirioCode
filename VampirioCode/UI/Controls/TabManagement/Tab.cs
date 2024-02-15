@@ -179,7 +179,13 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
 
             VampirioGraphics.FillRect(g, backColor, Color.Gray, 2, _x_, y, width, height);
+
+            SizeF fontBounds = g.MeasureString(item.Text, font, width);
+
+            VampirioGraphics.FillRect(g, Color.Silver, _x_ + (width >> 1) - ((int)fontBounds.Width >> 1), y + (height >> 1) - ((int)fontBounds.Height >> 1), (int)fontBounds.Width, (int)fontBounds.Height);
+
             VampirioGraphics.DrawString(g, font, item.Text, Color.Black, _x_, y, width, height, ContentAlignment.MiddleCenter);
+
 
 #if TAB_CONTROLLER_DEBUG
             VampirioGraphics.FillRect(g, Color.Black, _x_ + (width >> 1) - 1, y, 3, 4);

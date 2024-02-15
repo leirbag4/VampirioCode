@@ -97,7 +97,9 @@ namespace VampirioCode.UI.Controls
             controller.TabRemoved +=            OnTabRemoved;
             controller.StartDragTab +=          OnStartDragTab;
             controller.StopDragTab +=           OnStopDragTab;
+        #if USE_AUTO_SHIFT_TIMERS
             controller.TimerRepaintNeeded +=    OnTimerRepaintNeeded;
+        #endif
 
             // items events
             items.ItemAdded +=      OnItemAdded;

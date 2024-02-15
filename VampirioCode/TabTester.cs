@@ -26,16 +26,16 @@ namespace VampirioCode
         {
             InitializeComponent();
 
-            tabBar.SelectedTabChanged +=    OnSelectedIndexChanged;
-            tabBar.TabAdded +=              OnTabAdded;
-            tabBar.TabRemoved +=            OnTabRemoved;
-            tabBar.StartDragTab +=          OnStartDragTab;
-            tabBar.StopDragTab +=           OnStopDragTab;
-            tabBar.RightClickContext +=     OnRightClickContext;
+            tabBar.SelectedTabChanged += OnSelectedIndexChanged;
+            tabBar.TabAdded += OnTabAdded;
+            tabBar.TabRemoved += OnTabRemoved;
+            tabBar.StartDragTab += OnStartDragTab;
+            tabBar.StopDragTab += OnStopDragTab;
+            tabBar.RightClickContext += OnRightClickContext;
 
-            tabControlWin.SelectedIndexChanged +=   OnWinSelIndexChanged;
-            tabControlWin.ControlAdded +=           OnWinControlAdded;
-            tabControlWin.ControlRemoved +=         OnWinControlRemoved;
+            tabControlWin.SelectedIndexChanged += OnWinSelIndexChanged;
+            tabControlWin.ControlAdded += OnWinControlAdded;
+            tabControlWin.ControlRemoved += OnWinControlRemoved;
         }
 
 
@@ -230,6 +230,12 @@ namespace VampirioCode
         private void OnClearItemsPressed(object sender, EventArgs e)
         {
             tabBar.Items.Clear();
+        }
+
+        private void OnSetTabTextPressed(object sender, EventArgs e)
+        {
+            tabBar.SelectedTab.Text = tabNameInput.Text;
+            tabBar.Invalidate();
         }
     }
 }
