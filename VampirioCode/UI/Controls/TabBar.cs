@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define USE_AUTO_SHIFT_TIMERS
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -84,7 +86,6 @@ namespace VampirioCode.UI.Controls
 
         private TabItemCollection items = new TabItemCollection();
         private TabController controller;
-        private bool timerUpdateNeeded = false;
 
         public TabBar() 
         {
@@ -191,7 +192,6 @@ namespace VampirioCode.UI.Controls
 
         private void OnTimerRepaintNeeded()
         {
-            timerUpdateNeeded = true;
             Invalidate();
         }
 
@@ -289,14 +289,14 @@ namespace VampirioCode.UI.Controls
         {
             e.Graphics.FillRectangle(new SolidBrush(BackColor), ClientRectangle);
 
-            if(timerUpdateNeeded)
-            {
+#if USE_AUTO_SHIFT_TIMERS
+            if(controller.UpdateTimerNeeded)
                 controller.UpdateTimer();
-                timerUpdateNeeded = false;
-            }
             else
                 controller.Update();
-
+#else
+            controller.Update();
+#endif
             controller.Paint(e.Graphics);
         }
 

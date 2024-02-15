@@ -1,11 +1,19 @@
-﻿#define TAB_CONTROLLER_DEBUG
+﻿//
+// PORTING CODE: if you want to port this code to another language like C++, it's best to disable the feature USE_AUTO_SHIFT_TIMERS and maybe remove the code by hand
+//               because its implementation is a bit complex and harder to understand. Also, some part of the code was try and catch. So maybe a good idea is to 
+//               write it again after porting the basic logic code.
+//
+
+#define TAB_CONTROLLER_DEBUG    // This will paint some debug info. IMPORTANT: note that the debugged text could be printed out of screen or canvas, so make this rendering context big
+#define USE_AUTO_SHIFT_TIMERS   // USE_AUTO_SHIFT_TIMERS: can be removed because the auto shift features with timers is a little complex and if you want to port the code, maybe a good idea is to write it again.
+#define AUTO_SHIFT_VERSION_B    // VERSION_A: will compute more resources because it will use a numeri counter and a smallest timer. It could be easier to implement in other languages like C++
+// VERSION_B: will use less resources because it will have a longer initial interval timer and then it will be set to a smaller one. Maybe best for C#, just test it.
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.UI.VampGraphics;
@@ -19,13 +27,12 @@ namespace VampirioCode.UI.Controls.TabManagement
         public delegate void TabRemovedEvent(int index, TabItem item);
         public delegate void StartDragTabEvent(int index, TabItem item);
         public delegate void StopDragTabEvent(int index, TabItem item);
-        public delegate void TimerRepaintNeededEvent();
         public event SelectedTabChangedEvent SelectedTabChanged;
         public event TabAddedEvent TabAdded;
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
-        public event TimerRepaintNeededEvent TimerRepaintNeeded;
+
 
         // IMPORTANT: A global offset position used to shift all the tabs to the left or right
         //            This variable is used to calculate LocalToGlobal() and GlobalToLocal()
@@ -66,13 +73,42 @@ namespace VampirioCode.UI.Controls.TabManagement
         public bool AllowDragging { get; set; } = true;
         private Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
 
+        #region AutoShiftProperties
+        // -----------------------------------------------
+        // AUTO SHIFT FEATURE
+        // -----------------------------------------------
+#if USE_AUTO_SHIFT_TIMERS
+        public delegate void TimerRepaintNeededEvent();
+        public event TimerRepaintNeededEvent TimerRepaintNeeded;
+        public int PixelsShiftsPerStep { get; set; } = 10;  // [VERSION_A and VERSION_B]: the amount of pixels the tabs will move to the left or right on every auto shift movement with the timer
+        public bool UpdateTimerNeeded { get { return _updateTimerNeeded; } }
+        private bool _updateTimerNeeded = false;
+    #if AUTO_SHIFT_VERSION_B
+        public int MinTimerWait { get { return (_timerInterval >> 1); } set { _timerInterval = value; } } // [VERSION_B only]: minimum time to activate the auto shift features of tabs when user is dragging a tab to the left or right border of the bar or screen
+        public int ShiftStepsMillis { get; set; } = 10; // [VERSION_B only]: once MinTimerWait has passed, this amount of milliseconds will be used on each step when shifting the tabs to the left or right
+
+        private int _timerInterval = 300;
+    #else
+        public int TimerStepsMillis { get; set; } = 10;     // [VERSION_A only]: each step will be count in a loop and after some amount of steps (TimerMinStepsToShift), the tabs will be shifted to the right of left of the border they are
+        public int TimerMinStepsToShift { get; set; } = 35; // [VERSION_A only]: for example if 10, then after (10 * TimerStepsMillis), the auto shifting process starts and then just one step or TimerStepsMillis will be used for each frame and shift
+    #endif
+#endif
+        // -----------------------------------------------
+        #endregion
+
         public TabController()
         {
             font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
 
+#if USE_AUTO_SHIFT_TIMERS
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 50;
             timer.Tick += OnTimerTick;
+    #if AUTO_SHIFT_VERSION_B
+            timer.Interval = MinTimerWait;
+    #else
+            timer.Interval = TimerStepsMillis;
+    #endif
+#endif
         }
 
         #region BasicActions
@@ -363,8 +399,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             BringTabIntoScreen(selectedTab);
 
+#if USE_AUTO_SHIFT_TIMERS
             StopAutoShift();
-
+#endif
             // Event
             if (StopDragTab != null)
                 StopDragTab(selectedTab.Index(), selectedTab.item);
@@ -585,6 +622,27 @@ namespace VampirioCode.UI.Controls.TabManagement
                 return false;
         }
 
+        private void FixPositionToMouse()
+        {
+            selectedTab.x = mouseX - selectedTab.dragOffsetPointX;
+            selTabPreviousX = LocalToGlobal(selectedTab.x);
+        }
+
+
+#if USE_AUTO_SHIFT_TIMERS
+
+    #if AUTO_SHIFT_VERSION_B
+        private void StopAutoShift()
+        {
+    
+            timer.Interval = MinTimerWait;
+            timer.Stop();
+            timerCount = 0;
+            timerMoveLeft = false;
+            timerMoveRight = false;
+            autoShiftTimer = false;
+        }
+    #else
         private void StopAutoShift()
         {
             timer.Stop();
@@ -593,19 +651,72 @@ namespace VampirioCode.UI.Controls.TabManagement
             timerMoveRight = false;
             autoShiftTimer = false;
         }
+    #endif
+#endif
 
-        private void FixPositionToMouse()
-        {
-            selectedTab.x = mouseX - selectedTab.dragOffsetPointX;
-            selTabPreviousX = LocalToGlobal(selectedTab.x);
-        }
         #endregion
 
-        #region Update
-        //
-        // Update switching locations to left or right when dragging
-        //
+        #region AutoShiftUpdate
+#if USE_AUTO_SHIFT_TIMERS
+#if AUTO_SHIFT_VERSION_B
+        private void OnTimerTick(object? sender, EventArgs e)
+        {
+            if (!autoShiftTimer)
+            {
+                if (timerMoveLeft)
+                {
+                    if (LocalToGlobal(selectedTab.x) >= 0)
+                    {
+                        timer.Interval = MinTimerWait;
+                        timer.Stop();
+                        return;
+                    }
 
+                    if (timerPosX != LocalToGlobal(selectedTab.x))
+                    {
+                        timerPosX = LocalToGlobal(selectedTab.x);
+                        return;
+                    }
+
+                    XConsole.Println("left: " + timerCount);
+
+                    autoShiftTimer = true;
+
+                }
+                else if (timerMoveRight)
+                {
+                    if (LocalToGlobal(selectedTab.Right) <= width)
+                    {
+                        timer.Interval = MinTimerWait;
+                        timer.Stop();
+                        return;
+                    }
+
+                    if (timerPosX != LocalToGlobal(selectedTab.x))
+                    {
+                        timerPosX = LocalToGlobal(selectedTab.x);
+                        return;
+                    }
+
+                    XConsole.Println("right: " + timerCount);
+
+                    autoShiftTimer = true;
+                    
+                }
+            }
+            else
+            {
+
+                XConsole.PrintWarning("TTT: " + timerCount);
+
+                if (TimerRepaintNeeded != null)
+                {
+                    _updateTimerNeeded = true;
+                    TimerRepaintNeeded();
+                }
+            }
+        }
+#else
         private void OnTimerTick(object? sender, EventArgs e)
         {
             if (!autoShiftTimer)
@@ -630,9 +741,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                     timerCount++;
 
-                    if (timerCount == 10)
+                    if (timerCount == TimerMinStepsToShift)
                     {
-                        timerCount = 10;
+                        timerCount = TimerMinStepsToShift;
                         autoShiftTimer = true;
                     }
                 }
@@ -656,9 +767,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                     timerCount++;
 
-                    if (timerCount == 10)
+                    if (timerCount == TimerMinStepsToShift)
                     {
-                        timerCount = 10;
+                        timerCount = TimerMinStepsToShift;
                         autoShiftTimer = true;
                     }
                 }
@@ -667,18 +778,97 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 timerCount++;
 
+                if (timerCount > TimerMinStepsToShift)
+                    timerCount = TimerMinStepsToShift;
+
                 XConsole.PrintWarning("TTT: " + timerCount);
 
                 if (TimerRepaintNeeded != null)
+                {
+                    _updateTimerNeeded = true;
                     TimerRepaintNeeded();
+                }
+            }
+        }
+#endif
+
+        private bool PreComputeTimer()
+        { 
+            if (autoShiftTimer && selectedTab.IsDragging)
+            {
+                selectedTab.y = 4;
+
+
+                if (timerMoveLeft)
+                {
+                    XConsole.Println("LEFFFFFFFFFFFFFFFT");
+
+                    FixPositionToMouse();
+
+                    if (LocalToGlobal(selectedTab.x) >= 0)
+                    {
+                        XConsole.Println("[stooooooooooooppp]");
+                        StopAutoShift();
+                    }
+                    // Code will pass down here on mouse events like 'OnMove' at the same time
+                    // our timer loop for auto move is running
+                    else
+                    {
+
+                        //             0
+                        //             ↓___________________________________
+                        //     |▓▓▓▓▒▓▓|▓▓▓▓|           |██████|██████|    |   freezeMoveLeft = true
+                        //          ▲     ↑
+                        //        Mouse   TabVisibleLimit
+                        if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
+                        {
+
+                            int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
+                            int diff = selectedTab.x - newX;
+                            selectedTab.GlobalMoveX(-diff);
+
+                            XConsole.Println("----- newX: " + newX + " -dif: " + (-diff));
+
+                        }
+
+                        return false;
+                    }
+                }
+                else if (timerMoveRight)
+                {
+                    //XConsole.Println("RIIIIIIIIIIIIIIIIIIIGHT");
+
+                    FixPositionToMouse();
+
+                    if (LocalToGlobal(selectedTab.Right) <= width)
+                    {
+                        XConsole.Println("[STOPPPPPPPPPPPPPPPPP]");
+                        StopAutoShift();
+                    }
+                    // Code will pass down here on mouse events like 'OnMove' at the same time
+                    // our timer loop for auto move is running
+                    else
+                    {
+
+                        if (LocalToGlobal(selectedTab.Left) > (width - TabVisibleLimit))
+                        {
+                            int newX = GlobalToLocal(width - TabVisibleLimit);
+                            int diff = selectedTab.x - newX;
+                            selectedTab.GlobalMoveX(-diff);
+                            XConsole.Println("----- newXx: " + newX  + " diff: " + diff);
+                        }
+
+                        return false;
+                    }
+                }
             }
 
-
+            return true;
         }
 
         public void UpdateTimer()
         {
-
+            _updateTimerNeeded = false;
 
             if (IsDragging)
             {
@@ -710,6 +900,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                     selectedTab.y = 4;
 
+#if AUTO_SHIFT_VERSION_B
+                    timer.Interval = ShiftStepsMillis;
+#endif
 
                     if (timerMoveLeft)
                     {
@@ -721,8 +914,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                         {
                             XConsole.PrintWarning("move: " + timerCount);
 
-                            OFFSET_X += 10;
-                            selectedTab.GlobalMoveX(-10);
+                            OFFSET_X += PixelsShiftsPerStep;
+                            selectedTab.GlobalMoveX(-PixelsShiftsPerStep);
 
 
                             if (OFFSET_X > 0)
@@ -753,8 +946,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                         }
                         else
                         {
-                            OFFSET_X -= 10;
-                            selectedTab.GlobalMoveX(+10);
+                            OFFSET_X -= PixelsShiftsPerStep;
+                            selectedTab.GlobalMoveX(+PixelsShiftsPerStep);
 
 
                             int lastPos = LocalToGlobal(nonSelectedTabs[nonSelectedTabs.Count - 1].Right);
@@ -787,7 +980,13 @@ namespace VampirioCode.UI.Controls.TabManagement
 
 
         }
+#endif
+#endregion
 
+        #region UpdateSwitching
+        //
+        // Update switching locations to left or right when dragging
+        //
         private void UpdateSwitching()
         {
             int moveDirection;
@@ -1026,92 +1225,33 @@ namespace VampirioCode.UI.Controls.TabManagement
                 RecalcIndices();
             }
         }
+        #endregion
 
-        
-
+        #region Update
         //
         // Update method
         //
+#if USE_AUTO_SHIFT_TIMERS
         public void Update()
         {
             if (TotalTabs <= 1)
                 return;
 
-
-            if (autoShiftTimer && selectedTab.IsDragging)
-            {
-                selectedTab.y = 4;
-
-
-                if (timerMoveLeft)
-                {
-                    XConsole.Println("LEFFFFFFFFFFFFFFFT");
-
-                    FixPositionToMouse();
-
-                    if (LocalToGlobal(selectedTab.x) >= 0)
-                    {
-                        XConsole.Println("[stooooooooooooppp]");
-                        StopAutoShift();
-                    }
-                    // Code will pass down here on mouse events like 'OnMove' at the same time
-                    // our timer loop for auto move is running
-                    else
-                    {
-
-                        //             0
-                        //             ↓___________________________________
-                        //     |▓▓▓▓▒▓▓|▓▓▓▓|           |██████|██████|    |   freezeMoveLeft = true
-                        //          ▲     ↑
-                        //        Mouse   TabVisibleLimit
-                        if (LocalToGlobal(selectedTab.Right) < TabVisibleLimit)
-                        {
-
-                            int newX = GlobalToLocal(-selectedTab.width + TabVisibleLimit);
-                            int diff = selectedTab.x - newX;
-                            selectedTab.GlobalMoveX(-diff);
-
-                            XConsole.Println("----- newX: " + newX + " -dif: " + (-diff));
-
-                        }
-
-                        return;
-                    }
-                }
-                else if (timerMoveRight)
-                {
-                    //XConsole.Println("RIIIIIIIIIIIIIIIIIIIGHT");
-
-                    FixPositionToMouse();
-
-                    if (LocalToGlobal(selectedTab.Right) <= width)
-                    {
-                        XConsole.Println("[STOPPPPPPPPPPPPPPPPP]");
-                        StopAutoShift();
-                    }
-                    // Code will pass down here on mouse events like 'OnMove' at the same time
-                    // our timer loop for auto move is running
-                    else
-                    {
-
-                        if (LocalToGlobal(selectedTab.Left) > (width - TabVisibleLimit))
-                        {
-                            int newX = GlobalToLocal(width - TabVisibleLimit);
-                            int diff = selectedTab.x - newX;
-                            selectedTab.GlobalMoveX(-diff);
-                            XConsole.Println("----- newXx: " + newX  + " diff: " + diff);
-                        }
-
-                        return;
-                    }
-                }
-            }
+            if (!PreComputeTimer())
+                return;
 
             UpdateSwitching();
-
             UpdateTimer();
-
         }
+#else
+        public void Update()
+        {
+            if (TotalTabs <= 1)
+                return;
+
+            UpdateSwitching();
+        }
+#endif
         #endregion
 
         #region Paint
