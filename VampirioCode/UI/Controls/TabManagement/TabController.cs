@@ -363,6 +363,8 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             BringTabIntoScreen(selectedTab);
 
+            StopAutoShift();
+
             // Event
             if (StopDragTab != null)
                 StopDragTab(selectedTab.Index(), selectedTab.item);
@@ -443,6 +445,57 @@ namespace VampirioCode.UI.Controls.TabManagement
                 totalWidth += tab.width;
 
             return totalWidth;
+        }
+
+        private void SwapTabs(int moveDirection)
+        {
+            bool passesSelected = false;
+
+            //
+            // Swap tabs:
+            //           A tab is swapped when the left or right border of the
+            //           dragged tab passes the center of the next tab
+            //
+            foreach (Tab nonSelTab in nonSelectedTabs)
+            {
+                // Mouse is moving to the left <--
+                if (moveDirection < 0)
+                {
+                    // Left border of the dragged tab passes the center of the next tab
+                    if (selectedTab.Left < nonSelTab.CenterX)
+                    {
+                        Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
+
+                        if (prevTab == null)
+                        {
+                            nonSelTab.SetPos(selectedTab.width, 0);
+                            passesSelected = true;
+                        }
+                        else if (!passesSelected)
+                        {
+                            nonSelTab.SetPos(prevTab.Right + selectedTab.width, 0);
+                            passesSelected = true;
+                        }
+                        else
+                            nonSelTab.SetPos(prevTab.Right, 0);
+                    }
+                }
+                // Mouse is moving to the right -->
+                else if (moveDirection > 0)
+                {
+                    // Right border of the dragged tab passes the center of the next tab
+                    if (selectedTab.Right > nonSelTab.CenterX)
+                    {
+                        Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
+
+                        // No previous tab. Start from the beginning
+                        if (prevTab == null)
+                            nonSelTab.SetPos(0, 0);
+                        else
+                            nonSelTab.SetPos(prevTab.x + prevTab.width, 0);
+                    }
+                }
+            }
         }
 
         //
@@ -531,6 +584,21 @@ namespace VampirioCode.UI.Controls.TabManagement
             else
                 return false;
         }
+
+        private void StopAutoShift()
+        {
+            timer.Stop();
+            timerCount = 0;
+            timerMoveLeft = false;
+            timerMoveRight = false;
+            autoShiftTimer = false;
+        }
+
+        private void FixPositionToMouse()
+        {
+            selectedTab.x = mouseX - selectedTab.dragOffsetPointX;
+            selTabPreviousX = LocalToGlobal(selectedTab.x);
+        }
         #endregion
 
         #region Update
@@ -599,6 +667,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 timerCount++;
 
+                XConsole.PrintWarning("TTT: " + timerCount);
+
                 if (TimerRepaintNeeded != null)
                     TimerRepaintNeeded();
             }
@@ -638,7 +708,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 else // if (autoShiftTimer)
                 {
 
-                    //selectedTab.y = 4;
+                    selectedTab.y = 4;
 
 
                     if (timerMoveLeft)
@@ -649,6 +719,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                         }
                         else
                         {
+                            XConsole.PrintWarning("move: " + timerCount);
+
                             OFFSET_X += 10;
                             selectedTab.GlobalMoveX(-10);
 
@@ -716,24 +788,8 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         }
 
-        private void StopAutoShift()
-        {
-            timer.Stop();
-            timerCount = 0;
-            timerMoveLeft = false;
-            timerMoveRight = false;
-            autoShiftTimer = false;
-        }
-
-        private void FixPositionToMouse()
-        { 
-            selectedTab.x = mouseX - selectedTab.dragOffsetPointX;
-            selTabPreviousX = LocalToGlobal(selectedTab.x);
-        }
-
         private void UpdateSwitching()
         {
-            bool passesSelected = false;
             int moveDirection;
 
             if (IsDragging)
@@ -964,109 +1020,14 @@ namespace VampirioCode.UI.Controls.TabManagement
                 #endregion
 
 
-                #region SwapTabs
-                //
-                // Swap tabs:
-                //           A tab is swapped when the left or right border of the
-                //           dragged tab passes the center of the next tab
-                //
-                foreach (Tab nonSelTab in nonSelectedTabs)
-                {
-                    // Mouse is moving to the left <--
-                    if (moveDirection < 0)
-                    {
-                        // Left border of the dragged tab passes the center of the next tab
-                        if (selectedTab.Left < nonSelTab.CenterX)
-                        {
-                            Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
-
-                            if (prevTab == null)
-                            {
-                                nonSelTab.SetPos(selectedTab.width, 0);
-                                passesSelected = true;
-                            }
-                            else if (!passesSelected)
-                            {
-                                nonSelTab.SetPos(prevTab.Right + selectedTab.width, 0);
-                                passesSelected = true;
-                            }
-                            else
-                                nonSelTab.SetPos(prevTab.Right, 0);
-                        }
-                    }
-                    // Mouse is moving to the right -->
-                    else if (moveDirection > 0)
-                    {
-                        // Right border of the dragged tab passes the center of the next tab
-                        if (selectedTab.Right > nonSelTab.CenterX)
-                        {
-                            Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
-
-                            // No previous tab. Start from the beginning
-                            if (prevTab == null)
-                                nonSelTab.SetPos(0, 0);
-                            else
-                                nonSelTab.SetPos(prevTab.x + prevTab.width, 0);
-                        }
-                    }
-                }
-                #endregion
+                SwapTabs(moveDirection);
 
 
                 RecalcIndices();
             }
         }
 
-        private void SwapTabs(int moveDirection)
-        {
-            bool passesSelected = false;
-
-            //
-            // Swap tabs:
-            //           A tab is swapped when the left or right border of the
-            //           dragged tab passes the center of the next tab
-            //
-            foreach (Tab nonSelTab in nonSelectedTabs)
-            {
-                // Mouse is moving to the left <--
-                if (moveDirection < 0)
-                {
-                    // Left border of the dragged tab passes the center of the next tab
-                    if (selectedTab.Left < nonSelTab.CenterX)
-                    {
-                        Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
-
-                        if (prevTab == null)
-                        {
-                            nonSelTab.SetPos(selectedTab.width, 0);
-                            passesSelected = true;
-                        }
-                        else if (!passesSelected)
-                        {
-                            nonSelTab.SetPos(prevTab.Right + selectedTab.width, 0);
-                            passesSelected = true;
-                        }
-                        else
-                            nonSelTab.SetPos(prevTab.Right, 0);
-                    }
-                }
-                // Mouse is moving to the right -->
-                else if (moveDirection > 0)
-                {
-                    // Right border of the dragged tab passes the center of the next tab
-                    if (selectedTab.Right > nonSelTab.CenterX)
-                    {
-                        Tab prevTab = GetPrevious(nonSelTab, nonSelectedTabs);
-
-                        // No previous tab. Start from the beginning
-                        if (prevTab == null)
-                            nonSelTab.SetPos(0, 0);
-                        else
-                            nonSelTab.SetPos(prevTab.x + prevTab.width, 0);
-                    }
-                }
-            }
-        }
+        
 
         //
         // Update method
