@@ -139,7 +139,7 @@ namespace VampirioCode.UI.VampGraphics
             if (borderSize > 0)
             {
                 g.FillRoundedRectangle(new SolidBrush(borderColor), rect.X, rect.Y, rect.Width - 1, rect.Height - 1, roundExt);
-                g.FillRoundedRectangle(new SolidBrush(backColor), new Rectangle(borderSize, borderSize, rect.Width - borderSize * 2 - 1, rect.Height - borderSize * 2 - 1), roundInt);
+                g.FillRoundedRectangle(new SolidBrush(backColor), rect.X + borderSize, rect.Y + borderSize, rect.Width - borderSize * 2 - 1, rect.Height - borderSize * 2 - 1, roundInt);
             }
             else
                 g.FillRoundedRectangle(new SolidBrush(backColor), rect.X, rect.Y, rect.Width - 1, rect.Height - 1, roundExt);
@@ -209,7 +209,7 @@ namespace VampirioCode.UI.VampGraphics
             g.MeasureString(str, font);
         }
 
-        protected static StringFormat GetFormat(ContentAlignment align)
+        public static StringFormat GetFormat(ContentAlignment align)
         {
             StringFormat format = new StringFormat();
             Int32 lNum =            (Int32)Math.Log((Double)align, 2);

@@ -10,60 +10,6 @@ using VampirioCode.UI.Controls.TabManagement;
 
 namespace VampirioCode.UI.Controls
 {
-    public class TabItemCollection : Collection<TabItem>
-    {
-        public delegate void ItemAddedEvent(int index, TabItem item);
-        public delegate void ItemRemovedEvent(int index, TabItem item);
-        public delegate void ItemModifiedEvent(TabItem oldItem, TabItem newItem);
-        public delegate void ItemsClearedEvent();
-        public event ItemAddedEvent ItemAdded;
-        public event ItemRemovedEvent ItemRemoved;
-        public event ItemModifiedEvent ItemModified;
-        public event ItemsClearedEvent ItemsCleared;
-
-        // Método para sobrescribir la operación de añadir un elemento a la colección
-        protected override void InsertItem(int index, TabItem item)
-        {
-            base.InsertItem(index, item);
-            
-            if(ItemAdded != null)
-                ItemAdded(index, item);
-        }
-
-        protected override void RemoveItem(int index)
-        {
-            TabItem item = this[index];
-            base.RemoveItem(index);
-
-            if (ItemRemoved != null)
-                ItemRemoved(index, item);
-        }
-
-        protected override void SetItem(int index, TabItem item)
-        {
-            base.SetItem(index, item);
-
-            TabItem oldItem = this[index];
-            base.SetItem(index, item);
-
-            if (ItemModified != null)
-                ItemModified(oldItem, item);
-        }
-
-        protected override void ClearItems()
-        {
-            base.ClearItems();
-
-            if (ItemsCleared != null)
-                ItemsCleared();
-        }
-
-    }
-
-    
-
-
-
 
     public class TabBar : Control
     {
@@ -82,21 +28,23 @@ namespace VampirioCode.UI.Controls
 
         public TabItemCollection Items { get { return items; } set { items = value; } }
         public int SelectedIndex { get { return controller.SelectedIndex; } set { controller.SelectedIndex = value; Invalidate(); } }
-        public TabItem SelectedTab { get { return controller.SelectedTab.item; } set { controller.SelectedTab = value.tab; Invalidate(); } }
+        public TabItem SelectedTab { get { return controller.SelectedTab.Item; } set { controller.SelectedTab = value.tab; Invalidate(); } }
 
         private TabItemCollection items = new TabItemCollection();
         private TabController controller;
+        private bool _itemEventsEnabled = true;
 
         public TabBar() 
         {
             controller = new TabController();
 
             // controller events
-            controller.SelectedTabChanged +=    OnSelectedIndexChanged;
+            controller.SelectedTabChanged +=    OnSelectedTabChanged;
             controller.TabAdded +=              OnTabAdded;
             controller.TabRemoved +=            OnTabRemoved;
             controller.StartDragTab +=          OnStartDragTab;
             controller.StopDragTab +=           OnStopDragTab;
+            controller.TabIndexChanged +=       OnTabIndexChanged;
         #if USE_AUTO_SHIFT_TIMERS
             controller.TimerRepaintNeeded +=    OnTimerRepaintNeeded;
         #endif
@@ -114,37 +62,32 @@ namespace VampirioCode.UI.Controls
 
         public void Add(TabItem item)
         {
-            controller.Add(item);
-            Invalidate();
+            Items.Add(item);
         }
 
         public void Insert(int index, TabItem item) 
         {
-            controller.Insert(index, item);
-            Invalidate();
+            Items.Insert(index, item);
         }
 
         public void RemoveAt(int index)
         { 
-            controller.RemoveAt(index);
-            Invalidate();
+            Items.RemoveAt(index);
         }
 
         public void Remove(TabItem tab)
-        { 
-            controller.Remove(tab);
-            Invalidate();
+        {
+            Items.Remove(tab);
         }
 
         public void RemoveAllTabs()
-        { 
-            controller.RemoveAllTabs();
-            Invalidate();
+        {
+            Items.Clear();
         }
 
         public TabItem GetTabAt(int index)
         { 
-            return controller.GetTabAt(index).item;
+            return controller.GetTabAt(index).Item;
         }
 
         public void BringTabToScreen(TabItem tab)
@@ -162,7 +105,7 @@ namespace VampirioCode.UI.Controls
 
 
         // Controller Events
-        private void OnSelectedIndexChanged(int index, TabItem item)
+        private void OnSelectedTabChanged(int index, TabItem item)
         {
             if(SelectedTabChanged != null)
                 SelectedTabChanged(index, item);
@@ -200,27 +143,46 @@ namespace VampirioCode.UI.Controls
         // Item Events
         private void OnItemAdded(int index, TabItem item)
         {
-            Insert(index, item);
+            if (!_itemEventsEnabled) return;
+
+            controller.Insert(index, item);
+            Invalidate();
         }
 
         private void OnItemRemoved(int index, TabItem item)
         {
-            RemoveAt(index);
+            if (!_itemEventsEnabled) return;
+
+            controller.RemoveAt(index);
+            Invalidate();
         }
 
         private void OnItemModified(TabItem oldItem, TabItem newItem)
         {
+            if (!_itemEventsEnabled) return;
+
             XConsole.Println("item modified: " + newItem.Text);
             Invalidate();
         }
 
         private void OnItemsCleared()
         {
-            XConsole.Println("items cleared");
-            RemoveAllTabs();
+            if (!_itemEventsEnabled) return;
+
+            controller.RemoveAllTabs();
             Invalidate();
         }
 
+        private void OnTabIndexChanged(int oldIndex, int newIndex)
+        {
+            _itemEventsEnabled = false;
+            
+            TabItem item = Items[oldIndex];
+            Items.RemoveAt(oldIndex);
+            Items.Insert(newIndex, item);
+
+            _itemEventsEnabled = true;
+        }
 
         protected override void OnMouseEnter(EventArgs e)
         { 
@@ -252,7 +214,7 @@ namespace VampirioCode.UI.Controls
             Invalidate();
 
             if ((e.Button == MouseButtons.Right) && (RightClickContext != null) && (controller.SelectedTab != null))
-                RightClickContext(controller.SelectedTab.item);
+                RightClickContext(controller.SelectedTab.Item);
         }
 
         protected override void OnMouseLeave(EventArgs e)

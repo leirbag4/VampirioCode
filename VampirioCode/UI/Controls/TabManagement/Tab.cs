@@ -1,4 +1,4 @@
-﻿#define TAB_CONTROLLER_DEBUG
+﻿//#define TAB_CONTROLLER_DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -19,45 +19,90 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public bool IsDragging { get { return dragging; } }
         public bool Selected { get; set; }
-        public int CenterX { get { return x + (width >> 1); } }
-        public int Left { get { return x; } }
-        public int Right { get { return x + width; } }
+        public int CenterX { get { return X + (Width >> 1); } }
+        public int Left { get { return X; } }
+        public int Right { get { return X + Width; } }
 
-        public TabItem item;
-        public int x, y, width, height;
+        public int Width 
+        { 
+            get 
+            {
+                int w;
+
+                if (controller.SizeMode == TabSizeMode.Fixed)
+                    w = _width;
+                else /*TabSizeMode.WrapToText*/
+                    w = textWidth + (Padding << 1);
+
+                if (w > controller.MaxTabWidth)
+                    return controller.MaxTabWidth;
+
+                return w; 
+            } 
+            set { _width = value; } 
+        }
+
+        public int Height { get; set; }
+        public int InnerWidth { get { return Width - (Padding << 1); } }
+        public int Padding { get; set; }
+        public TabItem Item { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public TabStyle SelectedStyle   { get; set; } = new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31), 2);
+        public TabStyle NormalStyle     { get; set; } = new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51), 2);
+        public TabStyle OverStyle       { get; set; } = new TabStyle(Color.FromArgb(76, 76, 76), Color.Silver, Color.FromArgb(57, 57, 57), 2);
+
+
+        private int _width;
         private State state = State.Up;
+        private string originalText = "";
+        private string text = "";
+        private int textWidth = -1;
+        private bool pendingAssignments = false;
         private Font font;
         private bool dragging;              // Tell if Tab is being dragged
         private int startDragX;             // Used to calculate on each movement how long the mouse moves
         public int dragOffsetPointX = 0;    // Register the offset position inside a selected tab that is going to be dragged
         private TabController controller;   // Main tabs controller and container
 
-        public Tab(TabItem item, Font font, TabController manager)
+        public Tab(TabItem item)
         {
-            item.tab = this;
-
-            this.x =            0;
-            this.y =            0;
-            this.width =        item.Width;
-            this.height =       25;
-            this.item =         item;
-            this.font =         font;
+            this.X =            0;
+            this.Y =            0;
+            this.Width =        100;
+            this.Height =       25;
+            this.Padding =      10;
+            this.Item =         item;
             this.dragging =     false;
             this.startDragX =   0;
             this.Selected =     false;
-            this.controller =   manager;
+            this.controller =   null;
+            this.font =         null;
+        }
+
+        public void Setup(TabController controller, Font font, int height)
+        {
+            this.controller =   controller;
+            this.font =         font;
+            this.Height =       height;
+
+            if (pendingAssignments)
+            {
+                if (this.textWidth < controller.MinTabWidth)
+                    textWidth = controller.MinTabWidth;
+            }
         }
 
         // set the local position of tab
         public void SetPos(int x, int y)
         {
-            this.x = x; this.y = y;
+            this.X = x; this.Y = y;
         }
 
         // shift the tab using its global position taking care of the dragging point also
         public void GlobalMoveX(int amount)
         {
-            this.x += amount;
+            this.X += amount;
             this.startDragX += amount;
         }
 
@@ -96,12 +141,57 @@ namespace VampirioCode.UI.Controls.TabManagement
                 return controller.tabs[index + 1];
         }
 
-        
+        public void SetText(string text)
+        {
+            this.originalText = text;
+            this.text =         "";
+            this.textWidth =    TextRenderer.MeasureText(originalText, font, new Size(1, Height)).Width;
+
+            // if this Tab was not added to a TabController yet, we must mark with this variable 
+            // that we are in a pending state and that we need to finish our code when a TabController is assigned
+            if (controller == null)
+            { 
+                pendingAssignments = true;
+            }
+            else
+            {
+                if (this.textWidth < controller.MinTabWidth)
+                    textWidth = controller.MinTabWidth;
+
+                controller.AdjustTabsFrom(Index());
+            }
+        }
+
+        public string GetText()
+        {
+            return originalText;
+        }
+
+        public void SetWidth(int width)
+        {
+            this.Width = width;
+        }
+
+        public int GetWidth()
+        {
+            return Width;
+        }
+
+        public void SetHeight(int height)
+        {
+            this.Height = height;
+        }
+
+        public int GetHeight()
+        {
+            return Height;
+        }
+
         public void OnMouseDown(int mx, int my)
         {
             if (IsInside(mx, my))
             {
-                dragOffsetPointX = mx - x;
+                dragOffsetPointX = mx - X;
 
                 startDragX = mx;
                 dragging = true;
@@ -122,7 +212,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 int offset = mx - startDragX;
                 startDragX = mx;
 
-                SetPos(x + offset, 0);
+                SetPos(X + offset, 0);
             }
             else if (IsInside(mx, my))
             {
@@ -153,7 +243,29 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         private bool IsInside(int mx, int my)
         {
-            return mx >= x && mx <= x + width && my >= y && my <= y + height;
+            return mx >= X && mx <= X + Width && my >= Y && my <= Y + Height;
+        }
+
+        // Short and reduce text to enter inside width adding '...' at the end
+        // e.g: converting [hello tab world] to
+        //                 [hello ...]
+        private string ReduceText(Graphics g, string str, int width)
+        {
+            //SizeF textSize = g.MeasureString(str, font);
+            SizeF textSize = g.MeasureString(str, font, PointF.Empty, VampirioGraphics.GetFormat(ContentAlignment.MiddleCenter));
+
+            if (textSize.Width > width)
+            {
+                while ((textSize.Width > width) && str.Length > 0)
+                {
+                    str = str.Substring(0, str.Length - 1);
+                    //textSize = g.MeasureString(str + "...", font);
+                    textSize = g.MeasureString(str + "...", font, PointF.Empty, VampirioGraphics.GetFormat(ContentAlignment.MiddleCenter));
+                }
+                str += "...";
+            }
+            XConsole.Println("reduce text: " + str);
+            return str;
         }
 
         public void Update()
@@ -164,34 +276,51 @@ namespace VampirioCode.UI.Controls.TabManagement
         public void Paint(Graphics g)
         {
             Color backColor = Color.White;
-            int _x_ = controller.OFFSET_X + x;
+            string txt = originalText;
+            int _x_ = controller.OFFSET_X + X;
+            TabStyle style = NormalStyle;
 
             //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            if (Selected)
-                backColor = Color.DimGray;
-            else
+            // Check if text is longer than Width
+            // In the case it is, reduce it and add '...' at the end
+            // e.g: converting [hello tab world] to
+            //                 [hello ...]
+            if (textWidth > InnerWidth)
             {
-                if (state == State.Up)
-                    backColor = Color.LightGray;
-                else if (state == State.Over)
-                    backColor = Color.DarkGray;
+                //XConsole.Println($"textWidth: {textWidth}  Width: {Width} InnerWidth: {InnerWidth}");
+
+                if(text == "")
+                    text = ReduceText(g, originalText, InnerWidth); 
+
+                txt = text;
             }
 
-            VampirioGraphics.FillRect(g, backColor, Color.Gray, 2, _x_, y, width, height);
 
-            SizeF fontBounds = g.MeasureString(item.Text, font, width);
+                 if (Selected)              style = SelectedStyle;
+            else if (state == State.Over)   style = OverStyle;
+            //else if (state == State.Up)     style = NormalStyle;
+            
 
-            VampirioGraphics.FillRect(g, Color.Silver, _x_ + (width >> 1) - ((int)fontBounds.Width >> 1), y + (height >> 1) - ((int)fontBounds.Height >> 1), (int)fontBounds.Width, (int)fontBounds.Height);
-
-            VampirioGraphics.DrawString(g, font, item.Text, Color.Black, _x_, y, width, height, ContentAlignment.MiddleCenter);
-
+            VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, style.BorderSize, _x_, Y, Width, Height);
+            //VampirioGraphics.FillRoundRect(g, style.BackColor, style.BorderColor, 2, _x_, Y, Width, Height);
 
 #if TAB_CONTROLLER_DEBUG
-            VampirioGraphics.FillRect(g, Color.Black, _x_ + (width >> 1) - 1, y, 3, 4);
+            //SizeF fontBounds = g.MeasureString(txt, font, InnerWidth);
+            SizeF fontBounds = g.MeasureString(txt, font, PointF.Empty, VampirioGraphics.GetFormat(ContentAlignment.MiddleCenter));
+            VampirioGraphics.FillRect(g, Color.Gray, _x_ + (Width >> 1) - ((int)fontBounds.Width >> 1), Y + (Height >> 1) - ((int)fontBounds.Height >> 1), (int)fontBounds.Width, (int)fontBounds.Height);
+#endif
+
+
+
+            //VampirioGraphics.DrawString(g, font, txt, Color.Black, _x_ + Padding, Y, InnerWidth, Height, ContentAlignment.MiddleCenter);
+            VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
+
+#if TAB_CONTROLLER_DEBUG
+            VampirioGraphics.FillRect(g, Color.Black, _x_ + (Width >> 1) - 1, Y, 3, 4);
 
             if(Selected)
-                VampirioGraphics.FillRect(g, Color.Red, _x_ + dragOffsetPointX - 1, y + height - 3, 3, 3);
+                VampirioGraphics.FillRect(g, Color.Red, _x_ + dragOffsetPointX - 1, Y + Height - 3, 3, 3);
 #endif
         }
 

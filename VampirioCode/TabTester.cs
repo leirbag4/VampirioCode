@@ -94,7 +94,7 @@ namespace VampirioCode
         private void AddItem()
         {
             TabItem item = new TabItem("item " + counter++);
-            item.Width = 130;
+            //item.Width = 30;
 
             if (counter == 1) item.Width = 80;
             if (counter == 2) item.Width = 60;
@@ -102,6 +102,12 @@ namespace VampirioCode
             if (counter == 4) item.Width = 120;
             if (counter == 5) item.Width = 60;
 
+            string[] names = new string[] { "main.cpp", "Program.cs", "Unitled document", "cfg.dat", "data.cfg", "Game Engine", "Bitcoin", "001", "no name", "cmd.run", "Linux VM 01" };
+
+            int i = counter - 1;
+
+            if (i < (names.Length))
+                item.Text = names[i];
 
             tabBar.Items.Add(item);
         }
@@ -204,10 +210,8 @@ namespace VampirioCode
 
         private void OnRemoveSelected(object sender, EventArgs e)
         {
-            int index = tabBar.SelectedIndex;
-            tabBar.SelectedIndex = 3;
-
-            XConsole.Println("i: " + index);
+            tabBar.Remove(tabBar.SelectedTab);
+            //tabBar.RemoveAt(tabBar.SelectedTab.Index);
         }
 
         private void OnSaveSelectedPressed(object sender, EventArgs e)
