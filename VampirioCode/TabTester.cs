@@ -253,5 +253,10 @@ namespace VampirioCode
             tabBar.SelectedTab.NormalStyle = new TabStyle(Color.Red, Color.Green, Color.Blue);
             Invalidate();
         }
+
+        private void OnBringToScreenSaved(object sender, EventArgs e)
+        {
+            tabBar.BringTabToScreen(saveSelected);
+        }
     }
 }

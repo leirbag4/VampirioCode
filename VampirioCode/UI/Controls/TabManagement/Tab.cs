@@ -228,7 +228,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         private bool IsInside(int mx, int my)
         {
-            return mx >= X && mx <= X + Width && my >= Y && my <= Y + Height;
+            return (mx >= X) && (mx < (X + Width)) && (my >= Y) && (my <= (Y + Height));
         }
 
         // Short and reduce text to enter inside width adding '...' at the end
@@ -258,7 +258,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         }
 
-        public void Paint(Graphics g)
+        public void Paint(Graphics g, bool isFirst, bool isLast)
         {
             Color backColor = Color.White;
             string txt = originalText;
@@ -307,18 +307,27 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (controller.ShapeMode == TabShapeMode.Box)
             {
+                int _border = borderSize;
+
+                if(isLast)
+                    _border = 0;
+
                 if (Selected)
-                    VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width, Height);
+                    VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_ - 0, Y, Width + _border, Height);
                 else
-                    VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_ - borderSize, Y, Width + (borderSize << 1), Height);
+                    VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_ - 0, Y, Width + _border, Height);
+
+                VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1) + (_border >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
             }
             else if (controller.ShapeMode == TabShapeMode.BoxExtraBorders)
             {
                 VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width, Height);
+                VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
             }
             else if (controller.ShapeMode == TabShapeMode.RoundBox)
             {
                 VampirioGraphics.FillRoundRect(g, style.BackColor, style.BorderColor, 2, _x_, Y, Width, Height);
+                VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
             }
 
 #if TAB_CONTROLLER_DEBUG
@@ -330,7 +339,6 @@ namespace VampirioCode.UI.Controls.TabManagement
 
 
             //VampirioGraphics.DrawString(g, font, txt, Color.Black, _x_ + Padding, Y, InnerWidth, Height, ContentAlignment.MiddleCenter);
-            VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
 
 #if TAB_CONTROLLER_DEBUG
             VampirioGraphics.FillRect(g, Color.Black, _x_ + (Width >> 1) - 1, Y, 3, 4);

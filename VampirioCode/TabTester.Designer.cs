@@ -73,6 +73,7 @@
             button36 = new Button();
             button37 = new Button();
             button38 = new Button();
+            button39 = new Button();
             tabControlWin.SuspendLayout();
             SuspendLayout();
             // 
@@ -493,7 +494,7 @@
             button32.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button32.Location = new Point(584, 12);
             button32.Name = "button32";
-            button32.Size = new Size(122, 29);
+            button32.Size = new Size(138, 29);
             button32.TabIndex = 35;
             button32.Text = "save selected";
             button32.UseVisualStyleBackColor = true;
@@ -504,7 +505,7 @@
             button33.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button33.Location = new Point(584, 47);
             button33.Name = "button33";
-            button33.Size = new Size(122, 29);
+            button33.Size = new Size(138, 29);
             button33.TabIndex = 36;
             button33.Text = "restore selected";
             button33.UseVisualStyleBackColor = true;
@@ -515,7 +516,7 @@
             button34.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button34.Location = new Point(583, 108);
             button34.Name = "button34";
-            button34.Size = new Size(122, 29);
+            button34.Size = new Size(138, 29);
             button34.TabIndex = 37;
             button34.Text = "bring to screen";
             button34.UseVisualStyleBackColor = true;
@@ -526,7 +527,7 @@
             button35.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button35.Location = new Point(584, 318);
             button35.Name = "button35";
-            button35.Size = new Size(122, 29);
+            button35.Size = new Size(138, 29);
             button35.TabIndex = 38;
             button35.Text = "clear";
             button35.UseVisualStyleBackColor = true;
@@ -536,7 +537,7 @@
             // 
             tabNameInput.Location = new Point(583, 194);
             tabNameInput.Name = "tabNameInput";
-            tabNameInput.Size = new Size(125, 27);
+            tabNameInput.Size = new Size(141, 27);
             tabNameInput.TabIndex = 39;
             // 
             // button36
@@ -544,7 +545,7 @@
             button36.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button36.Location = new Point(583, 227);
             button36.Name = "button36";
-            button36.Size = new Size(125, 29);
+            button36.Size = new Size(141, 29);
             button36.TabIndex = 40;
             button36.Text = "set text";
             button36.UseVisualStyleBackColor = true;
@@ -572,12 +573,24 @@
             button38.UseVisualStyleBackColor = true;
             button38.Click += OnSet1TabStylePressed;
             // 
+            // button39
+            // 
+            button39.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button39.Location = new Point(583, 143);
+            button39.Name = "button39";
+            button39.Size = new Size(138, 29);
+            button39.TabIndex = 43;
+            button39.Text = "bng to scr saved";
+            button39.UseVisualStyleBackColor = true;
+            button39.Click += OnBringToScreenSaved;
+            // 
             // TabTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(1157, 620);
+            Controls.Add(button39);
             Controls.Add(button38);
             Controls.Add(button37);
             Controls.Add(button36);
@@ -675,5 +688,6 @@
         private Button button36;
         private Button button37;
         private Button button38;
+        private Button button39;
     }
 }

@@ -247,6 +247,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             else if (LocalToGlobal(tab.Right) > width)
             {
                 OFFSET_X -= LocalToGlobal(tab.Right) - width;
+
+                // [Only applies to 'TabShapeMode.Box'] Fixed condition specifically for the last tab that draws
+                // its last vertical border inside its own bounding box instead of the next tab's bounding box
+                if ((ShapeMode == TabShapeMode.Box) && (tab != LastTab))
+                    OFFSET_X -= TabBorderSize;
             }
         }
 
@@ -1358,26 +1363,42 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             VampirioGraphics.FillRect(g, Color.FromArgb(90, 90, 90), 0, 0, width, height);
 
+            Tab tab;
+            bool first, last, middleFirst, middleLast, topFirst, topLast;
             Tab drawAtMiddleTab = null;
             Tab drawAtTopTab = null;
 
-            foreach (Tab tab in tabs)
+            middleFirst = middleLast = topFirst = topLast = false;
+
+            //foreach (Tab tab in tabs)
+            for (int a = 0; a < tabs.Count; a++)
             {
+                tab = tabs[a];
+                first = a == 0; last =  a == (tabs.Count - 1);
+
                 if (tab.Selected)
+                {
+                    topFirst =  first;  topLast = last;
                     drawAtTopTab = tab;
+                }
                 else if (tab.IsNonSelButOver)
+                {
+                    middleFirst =   first;  middleLast = last;
                     drawAtMiddleTab = tab;
+                }
                 else if (IsInsideScreen(tab))
-                    tab.Paint(g);
+                {
+                    tab.Paint(g, first, last);
+                }
             }
 
             // leave this tabs to draw at the end to bring 
             // them in front of the others
-            if (drawAtMiddleTab != null)
-                drawAtMiddleTab.Paint(g);
+            if (drawAtMiddleTab != null && IsInsideScreen(drawAtMiddleTab))
+                drawAtMiddleTab.Paint(g, middleFirst, middleLast);
 
             if (drawAtTopTab != null && IsInsideScreen(drawAtTopTab))
-                drawAtTopTab.Paint(g);
+                drawAtTopTab.Paint(g, topFirst, topLast);
 
             // Debug painting
 #if TAB_CONTROLLER_DEBUG
