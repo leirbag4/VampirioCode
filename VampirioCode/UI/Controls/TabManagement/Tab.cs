@@ -23,26 +23,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public int CenterX { get { return X + (Width >> 1); } }
         public int Left { get { return X; } }
         public int Right { get { return X + Width; } }
-
-        public int Width 
-        { 
-            get 
-            {
-                int w;
-
-                if (controller.SizeMode == TabSizeMode.Fixed)
-                    w = _width;
-                else /*TabSizeMode.WrapToText*/
-                    w = textWidth + (Padding << 1);
-
-                if (w > controller.MaxTabWidth)
-                    return controller.MaxTabWidth;
-
-                return w; 
-            } 
-            set { _width = value; } 
-        }
-
+        public int Width { get { int w; if (controller.SizeMode == TabSizeMode.Fixed) w = _width; else /*TabSizeMode.WrapToText*/ w = textWidth + (Padding << 1); if (w > controller.MaxTabWidth) return controller.MaxTabWidth; return w; } set { _width = value; } }
         public int Height { get; set; }
         public int InnerWidth { get { return Width - (Padding << 1); } }
         public int Padding { get; set; }
