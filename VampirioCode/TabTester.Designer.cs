@@ -71,6 +71,8 @@
             button35 = new Button();
             tabNameInput = new TextBox();
             button36 = new Button();
+            button37 = new Button();
+            button38 = new Button();
             tabControlWin.SuspendLayout();
             SuspendLayout();
             // 
@@ -548,12 +550,36 @@
             button36.UseVisualStyleBackColor = true;
             button36.Click += OnSetTabTextPressed;
             // 
+            // button37
+            // 
+            button37.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button37.Location = new Point(757, 12);
+            button37.Name = "button37";
+            button37.Size = new Size(122, 29);
+            button37.TabIndex = 41;
+            button37.Text = "set all styles";
+            button37.UseVisualStyleBackColor = true;
+            button37.Click += OnSetAllStylesPressed;
+            // 
+            // button38
+            // 
+            button38.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button38.Location = new Point(757, 47);
+            button38.Name = "button38";
+            button38.Size = new Size(122, 29);
+            button38.TabIndex = 42;
+            button38.Text = "set 1 tab style";
+            button38.UseVisualStyleBackColor = true;
+            button38.Click += OnSet1TabStylePressed;
+            // 
             // TabTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(1157, 620);
+            Controls.Add(button38);
+            Controls.Add(button37);
             Controls.Add(button36);
             Controls.Add(tabNameInput);
             Controls.Add(button35);
@@ -647,5 +673,7 @@
         private Button button35;
         private TextBox tabNameInput;
         private Button button36;
+        private Button button37;
+        private Button button38;
     }
 }

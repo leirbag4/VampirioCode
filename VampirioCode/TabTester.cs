@@ -241,5 +241,17 @@ namespace VampirioCode
             tabBar.SelectedTab.Text = tabNameInput.Text;
             tabBar.Invalidate();
         }
+
+        private void OnSetAllStylesPressed(object sender, EventArgs e)
+        {
+            tabBar.NormalStyle.TextColor = Color.Red;
+            Invalidate();
+        }
+
+        private void OnSet1TabStylePressed(object sender, EventArgs e)
+        {
+            tabBar.SelectedTab.NormalStyle = new TabStyle(Color.Red, Color.Green, Color.Blue);
+            Invalidate();
+        }
     }
 }

@@ -29,6 +29,10 @@ namespace VampirioCode.UI.Controls
         public TabItemCollection Items { get { return items; } set { items = value; } }
         public int SelectedIndex { get { return controller.SelectedIndex; } set { controller.SelectedIndex = value; Invalidate(); } }
         public TabItem SelectedTab { get { return controller.SelectedTab.Item; } set { controller.SelectedTab = value.tab; Invalidate(); } }
+        public TabStyle SelectedStyle { get { return controller.SelectedStyle; } }
+        public TabStyle NormalStyle { get { return controller.NormalStyle; } }
+        public TabStyle OverStyle { get { return controller.OverStyle; } }
+
 
         private TabItemCollection items = new TabItemCollection();
         private TabController controller;

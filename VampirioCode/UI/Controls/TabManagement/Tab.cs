@@ -17,6 +17,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             Up
         }
 
+        public bool IsNonSelButOver { get { return (!Selected) && (state == State.Over); } }
         public bool IsDragging { get { return dragging; } }
         public bool Selected { get; set; }
         public int CenterX { get { return X + (Width >> 1); } }
@@ -48,10 +49,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabItem Item { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
-        public TabStyle SelectedStyle   { get; set; } = new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31), 2);
-        public TabStyle NormalStyle     { get; set; } = new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51), 2);
-        public TabStyle OverStyle       { get; set; } = new TabStyle(Color.FromArgb(76, 76, 76), Color.Silver, Color.FromArgb(57, 57, 57), 2);
-
+        
 
         private int _width;
         private State state = State.Up;
@@ -64,6 +62,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         private int startDragX;             // Used to calculate on each movement how long the mouse moves
         public int dragOffsetPointX = 0;    // Register the offset position inside a selected tab that is going to be dragged
         private TabController controller;   // Main tabs controller and container
+
 
         public Tab(TabItem item)
         {
@@ -278,7 +277,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             Color backColor = Color.White;
             string txt = originalText;
             int _x_ = controller.OFFSET_X + X;
-            TabStyle style = NormalStyle;
+            TabStyle style = null;
+            int borderSize = controller.TabBorderSize;
 
             //g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
@@ -296,14 +296,44 @@ namespace VampirioCode.UI.Controls.TabManagement
                 txt = text;
             }
 
+            if (Selected)
+            {
+                if (Item.SelectedStyle != null)
+                    style = Item.SelectedStyle;
+                else
+                    style = controller.SelectedStyle;
+            }
+            else if (state == State.Up)
+            {
+                if (Item.NormalStyle != null)
+                    style = Item.NormalStyle;
+                else
+                    style = controller.NormalStyle;
+            }
+            else if (state == State.Over)
+            {
+                if (Item.OverStyle != null)
+                    style = Item.OverStyle;
+                else
+                    style = controller.OverStyle;
+            }
 
-                 if (Selected)              style = SelectedStyle;
-            else if (state == State.Over)   style = OverStyle;
-            //else if (state == State.Up)     style = NormalStyle;
-            
 
-            VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, style.BorderSize, _x_, Y, Width, Height);
-            //VampirioGraphics.FillRoundRect(g, style.BackColor, style.BorderColor, 2, _x_, Y, Width, Height);
+            if (controller.ShapeMode == TabShapeMode.Box)
+            {
+                if (Selected)
+                    VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width, Height);
+                else
+                    VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_ - borderSize, Y, Width + (borderSize << 1), Height);
+            }
+            else if (controller.ShapeMode == TabShapeMode.BoxExtraBorders)
+            {
+                VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width, Height);
+            }
+            else if (controller.ShapeMode == TabShapeMode.RoundBox)
+            {
+                VampirioGraphics.FillRoundRect(g, style.BackColor, style.BorderColor, 2, _x_, Y, Width, Height);
+            }
 
 #if TAB_CONTROLLER_DEBUG
             //SizeF fontBounds = g.MeasureString(txt, font, InnerWidth);

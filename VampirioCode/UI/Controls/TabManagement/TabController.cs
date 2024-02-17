@@ -37,6 +37,11 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event StopDragTabEvent StopDragTab;
         public event TabIndexChangedEvent TabIndexChanged;
 
+        public int TabBorderSize { get; set; } = 2;
+        public TabStyle SelectedStyle { get; } = new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31));
+        public TabStyle NormalStyle { get; } = new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51));
+        public TabStyle OverStyle { get; } = new TabStyle(Color.FromArgb(76, 76, 76), Color.Silver, Color.FromArgb(57, 57, 57));
+        public TabShapeMode ShapeMode { get; set; } = TabShapeMode.Box;
         public TabSizeMode SizeMode { get; set; } = TabSizeMode.WrapToText;
         public int MinTabWidth { get { int minLimit = TabVisibleLimit << 1; if (minTabWidth < minLimit) return minLimit; else return minTabWidth; } set { minTabWidth = value; } }             // MinTabWidth must be always at least 2 times the visible part of the tab when it is outside screen. Otherwise you could't do an auto shift
         public int MaxTabWidth { get; set; } = 160;                                 // Maximum tabs width
@@ -133,6 +138,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             //Tab tab = new Tab(item, font, this);
             Tab tab = item.tab;
             tab.Setup(this, font, TabHeight);
+            item.Setup(this);
             //tab.Width = TabWidth;
             //item.tab.height = TabHeight;
             int totals = TotalTabs;
@@ -1294,18 +1300,24 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             VampirioGraphics.FillRect(g, Color.FromArgb(90, 90, 90), 0, 0, width, height);
 
+            Tab drawAtMiddleTab = null;
             Tab drawAtTopTab = null;
 
             foreach (Tab tab in tabs)
             {
                 if (tab.Selected)
                     drawAtTopTab = tab;
+                else if (tab.IsNonSelButOver)
+                    drawAtMiddleTab = tab;
                 else if (IsInsideScreen(tab))
                     tab.Paint(g);
             }
 
-            // leave this to draw at the end to bring 
-            // it in front of the others
+            // leave this tabs to draw at the end to bring 
+            // them in front of the others
+            if (drawAtMiddleTab != null)
+                drawAtMiddleTab.Paint(g);
+
             if (drawAtTopTab != null && IsInsideScreen(drawAtTopTab))
                 drawAtTopTab.Paint(g);
 

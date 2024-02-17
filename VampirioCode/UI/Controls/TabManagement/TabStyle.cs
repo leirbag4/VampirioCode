@@ -8,17 +8,15 @@ namespace VampirioCode.UI.Controls.TabManagement
 {
     public class TabStyle
     {
-        public TabStyle(Color backColor,  Color textColor, Color borderColor, int borderSize)
+        public TabStyle(Color backColor,  Color textColor, Color borderColor)
         { 
             this.BackColor =    backColor;
             this.TextColor =    textColor;
             this.BorderColor =  borderColor;
-            this.BorderSize =   borderSize;
         }
 
         public Color BackColor;
         public Color TextColor;
         public Color BorderColor;
-        public int BorderSize;
     }
 }
