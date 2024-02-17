@@ -21,7 +21,6 @@ using VampirioCode.UI.VampGraphics;
 namespace VampirioCode.UI.Controls.TabManagement
 {
 
-
     public class TabController
     {
         public delegate void SelectedTabChangedEvent(int index, TabItem item);
@@ -37,6 +36,9 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event StopDragTabEvent StopDragTab;
         public event TabIndexChangedEvent TabIndexChanged;
 
+        public TabSize SelectedTabSize { get; set; }
+        public TabSize NormalTabSize { get; set; }
+        public TabSize DraggedTabSize { get; set; }
         public int TabBorderSize { get; set; } = 2;
         public TabStyle SelectedStyle { get; } = new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31));
         public TabStyle NormalStyle { get; } = new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51));
@@ -45,9 +47,6 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabSizeMode SizeMode { get; set; } = TabSizeMode.WrapToText;
         public int MinTabWidth { get { int minLimit = TabVisibleLimit << 1; if (minTabWidth < minLimit) return minLimit; else return minTabWidth; } set { minTabWidth = value; } }             // MinTabWidth must be always at least 2 times the visible part of the tab when it is outside screen. Otherwise you could't do an auto shift
         public int MaxTabWidth { get; set; } = 160;                                 // Maximum tabs width
-        public int TabHeight { get; set; } = 25;
-        public int TabPosY { get; set; } = 0;                                       // default y position of the tabs
-        public int DraggedTabPosY { get; set; } = 4;                                // y position for a tab that is being dragged
         public int TotalTabs { get { return tabs.Count; } }                         // Total amount of tabs
         public bool IsDragging { get; set; } = false;                               // SelectedTab is being dragged
         public bool IsAnySelected { get { return selectedTab != null; } }           // There is a selected tab
@@ -116,6 +115,11 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
 
+            NormalTabSize =     new TabSize(2, 0);
+            DraggedTabSize =    new TabSize(8, 12);
+            SelectedTabSize =   new TabSize(0, 5);
+
+
 #if USE_AUTO_SHIFT_TIMERS
             timer = new System.Windows.Forms.Timer();
             timer.Tick += OnTimerTick;
@@ -137,7 +141,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             //Tab tab = new Tab(item, font, this);
             Tab tab = item.tab;
-            tab.Setup(this, font, TabHeight);
+            //tab.Setup(this, font, TabHeight);
+            tab.Setup(this, font, height - NormalTabSize.posY - NormalTabSize.subHeight);
             item.Setup(this);
             //tab.Width = TabWidth;
             //item.tab.height = TabHeight;
@@ -311,8 +316,18 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
 
             // Set new size
-            this.width = width;
-            this.height = height;
+            this.width =    width;
+            this.height =   height;
+
+
+            // Recalculate tabs height
+            foreach (Tab tab in tabs)
+            {
+                if (tab.Selected)
+                    SetTabHSize(tab, SelectedTabSize);
+                else // normal tab
+                    SetTabHSize(tab, NormalTabSize);
+            }
         }
 
         // Triggered by the parent container when the mouse is down
@@ -371,6 +386,9 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Triggered by the parent container when the mouse scrolls
         public void MouseScroll(int x, int y, int direction)
         {
+            if (IsAnySelected && selectedTab.IsDragging)
+                return;
+
             mouseX = x - OFFSET_X;
             mouseY = y;
 
@@ -407,9 +425,13 @@ namespace VampirioCode.UI.Controls.TabManagement
         // --------------------------------------------------------
         private void OnDraggingAnim(Tab tab)
         {
-            selectedTab.Y = DraggedTabPosY;
+            SetTabHSize(tab, DraggedTabSize);
         }
 
+        private void OnDraggingAnimEnds(Tab tab)
+        {
+            SetTabHSize(tab, SelectedTabSize);   
+        }
 
         public void StartDragging(Tab selTab)
         {
@@ -444,6 +466,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 #if USE_AUTO_SHIFT_TIMERS
             StopAutoShift();
 #endif
+
+            OnDraggingAnimEnds(selectedTab);
+
             // Events
             PopSelTabIndexChangedEvent();
 
@@ -459,13 +484,20 @@ namespace VampirioCode.UI.Controls.TabManagement
         // Only use it when you know that other tabs aren't selected
         private void SimpleSelect(Tab selTab)
         {
-            if (selectedTab != null)
+            // Reset previous selected tab size layout because
+            // it will be converted to a normal one
+            if (IsAnySelected)
+                SetTabHSize(selectedTab, NormalTabSize);
+
+            SetTabHSize(selTab, SelectedTabSize);
+
+            if (IsAnySelected)
                 selectedTab.Unselect();
 
             nonSelectedTabs = new List<Tab>();
             selectedTab = selTab;
 
-            if (selectedTab != null)
+            if (IsAnySelected)
                 selectedTab.Select();
         }
 
@@ -474,6 +506,14 @@ namespace VampirioCode.UI.Controls.TabManagement
         // for the same reason
         private void Select(Tab selTab)
         {
+            // Reset previous selected tab size layout because
+            // it will be converted to a normal one
+            if (IsAnySelected)
+                SetTabHSize(selectedTab, NormalTabSize);
+
+            SetTabHSize(selTab, SelectedTabSize);
+
+            // Pull apart non selected tabs from the selected one
             nonSelectedTabs = new List<Tab>();
 
             foreach (Tab tab in tabs)
@@ -490,6 +530,12 @@ namespace VampirioCode.UI.Controls.TabManagement
             //selTabPreviousX = LocalToGlobal(SelectedTab.x);
 
             selectedTab.Select();
+        }
+
+        private void SetTabHSize(Tab tab, TabSize size)
+        {
+            tab.Y =         size.posY;
+            tab.Height =    height - size.posY - size.subHeight;
         }
 
         // Get previous tab. The currTab must be contained inside tabList
@@ -549,16 +595,16 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                         if (prevTab == null)
                         {
-                            nonSelTab.SetPos(selectedTab.Width, TabPosY);
+                            nonSelTab.SetPos(selectedTab.Width, NormalTabSize.posY);
                             passesSelected = true;
                         }
                         else if (!passesSelected)
                         {
-                            nonSelTab.SetPos(prevTab.Right + selectedTab.Width, TabPosY);
+                            nonSelTab.SetPos(prevTab.Right + selectedTab.Width, NormalTabSize.posY);
                             passesSelected = true;
                         }
                         else
-                            nonSelTab.SetPos(prevTab.Right, TabPosY);
+                            nonSelTab.SetPos(prevTab.Right, NormalTabSize.posY);
                     }
                 }
                 // Mouse is moving to the right -->
@@ -571,9 +617,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                         // No previous tab. Start from the beginning
                         if (prevTab == null)
-                            nonSelTab.SetPos(0, TabPosY);
+                            nonSelTab.SetPos(0, NormalTabSize.posY);
                         else
-                            nonSelTab.SetPos(prevTab.X + prevTab.Width, TabPosY);
+                            nonSelTab.SetPos(prevTab.X + prevTab.Width, NormalTabSize.posY);
                     }
                 }
             }
@@ -618,29 +664,41 @@ namespace VampirioCode.UI.Controls.TabManagement
         //
         private void ResetPositions()
         {
+            int _y = 0;
+
             // Recalculate x positions
             for (int a = 0; a < tabs.Count; a++)
             {
                 Tab tab = tabs[a];
 
+                     if (tab.IsDragging)    _y = DraggedTabSize.posY;
+                else if (tab.Selected)      _y = SelectedTabSize.posY;
+                else                        _y = NormalTabSize.posY;
+
                 if (a == 0)
-                    tab.SetPos(0, TabPosY);
+                    tab.SetPos(0, _y);
                 else
-                    tab.SetPos(tabs[a - 1].Right, TabPosY);
+                    tab.SetPos(tabs[a - 1].Right, _y);
             }
         }
 
         private void ResetPositionsFrom(int index)
         {
+            int _y = 0;
+
             // Recalculate x positions
             for (int a = index; a < tabs.Count; a++)
             {
                 Tab tab = tabs[a];
 
+                     if (tab.IsDragging)    _y = DraggedTabSize.posY;
+                else if (tab.Selected)      _y = SelectedTabSize.posY;
+                else                        _y = NormalTabSize.posY;
+
                 if (a == 0)
-                    tab.SetPos(0, TabPosY);
+                    tab.SetPos(0, _y);
                 else
-                    tab.SetPos(tabs[a - 1].Right, TabPosY);
+                    tab.SetPos(tabs[a - 1].Right, _y);
             }
         }
 

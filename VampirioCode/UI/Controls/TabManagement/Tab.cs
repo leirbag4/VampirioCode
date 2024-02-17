@@ -79,6 +79,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             this.X = x; this.Y = y;
         }
 
+        public void SetX(int x)
+        {
+            this.X = x;
+        }
+
         // shift the tab using its global position taking care of the dragging point also
         public void GlobalMoveX(int amount)
         {
@@ -192,7 +197,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 int offset = mx - startDragX;
                 startDragX = mx;
 
-                SetPos(X + offset, 0);
+                SetX(X + offset);
             }
             else if (IsInside(mx, my))
             {

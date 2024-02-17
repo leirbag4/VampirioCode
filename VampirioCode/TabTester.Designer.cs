@@ -129,7 +129,7 @@
             // 
             // tabBar
             // 
-            tabBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tabBar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabBar.BackColor = Color.FromArgb(60, 60, 60);
             tabBar.Location = new Point(25, 12);
             tabBar.Name = "tabBar";
