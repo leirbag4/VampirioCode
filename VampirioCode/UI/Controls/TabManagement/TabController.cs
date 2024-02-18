@@ -42,9 +42,10 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabSize NormalTabSize { get; set; }
         public TabSize DraggedTabSize { get; set; }
         public int TabBorderSize { get; set; } = 2;
-        public TabStyle SelectedStyle { get; } = new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31));
-        public TabStyle NormalStyle { get; } = new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51));
-        public TabStyle OverStyle { get; } = new TabStyle(Color.FromArgb(76, 76, 76), Color.Silver, Color.FromArgb(57, 57, 57));
+        public TabStyle SelectedStyle { get; }
+        public TabStyle NormalStyle { get; }
+        public TabStyle OverStyle { get; }
+        public Color BackColor { get; set; }
         public TabShapeMode ShapeMode { get; set; } = TabShapeMode.Box;
         public TabSizeMode SizeMode { get; set; } = TabSizeMode.WrapToText;
         public int MinTabWidth { get { int minLimit = TabVisibleLimit << 1; if (minTabWidth < minLimit) return minLimit; else return minTabWidth; } set { minTabWidth = value; } }             // MinTabWidth must be always at least 2 times the visible part of the tab when it is outside screen. Otherwise you could't do an auto shift
@@ -59,6 +60,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public Tab SelectedTab { get { return selectedTab; } set { PushSelTabForEvent(); SimpleSelect(value); PopSelTabChangedEvent(); } }
         public bool AllowDragging { get; set; } = true;
         public bool AllowDetach { get; set; } = false;
+        public int MinDetachThreshold { get; set; } = 20; // Amount of minimum pixels the user have to move on in order to activate the detach event
         private Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
 
         #region AutoShiftProperties
@@ -123,6 +125,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabController()
         {
             font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
+
+            BackColor =         Color.FromArgb(60, 60, 60);
 
             SelectedTabSize =   new TabSize(0, 0);
             NormalTabSize =     new TabSize(2, 0);
@@ -511,14 +515,14 @@ namespace VampirioCode.UI.Controls.TabManagement
             detachSumX = mouseX - detachStartX;
             detachSumY = mouseY - detachStartY;
 
-            if (Math.Abs(detachSumX) > 20)
+            if (Math.Abs(detachSumX) > MinDetachThreshold)
             {
                 detachStartX = mouseX;
                 detachStartY = mouseY;
                 detachSumY = 0;
             }
 
-            if (Math.Abs(detachSumY) > 20)
+            if (Math.Abs(detachSumY) > MinDetachThreshold)
             {
                 detachStartY = mouseY;
                 detachTriggered = true;
@@ -1414,7 +1418,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         //
         public void Paint(Graphics g)
         {
-            VampirioGraphics.FillRect(g, Color.FromArgb(90, 90, 90), 0, 0, width, height);
+            VampirioGraphics.FillRect(g, BackColor, 0, 0, width, height);
 
             Tab tab;
             bool first, last, middleFirst, middleLast, topFirst, topLast;
