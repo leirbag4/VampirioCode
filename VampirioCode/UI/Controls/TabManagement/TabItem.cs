@@ -8,6 +8,10 @@ namespace VampirioCode.UI.Controls.TabManagement
 {
     public class TabItem
     {
+
+        //public TabContent Content { get; set; }
+        public Control Content { get; set; }
+
         public TabStyle SelectedStyle { get; set; } = null;
         public TabStyle NormalStyle { get; set; } = null;
         public TabStyle OverStyle { get; set; } = null;
@@ -30,8 +34,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public TabItem(string name)
         {
-            tab = new Tab(this);
-            Text = name;
+            tab =       new Tab(this);
+            Text =      name;
+            Content =   new TabContent();
         }
 
 

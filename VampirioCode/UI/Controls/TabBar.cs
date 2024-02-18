@@ -14,6 +14,7 @@ namespace VampirioCode.UI.Controls
     public class TabBar : Control
     {
         public delegate void SelectedTabChangedEvent(int index, TabItem item);
+        public delegate void UnselectedTabChangedEvent(int index, TabItem item);
         public delegate void TabAddedEvent(int index, TabItem item);
         public delegate void TabRemovedEvent(int index, TabItem item);
         public delegate void StartDragTabEvent(int index, TabItem item);
@@ -21,6 +22,7 @@ namespace VampirioCode.UI.Controls
         public delegate void RightClickContextEvent(TabItem item);
         public delegate void TabDetachedEvent(int index, TabItem item, int offsetX);
         public event SelectedTabChangedEvent SelectedTabChanged;
+        public event UnselectedTabChangedEvent UnselectedTabChanged;
         public event TabAddedEvent TabAdded;
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
@@ -63,8 +65,12 @@ namespace VampirioCode.UI.Controls
         {
             controller = new TabController();
 
+            // size
+            Height = controller.Height;
+
             // controller events
             controller.SelectedTabChanged +=    OnSelectedTabChanged;
+            controller.UnselectedTabChanged +=  OnUnselectedTabChanged;
             controller.TabAdded +=              OnTabAdded;
             controller.TabRemoved +=            OnTabRemoved;
             controller.StartDragTab +=          OnStartDragTab;
@@ -135,6 +141,12 @@ namespace VampirioCode.UI.Controls
         {
             if(SelectedTabChanged != null)
                 SelectedTabChanged(index, item);
+        }
+
+        private void OnUnselectedTabChanged(int index, TabItem item)
+        {
+            if (UnselectedTabChanged != null)
+                UnselectedTabChanged(index, item);
         }
 
         private void OnTabAdded(int index, TabItem item)
@@ -260,24 +272,6 @@ namespace VampirioCode.UI.Controls
         {
             controller.MouseScroll(e.X, e.Y, e.Delta > 0 ? 1 : -1);
             base.OnMouseWheel(e);
-            Invalidate();
-        }
-
-        protected override void OnKeyPress(KeyPressEventArgs e)
-        {
-            if(e.KeyChar == 'a')
-                controller.MouseMove(mouseSavedX -= 1, mouseSavedY, false);
-            else if (e.KeyChar == 's')
-                controller.MouseMove(mouseSavedX -= 2, mouseSavedY, false);
-            else if (e.KeyChar == 'd')
-                controller.MouseMove(mouseSavedX -= 3, mouseSavedY, false);
-
-            else if (e.KeyChar == 'q')
-                controller.MouseMove(mouseSavedX, mouseSavedY += 1, false);
-            else if (e.KeyChar == 'w')
-                controller.MouseMove(mouseSavedX, mouseSavedY += 2, false);
-
-            base.OnKeyPress(e);
             Invalidate();
         }
 

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls.TabManagement;
 
-namespace VampirioCode
+namespace VampirioCode.Tests
 {
 
 

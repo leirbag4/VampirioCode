@@ -1,4 +1,5 @@
 using VampirioCode.SaveData;
+using VampirioCode.Tests;
 
 namespace VampirioCode
 {
@@ -16,7 +17,8 @@ namespace VampirioCode
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             //Application.Run(new App());
-            Application.Run(new TabTester());
+            //Application.Run(new TabTester());
+            Application.Run(new TabTester2());
         }
     }
 }

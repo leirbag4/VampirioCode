@@ -1,4 +1,4 @@
-﻿namespace VampirioCode
+﻿namespace VampirioCode.Tests
 {
     partial class TabTester
     {

@@ -24,6 +24,7 @@ namespace VampirioCode.UI.Controls.TabManagement
     public class TabController
     {
         public delegate void SelectedTabChangedEvent(int index, TabItem item);
+        public delegate void UnselectedTabChangedEvent(int index, TabItem item);
         public delegate void TabAddedEvent(int index, TabItem item);
         public delegate void TabRemovedEvent(int index, TabItem item);
         public delegate void StartDragTabEvent(int index, TabItem item);
@@ -31,12 +32,16 @@ namespace VampirioCode.UI.Controls.TabManagement
         public delegate void TabIndexChangedEvent(int oldIndex, int newIndex);
         public delegate void TabDetachedEvent(int index, TabItem item, int offsetX);
         public event SelectedTabChangedEvent SelectedTabChanged;
+        public event UnselectedTabChangedEvent UnselectedTabChanged;
         public event TabAddedEvent TabAdded;
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
         public event TabIndexChangedEvent TabIndexChanged;
         public event TabDetachedEvent TabDetached;
+
+
+        public int Height { get { return height; } }
 
         public TabSize SelectedTabSize { get; set; }
         public TabSize NormalTabSize { get; set; }
@@ -284,6 +289,9 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
             else if (prevSelectedTab != selectedTab)
             {
+                if ((UnselectedTabChanged != null) && (prevSelectedTab != null))
+                    UnselectedTabChanged(prevSelectedTab.Index(), prevSelectedTab.Item);
+
                 if (SelectedTabChanged != null)
                     SelectedTabChanged(selectedTab.Index(), selectedTab.Item);
             }
