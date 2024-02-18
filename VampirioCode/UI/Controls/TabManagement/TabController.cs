@@ -4,7 +4,7 @@
 //               write it again after porting the basic logic code.
 //
 
-#define TAB_CONTROLLER_DEBUG    // This will paint some debug info. IMPORTANT: note that the debugged text could be printed out of screen or canvas, so make this rendering context big
+//#define TAB_CONTROLLER_DEBUG    // This will paint some debug info. IMPORTANT: note that the debugged text could be printed out of screen or canvas, so make this rendering context big
 #define USE_AUTO_SHIFT_TIMERS   // USE_AUTO_SHIFT_TIMERS: can be removed because the auto shift features with timers is a little complex and if you want to port the code, maybe a good idea is to write it again.
 #define AUTO_SHIFT_VERSION_B    // VERSION_A (ver_b commented): will compute more resources because it will use a numeri counter and a smallest timer. It could be easier to implement in other languages like C++
                                 // VERSION_B: will use less resources because it will have a longer initial interval timer and then it will be set to a smaller one. Maybe best for C#, just test it.
@@ -29,12 +29,14 @@ namespace VampirioCode.UI.Controls.TabManagement
         public delegate void StartDragTabEvent(int index, TabItem item);
         public delegate void StopDragTabEvent(int index, TabItem item);
         public delegate void TabIndexChangedEvent(int oldIndex, int newIndex);
+        public delegate void TabDetachedEvent(int index, TabItem item, int offsetX);
         public event SelectedTabChangedEvent SelectedTabChanged;
         public event TabAddedEvent TabAdded;
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
         public event TabIndexChangedEvent TabIndexChanged;
+        public event TabDetachedEvent TabDetached;
 
         public TabSize SelectedTabSize { get; set; }
         public TabSize NormalTabSize { get; set; }
@@ -56,6 +58,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public int SelectedIndex { get { if (selectedTab == null) return -1; else return selectedTab.Index(); } set { if (TotalTabs > 0) { PushSelTabForEvent(); SimpleSelect(tabs[value]); PopSelTabChangedEvent(); } } }
         public Tab SelectedTab { get { return selectedTab; } set { PushSelTabForEvent(); SimpleSelect(value); PopSelTabChangedEvent(); } }
         public bool AllowDragging { get; set; } = true;
+        public bool AllowDetach { get; set; } = false;
         private Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
 
         #region AutoShiftProperties
@@ -110,18 +113,27 @@ namespace VampirioCode.UI.Controls.TabManagement
         private bool freezeMoveRight = false;
         private int minTabWidth = 60;
 
+        // Detach
+        private int detachStartX = 0;
+        private int detachStartY = 0;
+        private int detachSumX = 0;
+        private int detachSumY = 0;
+        private bool detachTriggered = false;
 
         public TabController()
         {
             font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
 
+            SelectedTabSize =   new TabSize(0, 0);
             NormalTabSize =     new TabSize(2, 0);
-            DraggedTabSize =    new TabSize(8, 12);
-            SelectedTabSize =   new TabSize(0, 5);
+            DraggedTabSize =    new TabSize(1, 0);
 
+            SelectedStyle =     new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31));
+            NormalStyle =       new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51));
+            OverStyle =         new TabStyle(Color.FromArgb(76, 76, 76), Color.Silver, Color.FromArgb(57, 57, 57));
 
 #if USE_AUTO_SHIFT_TIMERS
-            timer = new System.Windows.Forms.Timer();
+        timer = new System.Windows.Forms.Timer();
             timer.Tick += OnTimerTick;
     #if AUTO_SHIFT_VERSION_B
             timer.Interval = MinTimerWait;
@@ -447,8 +459,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             savedTotalWidth = TotalWidth(tabs);
             IsDragging = true;
 
+            StartDetachDetection();
             PushSelTabIndexForEvent();
-
             PopSelTabChangedEvent();
 
             if (StartDragTab != null)
@@ -465,7 +477,6 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             // Reset local (relative) tab positions
             ResetPositions();
-
             BringTabIntoScreen(selectedTab);
 
 #if USE_AUTO_SHIFT_TIMERS
@@ -479,6 +490,45 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (StopDragTab != null)
                 StopDragTab(selectedTab.Index(), selectedTab.Item);
+        }
+
+        private void StartDetachDetection()
+        {
+            if (!AllowDetach) return;
+
+            detachStartX = mouseX;
+            detachStartY = mouseY;
+            detachSumX = 0;
+            detachSumY = 0;
+            detachTriggered = false;
+        }
+
+        private void CheckDetachEvent()
+        {
+            if (!AllowDetach) return;
+            if (detachTriggered) return;
+
+            detachSumX = mouseX - detachStartX;
+            detachSumY = mouseY - detachStartY;
+
+            if (Math.Abs(detachSumX) > 20)
+            {
+                detachStartX = mouseX;
+                detachStartY = mouseY;
+                detachSumY = 0;
+            }
+
+            if (Math.Abs(detachSumY) > 20)
+            {
+                detachStartY = mouseY;
+                detachTriggered = true;
+                selectedTab.CancelDrag();
+
+                if (TabDetached != null)
+                    TabDetached(selectedTab.Index(), selectedTab.Item, selectedTab.dragOffsetPointX);
+
+                //Remove(selectedTab.Item);
+            }
         }
         // --------------------------------------------------------
         #endregion
@@ -1324,6 +1374,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
 
                 RecalcIndices();
+
+
+                CheckDetachEvent();
             }
         }
         #endregion

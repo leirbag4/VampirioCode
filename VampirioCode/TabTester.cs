@@ -21,6 +21,8 @@ namespace VampirioCode
     public partial class TabTester : Form
     {
         private TabItem saveSelected;
+        private Button draggedTab = null;
+        private int draggedTabOffsetX = 0;
 
         public TabTester()
         {
@@ -32,10 +34,13 @@ namespace VampirioCode
             tabBar.StartDragTab += OnStartDragTab;
             tabBar.StopDragTab += OnStopDragTab;
             tabBar.RightClickContext += OnRightClickContext;
+            tabBar.TabDetached += OnTabDetached;
 
             tabControlWin.SelectedIndexChanged += OnWinSelIndexChanged;
             tabControlWin.ControlAdded += OnWinControlAdded;
             tabControlWin.ControlRemoved += OnWinControlRemoved;
+
+            tabBar.AllowDetach = true;
         }
 
 
@@ -71,6 +76,29 @@ namespace VampirioCode
             XConsole.PrintWarning("Right click: " + item.Text);
         }
 
+        private void OnTabDetached(int index, TabItem item, int offsetX)
+        {
+            XConsole.PrintWarning("Tab detached, offsetX: " +  offsetX + "  -> " + item.Text);
+
+            draggedTabOffsetX = offsetX;
+
+            Point clientPos = this.PointToClient(Cursor.Position);
+
+            int mouseX = clientPos.X;
+            int mouseY = clientPos.Y;
+
+            tabBar.Remove(item);
+
+            draggedTab = new Button();
+            draggedTab.Size = new Size(item.Width, item.Height);
+            draggedTab.Text = item.Text;
+            draggedTab.Left = mouseX - draggedTabOffsetX;
+            draggedTab.Top = mouseY - (draggedTab.Height >> 1);
+            draggedTab.ForeColor = Color.Silver;
+            draggedTab.FlatStyle = FlatStyle.Flat;
+            Controls.Add(draggedTab);
+        }
+
         // ------------------------------------------------------------------------
 
         private void OnWinControlAdded(object sender, ControlEventArgs e)
@@ -90,6 +118,26 @@ namespace VampirioCode
 
         // ------------------------------------------------------------------------
 
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+            draggedTab = null;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (draggedTab != null)
+            {
+                draggedTab.Left = e.X - draggedTabOffsetX;
+                draggedTab.Top = e.Y - (draggedTab.Height >> 1);
+            }
+        }
+
+
+        // ------------------------------------------------------------------------
 
         private void AddItem()
         {

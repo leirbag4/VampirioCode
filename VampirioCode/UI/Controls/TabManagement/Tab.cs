@@ -253,6 +253,12 @@ namespace VampirioCode.UI.Controls.TabManagement
             return str;
         }
 
+        public void CancelDrag()
+        {
+            controller.StopDragging();
+            dragging = false;
+        }
+
         public void Update()
         {
 

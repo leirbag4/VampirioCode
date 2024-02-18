@@ -135,7 +135,7 @@
             tabBar.Location = new Point(25, 12);
             tabBar.Name = "tabBar";
             tabBar.SelectedIndex = -1;
-            tabBar.Size = new Size(552, 335);
+            tabBar.Size = new Size(552, 32);
             tabBar.TabIndex = 3;
             tabBar.Text = "tabControlx1";
             // 

@@ -19,12 +19,14 @@ namespace VampirioCode.UI.Controls
         public delegate void StartDragTabEvent(int index, TabItem item);
         public delegate void StopDragTabEvent(int index, TabItem item);
         public delegate void RightClickContextEvent(TabItem item);
+        public delegate void TabDetachedEvent(int index, TabItem item, int offsetX);
         public event SelectedTabChangedEvent SelectedTabChanged;
         public event TabAddedEvent TabAdded;
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
         public event RightClickContextEvent RightClickContext;
+        public event TabDetachedEvent TabDetached;
 
         public TabItemCollection Items { get { return items; } set { items = value; } }
         public int SelectedIndex { get { return controller.SelectedIndex; } set { controller.SelectedIndex = value; Invalidate(); } }
@@ -33,6 +35,7 @@ namespace VampirioCode.UI.Controls
         public TabStyle NormalStyle { get { return controller.NormalStyle; } }
         public TabStyle OverStyle { get { return controller.OverStyle; } }
 
+        public bool AllowDetach { get { return controller.AllowDetach; } set { controller.AllowDetach = value; } }
 
         private TabItemCollection items = new TabItemCollection();
         private TabController controller;
@@ -49,6 +52,7 @@ namespace VampirioCode.UI.Controls
             controller.StartDragTab +=          OnStartDragTab;
             controller.StopDragTab +=           OnStopDragTab;
             controller.TabIndexChanged +=       OnTabIndexChanged;
+            controller.TabDetached +=           OnTabDetached;
         #if USE_AUTO_SHIFT_TIMERS
             controller.TimerRepaintNeeded +=    OnTimerRepaintNeeded;
         #endif
@@ -186,6 +190,12 @@ namespace VampirioCode.UI.Controls
             Items.Insert(newIndex, item);
 
             _itemEventsEnabled = true;
+        }
+
+        private void OnTabDetached(int index, TabItem item, int offsetX)
+        {
+            if (TabDetached != null)
+                TabDetached(index, item, offsetX);
         }
 
         protected override void OnMouseEnter(EventArgs e)
