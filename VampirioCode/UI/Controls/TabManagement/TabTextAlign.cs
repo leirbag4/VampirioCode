@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace VampirioCode.UI.Controls.TabManagement
 {
-    public class TabContent : Control
+    public enum TabTextAlign
     {
-
+        Center,
+        Left,
+        Right
     }
 }

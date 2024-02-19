@@ -34,7 +34,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             tab =       new Tab(this);
             Text =      name;
-            Content =   new TabContent();
+            Content =   new Control();
         }
 
 

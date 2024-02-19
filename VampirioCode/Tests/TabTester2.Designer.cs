@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tabPanel = new UI.Controls.TabPanel();
             console = new UI.XConsole();
             clearButton = new UI.Controls.ButtonAdv();
             buttonAdv1 = new UI.Controls.ButtonAdv();
@@ -36,32 +35,8 @@
             buttonAdv3 = new UI.Controls.ButtonAdv();
             button36 = new Button();
             tabNameInput = new TextBox();
+            tabPanel = new UI.Controls.TabPanel();
             SuspendLayout();
-            // 
-            // tabPanel
-            // 
-            tabPanel.AllowDetach = false;
-            tabPanel.AllowDragging = true;
-            tabPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tabPanel.ArrowButtonBackColor = Color.FromArgb(40, 40, 40);
-            tabPanel.ArrowButtonBorderColor = Color.FromArgb(25, 25, 25);
-            tabPanel.ArrowButtonBorderSize = 2;
-            tabPanel.ArrowColor = Color.FromArgb(20, 20, 20);
-            tabPanel.BackColor = Color.FromArgb(30, 30, 30);
-            tabPanel.IsDragging = false;
-            tabPanel.Location = new Point(24, 12);
-            tabPanel.MaxTabWidth = 160;
-            tabPanel.MinDetachThreshold = 20;
-            tabPanel.MinTabWidth = 60;
-            tabPanel.Name = "tabPanel";
-            tabPanel.SelectedIndex = -1;
-            tabPanel.ShapeMode = UI.Controls.TabManagement.TabShapeMode.Box;
-            tabPanel.Size = new Size(513, 296);
-            tabPanel.SizeMode = UI.Controls.TabManagement.TabSizeMode.WrapToText;
-            tabPanel.TabBorderSize = 2;
-            tabPanel.TabIndex = 0;
-            tabPanel.TabVisibleLimit = 10;
-            tabPanel.Text = "tabPanel";
             // 
             // console
             // 
@@ -196,12 +171,23 @@
             tabNameInput.Size = new Size(141, 27);
             tabNameInput.TabIndex = 41;
             // 
+            // tabPanel
+            // 
+            tabPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabPanel.BackColor = Color.FromArgb(30, 30, 30);
+            tabPanel.Location = new Point(24, 12);
+            tabPanel.Name = "tabPanel";
+            tabPanel.Size = new Size(513, 322);
+            tabPanel.TabIndex = 43;
+            tabPanel.Text = "tabPanel1";
+            // 
             // TabTester2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(1130, 651);
+            Controls.Add(tabPanel);
             Controls.Add(button36);
             Controls.Add(tabNameInput);
             Controls.Add(buttonAdv3);
@@ -209,7 +195,6 @@
             Controls.Add(buttonAdv1);
             Controls.Add(clearButton);
             Controls.Add(console);
-            Controls.Add(tabPanel);
             Name = "TabTester2";
             Text = "TabTester2";
             ResumeLayout(false);
@@ -217,8 +202,6 @@
         }
 
         #endregion
-
-        private UI.Controls.TabPanel tabPanel;
         private UI.XConsole console;
         private UI.Controls.ButtonAdv clearButton;
         private UI.Controls.ButtonAdv buttonAdv1;
@@ -226,5 +209,6 @@
         private UI.Controls.ButtonAdv buttonAdv3;
         private Button button36;
         private TextBox tabNameInput;
+        private UI.Controls.TabPanel tabPanel;
     }
 }

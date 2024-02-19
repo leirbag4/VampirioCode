@@ -21,37 +21,39 @@ namespace VampirioCode.UI.Controls
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
 
-        public TabItemCollection Items { get { return tabBar.Items; } set { tabBar.Items = value; } }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabItemCollection Items { get { return tabBar.Items; } set { tabBar.Items = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
 
-        public TabSize SelectedTabSize  { get { return controller.SelectedTabSize; }    set { controller.SelectedTabSize = value; } }
-        public TabSize NormalTabSize    { get { return controller.NormalTabSize; }      set { controller.NormalTabSize = value; } }
-        public TabSize DraggedTabSize   { get { return controller.DraggedTabSize; }     set { controller.DraggedTabSize = value; } }
-        public int TabBorderSize        { get { return controller.TabBorderSize; }      set { controller.TabBorderSize = value; } }
-        public TabStyle SelectedStyle   { get { return controller.SelectedStyle; } }
-        public TabStyle NormalStyle     { get { return controller.NormalStyle; } }
-        public TabStyle OverStyle       { get { return controller.OverStyle; } }
+        public TabSize SelectedTabSize  { get { return controller.SelectedTabSize; }    set { controller.SelectedTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabSize NormalTabSize    { get { return controller.NormalTabSize; }      set { controller.NormalTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)] 
+        public TabSize DraggedTabSize   { get { return controller.DraggedTabSize; }     set { controller.DraggedTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int TabBorderSize        { get { return controller.TabBorderSize; }      set { controller.TabBorderSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SelectedStyle   { get { return controller.SelectedStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle NormalStyle     { get { return controller.NormalStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle OverStyle       { get { return controller.OverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         //public Color BackColor          { get { return controller.BackColor; }          set { controller.BackColor = value; } }
-        public TabShapeMode ShapeMode   { get { return controller.ShapeMode; }          set { controller.ShapeMode = value; } }
-        public TabManagement.TabSizeMode SizeMode     { get { return controller.SizeMode; }           set { controller.SizeMode = value; } }
-        public int MinTabWidth          { get { return controller.MinTabWidth; }        set { controller.MinTabWidth = value; } }
-        public int MaxTabWidth          { get { return controller.MaxTabWidth; }        set { controller.MaxTabWidth = value; } }
-        public int TotalTabs            { get { return controller.TotalTabs; } }
-        public bool IsDragging          { get { return controller.IsDragging; }         set { controller.IsDragging = value; } }
-        public bool IsAnySelected       { get { return controller.IsAnySelected; } }
-        public bool IsOutsideBounds     { get { return controller.IsOutsideBounds; } }
-        public bool TabsFitOnScreen     { get { return controller.TabsFitOnScreen; } }
-        public int TabVisibleLimit      { get { return controller.TabVisibleLimit; }    set { controller.TabVisibleLimit = value; } }
-        public int SelectedIndex        { get { return controller.SelectedIndex; }      set { controller.SelectedIndex = value; Invalidate(); } }
-        public TabItem SelectedTab      { get { return controller.SelectedTab.Item; }   set { controller.SelectedTab = value.tab; Invalidate(); } }
-        public bool AllowDragging       { get { return controller.AllowDragging; }      set { controller.AllowDragging = value; } }
-        public bool AllowDetach         { get { return controller.AllowDetach; }        set { controller.AllowDetach = value; } }
-        public int MinDetachThreshold   { get { return controller.MinDetachThreshold; } set { controller.MinDetachThreshold = value; } }
+        public TabTextAlign TextAlign { get { return controller.TextAlign; } set { controller.TextAlign = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabShapeMode ShapeMode   { get { return controller.ShapeMode; }          set { controller.ShapeMode = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabManagement.TabSizeMode SizeMode     { get { return controller.SizeMode; }           set { controller.SizeMode = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int MinTabWidth          { get { return controller.MinTabWidth; }        set { controller.MinTabWidth = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int MaxTabWidth          { get { return controller.MaxTabWidth; }        set { controller.MaxTabWidth = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int TotalTabs            { get { return controller.TotalTabs; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool IsDragging          { get { return controller.IsDragging; }         set { controller.IsDragging = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool IsAnySelected       { get { return controller.IsAnySelected; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool IsOutsideBounds     { get { return controller.IsOutsideBounds; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool TabsFitOnScreen     { get { return controller.TabsFitOnScreen; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int TabVisibleLimit      { get { return controller.TabVisibleLimit; }    set { controller.TabVisibleLimit = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int SelectedIndex        { get { return controller.SelectedIndex; }      set { controller.SelectedIndex = value; Invalidate(); } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabItem SelectedTab      { get { return controller.SelectedTab.Item; }   set { controller.SelectedTab = value.tab; Invalidate(); } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool AllowDragging       { get { return controller.AllowDragging; }      set { controller.AllowDragging = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool AllowDetach         { get { return controller.AllowDetach; }        set { controller.AllowDetach = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int MinDetachThreshold   { get { return controller.MinDetachThreshold; } set { controller.MinDetachThreshold = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
 
 
-        public int ArrowButtonBorderSize { get; set; } = 2;
-        public Color ArrowButtonBackColor { get; set; } = Color.FromArgb(40, 40, 40);
-        public Color ArrowButtonBorderColor { get; set; } = Color.FromArgb(25, 25, 25);
-        public Color ArrowColor { get; set; } = Color.FromArgb(20, 20, 20);
+        public int ArrowButtonBorderSize { get; set; } = 2;[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public Color ArrowButtonBackColor { get; set; } = Color.FromArgb(40, 40, 40);[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public Color ArrowButtonBorderColor { get; set; } = Color.FromArgb(25, 25, 25);[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public Color ArrowColor { get; set; } = Color.FromArgb(20, 20, 20);[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         private int TotalArrowButtonsWidth { get { return ((arrowButtonWidth << 1) - ArrowButtonBorderSize); } }
 
         public TabBar TabBar { get { return tabBar; } }
@@ -106,7 +108,7 @@ namespace VampirioCode.UI.Controls
             container.Size =        new Size(Width, Height - tabBar.Height);
             container.Location =    new Point(0, tabBar.Height);
             container.Anchor =      AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-            container.BackColor =   Color.FromArgb(200, 60, 60);
+            container.BackColor =   Color.FromArgb(50, 50, 50);
 
             // Events
             tabBar.SelectedTabChanged +=    OnSelectedTabChanged;
@@ -134,6 +136,7 @@ namespace VampirioCode.UI.Controls
             BackColor = Color.FromArgb(30, 30, 30);
 
             // Properties
+            tabBar.TextAlign =  TabTextAlign.Center;
             tabBar.ShapeMode =  TabShapeMode.Box;
             tabBar.SizeMode =   TabManagement.TabSizeMode.WrapToText;
 

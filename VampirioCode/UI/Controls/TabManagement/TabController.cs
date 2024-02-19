@@ -43,6 +43,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabStyle NormalStyle { get; }
         public TabStyle OverStyle { get; }
         public Color BackColor { get; set; }
+        public TabTextAlign TextAlign { get; set; } = TabTextAlign.Center;
         public TabShapeMode ShapeMode { get; set; } = TabShapeMode.Box;
         public TabSizeMode SizeMode { get; set; } = TabSizeMode.WrapToText;
         public int MinTabWidth { get { int minLimit = TabVisibleLimit << 1; if (minTabWidth < minLimit) return minLimit; else return minTabWidth; } set { minTabWidth = value; } }             // MinTabWidth must be always at least 2 times the visible part of the tab when it is outside screen. Otherwise you could't do an auto shift
