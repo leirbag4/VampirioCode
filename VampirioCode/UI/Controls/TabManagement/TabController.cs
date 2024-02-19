@@ -23,14 +23,6 @@ namespace VampirioCode.UI.Controls.TabManagement
 
     public class TabController
     {
-        public delegate void SelectedTabChangedEvent(int index, TabItem item);
-        public delegate void UnselectedTabChangedEvent(int index, TabItem item);
-        public delegate void TabAddedEvent(int index, TabItem item);
-        public delegate void TabRemovedEvent(int index, TabItem item);
-        public delegate void StartDragTabEvent(int index, TabItem item);
-        public delegate void StopDragTabEvent(int index, TabItem item);
-        public delegate void TabIndexChangedEvent(int oldIndex, int newIndex);
-        public delegate void TabDetachedEvent(int index, TabItem item, int offsetX);
         public event SelectedTabChangedEvent SelectedTabChanged;
         public event UnselectedTabChangedEvent UnselectedTabChanged;
         public event TabAddedEvent TabAdded;
@@ -39,7 +31,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event StopDragTabEvent StopDragTab;
         public event TabIndexChangedEvent TabIndexChanged;
         public event TabDetachedEvent TabDetached;
-
+        public event TabItemTextChangedEvent TabItemTextChanged;
 
         public int Height { get { return height; } }
 
@@ -78,15 +70,15 @@ namespace VampirioCode.UI.Controls.TabManagement
         public int PixelsShiftsPerStep { get; set; } = 10;  // [VERSION_A and VERSION_B]: the amount of pixels the tabs will move to the left or right on every auto shift movement with the timer
         public bool UpdateTimerNeeded { get { return _updateTimerNeeded; } }
         private bool _updateTimerNeeded = false;
-    #if AUTO_SHIFT_VERSION_B
+#if AUTO_SHIFT_VERSION_B
         public int MinTimerWait { get { return (_timerInterval >> 1); } set { _timerInterval = value; } } // [VERSION_B only]: minimum time to activate the auto shift features of tabs when user is dragging a tab to the left or right border of the bar or screen
         public int ShiftStepsMillis { get; set; } = 10; // [VERSION_B only]: once MinTimerWait has passed, this amount of milliseconds will be used on each step when shifting the tabs to the left or right
 
         private int _timerInterval = 300;
-    #else
+#else
         public int TimerStepsMillis { get; set; } = 10;     // [VERSION_A only]: each step will be count in a loop and after some amount of steps (TimerMinStepsToShift), the tabs will be shifted to the right of left of the border they are
         public int TimerMinStepsToShift { get; set; } = 35; // [VERSION_A only]: for example if 10, then after (10 * TimerStepsMillis), the auto shifting process starts and then just one step or TimerStepsMillis will be used for each frame and shift
-    #endif
+#endif
         private bool autoShiftTimer = false;
         private int timerPosX = 0;
         private int timerCount = 0;
@@ -129,30 +121,46 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public TabController()
         {
-            font = new Font("Verdana", 14, FontStyle.Regular, GraphicsUnit.Pixel);
+            SetFont("Verdana", 14, FontStyle.Regular);
 
-            BackColor =         Color.FromArgb(60, 60, 60);
+            BackColor = Color.FromArgb(60, 60, 60);
 
-            SelectedTabSize =   new TabSize(0, 0);
-            NormalTabSize =     new TabSize(2, 0);
-            DraggedTabSize =    new TabSize(1, 0);
+            SelectedTabSize = new TabSize(0, 0);
+            NormalTabSize = new TabSize(2, 0);
+            DraggedTabSize = new TabSize(1, 0);
 
-            SelectedStyle =     new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31));
-            NormalStyle =       new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51));
-            OverStyle =         new TabStyle(Color.FromArgb(76, 76, 76), Color.Silver, Color.FromArgb(57, 57, 57));
+            SelectedStyle = new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31));
+            NormalStyle = new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51));
+            OverStyle = new TabStyle(Color.FromArgb(76, 76, 76), Color.Silver, Color.FromArgb(57, 57, 57));
 
 #if USE_AUTO_SHIFT_TIMERS
-        timer = new System.Windows.Forms.Timer();
+            timer = new System.Windows.Forms.Timer();
             timer.Tick += OnTimerTick;
-    #if AUTO_SHIFT_VERSION_B
+#if AUTO_SHIFT_VERSION_B
             timer.Interval = MinTimerWait;
-    #else
+#else
             timer.Interval = TimerStepsMillis;
-    #endif
+#endif
 #endif
         }
 
         #region BasicActions
+        public void SetFont(string fontName, int fontSize, FontStyle fontStyle)
+        {
+            font = new Font(fontName, fontSize, fontStyle, GraphicsUnit.Pixel);
+        }
+
+        public void SelectTab(Tab tab)
+        {
+            SelectedTab = tab;
+        }
+
+        public void Shift(int amount)
+        {
+            OFFSET_X += amount;
+            Clamp();
+        }
+
         public void Add(TabItem item)
         {
             Insert(TotalTabs, item);
@@ -504,6 +512,12 @@ namespace VampirioCode.UI.Controls.TabManagement
                 StopDragTab(selectedTab.Index(), selectedTab.Item);
         }
 
+        public void TabTextChanged(Tab tab)
+        {
+            if (TabItemTextChanged != null)
+                TabItemTextChanged(tab.Index(), tab.Item);
+        }
+
         private void StartDetachDetection()
         {
             if (!AllowDetach) return;
@@ -556,7 +570,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             if (IsAnySelected)
                 SetTabHSize(selectedTab, NormalTabSize);
 
-            SetTabHSize(selTab, SelectedTabSize);
+            if(selTab != null)
+                SetTabHSize(selTab, SelectedTabSize);
 
             if (IsAnySelected)
                 selectedTab.Unselect();
@@ -597,6 +612,27 @@ namespace VampirioCode.UI.Controls.TabManagement
             //selTabPreviousX = LocalToGlobal(SelectedTab.x);
 
             selectedTab.Select();
+        }
+
+        private void Clamp()
+        {
+            // clamp left
+            if (OFFSET_X > 0)
+                OFFSET_X = 0;
+
+            // clamp right
+            int totalWidth = TotalWidth(tabs);
+
+            // All tabs enter inside the control
+            if (totalWidth < width)
+            {
+                OFFSET_X = 0;
+            }
+            // Not all tabs enter inside the control
+            else if ((OFFSET_X + totalWidth - width) < 0)
+            {
+                OFFSET_X = -totalWidth + width;
+            }
         }
 
         private void SetTabHSize(Tab tab, TabSize size)
@@ -1003,7 +1039,6 @@ namespace VampirioCode.UI.Controls.TabManagement
                 }
                 else if (timerMoveRight)
                 {
-                    //XConsole.Println("RIIIIIIIIIIIIIIIIIIIGHT");
 
                     FixPositionToMouse();
 

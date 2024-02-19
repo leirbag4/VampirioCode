@@ -47,5 +47,26 @@ namespace VampirioCode.Tests
         {
             XConsole.Clear();
         }
+
+        private void OnAddPressed(object sender, EventArgs e)
+        {
+            tabPanel.Add(CreateItem());
+        }
+
+        private void OnRemovePressed(object sender, EventArgs e)
+        {
+            tabPanel.RemoveAt(0);
+        }
+
+        private void OnRemoveSelected(object sender, EventArgs e)
+        {
+            tabPanel.Remove(tabPanel.SelectedTab);
+        }
+
+        private void OnSetTextPressed(object sender, EventArgs e)
+        {
+            tabPanel.SelectedTab.Text = tabNameInput.Text;
+            tabPanel.Invalidate();
+        }
     }
 }

@@ -144,6 +144,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                     textWidth = controller.MinTabWidth;
 
                 controller.AdjustTabsFrom(Index());
+                controller.TabTextChanged(this);
             }
         }
 

@@ -24,8 +24,6 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public int Index { get { return tab.Index(); } }
 
-        public TabItem Prev { get { return tab.Prev().Item; } }
-        public TabItem Next { get { return tab.Next().Item; } }
 
         private TabStyle selectedStyle =    null;
         private TabStyle normalStyle =      null;
@@ -45,5 +43,24 @@ namespace VampirioCode.UI.Controls.TabManagement
             this.controller = controller;
         }
 
+        public TabItem Prev()
+        {
+            Tab prev = tab.Prev();
+
+            if (prev != null)
+                return prev.Item;
+            else
+                return null;
+        }
+
+        public TabItem Next()
+        {
+            Tab next = tab.Next();
+
+            if (next != null)
+                return next.Item;
+            else
+                return null;
+        }
     }
 }

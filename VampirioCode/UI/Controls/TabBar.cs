@@ -13,14 +13,6 @@ namespace VampirioCode.UI.Controls
 
     public class TabBar : Control
     {
-        public delegate void SelectedTabChangedEvent(int index, TabItem item);
-        public delegate void UnselectedTabChangedEvent(int index, TabItem item);
-        public delegate void TabAddedEvent(int index, TabItem item);
-        public delegate void TabRemovedEvent(int index, TabItem item);
-        public delegate void StartDragTabEvent(int index, TabItem item);
-        public delegate void StopDragTabEvent(int index, TabItem item);
-        public delegate void RightClickContextEvent(TabItem item);
-        public delegate void TabDetachedEvent(int index, TabItem item, int offsetX);
         public event SelectedTabChangedEvent SelectedTabChanged;
         public event UnselectedTabChangedEvent UnselectedTabChanged;
         public event TabAddedEvent TabAdded;
@@ -29,39 +21,40 @@ namespace VampirioCode.UI.Controls
         public event StopDragTabEvent StopDragTab;
         public event RightClickContextEvent RightClickContext;
         public event TabDetachedEvent TabDetached;
+        public event TabItemTextChangedEvent TabItemTextChanged;
 
         public TabItemCollection Items { get { return items; } set { items = value; } }
 
 
-        public TabSize SelectedTabSize  { get { return controller.SelectedTabSize; }    set { controller.SelectedTabSize = value; } }
-        public TabSize NormalTabSize    { get { return controller.NormalTabSize; }      set { controller.NormalTabSize = value; } }
-        public TabSize DraggedTabSize   { get { return controller.DraggedTabSize; }     set { controller.DraggedTabSize = value; } }
-        public int TabBorderSize        { get { return controller.TabBorderSize; }      set { controller.TabBorderSize = value; } }
-        public TabStyle SelectedStyle   { get { return controller.SelectedStyle; } }
-        public TabStyle NormalStyle     { get { return controller.NormalStyle; } }
-        public TabStyle OverStyle       { get { return controller.OverStyle; } }
-        public Color BackColor          { get { return controller.BackColor; }          set { controller.BackColor = value; } }
-        public TabShapeMode ShapeMode   { get { return controller.ShapeMode; }          set { controller.ShapeMode = value; } }
-        public TabManagement.TabSizeMode SizeMode     { get { return controller.SizeMode; }           set { controller.SizeMode = value; } }
-        public int MinTabWidth          { get { return controller.MinTabWidth; }        set { controller.MinTabWidth = value; } }
-        public int MaxTabWidth          { get { return controller.MaxTabWidth; }        set { controller.MaxTabWidth = value; } }
-        public int TotalTabs            { get { return controller.TotalTabs; } }
-        public bool IsDragging          { get { return controller.IsDragging; }         set { controller.IsDragging = value; } }
-        public bool IsAnySelected       { get { return controller.IsAnySelected; } }
-        public bool IsOutsideBounds     { get { return controller.IsOutsideBounds; } }
-        public bool TabsFitOnScreen     { get { return controller.TabsFitOnScreen; } }
-        public int TabVisibleLimit      { get { return controller.TabVisibleLimit; }    set { controller.TabVisibleLimit = value; } }
-        public int SelectedIndex        { get { return controller.SelectedIndex; }      set { controller.SelectedIndex = value; Invalidate(); } }
-        public TabItem SelectedTab      { get { return controller.SelectedTab.Item; }   set { controller.SelectedTab = value.tab; Invalidate(); } }
-        public bool AllowDragging       { get { return controller.AllowDragging; }      set { controller.AllowDragging = value; } }
-        public bool AllowDetach         { get { return controller.AllowDetach; }        set { controller.AllowDetach = value; } }
-        public int MinDetachThreshold   { get { return controller.MinDetachThreshold; } set { controller.MinDetachThreshold = value; } }
+        public TabSize SelectedTabSize { get { return controller.SelectedTabSize; } set { controller.SelectedTabSize = value; } }
+        public TabSize NormalTabSize { get { return controller.NormalTabSize; } set { controller.NormalTabSize = value; } }
+        public TabSize DraggedTabSize { get { return controller.DraggedTabSize; } set { controller.DraggedTabSize = value; } }
+        public int TabBorderSize { get { return controller.TabBorderSize; } set { controller.TabBorderSize = value; } }
+        public TabStyle SelectedStyle { get { return controller.SelectedStyle; } }
+        public TabStyle NormalStyle { get { return controller.NormalStyle; } }
+        public TabStyle OverStyle { get { return controller.OverStyle; } }
+        public Color BackColor { get { return controller.BackColor; } set { controller.BackColor = value; } }
+        public TabShapeMode ShapeMode { get { return controller.ShapeMode; } set { controller.ShapeMode = value; } }
+        public TabManagement.TabSizeMode SizeMode { get { return controller.SizeMode; } set { controller.SizeMode = value; } }
+        public int MinTabWidth { get { return controller.MinTabWidth; } set { controller.MinTabWidth = value; } }
+        public int MaxTabWidth { get { return controller.MaxTabWidth; } set { controller.MaxTabWidth = value; } }
+        public int TotalTabs { get { return controller.TotalTabs; } }
+        public bool IsDragging { get { return controller.IsDragging; } set { controller.IsDragging = value; } }
+        public bool IsAnySelected { get { return controller.IsAnySelected; } }
+        public bool IsOutsideBounds { get { return controller.IsOutsideBounds; } }
+        public bool TabsFitOnScreen { get { return controller.TabsFitOnScreen; } }
+        public int TabVisibleLimit { get { return controller.TabVisibleLimit; } set { controller.TabVisibleLimit = value; } }
+        public int SelectedIndex { get { return controller.SelectedIndex; } set { controller.SelectedIndex = value; Invalidate(); } }
+        public TabItem SelectedTab { get { return controller.SelectedTab.Item; } set { controller.SelectedTab = value.tab; Invalidate(); } }
+        public bool AllowDragging { get { return controller.AllowDragging; } set { controller.AllowDragging = value; } }
+        public bool AllowDetach { get { return controller.AllowDetach; } set { controller.AllowDetach = value; } }
+        public int MinDetachThreshold { get { return controller.MinDetachThreshold; } set { controller.MinDetachThreshold = value; } }
 
         private TabItemCollection items = new TabItemCollection();
         private TabController controller;
         private bool _itemEventsEnabled = true;
 
-        public TabBar() 
+        public TabBar()
         {
             controller = new TabController();
 
@@ -69,27 +62,50 @@ namespace VampirioCode.UI.Controls
             Height = controller.Height;
 
             // controller events
-            controller.SelectedTabChanged +=    OnSelectedTabChanged;
-            controller.UnselectedTabChanged +=  OnUnselectedTabChanged;
-            controller.TabAdded +=              OnTabAdded;
-            controller.TabRemoved +=            OnTabRemoved;
-            controller.StartDragTab +=          OnStartDragTab;
-            controller.StopDragTab +=           OnStopDragTab;
-            controller.TabIndexChanged +=       OnTabIndexChanged;
-            controller.TabDetached +=           OnTabDetached;
-        #if USE_AUTO_SHIFT_TIMERS
-            controller.TimerRepaintNeeded +=    OnTimerRepaintNeeded;
-        #endif
+            controller.SelectedTabChanged += OnSelectedTabChanged;
+            controller.UnselectedTabChanged += OnUnselectedTabChanged;
+            controller.TabAdded += OnTabAdded;
+            controller.TabRemoved += OnTabRemoved;
+            controller.StartDragTab += OnStartDragTab;
+            controller.StopDragTab += OnStopDragTab;
+            controller.TabIndexChanged += OnTabIndexChanged;
+            controller.TabDetached += OnTabDetached;
+            controller.TabItemTextChanged += OnTabItemTextChanged;
+#if USE_AUTO_SHIFT_TIMERS
+            controller.TimerRepaintNeeded += OnTimerRepaintNeeded;
+#endif
 
             // items events
-            items.ItemAdded +=      OnItemAdded;
-            items.ItemRemoved +=    OnItemRemoved;
-            items.ItemModified +=   OnItemModified;
-            items.ItemsCleared +=   OnItemsCleared;
+            items.ItemAdded += OnItemAdded;
+            items.ItemRemoved += OnItemRemoved;
+            items.ItemModified += OnItemModified;
+            items.ItemsCleared += OnItemsCleared;
 
             BackColor = Color.FromArgb(60, 60, 60);
 
             DoubleBuffered = true;
+        }
+
+        
+
+        public TabController GetController()
+        {
+            return controller;
+        }
+
+        public void SetFont(string fontName, int fontSize, FontStyle fontStyle)
+        {
+            controller.SetFont(fontName, fontSize, fontStyle);
+        }
+
+        public void SelectTab(TabItem item)
+        {
+            controller.SelectTab(item.tab);
+        }
+
+        public void BringTabIntoScreen(TabItem item)
+        {
+            controller.BringTabIntoScreen(item.tab);
         }
 
         public void Add(TabItem item)
@@ -226,6 +242,14 @@ namespace VampirioCode.UI.Controls
         {
             if (TabDetached != null)
                 TabDetached(index, item, offsetX);
+        }
+
+        private void OnTabItemTextChanged(int index, TabItem item)
+        {
+            if(TabItemTextChanged != null)
+                TabItemTextChanged(index, item);
+
+            Invalidate();
         }
 
         protected override void OnMouseEnter(EventArgs e)

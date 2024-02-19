@@ -11,11 +11,61 @@ namespace VampirioCode.UI.Controls
 {
     public class TabPanel : Control
     {
+        public event SelectedTabChangedEvent SelectedTabChanged;
+        public event UnselectedTabChangedEvent UnselectedTabChanged;
+        public event TabAddedEvent TabAdded;
+        public event TabRemovedEvent TabRemoved;
+        public event StartDragTabEvent StartDragTab;
+        public event StopDragTabEvent StopDragTab;
+        public event RightClickContextEvent RightClickContext;
+        public event TabDetachedEvent TabDetached;
+        public event TabItemTextChangedEvent TabItemTextChanged;
+
         public TabItemCollection Items { get { return tabBar.Items; } set { tabBar.Items = value; } }
+
+        public TabSize SelectedTabSize  { get { return controller.SelectedTabSize; }    set { controller.SelectedTabSize = value; } }
+        public TabSize NormalTabSize    { get { return controller.NormalTabSize; }      set { controller.NormalTabSize = value; } }
+        public TabSize DraggedTabSize   { get { return controller.DraggedTabSize; }     set { controller.DraggedTabSize = value; } }
+        public int TabBorderSize        { get { return controller.TabBorderSize; }      set { controller.TabBorderSize = value; } }
+        public TabStyle SelectedStyle   { get { return controller.SelectedStyle; } }
+        public TabStyle NormalStyle     { get { return controller.NormalStyle; } }
+        public TabStyle OverStyle       { get { return controller.OverStyle; } }
+        //public Color BackColor          { get { return controller.BackColor; }          set { controller.BackColor = value; } }
+        public TabShapeMode ShapeMode   { get { return controller.ShapeMode; }          set { controller.ShapeMode = value; } }
+        public TabManagement.TabSizeMode SizeMode     { get { return controller.SizeMode; }           set { controller.SizeMode = value; } }
+        public int MinTabWidth          { get { return controller.MinTabWidth; }        set { controller.MinTabWidth = value; } }
+        public int MaxTabWidth          { get { return controller.MaxTabWidth; }        set { controller.MaxTabWidth = value; } }
+        public int TotalTabs            { get { return controller.TotalTabs; } }
+        public bool IsDragging          { get { return controller.IsDragging; }         set { controller.IsDragging = value; } }
+        public bool IsAnySelected       { get { return controller.IsAnySelected; } }
+        public bool IsOutsideBounds     { get { return controller.IsOutsideBounds; } }
+        public bool TabsFitOnScreen     { get { return controller.TabsFitOnScreen; } }
+        public int TabVisibleLimit      { get { return controller.TabVisibleLimit; }    set { controller.TabVisibleLimit = value; } }
+        public int SelectedIndex        { get { return controller.SelectedIndex; }      set { controller.SelectedIndex = value; Invalidate(); } }
+        public TabItem SelectedTab      { get { return controller.SelectedTab.Item; }   set { controller.SelectedTab = value.tab; Invalidate(); } }
+        public bool AllowDragging       { get { return controller.AllowDragging; }      set { controller.AllowDragging = value; } }
+        public bool AllowDetach         { get { return controller.AllowDetach; }        set { controller.AllowDetach = value; } }
+        public int MinDetachThreshold   { get { return controller.MinDetachThreshold; } set { controller.MinDetachThreshold = value; } }
+
+
+        public int ArrowButtonBorderSize { get; set; } = 2;
+        public Color ArrowButtonBackColor { get; set; } = Color.FromArgb(40, 40, 40);
+        public Color ArrowButtonBorderColor { get; set; } = Color.FromArgb(25, 25, 25);
+        public Color ArrowColor { get; set; } = Color.FromArgb(20, 20, 20);
+        private int TotalArrowButtonsWidth { get { return ((arrowButtonWidth << 1) - ArrowButtonBorderSize); } }
+
         public TabBar TabBar { get { return tabBar; } }
 
         private TabBar tabBar;
+        private TabController controller;
         private Control container;
+        private ButtonAdv leftArrowButton;
+        private ButtonAdv rightArrowButton;
+        private int arrowButtonWidth = 20;
+        private Bitmap leftArrowBitmap;
+        private Bitmap rightArrowBitmap;
+        private System.Windows.Forms.Timer arrowTimer;
+        private bool arrowTimerDirection = false;
 
         public TabPanel()
         {
@@ -25,6 +75,32 @@ namespace VampirioCode.UI.Controls
             tabBar.Width =      Width;
             tabBar.Anchor =     AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
 
+            // TabController
+            controller =        tabBar.GetController();
+
+            // Arrow Buttons
+            CreateArrows(7, 14);
+            leftArrowButton =               new ButtonAdv();
+            rightArrowButton =              new ButtonAdv();
+            leftArrowButton.CStyle =        ButtonAdv.CustomStyle.SOLID;
+            rightArrowButton.CStyle =       ButtonAdv.CustomStyle.SOLID;
+            leftArrowButton.BorderSize =    ArrowButtonBorderSize;
+            rightArrowButton.BorderSize =   ArrowButtonBorderSize;
+            leftArrowButton.BackColor =     ArrowButtonBackColor;
+            rightArrowButton.BackColor =    ArrowButtonBackColor;
+            leftArrowButton.BorderColor =   ArrowButtonBorderColor;
+            rightArrowButton.BorderColor =  ArrowButtonBorderColor;
+            leftArrowButton.Width =         arrowButtonWidth;
+            rightArrowButton.Width =        arrowButtonWidth;
+            leftArrowButton.Location =      new Point(Width - TotalArrowButtonsWidth, 0);
+            rightArrowButton.Location =     new Point(leftArrowButton.Right - ArrowButtonBorderSize, 0);
+            leftArrowButton.Anchor =        AnchorStyles.Right | AnchorStyles.Top;
+            rightArrowButton.Anchor =       AnchorStyles.Right | AnchorStyles.Top;
+            leftArrowButton.Image =         leftArrowBitmap;
+            rightArrowButton.Image =        rightArrowBitmap;
+            leftArrowButton.Visible =       false;
+            rightArrowButton.Visible =      false;
+
             // Container
             container = new Control();
             container.Size =        new Size(Width, Height - tabBar.Height);
@@ -33,16 +109,56 @@ namespace VampirioCode.UI.Controls
             container.BackColor =   Color.FromArgb(200, 60, 60);
 
             // Events
-            tabBar.TabAdded +=              OnTabAdded;
-            tabBar.TabRemoved +=            OnTabRemoved;
             tabBar.SelectedTabChanged +=    OnSelectedTabChanged;
             tabBar.UnselectedTabChanged +=  OnUnselectedTabChanged;
+            tabBar.TabAdded +=              OnTabAdded;
+            tabBar.TabRemoved +=            OnTabRemoved;
+            tabBar.StartDragTab +=          OnStartDragTab;
+            tabBar.StopDragTab +=           OnStopDragTab;
+            tabBar.RightClickContext +=     OnRightClickContext;
+            tabBar.TabDetached +=           OnTabDetached;
+            tabBar.TabItemTextChanged +=    OnTabItemTextChanged;
+
+            leftArrowButton.MouseDown +=    OnLeftArrowBtnDown;
+            rightArrowButton.MouseDown +=   OnRightArrowBtnDown;
+            leftArrowButton.MouseUp +=      OnLeftArrowBtnUp;
+            rightArrowButton.MouseUp +=     OnRightArrowBtnUp;
+
+            // Timers
+            arrowTimer =                    new System.Windows.Forms.Timer();
+            arrowTimer.Interval =           15;
+            arrowTimer.Tick +=              OnArrowTimerUpdate;
+
 
             // Design
             BackColor = Color.FromArgb(30, 30, 30);
 
+            // Properties
+            tabBar.ShapeMode =  TabShapeMode.Box;
+            tabBar.SizeMode =   TabManagement.TabSizeMode.WrapToText;
+
+            // Controls 
             this.Controls.Add(tabBar);
+            this.Controls.Add(leftArrowButton);
+            this.Controls.Add(rightArrowButton);
             this.Controls.Add(container);
+        }
+
+        
+
+        public void SetFont(string fontName, int fontSize, FontStyle fontStyle)
+        {
+            tabBar.SetFont(fontName, fontSize, fontStyle);
+        }
+
+        public void SelectTab(TabItem item)
+        {
+            controller.SelectTab(item.tab);
+        }
+
+        public void BringTabIntoScreen(TabItem item)
+        {
+            controller.BringTabIntoScreen(item.tab);
         }
 
         public void Add(TabItem item)
@@ -71,8 +187,128 @@ namespace VampirioCode.UI.Controls
         }
 
         //
-        // Events
+        // Utils
         //
+        private void CheckOutOfBounds()
+        {
+            BackColor = Color.FromArgb(30, 30, 30);
+
+            if (tabBar.IsOutsideBounds)
+            {
+                tabBar.Width = Width - TotalArrowButtonsWidth;
+
+                leftArrowButton.Height =    tabBar.Height;
+                rightArrowButton.Height =   tabBar.Height;
+                leftArrowButton.Visible =   true;
+                rightArrowButton.Visible =  true;
+            }
+            else
+            {
+                tabBar.Width = Width;
+
+                leftArrowButton.Visible =   false;
+                rightArrowButton.Visible =  false;
+            }
+        }
+
+        private void CreateArrows(int arrowWidth, int arrowHeight)
+        {
+            // Create bitmaps for arrows
+            leftArrowBitmap =   new Bitmap(arrowWidth, arrowHeight);
+            rightArrowBitmap =  new Bitmap(arrowWidth, arrowHeight);
+
+            SolidBrush brush = new SolidBrush(ArrowColor);
+
+            using (Graphics g = Graphics.FromImage(leftArrowBitmap))
+            {
+                // Draw left arrow on the left bitmap
+                Point[] leftArrowPoints =
+                {
+                    new Point(arrowWidth, 0),
+                    new Point(arrowWidth, arrowHeight),
+                    new Point(0, arrowHeight / 2)
+                };
+                g.FillPolygon(brush, leftArrowPoints);
+            }
+
+            using (Graphics g = Graphics.FromImage(rightArrowBitmap))
+            {
+                // Draw right arrow on the right bitmap
+                Point[] rightArrowPoints =
+                {
+                    new Point(0, 0),
+                    new Point(0, arrowHeight),
+                    new Point(arrowWidth, arrowHeight / 2)
+                };
+                g.FillPolygon(brush, rightArrowPoints);
+            }
+        }
+
+        //
+        // Internal Events
+        //
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+
+            CheckOutOfBounds();
+        }
+
+        private void OnLeftArrowBtnDown(object sender, EventArgs e)
+        {
+            arrowTimerDirection = false;
+            controller.Shift(10);
+            tabBar.Invalidate();
+            arrowTimer.Start();
+        }
+
+        private void OnRightArrowBtnDown(object sender, EventArgs e)
+        {
+            arrowTimerDirection = true;
+            controller.Shift(-10);
+            tabBar.Invalidate();
+            arrowTimer.Start();
+        }
+
+        private void OnLeftArrowBtnUp(object sender, EventArgs e)
+        {
+            arrowTimer.Stop();
+        }
+
+        private void OnRightArrowBtnUp(object sender, EventArgs e)
+        {
+            arrowTimer.Stop();
+        }
+
+        //
+        // External Events
+        //
+        private void OnSelectedTabChanged(int index, TabItem item)
+        {
+            if(item != null)
+                item.Content.Visible = true;
+
+            if (SelectedTabChanged != null)
+                SelectedTabChanged(index, item);
+        }
+
+        private void OnUnselectedTabChanged(int index, TabItem item)
+        {
+            item.Content.Visible = false;
+
+            if(UnselectedTabChanged != null)
+                UnselectedTabChanged(index, item);
+        }
+
+        private void OnArrowTimerUpdate(object sender, EventArgs e)
+        {
+            if(!arrowTimerDirection)
+                controller.Shift(+10);
+            else    
+                controller.Shift(-10);
+            tabBar.Invalidate();
+        }
+
         private void OnTabAdded(int index, TabItem item)
         {
             if (!Controls.Contains(item.Content))
@@ -82,24 +318,52 @@ namespace VampirioCode.UI.Controls
                 container.Controls.Add(item.Content);
             }
 
-            XConsole.PrintError("event: OnTabAdded");
+            CheckOutOfBounds();
+
+            if (TabAdded != null)
+                TabAdded(index, item);
         }
 
         private void OnTabRemoved(int index, TabItem item)
         {
-            XConsole.PrintError("event: OnTabRemoved");
             container.Controls.Remove(item.Content);
+
+            CheckOutOfBounds();
+
+            if (TabRemoved != null)
+                TabRemoved(index, item);
         }
 
-        private void OnSelectedTabChanged(int index, TabItem item)
+        private void OnStartDragTab(int index, TabItem item)
         {
-            XConsole.PrintError("event: OnSelectedTabChanged");
-            item.Content.Visible = true;
+            if (StartDragTab != null)
+                StartDragTab(index, item);
+        }
+        private void OnStopDragTab(int index, TabItem item)
+        {
+            if(StopDragTab != null)
+                StopDragTab(index, item);
+        }
+        private void OnRightClickContext(TabItem item)
+        {
+            if(RightClickContext != null)
+                RightClickContext(item);
+        }
+        private void OnTabDetached(int index, TabItem item, int offsetX)
+        {
+            CheckOutOfBounds();
+
+            if (TabDetached != null)
+                TabDetached(index, item, offsetX);
         }
 
-        private void OnUnselectedTabChanged(int index, TabItem item)
+        private void OnTabItemTextChanged(int index, TabItem item)
         {
-            item.Content.Visible = false;
+            CheckOutOfBounds();
+
+            if (TabItemTextChanged != null)
+                TabItemTextChanged(index, item);
         }
+
     }
 }
