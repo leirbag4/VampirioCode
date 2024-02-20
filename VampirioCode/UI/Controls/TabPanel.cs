@@ -25,6 +25,7 @@ namespace VampirioCode.UI.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabItemCollection Items { get { return tabBar.Items; } set { tabBar.Items = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
 
+        public TabPaintMode PaintMode { get { return controller.PaintMode; } set { controller.PaintMode = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabSize SelectedTabSize  { get { return controller.SelectedTabSize; }    set { controller.SelectedTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabSize NormalTabSize    { get { return controller.NormalTabSize; }      set { controller.NormalTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)] 
         public TabSize DraggedTabSize   { get { return controller.DraggedTabSize; }     set { controller.DraggedTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -37,9 +38,12 @@ namespace VampirioCode.UI.Controls
         public TabStyle SubButtonsOverStyle     { get{ return controller.SubButtonsOverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public int SubButtonsBorderSize         { get { return controller.SubButtonsBorderSize; }   set { controller.SubButtonsBorderSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public bool CloseButtonVisible          { get { return controller.CloseButtonVisible; }     set { controller.CloseButtonVisible = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public CloseBtnBehaviour CloseButtonBehaviour { get { return controller.CloseButtonBehaviour; } set { controller.CloseButtonBehaviour = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public Color BarColor           { get { return controller.BackColor; }          set { controller.BackColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int LeftPadding          { get { return controller.LeftPadding; }        set { controller.LeftPadding = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int RightPadding         { get { return controller.RightPadding; }       set { controller.RightPadding = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
 
-        //public Color BackColor          { get { return controller.BackColor; }          set { controller.BackColor = value; } }
-        public TabTextAlign TextAlign { get { return controller.TextAlign; } set { controller.TextAlign = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabTextAlign TextAlign   { get { return controller.TextAlign; }          set { controller.TextAlign = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabShapeMode ShapeMode   { get { return controller.ShapeMode; }          set { controller.ShapeMode = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabManagement.TabSizeMode SizeMode     { get { return controller.SizeMode; }           set { controller.SizeMode = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public int MinTabWidth          { get { return controller.MinTabWidth; }        set { controller.MinTabWidth = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -57,10 +61,10 @@ namespace VampirioCode.UI.Controls
         public int MinDetachThreshold   { get { return controller.MinDetachThreshold; } set { controller.MinDetachThreshold = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
 
 
-        public int ArrowButtonBorderSize { get; set; } = 2;[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public Color ArrowButtonBackColor { get; set; } = Color.FromArgb(40, 40, 40);[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public Color ArrowButtonBorderColor { get; set; } = Color.FromArgb(25, 25, 25);[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public Color ArrowColor { get; set; } = Color.FromArgb(20, 20, 20);[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int ArrowButtonBorderSize { get { return leftArrowButton.BorderSize; } set { leftArrowButton.BorderSize = value; rightArrowButton.BorderSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public Color ArrowButtonBackColor { get { return leftArrowButton.BackColor; } set { leftArrowButton.BackColor = value; rightArrowButton.BackColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public Color ArrowButtonBorderColor { get { return leftArrowButton.BorderColor; } set { leftArrowButton.BorderColor = value; rightArrowButton.BorderColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public Color ArrowColor { get { return arrowColor; } set { arrowColor = value; CreateArrows(7, 14); } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         private int TotalArrowButtonsWidth { get { return ((arrowButtonWidth << 1) - ArrowButtonBorderSize); } }
 
         public TabBar TabBar { get { return tabBar; } }
@@ -75,6 +79,7 @@ namespace VampirioCode.UI.Controls
         private Bitmap rightArrowBitmap;
         private System.Windows.Forms.Timer arrowTimer;
         private bool arrowTimerDirection = false;
+        private Color arrowColor = Color.FromArgb(20, 20, 20);
 
         public TabPanel()
         {
@@ -88,27 +93,25 @@ namespace VampirioCode.UI.Controls
             controller =        tabBar.GetController();
 
             // Arrow Buttons
-            CreateArrows(7, 14);
             leftArrowButton =               new ButtonAdv();
             rightArrowButton =              new ButtonAdv();
             leftArrowButton.CStyle =        ButtonAdv.CustomStyle.SOLID;
             rightArrowButton.CStyle =       ButtonAdv.CustomStyle.SOLID;
-            leftArrowButton.BorderSize =    ArrowButtonBorderSize;
-            rightArrowButton.BorderSize =   ArrowButtonBorderSize;
-            leftArrowButton.BackColor =     ArrowButtonBackColor;
-            rightArrowButton.BackColor =    ArrowButtonBackColor;
-            leftArrowButton.BorderColor =   ArrowButtonBorderColor;
-            rightArrowButton.BorderColor =  ArrowButtonBorderColor;
+            leftArrowButton.BorderSize =    2;
+            rightArrowButton.BorderSize =   2;
+            leftArrowButton.BackColor =     Color.FromArgb(40, 40, 40);
+            rightArrowButton.BackColor =    Color.FromArgb(40, 40, 40);
+            leftArrowButton.BorderColor =   Color.FromArgb(25, 25, 25);
+            rightArrowButton.BorderColor =  Color.FromArgb(25, 25, 25);
             leftArrowButton.Width =         arrowButtonWidth;
             rightArrowButton.Width =        arrowButtonWidth;
             leftArrowButton.Location =      new Point(Width - TotalArrowButtonsWidth, 0);
             rightArrowButton.Location =     new Point(leftArrowButton.Right - ArrowButtonBorderSize, 0);
             leftArrowButton.Anchor =        AnchorStyles.Right | AnchorStyles.Top;
             rightArrowButton.Anchor =       AnchorStyles.Right | AnchorStyles.Top;
-            leftArrowButton.Image =         leftArrowBitmap;
-            rightArrowButton.Image =        rightArrowBitmap;
             leftArrowButton.Visible =       false;
             rightArrowButton.Visible =      false;
+            CreateArrows(7, 14);
 
             // Container
             container = new Control();
@@ -200,6 +203,11 @@ namespace VampirioCode.UI.Controls
         //
         // Utils
         //
+        public void SetSkin(TabSkin skin)
+        {
+            tabBar.SetSkin(skin);
+        }
+
         private void CheckOutOfBounds()
         {
             BackColor = Color.FromArgb(30, 30, 30);
@@ -225,8 +233,10 @@ namespace VampirioCode.UI.Controls
         private void CreateArrows(int arrowWidth, int arrowHeight)
         {
             // Create bitmaps for arrows
-            leftArrowBitmap =   TabUtils.CreateLeftArrow(arrowWidth, arrowHeight, ArrowColor);
-            rightArrowBitmap =  TabUtils.CreateRightArrow(arrowWidth, arrowHeight, ArrowColor);
+            leftArrowBitmap =           TabUtils.CreateLeftArrow(arrowWidth, arrowHeight, arrowColor);
+            rightArrowBitmap =          TabUtils.CreateRightArrow(arrowWidth, arrowHeight, arrowColor);
+            leftArrowButton.Image =     leftArrowBitmap;
+            rightArrowButton.Image =    rightArrowBitmap;
         }
 
         //

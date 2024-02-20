@@ -29,6 +29,8 @@ namespace VampirioCode.Tests
 
             tabPanel.Add(CreateItem());
             tabPanel.Add(CreateItem());
+            tabPanel.Add(CreateItem());
+            tabPanel.Add(CreateItem());
         }
 
         private void OnCloseTabInvoked(int index, TabItem item)
@@ -75,6 +77,14 @@ namespace VampirioCode.Tests
         {
             tabPanel.SelectedTab.Text = tabNameInput.Text;
             tabPanel.Invalidate();
+        }
+
+        private void OnSkinPressed(object sender, EventArgs e)
+        {
+            int skinId = int.Parse((sender as Button).Tag.ToString());
+            TabSkin skin = (TabSkin)skinId;
+
+            tabPanel.SetSkin(skin);
         }
     }
 }

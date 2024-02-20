@@ -128,8 +128,16 @@ namespace VampirioCode.UI.Controls.TabManagement
             else if(state == TabState.Up)
                 VampirioGraphics.FillRect(g, Color.Blue, Color.Red, 1, x, y, width, height);*/
 
-            if(CloseButtonVisible)
-                closeButton.Paint(g, x, y);
+            if (controller.CloseButtonBehaviour == CloseBtnBehaviour.ActiveAlways)
+            {
+                if (CloseButtonVisible)
+                    closeButton.Paint(g, x, y);
+            }
+            else if (controller.CloseButtonBehaviour == CloseBtnBehaviour.ActiveOnSelect)
+            {
+                if (CloseButtonVisible && ((state == TabState.Selected) || (state == TabState.Over)))
+                    closeButton.Paint(g, x, y);
+            }
 
         }
 

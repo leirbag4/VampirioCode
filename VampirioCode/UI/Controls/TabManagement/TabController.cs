@@ -37,7 +37,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public int Height { get { return height; } }
 
-        public PaintMode PaintMode { get; set; } = PaintMode.UserPaintOver;
+        public TabPaintMode PaintMode { get; set; } = TabPaintMode.UserPaintOver;
         public TabSize SelectedTabSize { get; set; }
         public TabSize NormalTabSize { get; set; }
         public TabSize DraggedTabSize { get; set; }
@@ -49,8 +49,11 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabStyle SubButtonsNormalStyle { get; }
         public TabStyle SubButtonsOverStyle { get; }
         public int SubButtonsBorderSize { get; set; } = 1;
-        public bool CloseButtonVisible { get; set; } = true;
+        public bool CloseButtonVisible { get; set; } = false;
+        public CloseBtnBehaviour CloseButtonBehaviour { get; set; } = CloseBtnBehaviour.ActiveOnSelect;
         public Color BackColor { get; set; }
+        public int LeftPadding { get { return leftPadding; } set { leftPadding = value; foreach (Tab tab in tabs) tab.LeftPadding = leftPadding; } }
+        public int RightPadding { get { return rightPadding; } set { rightPadding = value; foreach (Tab tab in tabs) tab.RightPadding = rightPadding; } }
         public TabTextAlign TextAlign { get; set; } = TabTextAlign.Center;
         public TabShapeMode ShapeMode { get; set; } = TabShapeMode.Box;
         public TabSizeMode SizeMode { get; set; } = TabSizeMode.WrapToText;
@@ -115,13 +118,15 @@ namespace VampirioCode.UI.Controls.TabManagement
         private int selTabPreviousX = 0;                        // Register the start x position of the selected tab on MouseDown or Start Drag to calculate in which direction it is moving. On every Update loop it is reset again.
         private Tab prevSelectedTab = null;                     // Used to trigger events on tab changed
         private int savedTotalWidth = 0;                        // Will be calculated only at StartDrag event in order to reduce compute time
-        private int prevSelectedIndexTab = 0;                        // Will be calculated in conjunction with StartDrag and StopDrag event to check if index position changed
+        private int prevSelectedIndexTab = 0;                   // Will be calculated in conjunction with StartDrag and StopDrag event to check if index position changed
         private Font font;
         private bool freezeMoveLeft = false;
         private bool freezeMoveRight = false;
         private int minTabWidth = 60;
         private Bitmap closeBitmap = null;
         private Tab mdownRemTab = null;
+        private int leftPadding = 5;
+        private int rightPadding = 5;
 
         // Detach
         private int detachStartX = 0;
@@ -134,19 +139,19 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             SetFont("Verdana", 14, FontStyle.Regular);
 
-            BackColor = Color.FromArgb(60, 60, 60);
+            BackColor = CColor(60, 60, 60);
 
-            SelectedTabSize = new TabSize(0, 0);
-            NormalTabSize = new TabSize(2, 0);
-            DraggedTabSize = new TabSize(1, 0);
+            SelectedTabSize =   new TabSize(0, 0);
+            NormalTabSize =     new TabSize(2, 0);
+            DraggedTabSize =    new TabSize(1, 0);
 
-            SelectedStyle = new TabStyle(CColor(49, 49, 49), Color.Silver, CColor(31, 31, 31));
-            NormalStyle = new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
-            OverStyle = new TabStyle(CColor(76, 76, 76), Color.Silver, CColor(57, 57, 57));
+            SelectedStyle =     new TabStyle(CColor(49, 49, 49), Color.Silver, CColor(31, 31, 31));
+            NormalStyle =       new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
+            OverStyle =         new TabStyle(CColor(76, 76, 76), Color.Silver, CColor(57, 57, 57));
 
-            SubButtonsSelectedStyle = new TabStyle(CColor(49, 49, 49), Color.Silver, CColor(31, 31, 31));
-            SubButtonsNormalStyle = new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
-            SubButtonsOverStyle = new TabStyle(CColor(86, 86, 86), Color.Silver, CColor(67, 67, 67));
+            SubButtonsSelectedStyle =   new TabStyle(CColor(49, 49, 49), Color.Silver, CColor(31, 31, 31));
+            SubButtonsNormalStyle =     new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
+            SubButtonsOverStyle =       new TabStyle(CColor(86, 86, 86), Color.Silver, CColor(67, 67, 67));
 
             closeBitmap = TabUtils.CreateX(10, 10, CColor(200, 200, 200));
 
@@ -185,13 +190,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public void Insert(int index, TabItem item)
         {
-            //Tab tab = new Tab(item, font, this);
             Tab tab = item.tab;
-            //tab.Setup(this, font, TabHeight);
-            tab.Setup(this, font, height - NormalTabSize.posY - NormalTabSize.subHeight);
+            tab.Setup(this, font, height - NormalTabSize.posY - NormalTabSize.subHeight, leftPadding, rightPadding);
             item.Setup(this, closeBitmap);
-            //tab.Width = TabWidth;
-            //item.tab.height = TabHeight;
             int totals = TotalTabs;
 
             // store current selected tab

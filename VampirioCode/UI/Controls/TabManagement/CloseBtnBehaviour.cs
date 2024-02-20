@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace VampirioCode.UI.Controls.TabManagement
 {
-    public enum PaintMode
+    public enum CloseBtnBehaviour
     {
-        UserPaintAll,
-        UserPaintOver
+        ActiveAlways,
+        ActiveOnSelect
     }
 }

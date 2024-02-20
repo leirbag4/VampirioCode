@@ -63,11 +63,13 @@ namespace VampirioCode.UI.Controls.TabManagement
             this.font =         null;
         }
 
-        public void Setup(TabController controller, Font font, int height)
+        public void Setup(TabController controller, Font font, int height, int leftPadding, int rightPadding)
         {
             this.controller =   controller;
             this.font =         font;
             this.Height =       height;
+            this.LeftPadding =  leftPadding;
+            this.RightPadding = rightPadding;
 
             if (pendingAssignments)
             {
@@ -326,7 +328,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
 
 
-            if (controller.PaintMode == PaintMode.UserPaintAll)
+            if (controller.PaintMode == TabPaintMode.UserPaintAll)
             {
                 Item.OnUpdatePosition();
                 Item.Paint(g, _x_, Y, Width, Height, TabState);
@@ -363,7 +365,7 @@ namespace VampirioCode.UI.Controls.TabManagement
                 else if (controller.TextAlign == TabTextAlign.Right)    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
             }
 
-            if (controller.PaintMode == PaintMode.UserPaintOver)
+            if (controller.PaintMode == TabPaintMode.UserPaintOver)
             {
                 Item.OnUpdatePosition();
                 Item.Paint(g, _x_, Y, Width, Height, TabState);

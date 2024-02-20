@@ -28,7 +28,7 @@ namespace VampirioCode.UI.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabItemCollection Items { get { return items; } set { items = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
 
-        
+        public TabPaintMode PaintMode { get { return controller.PaintMode; } set { controller.PaintMode = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabSize SelectedTabSize { get { return controller.SelectedTabSize; } set { controller.SelectedTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabSize NormalTabSize { get { return controller.NormalTabSize; } set { controller.NormalTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabSize DraggedTabSize { get { return controller.DraggedTabSize; } set { controller.DraggedTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -41,7 +41,10 @@ namespace VampirioCode.UI.Controls
         public TabStyle SubButtonsOverStyle { get{ return controller.SubButtonsOverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public int SubButtonsBorderSize { get { return controller.SubButtonsBorderSize; } set { controller.SubButtonsBorderSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public bool CloseButtonVisible { get { return controller.CloseButtonVisible; } set { controller.CloseButtonVisible = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public CloseBtnBehaviour CloseButtonBehaviour { get { return controller.CloseButtonBehaviour; } set { controller.CloseButtonBehaviour = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public Color BackColor { get { return controller.BackColor; } set { controller.BackColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int LeftPadding { get { return controller.LeftPadding; } set { controller.LeftPadding = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int RightPadding { get { return controller.RightPadding; } set { controller.RightPadding = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabTextAlign TextAlign { get { return controller.TextAlign; } set { controller.TextAlign = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabShapeMode ShapeMode { get { return controller.ShapeMode; } set { controller.ShapeMode = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabManagement.TabSizeMode SizeMode { get { return controller.SizeMode; } set { controller.SizeMode = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -159,6 +162,241 @@ namespace VampirioCode.UI.Controls
             Invalidate();
         }
 
+
+        // Skin
+        public void SetSkin(TabSkin skin)
+        {
+            // --------------------------
+            //          DarkRect
+            // --------------------------
+            if (skin == TabSkin.DarkRect)
+            {
+
+                // shape and text mode
+                ShapeMode = TabShapeMode.Box;
+                SizeMode =  TabManagement.TabSizeMode.WrapToText;
+                TextAlign = TabTextAlign.Center;
+
+                // close button
+                CloseButtonVisible = false;
+                PaintMode = TabPaintMode.UserPaintOver;                 // Used by closeButton. Irrelevant if [CloseButtonVisible = false]
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveAlways;  // Used by closeButton. Irrelevant if [CloseButtonVisible = false]
+
+                // min and max
+                MinTabWidth = 60;
+                MaxTabWidth = 160;
+
+                // padding
+                LeftPadding =   5;
+                RightPadding =  5;
+
+                // position and anim
+                SelectedTabSize =   new TabSize(0, 0);
+                NormalTabSize =     new TabSize(2, 0);
+                DraggedTabSize =    new TabSize(1, 0);
+
+                // bar color
+                BackColor = CColor(60, 60, 60);
+
+                // tab color and border
+                TabBorderSize = 2;
+
+                SelectedStyle.BackColor =       CColor(49);
+                SelectedStyle.BorderColor =     CColor(31);
+                SelectedStyle.TextColor =       CColor(192);
+
+                NormalStyle.BackColor =         CColor(68);
+                NormalStyle.BorderColor =       CColor(51);
+                NormalStyle.TextColor =         CColor(192);
+
+                OverStyle.BackColor =           CColor(76);
+                OverStyle.BorderColor =         CColor(57);
+                OverStyle.TextColor =           CColor(192);
+
+                // sub buttons or close button
+                SubButtonsBorderSize = 1;
+
+                SubButtonsSelectedStyle.BackColor =     CColor(49);
+                SubButtonsSelectedStyle.BorderColor =   CColor(31);
+                SubButtonsSelectedStyle.TextColor =     CColor(192);
+
+                SubButtonsNormalStyle.BackColor =       CColor(68);
+                SubButtonsNormalStyle.BorderColor =     CColor(51);
+                SubButtonsNormalStyle.TextColor =       CColor(192);
+
+                SubButtonsOverStyle.BackColor =         CColor(86);
+                SubButtonsOverStyle.BorderColor =       CColor(67);
+                SubButtonsOverStyle.TextColor =         CColor(192);
+
+            }
+            // --------------------------
+            //       DarkRectWClose
+            // --------------------------
+            else if (skin == TabSkin.DarkRectWClose)
+            { 
+                SetSkin(TabSkin.DarkRect);
+
+                // shape and text mode
+                TextAlign = TabTextAlign.Left;
+
+                // close button
+                CloseButtonVisible = true;
+                PaintMode = TabPaintMode.UserPaintOver;
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveAlways;
+
+                // padding
+                LeftPadding =   5;
+                RightPadding =  5;
+            }
+            // --------------------------
+            //     DarkRectWCloseSel
+            // --------------------------
+            else if (skin == TabSkin.DarkRectWCloseSel)
+            { 
+                SetSkin(TabSkin.DarkRectWClose);
+
+                // close button
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
+            }
+            // --------------------------
+            //        DarkRectExtra
+            // --------------------------
+            else if (skin == TabSkin.DarkRectExtra)
+            { 
+                SetSkin(TabSkin.DarkRect);
+
+                // shape and text mode
+                ShapeMode = TabShapeMode.BoxExtraBorders;
+            }
+            // --------------------------
+            //    DarkRectExtraWClose
+            // --------------------------
+            else if (skin == TabSkin.DarkRectExtraWClose)
+            { 
+                SetSkin(TabSkin.DarkRect);
+
+                // shape and text mode
+                ShapeMode = TabShapeMode.BoxExtraBorders;
+                TextAlign = TabTextAlign.Left;
+
+                // close button
+                CloseButtonVisible = true;
+                PaintMode = TabPaintMode.UserPaintOver;
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveAlways;
+
+                // padding
+                LeftPadding =   5;
+                RightPadding =  5;
+            }
+            // --------------------------
+            //   DarkRectExtraWCloseSel
+            // --------------------------
+            else if (skin == TabSkin.DarkRectExtraWCloseSel)
+            { 
+                SetSkin(TabSkin.DarkRectExtraWClose);
+
+                // close button
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
+            }
+            // --------------------------
+            //          DarkRound
+            // --------------------------
+            else if (skin == TabSkin.DarkRound)
+            {
+                SetSkin(TabSkin.DarkRect);
+
+                // shape and text mode
+                ShapeMode = TabShapeMode.RoundBox;
+            }
+            // --------------------------
+            //       DarkRoundWClose
+            // --------------------------
+            else if (skin == TabSkin.DarkRoundWClose)
+            {
+                SetSkin(TabSkin.DarkRect);
+
+                // shape and text mode
+                ShapeMode = TabShapeMode.RoundBox;
+                TextAlign = TabTextAlign.Left;
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveAlways;
+
+                // close button
+                CloseButtonVisible = true;
+                PaintMode = TabPaintMode.UserPaintOver;
+
+                // padding
+                LeftPadding =   5;
+                RightPadding =  5;
+
+                // sub buttons or close button
+                SubButtonsBorderSize = 0;
+            }
+            // --------------------------
+            //     DarkRoundWCloseSel
+            // --------------------------
+            else if (skin == TabSkin.DarkRoundWCloseSel)
+            {
+                SetSkin(TabSkin.DarkRoundWClose);
+
+                // shape and text mode
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
+            }
+
+
+
+            // --------------------------
+            //       DarkRectThin
+            // --------------------------
+            else if (skin == TabSkin.DarkRectThin)
+            {
+                SetSkin(TabSkin.DarkRect);
+
+                // tab color and border
+                TabBorderSize = 1;
+            }
+            // --------------------------
+            //     DarkRectThinWClose
+            // --------------------------
+            else if (skin == TabSkin.DarkRectThinWClose)
+            {
+                SetSkin(TabSkin.DarkRectThin);
+
+                // shape and text mode
+                TextAlign = TabTextAlign.Left;
+
+                // close button
+                CloseButtonVisible = true;
+                PaintMode = TabPaintMode.UserPaintOver;
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveAlways;
+
+                // padding
+                LeftPadding =   5;
+                RightPadding =  5;
+            }
+            // --------------------------
+            //   DarkRectThinWCloseSel
+            // --------------------------
+            else if (skin == TabSkin.DarkRectThinWCloseSel)
+            {
+                SetSkin(TabSkin.DarkRectThinWClose);
+
+                // shape and text mode
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
+            }
+
+            XConsole.Println("ente: " + skin);
+            Invalidate();
+        }
+
+        private Color CColor(int red, int green, int blue)
+        { 
+            return Color.FromArgb(red, green, blue);
+        }
+
+        private Color CColor(int color)
+        {
+            return Color.FromArgb(color, color, color);
+        }
 
         // Controller Events
         private void OnSelectedTabChanged(int index, TabItem item)
