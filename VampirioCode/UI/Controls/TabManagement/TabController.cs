@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.UI.VampGraphics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace VampirioCode.UI.Controls.TabManagement
 {
@@ -32,9 +33,11 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event TabIndexChangedEvent TabIndexChanged;
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
+        public event CloseTabInvokedEvent CloseTabInvoked;
 
         public int Height { get { return height; } }
 
+        public PaintMode PaintMode { get; set; } = PaintMode.UserPaintOver;
         public TabSize SelectedTabSize { get; set; }
         public TabSize NormalTabSize { get; set; }
         public TabSize DraggedTabSize { get; set; }
@@ -42,6 +45,11 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabStyle SelectedStyle { get; }
         public TabStyle NormalStyle { get; }
         public TabStyle OverStyle { get; }
+        public TabStyle SubButtonsSelectedStyle { get; }
+        public TabStyle SubButtonsNormalStyle { get; }
+        public TabStyle SubButtonsOverStyle { get; }
+        public int SubButtonsBorderSize { get; set; } = 1;
+        public bool CloseButtonVisible { get; set; } = true;
         public Color BackColor { get; set; }
         public TabTextAlign TextAlign { get; set; } = TabTextAlign.Center;
         public TabShapeMode ShapeMode { get; set; } = TabShapeMode.Box;
@@ -112,6 +120,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         private bool freezeMoveLeft = false;
         private bool freezeMoveRight = false;
         private int minTabWidth = 60;
+        private Bitmap closeBitmap = null;
+        private Tab mdownRemTab = null;
 
         // Detach
         private int detachStartX = 0;
@@ -130,9 +140,15 @@ namespace VampirioCode.UI.Controls.TabManagement
             NormalTabSize = new TabSize(2, 0);
             DraggedTabSize = new TabSize(1, 0);
 
-            SelectedStyle = new TabStyle(Color.FromArgb(49, 49, 49), Color.Silver, Color.FromArgb(31, 31, 31));
-            NormalStyle = new TabStyle(Color.FromArgb(68, 68, 68), Color.Silver, Color.FromArgb(51, 51, 51));
-            OverStyle = new TabStyle(Color.FromArgb(76, 76, 76), Color.Silver, Color.FromArgb(57, 57, 57));
+            SelectedStyle = new TabStyle(CColor(49, 49, 49), Color.Silver, CColor(31, 31, 31));
+            NormalStyle = new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
+            OverStyle = new TabStyle(CColor(76, 76, 76), Color.Silver, CColor(57, 57, 57));
+
+            SubButtonsSelectedStyle = new TabStyle(CColor(49, 49, 49), Color.Silver, CColor(31, 31, 31));
+            SubButtonsNormalStyle = new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
+            SubButtonsOverStyle = new TabStyle(CColor(86, 86, 86), Color.Silver, CColor(67, 67, 67));
+
+            closeBitmap = TabUtils.CreateX(10, 10, CColor(200, 200, 200));
 
 #if USE_AUTO_SHIFT_TIMERS
             timer = new System.Windows.Forms.Timer();
@@ -173,7 +189,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             Tab tab = item.tab;
             //tab.Setup(this, font, TabHeight);
             tab.Setup(this, font, height - NormalTabSize.posY - NormalTabSize.subHeight);
-            item.Setup(this);
+            item.Setup(this, closeBitmap);
             //tab.Width = TabWidth;
             //item.tab.height = TabHeight;
             int totals = TotalTabs;
@@ -354,8 +370,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
 
             // Set new size
-            this.width =    width;
-            this.height =   height;
+            this.width = width;
+            this.height = height;
 
 
             // Recalculate tabs height
@@ -379,7 +395,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 tab.OnMouseDown(mouseX, mouseY);
             }
-            //XConsole.Println("mouse down");
+
+            // These are events triggered by internal subItems of the tabs or tabItems that can't be
+            // triggered for example while looping on the foreach array because if you trigger a closeTab event
+            // and the user delete the tab, the foreach loop will crash because that tab won't exist anymore
+            CheckMouseDownSubEvent();
         }
 
         // Triggered by the parent container when the mouse moves
@@ -468,7 +488,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         private void OnDraggingAnimEnds(Tab tab)
         {
-            SetTabHSize(tab, SelectedTabSize);   
+            SetTabHSize(tab, SelectedTabSize);
         }
 
         public void StartDragging(Tab selTab)
@@ -511,6 +531,22 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (StopDragTab != null)
                 StopDragTab(selectedTab.Index(), selectedTab.Item);
+        }
+
+        private void CheckMouseDownSubEvent()
+        {
+            if (mdownRemTab != null)
+            { 
+                if (CloseTabInvoked != null)
+                    CloseTabInvoked(mdownRemTab.Index(), mdownRemTab.Item);
+
+                mdownRemTab = null;
+            }
+        }
+
+        public void CloseTabInvoke(Tab tab)
+        {
+            mdownRemTab = tab;
         }
 
         public void TabTextChanged(Tab tab)
@@ -613,6 +649,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             //selTabPreviousX = LocalToGlobal(SelectedTab.x);
 
             selectedTab.Select();
+        }
+
+        private Color CColor(int red, int green, int blue)
+        { 
+            return Color.FromArgb(red, green, blue);
         }
 
         private void Clamp()

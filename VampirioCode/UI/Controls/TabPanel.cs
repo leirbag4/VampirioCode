@@ -20,6 +20,7 @@ namespace VampirioCode.UI.Controls
         public event RightClickContextEvent RightClickContext;
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
+        public event CloseTabInvokedEvent CloseTabInvoked;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabItemCollection Items { get { return tabBar.Items; } set { tabBar.Items = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -31,6 +32,12 @@ namespace VampirioCode.UI.Controls
         public TabStyle SelectedStyle   { get { return controller.SelectedStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabStyle NormalStyle     { get { return controller.NormalStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabStyle OverStyle       { get { return controller.OverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SubButtonsSelectedStyle { get{ return controller.SubButtonsSelectedStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SubButtonsNormalStyle   { get{ return controller.SubButtonsNormalStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SubButtonsOverStyle     { get{ return controller.SubButtonsOverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int SubButtonsBorderSize         { get { return controller.SubButtonsBorderSize; }   set { controller.SubButtonsBorderSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool CloseButtonVisible          { get { return controller.CloseButtonVisible; }     set { controller.CloseButtonVisible = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+
         //public Color BackColor          { get { return controller.BackColor; }          set { controller.BackColor = value; } }
         public TabTextAlign TextAlign { get { return controller.TextAlign; } set { controller.TextAlign = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabShapeMode ShapeMode   { get { return controller.ShapeMode; }          set { controller.ShapeMode = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -120,6 +127,7 @@ namespace VampirioCode.UI.Controls
             tabBar.RightClickContext +=     OnRightClickContext;
             tabBar.TabDetached +=           OnTabDetached;
             tabBar.TabItemTextChanged +=    OnTabItemTextChanged;
+            tabBar.CloseTabInvoked +=       OnCloseTabInvoked;
 
             leftArrowButton.MouseDown +=    OnLeftArrowBtnDown;
             rightArrowButton.MouseDown +=   OnRightArrowBtnDown;
@@ -217,34 +225,8 @@ namespace VampirioCode.UI.Controls
         private void CreateArrows(int arrowWidth, int arrowHeight)
         {
             // Create bitmaps for arrows
-            leftArrowBitmap =   new Bitmap(arrowWidth, arrowHeight);
-            rightArrowBitmap =  new Bitmap(arrowWidth, arrowHeight);
-
-            SolidBrush brush = new SolidBrush(ArrowColor);
-
-            using (Graphics g = Graphics.FromImage(leftArrowBitmap))
-            {
-                // Draw left arrow on the left bitmap
-                Point[] leftArrowPoints =
-                {
-                    new Point(arrowWidth, 0),
-                    new Point(arrowWidth, arrowHeight),
-                    new Point(0, arrowHeight / 2)
-                };
-                g.FillPolygon(brush, leftArrowPoints);
-            }
-
-            using (Graphics g = Graphics.FromImage(rightArrowBitmap))
-            {
-                // Draw right arrow on the right bitmap
-                Point[] rightArrowPoints =
-                {
-                    new Point(0, 0),
-                    new Point(0, arrowHeight),
-                    new Point(arrowWidth, arrowHeight / 2)
-                };
-                g.FillPolygon(brush, rightArrowPoints);
-            }
+            leftArrowBitmap =   TabUtils.CreateLeftArrow(arrowWidth, arrowHeight, ArrowColor);
+            rightArrowBitmap =  TabUtils.CreateRightArrow(arrowWidth, arrowHeight, ArrowColor);
         }
 
         //
@@ -366,6 +348,12 @@ namespace VampirioCode.UI.Controls
 
             if (TabItemTextChanged != null)
                 TabItemTextChanged(index, item);
+        }
+
+        private void OnCloseTabInvoked(int index, TabItem item)
+        {
+            if (CloseTabInvoked != null)
+                CloseTabInvoked(index, item);
         }
 
     }

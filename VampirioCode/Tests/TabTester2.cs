@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.UI;
+using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TabManagement;
 
 namespace VampirioCode.Tests
@@ -24,10 +25,17 @@ namespace VampirioCode.Tests
         {
             base.OnLoad(e);
 
-
+            tabPanel.CloseTabInvoked += OnCloseTabInvoked;
 
             tabPanel.Add(CreateItem());
             tabPanel.Add(CreateItem());
+        }
+
+        private void OnCloseTabInvoked(int index, TabItem item)
+        {
+            XConsole.Println("wants to close: " + item.Text);
+
+            tabPanel.Remove(item);
         }
 
         private int counter = 0;

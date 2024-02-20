@@ -23,6 +23,7 @@ namespace VampirioCode.UI.Controls
         public event RightClickContextEvent RightClickContext;
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
+        public event CloseTabInvokedEvent CloseTabInvoked;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabItemCollection Items { get { return items; } set { items = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -35,6 +36,11 @@ namespace VampirioCode.UI.Controls
         public TabStyle SelectedStyle { get { return controller.SelectedStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabStyle NormalStyle { get { return controller.NormalStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabStyle OverStyle { get { return controller.OverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SubButtonsSelectedStyle { get{ return controller.SubButtonsSelectedStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SubButtonsNormalStyle { get{ return controller.SubButtonsNormalStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SubButtonsOverStyle { get{ return controller.SubButtonsOverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int SubButtonsBorderSize { get { return controller.SubButtonsBorderSize; } set { controller.SubButtonsBorderSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool CloseButtonVisible { get { return controller.CloseButtonVisible; } set { controller.CloseButtonVisible = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public Color BackColor { get { return controller.BackColor; } set { controller.BackColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabTextAlign TextAlign { get { return controller.TextAlign; } set { controller.TextAlign = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabShapeMode ShapeMode { get { return controller.ShapeMode; } set { controller.ShapeMode = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -74,6 +80,7 @@ namespace VampirioCode.UI.Controls
             controller.TabIndexChanged +=       OnTabIndexChanged;
             controller.TabDetached +=           OnTabDetached;
             controller.TabItemTextChanged +=    OnTabItemTextChanged;
+            controller.CloseTabInvoked +=       OnCloseTabInvoked;
 #if USE_AUTO_SHIFT_TIMERS
             controller.TimerRepaintNeeded +=    OnTimerRepaintNeeded;
 #endif
@@ -88,8 +95,6 @@ namespace VampirioCode.UI.Controls
 
             DoubleBuffered = true;
         }
-
-        
 
         public TabController GetController()
         {
@@ -253,6 +258,12 @@ namespace VampirioCode.UI.Controls
                 TabItemTextChanged(index, item);
 
             Invalidate();
+        }
+
+        private void OnCloseTabInvoked(int index, TabItem item)
+        {
+            if (CloseTabInvoked != null)
+                CloseTabInvoked(index, item);
         }
 
         protected override void OnMouseEnter(EventArgs e)

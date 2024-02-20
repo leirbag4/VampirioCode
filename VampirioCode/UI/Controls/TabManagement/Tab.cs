@@ -31,7 +31,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabItem Item { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
-        
+        public TabState TabState { get { if (Selected) return TabState.Selected; else if (state == State.Over) return TabState.Over; else return TabState.Up; } }
+
 
         private int _width;
         private State state = State.Up;
@@ -179,6 +180,10 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             if (IsInside(mx, my))
             {
+                Item.OnUpdatePosition();
+                if (Item.OnMouseDown(mx - X, my))
+                    return;
+
                 dragOffsetPointX = mx - X;
 
                 startDragX = mx;
@@ -204,10 +209,14 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
             else if (IsInside(mx, my))
             {
+                Item.OnUpdatePosition();
+                Item.OnMouseMove(mx - X, my, true);
                 state = State.Over;
             }
             else
             {
+                Item.OnUpdatePosition();
+                Item.OnMouseMove(mx - X, my, false);
                 state = State.Up;
             }
         }
@@ -220,11 +229,14 @@ namespace VampirioCode.UI.Controls.TabManagement
                 controller.StopDragging();
             }
 
+            Item.OnMouseUp(mx - X, my);
             state = State.Up;
         }
 
         public void OnMouseLeave()
         {
+            Item.OnMouseLeave();
+
             if (!Selected)
                 state = State.Up;
         }
@@ -262,10 +274,10 @@ namespace VampirioCode.UI.Controls.TabManagement
             dragging = false;
         }
 
-        public void Update()
+        /*public void Update()
         {
-
-        }
+            
+        }*/
 
         public void Paint(Graphics g, bool isFirst, bool isLast)
         {
@@ -313,6 +325,14 @@ namespace VampirioCode.UI.Controls.TabManagement
                     style = controller.OverStyle;
             }
 
+
+            if (controller.PaintMode == PaintMode.UserPaintAll)
+            {
+                Item.OnUpdatePosition();
+                Item.Paint(g, _x_, Y, Width, Height, TabState);
+                return;
+            }
+
             if (controller.ShapeMode == TabShapeMode.Box)
             {
                 int _border = borderSize;
@@ -322,47 +342,38 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                 VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width + _border, Height);
 
-                if(controller.TextAlign == TabTextAlign.Center)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1) + (_border >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
-                else if (controller.TextAlign == TabTextAlign.Left)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
-                else if (controller.TextAlign == TabTextAlign.Right)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
+                     if (controller.TextAlign == TabTextAlign.Center)   VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1) + (_border >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
+                else if (controller.TextAlign == TabTextAlign.Left)     VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
+                else if (controller.TextAlign == TabTextAlign.Right)    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
             }
             else if (controller.ShapeMode == TabShapeMode.BoxExtraBorders)
             {
                 VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width, Height);
 
-                if (controller.TextAlign == TabTextAlign.Center)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
-                else if (controller.TextAlign == TabTextAlign.Left)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
-                else if (controller.TextAlign == TabTextAlign.Right)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
+                    if (controller.TextAlign == TabTextAlign.Center)    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
+                else if (controller.TextAlign == TabTextAlign.Left)     VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
+                else if (controller.TextAlign == TabTextAlign.Right)    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
             }
             else if (controller.ShapeMode == TabShapeMode.RoundBox)
             {
                 VampirioGraphics.FillRoundRect(g, style.BackColor, style.BorderColor, 2, _x_, Y, Width, Height);
 
-                if (controller.TextAlign == TabTextAlign.Center)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
-                else if (controller.TextAlign == TabTextAlign.Left)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
-                else if (controller.TextAlign == TabTextAlign.Right)
-                    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
+                     if (controller.TextAlign == TabTextAlign.Center)   VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
+                else if (controller.TextAlign == TabTextAlign.Left)     VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
+                else if (controller.TextAlign == TabTextAlign.Right)    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
+            }
+
+            if (controller.PaintMode == PaintMode.UserPaintOver)
+            {
+                Item.OnUpdatePosition();
+                Item.Paint(g, _x_, Y, Width, Height, TabState);
             }
 
 #if TAB_CONTROLLER_DEBUG
             //SizeF fontBounds = g.MeasureString(txt, font, InnerWidth);
             SizeF fontBounds = g.MeasureString(txt, font, PointF.Empty, VampirioGraphics.GetFormat(ContentAlignment.MiddleCenter));
             VampirioGraphics.FillRect(g, Color.Gray, _x_ + (Width >> 1) - ((int)fontBounds.Width >> 1), Y + (Height >> 1) - ((int)fontBounds.Height >> 1), (int)fontBounds.Width, (int)fontBounds.Height);
-#endif
 
-
-
-            //VampirioGraphics.DrawString(g, font, txt, Color.Black, _x_ + Padding, Y, InnerWidth, Height, ContentAlignment.MiddleCenter);
-
-#if TAB_CONTROLLER_DEBUG
             VampirioGraphics.FillRect(g, Color.Black, _x_ + (Width >> 1) - 1, Y, 3, 4);
 
             if(Selected)
