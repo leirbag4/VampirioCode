@@ -11,7 +11,7 @@ namespace VampirioCode.Command.MSVC
 {
     public class MSVC : BaseCmdProgram
     {
-        public static string ProgramPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\bin\Hostx64\x64\cl.exe";
+        public static string ProgramPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe"; // 14.38.33130 [working]
 
         /// <summary>
         /// Compile the program using the src .cpp files, optional headers, libraries, etc.

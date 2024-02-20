@@ -76,12 +76,12 @@ namespace VampirioCode.Builder
             List<string> sourceFiles = new string[] { ProgramFile }.ToList();
 
             List<string> includes = new string[] {
-                @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include",
+                @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include",
                 @"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt"
             }.ToList();
 
             List<string> libPaths = new string[] {
-                @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x64",
+                @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\lib\x64",
                 @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64",
                 @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64"
             }.ToList();
