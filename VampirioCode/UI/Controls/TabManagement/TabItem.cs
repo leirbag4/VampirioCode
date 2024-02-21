@@ -17,8 +17,10 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabStyle NormalStyle { get; set; } = null;
         public TabStyle OverStyle { get; set; } = null;
         public TabStyle SubButtonsSelectedStyle { get; set; } = null;
+        public TabStyle SubButtonsSelectedOverStyle { get; set; } = null;
         public TabStyle SubButtonsNormalStyle { get; set; } = null;
         public TabStyle SubButtonsOverStyle { get; set; } = null;
+        public TabStyle SubButtonsParentOverStyle { get; set; }
         public bool CloseButtonVisible { get { return controller.CloseButtonVisible; } }
         public int BorderSize { get; set; } = -1;
         public bool Selected { get { return tab.Selected; } }

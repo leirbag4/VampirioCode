@@ -37,8 +37,10 @@ namespace VampirioCode.UI.Controls
         public TabStyle NormalStyle { get { return controller.NormalStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabStyle OverStyle { get { return controller.OverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabStyle SubButtonsSelectedStyle { get{ return controller.SubButtonsSelectedStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SubButtonsSelectedOverStyle { get{ return controller.SubButtonsSelectedOverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabStyle SubButtonsNormalStyle { get{ return controller.SubButtonsNormalStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabStyle SubButtonsOverStyle { get{ return controller.SubButtonsOverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabStyle SubButtonsParentOverStyle { get { return controller.SubButtonsParentOverStyle; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public int SubButtonsBorderSize { get { return controller.SubButtonsBorderSize; } set { controller.SubButtonsBorderSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public bool CloseButtonVisible { get { return controller.CloseButtonVisible; } set { controller.CloseButtonVisible = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public CloseBtnBehaviour CloseButtonBehaviour { get { return controller.CloseButtonBehaviour; } set { controller.CloseButtonBehaviour = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -231,17 +233,25 @@ namespace VampirioCode.UI.Controls
                 // sub buttons or close button
                 SubButtonsBorderSize = 1;
 
-                SubButtonsSelectedStyle.BackColor =     CColor(49);
-                SubButtonsSelectedStyle.BorderColor =   CColor(31);
-                SubButtonsSelectedStyle.TextColor =     CColor(192);
+                SubButtonsSelectedStyle.BackColor =         CColor(49);
+                SubButtonsSelectedStyle.BorderColor =       CColor(40);
+                SubButtonsSelectedStyle.TextColor =         CColor(192);
 
-                SubButtonsNormalStyle.BackColor =       CColor(68);
-                SubButtonsNormalStyle.BorderColor =     CColor(51);
-                SubButtonsNormalStyle.TextColor =       CColor(192);
+                SubButtonsSelectedOverStyle.BackColor =     CColor(60);
+                SubButtonsSelectedOverStyle.BorderColor =   CColor(38);
+                SubButtonsSelectedOverStyle.TextColor =     CColor(192);
 
-                SubButtonsOverStyle.BackColor =         CColor(86);
-                SubButtonsOverStyle.BorderColor =       CColor(67);
-                SubButtonsOverStyle.TextColor =         CColor(192);
+                SubButtonsNormalStyle.BackColor =           CColor(68);
+                SubButtonsNormalStyle.BorderColor =         CColor(58);
+                SubButtonsNormalStyle.TextColor =           CColor(192);
+
+                SubButtonsOverStyle.BackColor =             CColor(95);
+                SubButtonsOverStyle.BorderColor =           CColor(67);
+                SubButtonsOverStyle.TextColor =             CColor(192);
+
+                SubButtonsParentOverStyle.BackColor =       CColor(86);
+                SubButtonsParentOverStyle.BorderColor =     CColor(67);
+                SubButtonsParentOverStyle.TextColor =       CColor(192);
 
             }
             // --------------------------
@@ -273,6 +283,9 @@ namespace VampirioCode.UI.Controls
                 // close button
                 CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
             }
+
+
+
             // --------------------------
             //        DarkRectExtra
             // --------------------------
@@ -301,7 +314,7 @@ namespace VampirioCode.UI.Controls
 
                 // padding
                 LeftPadding =   5;
-                RightPadding =  5;
+                RightPadding =  10;
             }
             // --------------------------
             //   DarkRectExtraWCloseSel
@@ -313,6 +326,9 @@ namespace VampirioCode.UI.Controls
                 // close button
                 CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
             }
+
+
+
             // --------------------------
             //          DarkRound
             // --------------------------
@@ -338,13 +354,15 @@ namespace VampirioCode.UI.Controls
                 // close button
                 CloseButtonVisible = true;
                 PaintMode = TabPaintMode.UserPaintOver;
-
+                
                 // padding
                 LeftPadding =   5;
-                RightPadding =  5;
+                RightPadding =  10;
 
                 // sub buttons or close button
                 SubButtonsBorderSize = 0;
+                SubButtonsOverStyle.BackColor =         CColor(86);
+                SubButtonsParentOverStyle.BackColor =   CColor(76);
             }
             // --------------------------
             //     DarkRoundWCloseSel
@@ -355,6 +373,9 @@ namespace VampirioCode.UI.Controls
 
                 // shape and text mode
                 CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
+
+                // sub buttons or close button
+                SubButtonsBorderSize = 0;
             }
 
 
@@ -386,7 +407,7 @@ namespace VampirioCode.UI.Controls
 
                 // padding
                 LeftPadding =   5;
-                RightPadding =  5;
+                RightPadding =  10;
             }
             // --------------------------
             //   DarkRectThinWCloseSel

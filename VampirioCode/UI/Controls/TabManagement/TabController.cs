@@ -46,8 +46,10 @@ namespace VampirioCode.UI.Controls.TabManagement
         public TabStyle NormalStyle { get; }
         public TabStyle OverStyle { get; }
         public TabStyle SubButtonsSelectedStyle { get; }
+        public TabStyle SubButtonsSelectedOverStyle { get; }
         public TabStyle SubButtonsNormalStyle { get; }
         public TabStyle SubButtonsOverStyle { get; }
+        public TabStyle SubButtonsParentOverStyle { get; }
         public int SubButtonsBorderSize { get; set; } = 1;
         public bool CloseButtonVisible { get; set; } = false;
         public CloseBtnBehaviour CloseButtonBehaviour { get; set; } = CloseBtnBehaviour.ActiveOnSelect;
@@ -149,9 +151,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             NormalStyle =       new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
             OverStyle =         new TabStyle(CColor(76, 76, 76), Color.Silver, CColor(57, 57, 57));
 
-            SubButtonsSelectedStyle =   new TabStyle(CColor(49, 49, 49), Color.Silver, CColor(31, 31, 31));
-            SubButtonsNormalStyle =     new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
-            SubButtonsOverStyle =       new TabStyle(CColor(86, 86, 86), Color.Silver, CColor(67, 67, 67));
+            SubButtonsSelectedStyle =       new TabStyle(CColor(49, 49, 49), Color.Silver, CColor(31, 31, 31));
+            SubButtonsSelectedOverStyle =   new TabStyle(CColor(55, 55, 55), Color.Silver, CColor(38, 38, 38));
+            SubButtonsNormalStyle =         new TabStyle(CColor(68, 68, 68), Color.Silver, CColor(51, 51, 51));
+            SubButtonsOverStyle =           new TabStyle(CColor(86, 86, 86), Color.Silver, CColor(67, 67, 67));
+            SubButtonsParentOverStyle =     new TabStyle(CColor(86, 86, 86), Color.Silver, CColor(67, 67, 67));
 
             closeBitmap = TabUtils.CreateX(10, 10, CColor(200, 200, 200));
 

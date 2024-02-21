@@ -74,27 +74,48 @@ namespace VampirioCode.UI.Controls.TabManagement
             TabStyle style = null;
             int borderSize = 0;
 
-            if (state == State.Over)
+            if (Item.Selected)
+            {
+                if (state == State.Over)
+                {
+                    if (Item.SubButtonsSelectedStyle != null)
+                        style = Item.SubButtonsSelectedOverStyle;
+                    else
+                        style = controller.SubButtonsSelectedOverStyle;
+                }
+                else
+                {
+                    if (Item.SubButtonsSelectedStyle != null)
+                        style = Item.SubButtonsSelectedStyle;
+                    else
+                        style = controller.SubButtonsSelectedStyle;
+                }
+            }
+            else if (state == State.Over)
             {
                 if (Item.SubButtonsOverStyle != null)
                     style = Item.SubButtonsOverStyle;
                 else
                     style = controller.SubButtonsOverStyle;
             }
-            else if (Item.Selected)
-            {
-                if (Item.SubButtonsSelectedStyle != null)
-                    style = Item.SubButtonsSelectedStyle;
-                else
-                    style = controller.SubButtonsSelectedStyle;
-            }
             else if (state == State.Up)
             {
-                if (Item.SubButtonsNormalStyle != null)
-                    style = Item.SubButtonsNormalStyle;
+                if (Item.tab.TabState == TabState.Over)
+                {
+                    if (Item.SubButtonsParentOverStyle != null)
+                        style = Item.SubButtonsParentOverStyle;
+                    else
+                        style = controller.SubButtonsParentOverStyle;
+                }
                 else
-                    style = controller.SubButtonsNormalStyle;
+                {
+                    if (Item.SubButtonsNormalStyle != null)
+                        style = Item.SubButtonsNormalStyle;
+                    else
+                        style = controller.SubButtonsNormalStyle;
+                }
             }
+
 
             if (Item.BorderSize != -1)
                 borderSize = Item.BorderSize;

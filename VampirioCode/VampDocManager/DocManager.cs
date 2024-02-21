@@ -67,6 +67,32 @@ namespace VampDocManager
             tabControl = new TabPanel();
             tabControl.Dock =                   DockStyle.Fill;
             tabControl.BackColor =              Color.FromArgb(30, 30, 30);
+
+            // tabControl.SetSkin(TabSkin.DarkRoundWCloseSel);
+            tabControl.SetSkin(TabSkin.DarkRectWClose);
+            tabControl.TabBar.BackColor =           CColor(30, 30, 30);
+
+            
+            tabControl.SelectedStyle.BackColor =    CColor(139, 70, 166);
+            tabControl.SelectedStyle.TextColor =    Color.White;
+
+            tabControl.NormalStyle.BackColor =      CColor(39, 40, 34);
+            tabControl.NormalStyle.TextColor =      Color.White;
+
+            tabControl.OverStyle.BackColor =        CColor(44, 45, 39);
+            tabControl.OverStyle.TextColor =        Color.White;
+
+            tabControl.SubButtonsBorderSize = 0;
+            tabControl.SubButtonsSelectedStyle.BackColor =      CColor(139, 70, 166);
+            tabControl.SubButtonsSelectedOverStyle.BackColor =  CColor(126, 63, 147);
+            //tabControl.SubButtonsSelectedOverStyle.BackColor =  CColor(200, 0, 0);
+            tabControl.SubButtonsNormalStyle.BackColor =        CColor(39, 40, 34);
+            tabControl.SubButtonsOverStyle.BackColor =          CColor(35, 35, 35);
+            //tabControl.SubButtonsOverStyle.BackColor =          CColor(200, 0, 0);
+            tabControl.SubButtonsParentOverStyle.BackColor =    CColor(44, 45, 39);
+
+            tabControl.TabBorderSize = 1;
+
             //tabControl.Margin =                 new Padding(0);
             //tabControl.Padding =                new Point(0, 0);
             //tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), tabColor, CColor(52, 53, 45) , CColor(255, 255, 255));
