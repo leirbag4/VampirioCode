@@ -327,13 +327,13 @@ namespace VampirioCode.UI.Controls.TabManagement
                     style = controller.OverStyle;
             }
 
-
             if (controller.PaintMode == TabPaintMode.UserPaintAll)
             {
                 Item.OnUpdatePosition();
                 Item.Paint(g, _x_, Y, Width, Height, TabState);
                 return;
             }
+
 
             if (controller.ShapeMode == TabShapeMode.Box)
             {
@@ -344,6 +344,10 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                 VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width + _border, Height);
 
+#if TAB_CONTROLLER_DEBUG
+                PaintDebug(g, txt, _x_);
+#endif
+
                      if (controller.TextAlign == TabTextAlign.Center)   VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1) + (_border >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
                 else if (controller.TextAlign == TabTextAlign.Left)     VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
                 else if (controller.TextAlign == TabTextAlign.Right)    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
@@ -352,13 +356,21 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 VampirioGraphics.FillRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width, Height);
 
-                    if (controller.TextAlign == TabTextAlign.Center)    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
+#if TAB_CONTROLLER_DEBUG
+                PaintDebug(g, txt, _x_);
+#endif
+
+                     if (controller.TextAlign == TabTextAlign.Center)   VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
                 else if (controller.TextAlign == TabTextAlign.Left)     VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
                 else if (controller.TextAlign == TabTextAlign.Right)    VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + Width - RightPadding, Y + (Height >> 1), ContentAlignment.MiddleRight);
             }
             else if (controller.ShapeMode == TabShapeMode.RoundBox)
             {
                 VampirioGraphics.FillRoundRect(g, style.BackColor, style.BorderColor, 2, _x_, Y, Width, Height);
+
+#if TAB_CONTROLLER_DEBUG
+                PaintDebug(g, txt, _x_);
+#endif
 
                      if (controller.TextAlign == TabTextAlign.Center)   VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + (Width >> 1), Y + (Height >> 1), ContentAlignment.MiddleCenter);
                 else if (controller.TextAlign == TabTextAlign.Left)     VampirioGraphics.DrawString(g, font, txt, style.TextColor, _x_ + LeftPadding, Y + (Height >> 1), ContentAlignment.MiddleLeft);
@@ -371,17 +383,21 @@ namespace VampirioCode.UI.Controls.TabManagement
                 Item.Paint(g, _x_, Y, Width, Height, TabState);
             }
 
+        }
+
 #if TAB_CONTROLLER_DEBUG
+        private void PaintDebug(Graphics g, string txt, int _x_)
+        {
             //SizeF fontBounds = g.MeasureString(txt, font, InnerWidth);
             SizeF fontBounds = g.MeasureString(txt, font, PointF.Empty, VampirioGraphics.GetFormat(ContentAlignment.MiddleCenter));
             VampirioGraphics.FillRect(g, Color.Gray, _x_ + (Width >> 1) - ((int)fontBounds.Width >> 1), Y + (Height >> 1) - ((int)fontBounds.Height >> 1), (int)fontBounds.Width, (int)fontBounds.Height);
 
             VampirioGraphics.FillRect(g, Color.Black, _x_ + (Width >> 1) - 1, Y, 3, 4);
 
-            if(Selected)
+            if (Selected)
                 VampirioGraphics.FillRect(g, Color.Red, _x_ + dragOffsetPointX - 1, Y + Height - 3, 3, 3);
-#endif
         }
+#endif
 
     }
 }

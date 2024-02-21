@@ -158,7 +158,35 @@ namespace VampirioCode.UI.Controls
             this.Controls.Add(container);
         }
 
-        
+        /*public List<T> GetItems<T>()
+        {
+            List<T> castedItems = new List<T>();
+
+            foreach (var item in Items)
+            {
+                if (item is T castedItem)
+                {
+                    castedItems.Add(castedItem);
+                }
+            }
+
+            return castedItems;
+        }
+
+        public List<T> GetItems<T>()
+        {
+            return Items.OfType<T>().ToList();
+        }*/
+
+        public T[] GetItems<T>()
+        {
+            return tabBar.GetItems<T>();
+        }
+
+        public void AddItem<T>(T item) where T : TabItem
+        {
+            tabBar.Add(item);
+        }
 
         public void SetFont(string fontName, int fontSize, FontStyle fontStyle)
         {
@@ -168,6 +196,11 @@ namespace VampirioCode.UI.Controls
         public void SelectTab(TabItem item)
         {
             controller.SelectTab(item.tab);
+        }
+
+        public void SelectTab(int index)
+        {
+            controller.SelectTab(index);
         }
 
         public void BringTabIntoScreen(TabItem item)

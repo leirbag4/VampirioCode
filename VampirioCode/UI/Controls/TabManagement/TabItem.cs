@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using VampirioCode.UI.VampGraphics;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
-using static System.Windows.Forms.AxHost;
 
 namespace VampirioCode.UI.Controls.TabManagement
 {
@@ -37,16 +36,18 @@ namespace VampirioCode.UI.Controls.TabManagement
         private TabController controller = null;
         private TabSubButton closeButton;
 
-        public TabItem(string name)
+        public TabItem(string name) : this()
         {
-            tab =       new Tab(this);
-            Text =      name;
-            Content =   new Control();
-            
-            closeButton = new TabSubButton();
-            closeButton.Text = "x";
+            Text = name;
         }
 
+        public TabItem()
+        {
+            tab = new Tab(this);
+            Content = new Control();
+
+            closeButton = new TabSubButton();
+        }
 
         public void Setup(TabController controller, Bitmap closeBitmap)
         {
@@ -83,7 +84,6 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 if (closeButton.MouseDown(mx, my))
                 {
-                    XConsole.PrintError("enter");
                     controller.CloseTabInvoke(this.tab);
                     return true;
                 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampDocManager;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TabManagement;
@@ -44,13 +45,18 @@ namespace VampirioCode.Tests
 
         private TabItem CreateItem()
         {
-            TabItem item = new TabItem("document " + counter++);
+            /*TabItem item = new TabItem("document " + counter++);
 
             Button button = new Button();
             button.Text = "button " + (counter - 1);
-            item.Content = button;
+            button.Dock = DockStyle.Fill;
+            item.Content.Controls.Add(button);
+            return item;*/
 
+
+            DocumentTab item = DocumentTab.Create(VampDocManager.Document.NewTemporary());
             return item;
+
         }
 
         private void OnClearConsolePressed(object sender, EventArgs e)

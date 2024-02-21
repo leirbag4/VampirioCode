@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using VampEditor;
 using VampirioCode.UI;
+using VampirioCode.UI.Controls.TabManagement;
 
 namespace VampDocManager
 {
-    public class DocumentTab : TabPage
+    public class DocumentTab : TabItem
     {
+
         public delegate void ContextItemPressedEvent(EditorEventType eventType, Document document);
 
         public event ContextItemPressedEvent ContextItemPressed;
@@ -39,20 +41,21 @@ namespace VampDocManager
             editor.SetLanguage(doc.DocType, VampEditor.StyleMode.Dark);
 
             // tab style
-            BackColor = Color.FromArgb(30, 30, 30);
-            BorderStyle = BorderStyle.None;
-            Controls.Add(editor);
+            //BackColor = Color.FromArgb(30, 30, 30);
+            //BorderStyle = BorderStyle.None;
+            //Controls.Add(editor);
+            Content.Controls.Add(editor);
 
             // set data
-            Document =      doc;
+            Document = doc;
             Editor.SetText(doc.Text);
             SetTitle(Document.FileName);
 
             // events
-            Editor.TextChanged +=           OnEditorTextChanged;
-            Editor.ContextItemPressed +=    OnContextItemPressed;
-            Document.OnSaved +=             OnSaved;
-            Document.OnModified +=          OnModified;
+            Editor.TextChanged += OnEditorTextChanged;
+            Editor.ContextItemPressed += OnContextItemPressed;
+            Document.OnSaved += OnSaved;
+            Document.OnModified += OnModified;
 
             return this;
         }
@@ -69,7 +72,7 @@ namespace VampDocManager
                 base.Text = title + " *";
             else
             {
-                if(Document.IsTemporary)
+                if (Document.IsTemporary)
                     base.Text = title + " ~";
                 else
                     base.Text = title;
@@ -79,7 +82,7 @@ namespace VampDocManager
         private void OnEditorTextChanged(object? sender, EventArgs e)
         {
             Document.Modified = true;
-            Document.Text =     Editor.Text;
+            Document.Text = Editor.Text;
         }
 
         private void OnModified()
@@ -98,17 +101,18 @@ namespace VampDocManager
                 return;
 
             int x, y = -2;
-            
+
             find = new FindUI(Editor, replace);
 
             if (Editor.IsVerticalScrollVisible) x = this.Width - find.Width - SystemInformation.VerticalScrollBarWidth;
-            else                                x = this.Width - find.Width;
+            else x = this.Width - find.Width;
 
             find.Location = new Point(x, y);
             find.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             find.Close += OnFindClose;
 
-            this.Controls.Add(find);
+            //this.Controls.Add(find);
+            this.Content.Controls.Add(find);
             find.BringToFront();
 
             IsFindActive = true;
@@ -118,10 +122,12 @@ namespace VampDocManager
         {
             if (IsFindActive)
             {
-                this.Controls.Remove(find);
+                this.Content.Controls.Remove(find);
                 IsFindActive = false;
                 Editor.Focus();
             }
         }
+
+
     }
 }

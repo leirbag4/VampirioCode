@@ -104,6 +104,16 @@ namespace VampirioCode.UI.Controls
             return controller;
         }
 
+        public T[] GetItems<T>()
+        {
+            return Items.OfType<T>().ToArray();
+        }
+
+        public void AddItem<T>(T item) where T : TabItem
+        {
+            Items.Add(item);
+        }
+
         public void SetFont(string fontName, int fontSize, FontStyle fontStyle)
         {
             controller.SetFont(fontName, fontSize, fontStyle);
@@ -112,6 +122,11 @@ namespace VampirioCode.UI.Controls
         public void SelectTab(TabItem item)
         {
             controller.SelectTab(item.tab);
+        }
+
+        public void SelectTab(int index)
+        {
+            controller.SelectTab(index);
         }
 
         public void BringTabIntoScreen(TabItem item)
@@ -246,7 +261,7 @@ namespace VampirioCode.UI.Controls
 
                 // padding
                 LeftPadding =   5;
-                RightPadding =  5;
+                RightPadding =  10;
             }
             // --------------------------
             //     DarkRectWCloseSel
@@ -384,7 +399,6 @@ namespace VampirioCode.UI.Controls
                 CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
             }
 
-            XConsole.Println("ente: " + skin);
             Invalidate();
         }
 
@@ -509,12 +523,9 @@ namespace VampirioCode.UI.Controls
             base.OnMouseEnter(e);
             Invalidate();
         }
-        private int mouseSavedX;
-        private int mouseSavedY;
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            mouseSavedX = e.X;
-            mouseSavedY = e.Y;
             controller.MouseDown(e.X, e.Y);
             base.OnMouseDown(e);
             Invalidate();

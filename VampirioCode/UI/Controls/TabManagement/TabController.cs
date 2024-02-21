@@ -177,6 +177,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             SelectedTab = tab;
         }
 
+        public void SelectTab(int index)
+        {
+            SelectedIndex = index;
+        }
+
         public void Shift(int amount)
         {
             OFFSET_X += amount;

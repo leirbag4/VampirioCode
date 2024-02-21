@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using VampEditor;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
+using VampirioCode.UI.Controls.TabManagement;
 using VampirioCode.UI.Style;
 using VampirioCode.Utils;
 
@@ -48,7 +49,8 @@ namespace VampDocManager
         public int Totals { get { return Documents.Length; } }
 
         // controls
-        private TabControlVamp tabControl;
+        //private TabControlVamp tabControl;
+        private TabPanel tabControl;
         private Control horizontalBar;
 
         // context menu
@@ -62,14 +64,15 @@ namespace VampDocManager
         {
             Color tabColor = CColor(139, 70, 166); // CColor(170, 60, 85);
 
-            tabControl =                        new TabControlVamp();
+            tabControl = new TabPanel();
             tabControl.Dock =                   DockStyle.Fill;
             tabControl.BackColor =              Color.FromArgb(30, 30, 30);
-            tabControl.Margin =                 new Padding(0);
-            tabControl.Padding =                new Point(0, 0);
-            tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), tabColor, CColor(52, 53, 45) , CColor(255, 255, 255));
+            //tabControl.Margin =                 new Padding(0);
+            //tabControl.Padding =                new Point(0, 0);
+            //tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), tabColor, CColor(52, 53, 45) , CColor(255, 255, 255));
             tabControl.ControlAdded +=          OnDocumentTabAdded;
-            tabControl.SelectedIndexChanged +=  OnSelectedIndexChanged;
+            //tabControl.SelectedIndexChanged +=  OnSelectedIndexChanged;
+            tabControl.SelectedTabChanged +=    OnSelectedIndexChanged;
             CreateContextItems();
 
             //tabControl.DragAndDrop = true;
@@ -90,12 +93,13 @@ namespace VampDocManager
             horizontalBar.BringToFront();
         }
 
-        private void OnSelectedIndexChanged(object? sender, EventArgs e)
+        //private void OnSelectedIndexChanged(object? sender, EventArgs e)
+        private void OnSelectedIndexChanged(int index, TabItem item)
         {
             RefreshDocs();
 
             // Focus to the editor to gain user control
-            CurrDocumentTab.Editor.Focus();
+            //CurrDocumentTab.Editor.Focus();
 
             // Events
             if (CurrDocumentTabChanged != null)
@@ -110,7 +114,8 @@ namespace VampDocManager
         private void RefreshDocs()
         {
             List<Document> docs = new List<Document>();
-            DocumentTabs = tabControl.DocumentTabs.ToArray();
+            //DocumentTabs = tabControl.DocumentTabs.ToArray();
+            DocumentTabs = tabControl.GetItems<DocumentTab>();
 
             foreach (DocumentTab doc in DocumentTabs)
                 docs.Add(doc.Document);
@@ -148,7 +153,8 @@ namespace VampDocManager
         {
             DocumentTab docTab =            DocumentTab.Create(doc);
             docTab.ContextItemPressed +=    OnContextItemPressed;
-            tabControl.TabPages.Add(docTab);
+            //tabControl.TabPages.Add(docTab);
+            tabControl.Add(docTab);
             SelectTab(docTab);
             return docTab;
         }
@@ -296,7 +302,8 @@ namespace VampDocManager
 
 
             // Remove from tabs
-            tabControl.TabPages.RemoveAt(index);
+            //tabControl.TabPages.RemoveAt(index);
+            tabControl.RemoveAt(index);
             RefreshDocs();
 
             if (Documents.Length > 0)
