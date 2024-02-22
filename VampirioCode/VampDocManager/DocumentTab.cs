@@ -104,14 +104,15 @@ namespace VampDocManager
 
             find = new FindUI(Editor, replace);
 
-            if (Editor.IsVerticalScrollVisible) x = this.Width - find.Width - SystemInformation.VerticalScrollBarWidth;
-            else x = this.Width - find.Width;
+            if (Editor.IsVerticalScrollVisible) 
+                x = this.Content.Width - find.Width - SystemInformation.VerticalScrollBarWidth;
+            else 
+                x = this.Content.Width - find.Width;
 
             find.Location = new Point(x, y);
             find.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             find.Close += OnFindClose;
 
-            //this.Controls.Add(find);
             this.Content.Controls.Add(find);
             find.BringToFront();
 
