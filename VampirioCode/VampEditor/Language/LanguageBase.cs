@@ -135,7 +135,7 @@ namespace VampEditor.Language
             Margins[2].Type = MarginType.Symbol;
             Margins[2].Mask = Marker.MaskFolders;
             Margins[2].Sensitive = true;
-            Margins[2].Width = 20;
+            Margins[2].Width = 16;
 
             // Set colors for all folding markers
             col0 = Color.FromArgb(70, 70, 70);
@@ -161,6 +161,9 @@ namespace VampEditor.Language
             Markers[Marker.FolderSub].Symbol =      MarkerSymbol.VLine;
             Markers[Marker.Folder].Symbol =         MarkerSymbol.BoxPlus;
             Markers[Marker.FolderOpen].Symbol =     MarkerSymbol.BoxMinus;
+
+            // SET CUSTOM IMAGE
+            // Markers[Marker.FolderOpen].DefineRgbaImage(VampirioCode.Properties.Resources.play_icon);
 
             // Enable automatic folding
             editor.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.Change);
