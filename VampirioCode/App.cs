@@ -51,6 +51,12 @@ namespace VampirioCode
             toolBar.StartPressed +=     OnStartPressed;
             toolBar.ReloadPressed +=    OnReloadPressed;
 
+            // drag and drop
+            this.AllowDrop =    true;
+            this.DragEnter +=   OnDragEnter;
+            this.DragDrop +=    OnDragDrop;
+
+
             // open last documents
             OpenLastDocuments();
 
@@ -63,6 +69,7 @@ namespace VampirioCode
 
             base.OnLoad(e);
         }
+
 
         protected override void OnShown(EventArgs e)
         {
@@ -383,6 +390,40 @@ namespace VampirioCode
             footer.SetLineColumn(lineNumber, columnNumber);
         }
 
+        //
+        // Drag and Drop
+        //
+        private void OnDragEnter(object sender, DragEventArgs e)
+        {
+            string[] filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string filePath in filePaths)
+            {
+                if (!File.Exists(filePath))
+                {
+                    // there is an invalid item like a directory, so cancel operation
+                    e.Effect = DragDropEffects.None;
+                    return;
+                }
+            }
+
+            // accept the OnDragDrop event
+            e.Effect = DragDropEffects.Copy;
+        }
+
+        private void OnDragDrop(object sender, DragEventArgs e)
+        {
+            string[] filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string filePath in filePaths)
+            {
+                docManager.OpenDocument(filePath);
+            }
+        }
+
+        //
+        // On Closing
+        //
         protected override void OnClosing(CancelEventArgs e)
         {
 
