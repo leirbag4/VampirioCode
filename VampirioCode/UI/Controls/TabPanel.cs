@@ -23,8 +23,9 @@ namespace VampirioCode.UI.Controls
         public event CloseTabInvokedEvent CloseTabInvoked;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public TabItemCollection Items { get { return tabBar.Items; } set { tabBar.Items = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabItemCollection Items { get { return tabBar.Items; } set { tabBar.Items = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
 
+        public int TabBarHeight { get { return tabBar.Height; } set { tabBar.Height = value; ResizeLayout(); } }
         public TabPaintMode PaintMode { get { return controller.PaintMode; } set { controller.PaintMode = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabSize SelectedTabSize  { get { return controller.SelectedTabSize; }    set { controller.SelectedTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabSize NormalTabSize    { get { return controller.NormalTabSize; }      set { controller.NormalTabSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)] 
@@ -67,13 +68,19 @@ namespace VampirioCode.UI.Controls
         public Color ArrowButtonBackColor { get { return leftArrowButton.BackColor; } set { leftArrowButton.BackColor = value; rightArrowButton.BackColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public Color ArrowButtonBorderColor { get { return leftArrowButton.BorderColor; } set { leftArrowButton.BorderColor = value; rightArrowButton.BorderColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public Color ArrowColor { get { return arrowColor; } set { arrowColor = value; CreateArrows(7, 14); } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public bool SplitBarVisible { get { return splitBar.Visible; } set { splitBar.Visible = value; ResizeLayout(); } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public int SplitBarSize { get { return splitBar.Height; } set { splitBar.Height = value; ResizeLayout(); } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public Color SplitBarColor { get { return splitBar.BackColor; } set { splitBar.BackColor = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         private int TotalArrowButtonsWidth { get { return ((arrowButtonWidth << 1) - ArrowButtonBorderSize); } }
 
         public TabBar TabBar { get { return tabBar; } }
 
+
         private TabBar tabBar;
         private TabController controller;
         private Control container;
+        
+        // arrows
         private ButtonAdv leftArrowButton;
         private ButtonAdv rightArrowButton;
         private int arrowButtonWidth = 20;
@@ -82,6 +89,10 @@ namespace VampirioCode.UI.Controls
         private System.Windows.Forms.Timer arrowTimer;
         private bool arrowTimerDirection = false;
         private Color arrowColor = Color.FromArgb(20, 20, 20);
+
+        // split bar
+        private Control splitBar;
+
 
         public TabPanel()
         {
@@ -122,6 +133,15 @@ namespace VampirioCode.UI.Controls
             container.Anchor =      AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
             container.BackColor =   Color.FromArgb(50, 50, 50);
 
+            // Split Bar
+            splitBar = new Control();
+            splitBar.BackColor =    Color.FromArgb(51, 51, 51);
+            splitBar.Size =         new Size(this.Width, SplitBarSize);
+            splitBar.Dock =         DockStyle.Left;
+            splitBar.Anchor =       AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            splitBar.Location =     new Point(0, tabBar.Height);
+            splitBar.Visible =      false;
+
             // Events
             tabBar.SelectedTabChanged +=    OnSelectedTabChanged;
             tabBar.UnselectedTabChanged +=  OnUnselectedTabChanged;
@@ -157,6 +177,7 @@ namespace VampirioCode.UI.Controls
             this.Controls.Add(tabBar);
             this.Controls.Add(leftArrowButton);
             this.Controls.Add(rightArrowButton);
+            this.Controls.Add(splitBar);
             this.Controls.Add(container);
         }
 
@@ -241,6 +262,16 @@ namespace VampirioCode.UI.Controls
         public void SetSkin(TabSkin skin)
         {
             tabBar.SetSkin(skin);
+
+            if ((skin == TabSkin.DarkMiddleRound) || (skin == TabSkin.DarkMiddleRoundWClose) || (skin == TabSkin.DarkMiddleRoundWCloseSel))
+            {
+                // split bar
+                SplitBarColor = Color.FromArgb(31, 31, 31);
+                SplitBarSize = 2;
+                SplitBarVisible = true;
+            }
+            else
+                SplitBarVisible = false;
         }
 
         private void CheckOutOfBounds()
@@ -272,6 +303,21 @@ namespace VampirioCode.UI.Controls
             rightArrowBitmap =          TabUtils.CreateRightArrow(arrowWidth, arrowHeight, arrowColor);
             leftArrowButton.Image =     leftArrowBitmap;
             rightArrowButton.Image =    rightArrowBitmap;
+        }
+
+        private void ResizeLayout()
+        {
+            if (SplitBarVisible)
+            {
+                container.Size =        new Size(Width, Height - tabBar.Height - splitBar.Height);
+                container.Location =    new Point(0, tabBar.Height + splitBar.Height);
+                splitBar.Top =          tabBar.Height;
+            }
+            else
+            { 
+                container.Size =        new Size(Width, Height - tabBar.Height);
+                container.Location =    new Point(0, tabBar.Height);
+            }
         }
 
         //

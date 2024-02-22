@@ -366,7 +366,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
             else if (controller.ShapeMode == TabShapeMode.RoundBox)
             {
-                VampirioGraphics.FillRoundRect(g, style.BackColor, style.BorderColor, 2, _x_, Y, Width, Height);
+                VampirioGraphics.FillRoundRect(g, style.BackColor, style.BorderColor, borderSize, _x_, Y, Width, Height);
 
 #if TAB_CONTROLLER_DEBUG
                 PaintDebug(g, txt, _x_);

@@ -183,6 +183,11 @@ namespace VampirioCode.UI.Controls
         // Skin
         public void SetSkin(TabSkin skin)
         {
+            _SetSkin(skin, true);
+        }
+
+        private void _SetSkin(TabSkin skin, bool refreshLayout)
+        {
             // --------------------------
             //          DarkRect
             // --------------------------
@@ -252,14 +257,13 @@ namespace VampirioCode.UI.Controls
                 SubButtonsParentOverStyle.BackColor =       CColor(86);
                 SubButtonsParentOverStyle.BorderColor =     CColor(67);
                 SubButtonsParentOverStyle.TextColor =       CColor(192);
-
             }
             // --------------------------
             //       DarkRectWClose
             // --------------------------
             else if (skin == TabSkin.DarkRectWClose)
             { 
-                SetSkin(TabSkin.DarkRect);
+                _SetSkin(TabSkin.DarkRect, false);
 
                 // shape and text mode
                 TextAlign = TabTextAlign.Left;
@@ -278,7 +282,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRectWCloseSel)
             { 
-                SetSkin(TabSkin.DarkRectWClose);
+                _SetSkin(TabSkin.DarkRectWClose, false);
 
                 // close button
                 CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
@@ -291,7 +295,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRectExtra)
             { 
-                SetSkin(TabSkin.DarkRect);
+                _SetSkin(TabSkin.DarkRect, false);
 
                 // shape and text mode
                 ShapeMode = TabShapeMode.BoxExtraBorders;
@@ -301,7 +305,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRectExtraWClose)
             { 
-                SetSkin(TabSkin.DarkRect);
+                _SetSkin(TabSkin.DarkRect, false);
 
                 // shape and text mode
                 ShapeMode = TabShapeMode.BoxExtraBorders;
@@ -321,7 +325,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRectExtraWCloseSel)
             { 
-                SetSkin(TabSkin.DarkRectExtraWClose);
+                _SetSkin(TabSkin.DarkRectExtraWClose, false);
 
                 // close button
                 CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
@@ -334,7 +338,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRound)
             {
-                SetSkin(TabSkin.DarkRect);
+                _SetSkin(TabSkin.DarkRect, false);
 
                 // shape and text mode
                 ShapeMode = TabShapeMode.RoundBox;
@@ -344,7 +348,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRoundWClose)
             {
-                SetSkin(TabSkin.DarkRect);
+                _SetSkin(TabSkin.DarkRect, false);
 
                 // shape and text mode
                 ShapeMode = TabShapeMode.RoundBox;
@@ -369,7 +373,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRoundWCloseSel)
             {
-                SetSkin(TabSkin.DarkRoundWClose);
+                _SetSkin(TabSkin.DarkRoundWClose, false);
 
                 // shape and text mode
                 CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
@@ -385,7 +389,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRectThin)
             {
-                SetSkin(TabSkin.DarkRect);
+                _SetSkin(TabSkin.DarkRect, false);
 
                 // tab color and border
                 TabBorderSize = 1;
@@ -395,7 +399,7 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRectThinWClose)
             {
-                SetSkin(TabSkin.DarkRectThin);
+                _SetSkin(TabSkin.DarkRectThin, false);
 
                 // shape and text mode
                 TextAlign = TabTextAlign.Left;
@@ -414,11 +418,71 @@ namespace VampirioCode.UI.Controls
             // --------------------------
             else if (skin == TabSkin.DarkRectThinWCloseSel)
             {
-                SetSkin(TabSkin.DarkRectThinWClose);
+                _SetSkin(TabSkin.DarkRectThinWClose, false);
 
                 // shape and text mode
                 CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
             }
+
+
+            // --------------------------
+            //          DarkMiddleRound
+            // --------------------------
+            else if (skin == TabSkin.DarkMiddleRound)
+            {
+                _SetSkin(TabSkin.DarkRect, false);
+
+                // shape and text mode
+                ShapeMode = TabShapeMode.RoundBox;
+
+                // position and anim
+                SelectedTabSize =   new TabSize(0, -5);
+                NormalTabSize =     new TabSize(2, -5);
+                DraggedTabSize =    new TabSize(1, -5);
+            }
+            // --------------------------
+            //       DarkMiddleRoundWClose
+            // --------------------------
+            else if (skin == TabSkin.DarkMiddleRoundWClose)
+            {
+                _SetSkin(TabSkin.DarkMiddleRound, false);
+
+                // shape and text mode
+                ShapeMode = TabShapeMode.RoundBox;
+                TextAlign = TabTextAlign.Left;
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveAlways;
+
+                // close button
+                CloseButtonVisible = true;
+                PaintMode = TabPaintMode.UserPaintOver;
+                
+                // padding
+                LeftPadding =   5;
+                RightPadding =  10;
+
+                // sub buttons or close button
+                SubButtonsBorderSize = 0;
+                SubButtonsOverStyle.BackColor =         CColor(86);
+                SubButtonsParentOverStyle.BackColor =   CColor(76);
+
+
+            }
+            // --------------------------
+            //     DarkMiddleRoundWCloseSel
+            // --------------------------
+            else if (skin == TabSkin.DarkMiddleRoundWCloseSel)
+            {
+                _SetSkin(TabSkin.DarkMiddleRoundWClose, false);
+
+                // shape and text mode
+                CloseButtonBehaviour = CloseBtnBehaviour.ActiveOnSelect;
+
+                // sub buttons or close button
+                SubButtonsBorderSize = 0;
+            }
+
+            if (refreshLayout)
+                controller.RefreshLayout();
 
             Invalidate();
         }

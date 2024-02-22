@@ -8,13 +8,13 @@ namespace VampirioCode.UI.Controls.TabManagement
 {
     public class TabSize
     {
-        public int posY;        // Default y position of the tab
-        public int subHeight;   // Substract this amount from tab height
+        public int paddingTop;      // Default y position of the tab
+        public int paddingBottom;   // Substract this amount from tab height
 
-        public TabSize(int posY, int subHeight)
+        public TabSize(int paddingTop, int paddingBottom)
         {
-            this.posY = posY;
-            this.subHeight = subHeight;
+            this.paddingTop =       paddingTop;
+            this.paddingBottom =    paddingBottom;
         }
 
     }

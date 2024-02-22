@@ -24,5 +24,9 @@ namespace VampirioCode.UI.Controls.TabManagement
         DarkRectThin,
         DarkRectThinWClose,
         DarkRectThinWCloseSel,
+
+        DarkMiddleRound,
+        DarkMiddleRoundWClose,
+        DarkMiddleRoundWCloseSel
     }
 }

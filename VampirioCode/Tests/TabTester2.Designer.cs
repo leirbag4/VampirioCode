@@ -48,6 +48,9 @@
             buttonAdv13 = new UI.Controls.ButtonAdv();
             buttonAdv14 = new UI.Controls.ButtonAdv();
             buttonAdv15 = new UI.Controls.ButtonAdv();
+            buttonAdv16 = new UI.Controls.ButtonAdv();
+            buttonAdv17 = new UI.Controls.ButtonAdv();
+            buttonAdv18 = new UI.Controls.ButtonAdv();
             SuspendLayout();
             // 
             // console
@@ -189,6 +192,7 @@
             tabPanel.BackColor = Color.FromArgb(30, 30, 30);
             tabPanel.Location = new Point(24, 12);
             tabPanel.Name = "tabPanel";
+            tabPanel.PaintMode = UI.Controls.TabManagement.TabPaintMode.UserPaintOver;
             tabPanel.Size = new Size(513, 322);
             tabPanel.TabIndex = 43;
             tabPanel.Text = "tabPanel1";
@@ -213,7 +217,7 @@
             buttonAdv4.resizeImage = new Point(0, 0);
             buttonAdv4.Selected = false;
             buttonAdv4.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv4.Size = new Size(177, 29);
+            buttonAdv4.Size = new Size(192, 29);
             buttonAdv4.TabIndex = 44;
             buttonAdv4.Tag = "0";
             buttonAdv4.Text = "DarkRect";
@@ -240,7 +244,7 @@
             buttonAdv5.resizeImage = new Point(0, 0);
             buttonAdv5.Selected = false;
             buttonAdv5.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv5.Size = new Size(177, 29);
+            buttonAdv5.Size = new Size(192, 29);
             buttonAdv5.TabIndex = 45;
             buttonAdv5.Tag = "1";
             buttonAdv5.Text = "DarkRectWClose";
@@ -267,7 +271,7 @@
             buttonAdv6.resizeImage = new Point(0, 0);
             buttonAdv6.Selected = false;
             buttonAdv6.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv6.Size = new Size(177, 29);
+            buttonAdv6.Size = new Size(192, 29);
             buttonAdv6.TabIndex = 46;
             buttonAdv6.Tag = "3";
             buttonAdv6.Text = "DarkRectExtra";
@@ -294,7 +298,7 @@
             buttonAdv7.resizeImage = new Point(0, 0);
             buttonAdv7.Selected = false;
             buttonAdv7.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv7.Size = new Size(177, 29);
+            buttonAdv7.Size = new Size(192, 29);
             buttonAdv7.TabIndex = 47;
             buttonAdv7.Tag = "4";
             buttonAdv7.Text = "DarkRectExtraWClose";
@@ -321,7 +325,7 @@
             buttonAdv8.resizeImage = new Point(0, 0);
             buttonAdv8.Selected = false;
             buttonAdv8.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv8.Size = new Size(177, 29);
+            buttonAdv8.Size = new Size(192, 29);
             buttonAdv8.TabIndex = 48;
             buttonAdv8.Tag = "6";
             buttonAdv8.Text = "DarkRound";
@@ -348,7 +352,7 @@
             buttonAdv9.resizeImage = new Point(0, 0);
             buttonAdv9.Selected = false;
             buttonAdv9.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv9.Size = new Size(177, 29);
+            buttonAdv9.Size = new Size(192, 29);
             buttonAdv9.TabIndex = 49;
             buttonAdv9.Tag = "7";
             buttonAdv9.Text = "DarkRoundWClose";
@@ -375,7 +379,7 @@
             buttonAdv10.resizeImage = new Point(0, 0);
             buttonAdv10.Selected = false;
             buttonAdv10.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv10.Size = new Size(177, 29);
+            buttonAdv10.Size = new Size(192, 29);
             buttonAdv10.TabIndex = 50;
             buttonAdv10.Tag = "2";
             buttonAdv10.Text = "DarkRectWCloseSel";
@@ -402,7 +406,7 @@
             buttonAdv11.resizeImage = new Point(0, 0);
             buttonAdv11.Selected = false;
             buttonAdv11.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv11.Size = new Size(177, 29);
+            buttonAdv11.Size = new Size(192, 29);
             buttonAdv11.TabIndex = 51;
             buttonAdv11.Tag = "5";
             buttonAdv11.Text = "DarkRectWCloseSel";
@@ -429,10 +433,10 @@
             buttonAdv12.resizeImage = new Point(0, 0);
             buttonAdv12.Selected = false;
             buttonAdv12.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv12.Size = new Size(177, 29);
+            buttonAdv12.Size = new Size(192, 29);
             buttonAdv12.TabIndex = 52;
             buttonAdv12.Tag = "8";
-            buttonAdv12.Text = "DarkRectWCloseSel";
+            buttonAdv12.Text = "DarkRoundWCloseSel";
             buttonAdv12.UseVisualStyleBackColor = true;
             buttonAdv12.Click += OnSkinPressed;
             // 
@@ -456,7 +460,7 @@
             buttonAdv13.resizeImage = new Point(0, 0);
             buttonAdv13.Selected = false;
             buttonAdv13.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv13.Size = new Size(177, 29);
+            buttonAdv13.Size = new Size(192, 29);
             buttonAdv13.TabIndex = 55;
             buttonAdv13.Tag = "11";
             buttonAdv13.Text = "DarkRectThinWCloseSel";
@@ -483,7 +487,7 @@
             buttonAdv14.resizeImage = new Point(0, 0);
             buttonAdv14.Selected = false;
             buttonAdv14.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv14.Size = new Size(177, 29);
+            buttonAdv14.Size = new Size(192, 29);
             buttonAdv14.TabIndex = 54;
             buttonAdv14.Tag = "10";
             buttonAdv14.Text = "DarkRectThinWClose";
@@ -510,12 +514,93 @@
             buttonAdv15.resizeImage = new Point(0, 0);
             buttonAdv15.Selected = false;
             buttonAdv15.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv15.Size = new Size(177, 29);
+            buttonAdv15.Size = new Size(192, 29);
             buttonAdv15.TabIndex = 53;
             buttonAdv15.Tag = "9";
             buttonAdv15.Text = "DarkRectThin";
             buttonAdv15.UseVisualStyleBackColor = true;
             buttonAdv15.Click += OnSkinPressed;
+            // 
+            // buttonAdv16
+            // 
+            buttonAdv16.BorderColor = Color.DarkGray;
+            buttonAdv16.BorderSize = 1;
+            buttonAdv16.CStyle = UI.Controls.ButtonAdv.CustomStyle.NORMAL;
+            buttonAdv16.expandImage = false;
+            buttonAdv16.extraText = "";
+            buttonAdv16.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv16.extraTextColor = Color.Black;
+            buttonAdv16.extraTextFont = null;
+            buttonAdv16.extraTextOffset = new Point(0, 0);
+            buttonAdv16.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv16.FocusEnabled = false;
+            buttonAdv16.Location = new Point(785, 323);
+            buttonAdv16.Name = "buttonAdv16";
+            buttonAdv16.PaintImageOnSelected = true;
+            buttonAdv16.processEnterKey = true;
+            buttonAdv16.resizeImage = new Point(0, 0);
+            buttonAdv16.Selected = false;
+            buttonAdv16.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv16.Size = new Size(192, 29);
+            buttonAdv16.TabIndex = 58;
+            buttonAdv16.Tag = "14";
+            buttonAdv16.Text = "DarkMiddleRountWCloseSel";
+            buttonAdv16.UseVisualStyleBackColor = true;
+            buttonAdv16.Click += OnSkinPressed;
+            // 
+            // buttonAdv17
+            // 
+            buttonAdv17.BorderColor = Color.DarkGray;
+            buttonAdv17.BorderSize = 1;
+            buttonAdv17.CStyle = UI.Controls.ButtonAdv.CustomStyle.NORMAL;
+            buttonAdv17.expandImage = false;
+            buttonAdv17.extraText = "";
+            buttonAdv17.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv17.extraTextColor = Color.Black;
+            buttonAdv17.extraTextFont = null;
+            buttonAdv17.extraTextOffset = new Point(0, 0);
+            buttonAdv17.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv17.FocusEnabled = false;
+            buttonAdv17.Location = new Point(785, 288);
+            buttonAdv17.Name = "buttonAdv17";
+            buttonAdv17.PaintImageOnSelected = true;
+            buttonAdv17.processEnterKey = true;
+            buttonAdv17.resizeImage = new Point(0, 0);
+            buttonAdv17.Selected = false;
+            buttonAdv17.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv17.Size = new Size(192, 29);
+            buttonAdv17.TabIndex = 57;
+            buttonAdv17.Tag = "13";
+            buttonAdv17.Text = "DarkMiddleRoundWClose";
+            buttonAdv17.UseVisualStyleBackColor = true;
+            buttonAdv17.Click += OnSkinPressed;
+            // 
+            // buttonAdv18
+            // 
+            buttonAdv18.BorderColor = Color.DarkGray;
+            buttonAdv18.BorderSize = 1;
+            buttonAdv18.CStyle = UI.Controls.ButtonAdv.CustomStyle.NORMAL;
+            buttonAdv18.expandImage = false;
+            buttonAdv18.extraText = "";
+            buttonAdv18.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv18.extraTextColor = Color.Black;
+            buttonAdv18.extraTextFont = null;
+            buttonAdv18.extraTextOffset = new Point(0, 0);
+            buttonAdv18.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv18.FocusEnabled = false;
+            buttonAdv18.Location = new Point(785, 253);
+            buttonAdv18.Name = "buttonAdv18";
+            buttonAdv18.PaintImageOnSelected = true;
+            buttonAdv18.processEnterKey = true;
+            buttonAdv18.resizeImage = new Point(0, 0);
+            buttonAdv18.Selected = false;
+            buttonAdv18.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv18.Size = new Size(192, 29);
+            buttonAdv18.TabIndex = 56;
+            buttonAdv18.Tag = "12";
+            buttonAdv18.Text = "DarkMiddleRound";
+            buttonAdv18.UseVisualStyleBackColor = true;
+            buttonAdv18.Click += OnSkinPressed;
             // 
             // TabTester2
             // 
@@ -523,6 +608,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(1130, 651);
+            Controls.Add(buttonAdv16);
+            Controls.Add(buttonAdv17);
+            Controls.Add(buttonAdv18);
             Controls.Add(buttonAdv13);
             Controls.Add(buttonAdv14);
             Controls.Add(buttonAdv15);
@@ -570,5 +658,8 @@
         private UI.Controls.ButtonAdv buttonAdv13;
         private UI.Controls.ButtonAdv buttonAdv14;
         private UI.Controls.ButtonAdv buttonAdv15;
+        private UI.Controls.ButtonAdv buttonAdv16;
+        private UI.Controls.ButtonAdv buttonAdv17;
+        private UI.Controls.ButtonAdv buttonAdv18;
     }
 }

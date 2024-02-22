@@ -200,7 +200,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public void Insert(int index, TabItem item)
         {
             Tab tab = item.tab;
-            tab.Setup(this, font, height - NormalTabSize.posY - NormalTabSize.subHeight, leftPadding, rightPadding);
+            tab.Setup(this, font, height - NormalTabSize.paddingTop - NormalTabSize.paddingBottom, leftPadding, rightPadding);
             item.Setup(this, closeBitmap);
             int totals = TotalTabs;
 
@@ -384,14 +384,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             this.height = height;
 
 
-            // Recalculate tabs height
-            foreach (Tab tab in tabs)
-            {
-                if (tab.Selected)
-                    SetTabHSize(tab, SelectedTabSize);
-                else // normal tab
-                    SetTabHSize(tab, NormalTabSize);
-            }
+            // Recalculate tabs height and h padding
+            RefreshTabsHSize();
         }
 
         // Triggered by the parent container when the mouse is down
@@ -689,8 +683,8 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         private void SetTabHSize(Tab tab, TabSize size)
         {
-            tab.Y =         size.posY;
-            tab.Height =    height - size.posY - size.subHeight;
+            tab.Y =         size.paddingTop;
+            tab.Height =    height - size.paddingTop - size.paddingBottom;
         }
 
         // Get previous tab. The currTab must be contained inside tabList
@@ -750,16 +744,16 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                         if (prevTab == null)
                         {
-                            nonSelTab.SetPos(selectedTab.Width, NormalTabSize.posY);
+                            nonSelTab.SetPos(selectedTab.Width, NormalTabSize.paddingTop);
                             passesSelected = true;
                         }
                         else if (!passesSelected)
                         {
-                            nonSelTab.SetPos(prevTab.Right + selectedTab.Width, NormalTabSize.posY);
+                            nonSelTab.SetPos(prevTab.Right + selectedTab.Width, NormalTabSize.paddingTop);
                             passesSelected = true;
                         }
                         else
-                            nonSelTab.SetPos(prevTab.Right, NormalTabSize.posY);
+                            nonSelTab.SetPos(prevTab.Right, NormalTabSize.paddingTop);
                     }
                 }
                 // Mouse is moving to the right -->
@@ -772,9 +766,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                         // No previous tab. Start from the beginning
                         if (prevTab == null)
-                            nonSelTab.SetPos(0, NormalTabSize.posY);
+                            nonSelTab.SetPos(0, NormalTabSize.paddingTop);
                         else
-                            nonSelTab.SetPos(prevTab.X + prevTab.Width, NormalTabSize.posY);
+                            nonSelTab.SetPos(prevTab.X + prevTab.Width, NormalTabSize.paddingTop);
                     }
                 }
             }
@@ -813,6 +807,30 @@ namespace VampirioCode.UI.Controls.TabManagement
             tabs = newList;
         }
 
+        //
+        // Recalculate tabs height and h padding
+        //
+        private void RefreshTabsHSize()
+        {
+            // Recalculate tabs height
+            foreach (Tab tab in tabs)
+            {
+                if (tab.Selected)
+                    SetTabHSize(tab, SelectedTabSize);
+                else // normal tab
+                    SetTabHSize(tab, NormalTabSize);
+            }
+        }
+
+        //
+        // Reset positions
+        //
+        public void RefreshLayout()
+        {
+            ResetPositions();
+            RefreshTabsHSize();
+        }
+
 
         //
         // Reset visual positions but do not touch the tabs array
@@ -826,9 +844,9 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 Tab tab = tabs[a];
 
-                     if (tab.IsDragging)    _y = DraggedTabSize.posY;
-                else if (tab.Selected)      _y = SelectedTabSize.posY;
-                else                        _y = NormalTabSize.posY;
+                     if (tab.IsDragging)    _y = DraggedTabSize.paddingTop;
+                else if (tab.Selected)      _y = SelectedTabSize.paddingTop;
+                else                        _y = NormalTabSize.paddingTop;
 
                 if (a == 0)
                     tab.SetPos(0, _y);
@@ -846,9 +864,9 @@ namespace VampirioCode.UI.Controls.TabManagement
             {
                 Tab tab = tabs[a];
 
-                     if (tab.IsDragging)    _y = DraggedTabSize.posY;
-                else if (tab.Selected)      _y = SelectedTabSize.posY;
-                else                        _y = NormalTabSize.posY;
+                     if (tab.IsDragging)    _y = DraggedTabSize.paddingTop;
+                else if (tab.Selected)      _y = SelectedTabSize.paddingTop;
+                else                        _y = NormalTabSize.paddingTop;
 
                 if (a == 0)
                     tab.SetPos(0, _y);

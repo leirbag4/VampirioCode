@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampEditor;
+using VampirioCode;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TabManagement;
@@ -41,17 +42,15 @@ namespace VampDocManager
         public event CurrDocumentTabChangedEvent CurrDocumentTabChanged;
         public event EditorContextItemPressedEvent EditorContextItemPressed;
 
-        public DocumentTab CurrDocumentTab { get { return (DocumentTab)tabControl.SelectedTab; } }
+        public DocumentTab CurrDocumentTab { get { return (DocumentTab)tabPanel.SelectedTab; } }
         public Document CurrDocument { get { return CurrDocumentTab.Document; } }
         public DocumentTab[] DocumentTabs { get; set; } = new DocumentTab[0];
         public Document[] Documents { get; set; } = new Document[0];
-        public int CurrIndex { get { return tabControl.SelectedIndex; } set { tabControl.SelectedIndex = value; } }
+        public int CurrIndex { get { return tabPanel.SelectedIndex; } set { tabPanel.SelectedIndex = value; } }
         public int Totals { get { return Documents.Length; } }
 
         // controls
-        //private TabControlVamp tabControl;
-        private TabPanel tabControl;
-        private Control horizontalBar;
+        private TabPanel tabPanel;
 
         // context menu
         private ContextMenuStrip contextMenu;
@@ -64,72 +63,121 @@ namespace VampDocManager
         {
             Color tabColor = CColor(139, 70, 166); // CColor(170, 60, 85);
 
-            tabControl = new TabPanel();
-            tabControl.Dock =                   DockStyle.Fill;
-            tabControl.BackColor =              Color.FromArgb(30, 30, 30);
+            tabPanel = new TabPanel();
 
-            // tabControl.SetSkin(TabSkin.DarkRoundWCloseSel);
-            tabControl.SetSkin(TabSkin.DarkRectWClose);
-            tabControl.TabBar.BackColor =           CColor(30, 30, 30);
+            SetTheme(Theme.DarkMiddleRound);
 
-            
-            tabControl.SelectedStyle.BackColor =    CColor(139, 70, 166);
-            tabControl.SelectedStyle.TextColor =    Color.White;
 
-            tabControl.NormalStyle.BackColor =      CColor(39, 40, 34);
-            tabControl.NormalStyle.TextColor =      Color.White;
-
-            tabControl.OverStyle.BackColor =        CColor(44, 45, 39);
-            tabControl.OverStyle.TextColor =        Color.White;
-
-            tabControl.SubButtonsBorderSize = 0;
-            tabControl.SubButtonsSelectedStyle.BackColor =      CColor(139, 70, 166);
-            tabControl.SubButtonsSelectedOverStyle.BackColor =  CColor(126, 63, 147);
-            //tabControl.SubButtonsSelectedOverStyle.BackColor =  CColor(200, 0, 0);
-            tabControl.SubButtonsNormalStyle.BackColor =        CColor(39, 40, 34);
-            tabControl.SubButtonsOverStyle.BackColor =          CColor(35, 35, 35);
-            //tabControl.SubButtonsOverStyle.BackColor =          CColor(200, 0, 0);
-            tabControl.SubButtonsParentOverStyle.BackColor =    CColor(44, 45, 39);
-
-            tabControl.TabBorderSize = 1;
-
-            //tabControl.Margin =                 new Padding(0);
-            //tabControl.Padding =                new Point(0, 0);
-            //tabControl.SetSkin(25, CColor(30, 30, 30), CColor(39, 40, 34), tabColor, CColor(52, 53, 45) , CColor(255, 255, 255));
-            tabControl.ControlAdded +=          OnDocumentTabAdded;
-            //tabControl.SelectedIndexChanged +=  OnSelectedIndexChanged;
-            tabControl.SelectedTabChanged +=    OnSelectedIndexChanged;
+            tabPanel.ControlAdded +=            OnDocumentTabAdded;
+            tabPanel.SelectedTabChanged +=      OnSelectedIndexChanged;
+            tabPanel.CloseTabInvoked +=         OnCloseButtonPressed;
             CreateContextItems();
 
             //tabControl.DragAndDrop = true;
             //tabControl.AllowDrop = true;
-            this.Controls.Add(tabControl);
+            this.Controls.Add(tabPanel);
 
-            horizontalBar = new Control();
-            horizontalBar.BackColor =   tabColor;
-            horizontalBar.Size =        new Size(this.Width - 6, 2);
-            horizontalBar.Dock =        DockStyle.Left;
-            horizontalBar.Anchor =      AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            horizontalBar.Location =    new Point(2, 27);
-
-           // horizontalBar.Dock = DockStyle.Fill;
-
-            this.Controls.Add(horizontalBar);
-
-            horizontalBar.BringToFront();
         }
 
-        //private void OnSelectedIndexChanged(object? sender, EventArgs e)
+        public void SetTheme(Theme theme)
+        {
+            //
+            // DarkRect
+            //
+            if (theme == Theme.DarkRect)
+            { 
+                tabPanel.TabBarHeight = 28;
+                tabPanel.Dock =                   DockStyle.Fill;
+                tabPanel.BackColor =              Color.FromArgb(30, 30, 30);
+
+
+                tabPanel.SetSkin(TabSkin.DarkRectWClose);
+                tabPanel.TabBar.BackColor =           CColor(30, 30, 30);
+            
+                tabPanel.SelectedStyle.BackColor =    CColor(139, 70, 166);
+                tabPanel.SelectedStyle.BorderColor =  CColor(139, 70, 166);
+                tabPanel.SelectedStyle.TextColor =    Color.White;
+
+                tabPanel.NormalStyle.BackColor =      CColor(39, 40, 34);
+                tabPanel.NormalStyle.TextColor =      Color.White;
+
+                tabPanel.OverStyle.BackColor =        CColor(44, 45, 39);
+                tabPanel.OverStyle.TextColor =        Color.White;
+
+                tabPanel.SubButtonsBorderSize = 0;
+                tabPanel.SubButtonsSelectedStyle.BackColor =      CColor(139, 70, 166);
+                tabPanel.SubButtonsSelectedOverStyle.BackColor =  CColor(116, 53, 137);
+                tabPanel.SubButtonsNormalStyle.BackColor =        CColor(39, 40, 34);
+                tabPanel.SubButtonsOverStyle.BackColor =          CColor(59, 60, 54);
+                tabPanel.SubButtonsParentOverStyle.BackColor =    CColor(44, 45, 39);
+
+                tabPanel.TabBorderSize = 1;
+
+                tabPanel.SplitBarColor =      Color.FromArgb(139, 70, 166);
+                tabPanel.SplitBarSize =       2;
+                tabPanel.SplitBarVisible =    true;
+            }
+
+            //
+            // DarkMiddleRound
+            //
+            else if (theme == Theme.DarkMiddleRound)
+            { 
+
+                tabPanel.TabBarHeight = 28;
+                tabPanel.Dock =                   DockStyle.Fill;
+                tabPanel.BackColor =              Color.FromArgb(30, 30, 30);
+
+
+                tabPanel.SetSkin(TabSkin.DarkMiddleRoundWClose);
+                tabPanel.TabBar.BackColor =           CColor(30, 30, 30);
+            
+                tabPanel.SelectedStyle.BackColor =    CColor(139, 70, 166);
+                tabPanel.SelectedStyle.BorderColor =  CColor(139, 70, 166);
+                tabPanel.SelectedStyle.TextColor =    Color.White;
+
+                tabPanel.NormalStyle.BackColor =      CColor(39, 40, 34);
+                tabPanel.NormalStyle.TextColor =      Color.White;
+
+                tabPanel.OverStyle.BackColor =        CColor(44, 45, 39);
+                tabPanel.OverStyle.TextColor =        Color.White;
+
+                tabPanel.SubButtonsBorderSize = 0;
+                tabPanel.SubButtonsSelectedStyle.BackColor =      CColor(139, 70, 166);
+                tabPanel.SubButtonsSelectedOverStyle.BackColor =  CColor(116, 53, 137);
+                tabPanel.SubButtonsNormalStyle.BackColor =        CColor(39, 40, 34);
+                tabPanel.SubButtonsOverStyle.BackColor =          CColor(59, 60, 54);
+                tabPanel.SubButtonsParentOverStyle.BackColor =    CColor(44, 45, 39);
+
+                tabPanel.TabBorderSize = 1;
+
+                tabPanel.SplitBarColor =      Color.FromArgb(139, 70, 166);
+                tabPanel.SplitBarSize =       2;
+                tabPanel.SplitBarVisible =    true;
+
+                tabPanel.TabBorderSize = 0;
+            }
+        }
+
         private void OnSelectedIndexChanged(int index, TabItem item)
         {
             RefreshDocs();
 
-            // Focus to the editor to gain user control
-            //CurrDocumentTab.Editor.Focus();
-
+            
             // Events
-            if (CurrDocumentTabChanged != null)
-                CurrDocumentTabChanged(CurrIndex, CurrDocument);
+            if (index == -1)
+            {
+                if (CurrDocumentTabChanged != null)
+                    CurrDocumentTabChanged(-1, null);
+            }
+            else
+            {
+                if (CurrDocumentTabChanged != null)
+                    CurrDocumentTabChanged(CurrIndex, CurrDocument);
+
+                // Focus to the editor to gain user control
+                CurrDocumentTab.Editor.Focus();
+            }
         }
 
         private void OnDocumentTabAdded(object? sender, ControlEventArgs e)
@@ -137,11 +185,15 @@ namespace VampDocManager
             RefreshDocs();
         }
 
+        private void OnCloseButtonPressed(int index, TabItem item)
+        {
+            CloseDocumentAt(index);
+        }
+
         private void RefreshDocs()
         {
             List<Document> docs = new List<Document>();
-            //DocumentTabs = tabControl.DocumentTabs.ToArray();
-            DocumentTabs = tabControl.GetItems<DocumentTab>();
+            DocumentTabs = tabPanel.GetItems<DocumentTab>();
 
             foreach (DocumentTab doc in DocumentTabs)
                 docs.Add(doc.Document);
@@ -170,17 +222,16 @@ namespace VampDocManager
             //contextMenu.Items.AddRange(new ToolStripMenuItem[] { closeItem, closeAllItem, closeAllButThis, new ToolStripSeparator(), newItem });
             contextMenu.Items.AddRange(new ToolStripItem[] { closeItem, closeAllItem, closeAllButThis, new ToolStripSeparator(), newItem });
 
-            tabControl.ContextMenuStrip = contextMenu;
-            tabControl.ContextMenuStrip.ForeColor = Color.Silver;
-            tabControl.ContextMenuStrip.Renderer =  new VampirioCode.UI.VampGraphics.ToolStripRendererVamp();
+            tabPanel.ContextMenuStrip = contextMenu;
+            tabPanel.ContextMenuStrip.ForeColor = Color.Silver;
+            tabPanel.ContextMenuStrip.Renderer =  new VampirioCode.UI.VampGraphics.ToolStripRendererVamp();
         }
 
         private DocumentTab CreateDocument(Document doc)
         {
             DocumentTab docTab =            DocumentTab.Create(doc);
             docTab.ContextItemPressed +=    OnContextItemPressed;
-            //tabControl.TabPages.Add(docTab);
-            tabControl.Add(docTab);
+            tabPanel.Add(docTab);
             SelectTab(docTab);
             return docTab;
         }
@@ -326,10 +377,9 @@ namespace VampDocManager
             if (DocumentRemoved != null)
                 DocumentRemoved(Documents[index], DocumentTabs[index], closeMode);
 
-
             // Remove from tabs
-            //tabControl.TabPages.RemoveAt(index);
-            tabControl.RemoveAt(index);
+            tabPanel.RemoveAt(index);
+
             RefreshDocs();
 
             if (Documents.Length > 0)
@@ -404,13 +454,13 @@ namespace VampDocManager
         public void SelectTab(DocumentTab docTab)
         { 
             if(docTab != null)
-                tabControl.SelectTab(docTab);
+                tabPanel.SelectTab(docTab);
         }
 
         public void SelectTabAt(int index)
         {
             if(index > -1)
-                tabControl.SelectTab(index);
+                tabPanel.SelectTab(index);
         }
 
         public int DocToIndex(Document document)
