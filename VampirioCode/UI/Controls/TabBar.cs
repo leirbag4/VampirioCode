@@ -131,6 +131,16 @@ namespace VampirioCode.UI.Controls
             controller.SelectTab(index);
         }
 
+        public void SelectTab(TabItem item, bool bringToScreen)
+        {
+            controller.SelectTab(item.tab, bringToScreen);
+        }
+
+        public void SelectTab(int index, bool bringToScreen)
+        {
+            controller.SelectTab(index, bringToScreen);
+        }
+
         public void BringTabIntoScreen(TabItem item)
         {
             controller.BringTabIntoScreen(item.tab);

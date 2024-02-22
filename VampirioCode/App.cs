@@ -90,6 +90,10 @@ namespace VampirioCode
                 this.Size = new Size(Config.Width, Config.Height);
             }
 
+            // restore last selected document
+            if (Config.LastSelectedTabIndex < docManager.Documents.Length)
+                docManager.SelectTabAt(Config.LastSelectedTabIndex);
+
             base.OnShown(e);
         }
 
@@ -312,8 +316,10 @@ namespace VampirioCode
                 docManager.OpenDocument(doc.FullFilePath, doc.DocumentSettings);
             }
 
-            if (Config.LastSelectedTabIndex < docManager.Documents.Length)
-                docManager.CurrIndex = Config.LastSelectedTabIndex;
+            
+
+            //if(docManager.DocumentTabs.Length > 0)
+            //    docManager.
 
             CleanUpTempFiles();
         }

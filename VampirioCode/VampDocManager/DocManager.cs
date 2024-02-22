@@ -454,13 +454,13 @@ namespace VampDocManager
         public void SelectTab(DocumentTab docTab)
         { 
             if(docTab != null)
-                tabPanel.SelectTab(docTab);
+                tabPanel.SelectTab(docTab, true);
         }
 
         public void SelectTabAt(int index)
         {
             if(index > -1)
-                tabPanel.SelectTab(index);
+                tabPanel.SelectTab(index, true);
         }
 
         public int DocToIndex(Document document)

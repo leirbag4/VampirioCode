@@ -186,6 +186,23 @@ namespace VampirioCode.UI.Controls.TabManagement
             SelectedIndex = index;
         }
 
+        public void SelectTab(Tab tab, bool bringToScreen)
+        {
+            SelectedTab = tab;
+
+            if (bringToScreen && (tab!= null))
+                BringTabIntoScreen(tab);
+        }
+
+        public void SelectTab(int index, bool bringToScreen)
+        {
+            SelectedIndex = index;
+
+
+            if (bringToScreen && (SelectedIndex != -1))
+                BringTabIntoScreen(tabs[SelectedIndex]);
+        }
+
         public void Shift(int amount)
         {
             OFFSET_X += amount;
