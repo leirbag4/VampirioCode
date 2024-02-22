@@ -314,6 +314,8 @@ namespace VampDocManager
         {
             //Document doc = Documents[index];
             SelectTabAt(index);
+            tabPanel.Repaint(); // fix issue when message box is called and stop drawing
+
             Document doc =  CurrDocument;
             int newIndex =  index > 0 ? (index - 1) : 0;
             bool saved =    false;

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.UI.Controls.TabManagement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace VampirioCode.UI.Controls
 {
@@ -190,7 +191,10 @@ namespace VampirioCode.UI.Controls
         }
 
 
-        // Skin
+        public void Repaint()
+        {
+            Invalidate();
+        }
         public void SetSkin(TabSkin skin)
         {
             _SetSkin(skin, true);

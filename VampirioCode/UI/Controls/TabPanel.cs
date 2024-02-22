@@ -269,6 +269,11 @@ namespace VampirioCode.UI.Controls
         //
         // Utils
         //
+        public void Repaint()
+        {
+            tabBar.Repaint();
+        }
+
         public void SetSkin(TabSkin skin)
         {
             tabBar.SetSkin(skin);
