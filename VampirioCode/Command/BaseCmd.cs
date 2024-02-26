@@ -61,7 +61,7 @@ namespace VampirioCode.Command
                 }
                 catch (Exception e)
                 {
-                    CallError("dotnet is not installed", e);
+                    CallError("CreateCommand() cannot launch process", e);
                     _OnComplete(tcs);
                 }
             });
@@ -153,6 +153,7 @@ namespace VampirioCode.Command
             }
         }
 
+
         protected void SetIfExists(string value)
         {
             if(value != "")
@@ -167,6 +168,18 @@ namespace VampirioCode.Command
                     cmd += "\"" + val + "\" ";
             }
         }
+
+        /*protected void SetIfExists(string argumentName, int? value)
+        {
+            if (value.HasValue)
+                cmd += argumentName + "\"" + value + "\" ";
+        }*/
+
+        /*protected void SetIfExists(string argumentName, bool? value)
+        {
+            if (value.HasValue)
+                cmd += argumentName + "\"" + value + "\" ";
+        }*/
 
         protected void SetAnyIfExists(string value, string value2)
         {

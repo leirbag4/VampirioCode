@@ -22,6 +22,8 @@ namespace VampirioCode.Command
         public string FileName { get; set; } = "";
         public string Arguments { get; set; } = "";
 
+        public Process Process { get { return _process; } }
+
         private Process? _process;
         private bool _error = false;
         
