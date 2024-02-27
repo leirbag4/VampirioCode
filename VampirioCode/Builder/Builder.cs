@@ -10,6 +10,7 @@ namespace VampirioCode.Builder
 {
     public class Builder
     {
+        public string Name { get; set; } = "";
         public BuilderType Type = BuilderType.None;
 
         protected string TempDir { get; set; } = "";

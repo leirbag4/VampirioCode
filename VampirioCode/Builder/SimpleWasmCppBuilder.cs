@@ -19,6 +19,7 @@ namespace VampirioCode.Builder
 
         public SimpleWasmCppBuilder()
         {
+            Name = "Emscripten C++";
             Type = BuilderType.SimpleWasmCpp;
         }
 

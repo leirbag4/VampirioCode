@@ -78,15 +78,20 @@ namespace VampirioCode.Builder
                 return null;
         }
 
+        public static Builder[] GetBuilders()
+        {
+            return allBuilders.Select(pair => pair.Value).ToArray();
+        }
+
         public static ToolStripMenuItem[] CreateMenuItems()
         {
             List<ToolStripMenuItem> items = new List<ToolStripMenuItem>();
-            BuilderType[] builders = GetBuilderTypes();
+            Builder[] builders = GetBuilders();
 
-            foreach (BuilderType builder in builders)
+            foreach (Builder builder in builders)
             {
-                ToolStripMenuItem item = new ToolStripMenuItem(builder.ToString());
-                item.Tag = builder;
+                ToolStripMenuItem item = new ToolStripMenuItem(builder.Name);
+                item.Tag = builder.Type;
                 items.Add(item);
             }
 

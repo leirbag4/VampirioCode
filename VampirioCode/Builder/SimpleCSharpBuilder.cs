@@ -18,6 +18,7 @@ namespace VampirioCode.Builder
 
         public SimpleCSharpBuilder()
         {
+            Name = "MS Dotnet";
             Type = BuilderType.SimpleCSharp;
         }
 

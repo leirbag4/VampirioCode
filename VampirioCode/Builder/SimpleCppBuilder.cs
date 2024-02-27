@@ -17,6 +17,7 @@ namespace VampirioCode.Builder
 
         public SimpleCppBuilder()
         {
+            Name = "MSVC";
             Type = BuilderType.SimpleCpp;
         }
 

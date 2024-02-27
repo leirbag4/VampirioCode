@@ -11,6 +11,7 @@ namespace VampirioCode.Builder
     {
         public SimpleJsBuilder() 
         {
+            Name = "Nodejs";
             Type = BuilderType.SimpleJs;
         }
 

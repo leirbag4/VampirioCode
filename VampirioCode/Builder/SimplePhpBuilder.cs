@@ -11,6 +11,7 @@ namespace VampirioCode.Builder
     {
         public SimplePhpBuilder() 
         {
+            Name = "Xampp PHP";
             Type = BuilderType.SimplePhp;
         }
 
