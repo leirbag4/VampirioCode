@@ -35,6 +35,15 @@ namespace VampirioCode.Builder
                 XConsole.FooterInfo("build with errors");
         }
 
+        protected void CreateProjectStructure()
+        {
+            if (Directory.Exists(TempDir))
+                Directory.Delete(TempDir, true);
+
+            Directory.CreateDirectory(TempDir);
+            Directory.CreateDirectory(ProjectDir);
+        }
+
         public virtual void Prepare()
         { }
 

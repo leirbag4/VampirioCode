@@ -28,12 +28,14 @@ namespace VampirioCode.Builder
             Prepare();
 
             // if '\temp_build' dir does not exist, just create it for the first time
-            if (!Directory.Exists(TempDir))
-                Directory.CreateDirectory(TempDir);
+            //if (!Directory.Exists(TempDir))
+            //    Directory.CreateDirectory(TempDir);
 
             // if '\temp_build\proj_name' dir does not exist, just create it for the first time
-            if (!Directory.Exists(ProjectDir))
-                Directory.CreateDirectory(ProjectDir);
+            //if (!Directory.Exists(ProjectDir))
+            //    Directory.CreateDirectory(ProjectDir);
+
+            CreateProjectStructure();
 
             // delete all content of '\temp_build\proj_name\' 
             //FileUtils.DeleteFilesAndDirs(projDirPath);
