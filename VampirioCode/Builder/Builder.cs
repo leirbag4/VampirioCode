@@ -10,6 +10,8 @@ namespace VampirioCode.Builder
 {
     public class Builder
     {
+        public BuilderType Type = BuilderType.None;
+
         protected string TempDir { get; set; } = "";
         protected string ProjectDir { get; set; } = "";
         protected string ProgramFile { get; set; } = "";    // e.g: main.cpp  or  Program.cs

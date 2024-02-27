@@ -17,6 +17,11 @@ namespace VampirioCode.Builder
         private string objsDir;
         private string outputDir;
 
+        public SimpleWasmCppBuilder()
+        {
+            Type = BuilderType.SimpleWasmCpp;
+        }
+
         public override void Prepare()
         {
             TempDir =           AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\

@@ -9,6 +9,11 @@ namespace VampirioCode.Builder
 {
     public class SimplePhpBuilder : Builder
     {
+        public SimplePhpBuilder() 
+        {
+            Type = BuilderType.SimplePhp;
+        }
+
         public override void Prepare()
         { 
             TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\

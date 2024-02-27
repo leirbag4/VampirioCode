@@ -15,6 +15,11 @@ namespace VampirioCode.Builder
         private string objsDir;
         private string outputDir;
 
+        public SimpleCppBuilder()
+        {
+            Type = BuilderType.SimpleCpp;
+        }
+
         public override void Prepare()
         {
             TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\

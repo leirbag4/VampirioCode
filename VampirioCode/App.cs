@@ -19,14 +19,15 @@ namespace VampirioCode
         public VampirioEditor CurrEditor { get { return docManager.CurrDocumentTab.Editor; } }
 
         private Dotnet dotnet;
-        private SimpleCSharpBuilder csBuilder;
-        private SimpleCppBuilder cppBuilder;
-        private SimpleJsBuilder jsBuilder;
-        private SimplePhpBuilder phpBuilder;
+
+        private Control screenLock;
 
         public App()
         {
+            //DoubleBuffered = true;
+
             InitializeComponent();
+            CreateScreenLock();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -34,6 +35,7 @@ namespace VampirioCode
             Config.Initialize();
             MsgBox.Setup(this);
             XConsole.Setup(footer);
+            Builders.Initialize();
             RegisterCmdKeys();
 
             // theme
@@ -61,17 +63,25 @@ namespace VampirioCode
             OpenLastDocuments();
 
             // start builders
-            dotnet =        new Dotnet();
-            csBuilder =     new SimpleCSharpBuilder();
-            cppBuilder =    new SimpleCppBuilder();
-            jsBuilder =     new SimpleJsBuilder();
-            phpBuilder =    new SimplePhpBuilder();
+            dotnet =            new Dotnet();
+
+            FillBuilderItems();
+
+            Reposition();
+
+            SelectBuilder(CurrDocument.DocType, CurrDocument.BuilderType);
 
             base.OnLoad(e);
         }
 
+        protected override async void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            await DestroyScreenLock();
+        }
 
-        protected override void OnShown(EventArgs e)
+
+        protected void Reposition()
         {
             // resize the window to the last size
             if (Config.Maximized)
@@ -94,7 +104,29 @@ namespace VampirioCode
             if (Config.LastSelectedTabIndex < docManager.Documents.Length)
                 docManager.SelectTabAt(Config.LastSelectedTabIndex);
 
-            base.OnShown(e);
+        }
+
+        // An overlay dark control that prevent white flickerings at the start of the app
+        private void CreateScreenLock()
+        {
+            screenLock = new Control();
+            screenLock.BackColor = Color.FromArgb(30, 30, 30);
+            screenLock.Dock = DockStyle.Fill;
+            this.Controls.Add(screenLock);
+            screenLock.BringToFront();
+        }
+
+        // Destroy the overlay
+        private async Task DestroyScreenLock()
+        {
+            await Task.Delay(100); // timer delay
+
+            Action lambdaFunction = () =>
+            {
+                this.Controls.Remove(screenLock);
+            };
+
+            lambdaFunction.Invoke();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keys)
@@ -123,6 +155,18 @@ namespace VampirioCode
             //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
         }
 
+        private void FillBuilderItems()
+        {
+            ToolStripMenuItem[] items = Builders.CreateMenuItems();
+
+            foreach(ToolStripMenuItem item in items)
+                item.Click += OnBuilderPressed;
+
+            builderToolStripMenuItem.DropDownItems.Clear();
+            builderToolStripMenuItem.DropDownItems.AddRange(items);
+        }
+
+
         private async void Build()
         {
             XConsole.Clear();
@@ -134,7 +178,7 @@ namespace VampirioCode
             }
             else
             {
-                Builder.Builder builder = GetSimpleBuilder(CurrDocument.DocType);
+                Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
                 builder.Setup(projName, CurrDocument.Text);
                 await builder.Build();
             }
@@ -162,7 +206,7 @@ namespace VampirioCode
             }
             else
             {
-                Builder.Builder builder = GetSimpleBuilder(CurrDocument.DocType);
+                Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
                 builder.Setup(projName, CurrDocument.Text);
                 await builder.BuildAndRun();
             }
@@ -202,7 +246,7 @@ namespace VampirioCode
                 {
                     string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
 
-                    Builder.Builder builder = GetSimpleBuilder(CurrDocument.DocType);
+                    Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
                     builder.Setup(projName, CurrDocument.Text);
                     builder.Prepare();
 
@@ -228,11 +272,23 @@ namespace VampirioCode
             else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
             else if (sender == phpToolStripMenuItem)    docType = DocumentType.PHP;
 
-            CurrDocument.DocType = docType;
-            SelectLanguage(docType);
+            if (CurrDocument.DocType != docType)
+            {
+                CurrDocument.DocType =      docType;
+                CurrDocument.BuilderType =  Builders.GetDefaultTypeFor(docType);
+                SelectLanguage(CurrDocument.DocType);
+                SelectBuilder(CurrDocument.DocType, CurrDocument.BuilderType);
 
-            // change language at editor (scintilla)
-            CurrDocumentTab.Editor.SetLanguage(docType, VampEditor.StyleMode.Dark);
+                // change language at editor (scintilla)
+                CurrDocumentTab.Editor.SetLanguage(CurrDocument.DocType, VampEditor.StyleMode.Dark);
+            }
+        }
+
+        private void OnBuilderPressed(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            CurrDocument.BuilderType = (BuilderType)item.Tag;
+            SelectBuilder(CurrDocument.DocType, CurrDocument.BuilderType);
         }
 
         private void New()
@@ -366,19 +422,100 @@ namespace VampirioCode
             footer.DocType = docType;
         }
 
-        private Builder.Builder GetSimpleBuilder(DocumentType docType)
+        private void SelectBuilder(DocumentType docType, BuilderType selBuilderType)
+        {
+            BuilderType[] allowedBuilders = Builders.GetBuilderypesFor(docType);
+
+            foreach (ToolStripMenuItem item in builderToolStripMenuItem.DropDownItems)
+            {
+                BuilderType buildType = (BuilderType)item.Tag;
+
+                // selected
+                if (buildType == selBuilderType)
+                {
+                    item.Visible = true;
+
+                    if (item.ForeColor != Color.SlateBlue)
+                        item.ForeColor = Color.SlateBlue;
+                }
+                // non selected items
+                else
+                {
+                    String allow = "";
+                    foreach (var al in allowedBuilders)
+                        allow += al.ToString() + ", ";
+
+                    //XConsole.Alert("docType: " + docType + "     allowed: " + allow + " buildType: " + buildType + " contain: " + allowedBuilders.Contains(buildType));
+                    
+                    // hide menu item if it doesn't belong to the language or docType
+                    item.Visible = allowedBuilders.Contains(buildType);
+
+                    if (item.ForeColor != Color.Silver)
+                        item.ForeColor = Color.Silver;
+                }
+            }
+
+            /*// first check if builders exists on toolstrip menu
+            bool foundBuilder = false;
+
+            foreach (ToolStripMenuItem builder in builderToolStripMenuItem.DropDownItems)
+            {
+                BuilderType buildType = (BuilderType)builder.Tag;
+                if (buildType == selBuilderType)
+                {
+                    foundBuilder = true;
+                    break;
+                }
+            }
+
+            // if no builder item found on menu strip, we must add them all
+            if (!foundBuilder)
+            { 
+                builderToolStripMenuItem.DropDownItems.Clear();
+                builderToolStripMenuItem.DropDownItems.AddRange(Builders.CreateMenuItems(docType));
+            }
+
+            // select the item
+            foreach (ToolStripMenuItem item in builderToolStripMenuItem.DropDownItems)
+            {
+                BuilderType buildType = (BuilderType)item.Tag;
+
+                // selected
+                if (buildType == selBuilderType)
+                {
+                    if (item.ForeColor != Color.SlateBlue)
+                        item.ForeColor = Color.SlateBlue;
+                }
+                // non selected items
+                else
+                {
+                    if (item.ForeColor != Color.Silver)
+                        item.ForeColor = Color.Silver;
+                }
+            }
+
+
+            //ToolStripMenuItem
+
+            //builderToolStripMenuItem.DropDownItems[0].visi*/
+        }
+
+        /*private Builder.Builder GetSimpleBuilder(DocumentType docType)
         {
                  if (docType == DocumentType.CSHARP)    return csBuilder;
             else if (docType == DocumentType.CPP)       return cppBuilder;
             else if (docType == DocumentType.JS)        return jsBuilder;
             else if (docType == DocumentType.PHP)       return phpBuilder;
             return null;
-        }
+        }*/
 
         private void OnCurrDocumentTabChanged(int index, Document doc)
         {
             if (doc != null)
+            {
                 SelectLanguage(doc.DocType);
+                SelectBuilder(doc.DocType, doc.BuilderType);
+            }
         }
 
         private void OnDocumentCreated(Document document, DocumentTab documentTab, CreateMode mode)
@@ -465,7 +602,7 @@ namespace VampirioCode
                 lastOpenDocs[a] = new SavedDocument()   { 
                                                             FullFilePath =  doc.FullFilePath, 
                                                             IsTemporary =   doc.IsTemporary,
-                                                            DocumentSettings = new DocumentSettings() { DocType = doc.DocType }
+                                                            DocumentSettings = new DocumentSettings() { DocType = doc.DocType, BuilderType = doc.BuilderType }
                                                         };
             }
 

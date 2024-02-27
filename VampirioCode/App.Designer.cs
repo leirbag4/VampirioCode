@@ -55,6 +55,7 @@
             jsToolStripMenuItem = new ToolStripMenuItem();
             phpToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
+            builderToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -144,7 +145,7 @@
             menuStrip.AutoSize = false;
             menuStrip.Dock = DockStyle.None;
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, languageToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, languageToolStripMenuItem, builderToolStripMenuItem });
             menuStrip.Location = new Point(4, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(792, 28);
@@ -283,7 +284,7 @@
             // 
             csharpToolStripMenuItem.ForeColor = Color.Silver;
             csharpToolStripMenuItem.Name = "csharpToolStripMenuItem";
-            csharpToolStripMenuItem.Size = new Size(156, 26);
+            csharpToolStripMenuItem.Size = new Size(224, 26);
             csharpToolStripMenuItem.Text = "C#";
             csharpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -291,7 +292,7 @@
             // 
             cppToolStripMenuItem.ForeColor = Color.Silver;
             cppToolStripMenuItem.Name = "cppToolStripMenuItem";
-            cppToolStripMenuItem.Size = new Size(156, 26);
+            cppToolStripMenuItem.Size = new Size(224, 26);
             cppToolStripMenuItem.Text = "C++";
             cppToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -299,7 +300,7 @@
             // 
             jsToolStripMenuItem.ForeColor = Color.Silver;
             jsToolStripMenuItem.Name = "jsToolStripMenuItem";
-            jsToolStripMenuItem.Size = new Size(156, 26);
+            jsToolStripMenuItem.Size = new Size(224, 26);
             jsToolStripMenuItem.Text = "Javascript";
             jsToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -307,7 +308,7 @@
             // 
             phpToolStripMenuItem.ForeColor = Color.Silver;
             phpToolStripMenuItem.Name = "phpToolStripMenuItem";
-            phpToolStripMenuItem.Size = new Size(156, 26);
+            phpToolStripMenuItem.Size = new Size(224, 26);
             phpToolStripMenuItem.Text = "PHP";
             phpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -319,6 +320,12 @@
             toolBar.Name = "toolBar";
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
+            // 
+            // builderToolStripMenuItem
+            // 
+            builderToolStripMenuItem.Name = "builderToolStripMenuItem";
+            builderToolStripMenuItem.Size = new Size(70, 24);
+            builderToolStripMenuItem.Text = "Builder";
             // 
             // App
             // 
@@ -371,5 +378,6 @@
         private ToolStripMenuItem cppToolStripMenuItem;
         private ToolStripMenuItem jsToolStripMenuItem;
         private ToolStripMenuItem phpToolStripMenuItem;
+        private ToolStripMenuItem builderToolStripMenuItem;
     }
 }

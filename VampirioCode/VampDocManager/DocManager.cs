@@ -269,7 +269,10 @@ namespace VampDocManager
                     // if document type is 'OTHER', the Document.Load() method has automatically setted the document type
                     // And if Document.Load() can't find one, OTHER will be leave it here anyway
                     if (settings.DocType != DocumentType.OTHER)
-                        doc.DocType = settings.DocType;
+                    {
+                        doc.DocType =       settings.DocType;
+                        doc.BuilderType =   settings.BuilderType;
+                    }
                 }
 
                 docTab = CreateDocument(doc);

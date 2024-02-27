@@ -16,8 +16,13 @@ namespace VampirioCode.Builder
         private string csprojFilePath;
         private string outputDir;
 
+        public SimpleCSharpBuilder()
+        {
+            Type = BuilderType.SimpleCSharp;
+        }
+
         public override void Prepare()
-        { 
+        {
             TempDir =               AppInfo.TemporaryBuildPath;                         // temporary directory ->   \temp_build\
             ProjectDir =            TempDir + projectName + "\\";                       // temporary project dir -> \temp_build\proj_name\
             ProgramFile =           ProjectDir + projectName + ".cs";                   // .cs program file ->      \temp_build\proj_name\proj.cs

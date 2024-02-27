@@ -9,6 +9,11 @@ namespace VampirioCode.Builder
 {
     public class SimpleJsBuilder : Builder
     {
+        public SimpleJsBuilder() 
+        {
+            Type = BuilderType.SimpleJs;
+        }
+
         public override void Prepare()
         { 
             TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
