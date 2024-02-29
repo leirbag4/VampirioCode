@@ -151,6 +151,7 @@ namespace VampirioCode
             HotKeyManager.AddHotKey(Build,          Keys.F6);
             HotKeyManager.AddHotKey(Undo,           Keys.Control | Keys.Z);
             HotKeyManager.AddHotKey(Redo,           Keys.Control | Keys.Shift | Keys.Z);
+            HotKeyManager.AddHotKey(SaveAs,         Keys.Control | Keys.Shift | Keys.S);
 
             //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
         }

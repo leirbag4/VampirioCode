@@ -68,6 +68,7 @@ namespace VampEditor
             ClearCmdKey(Keys.Control | Keys.P);
             ClearCmdKey(Keys.Control | Keys.Z);
             ClearCmdKey(Keys.Control | Keys.Shift | Keys.Z);
+            ClearCmdKey(Keys.Control | Keys.Shift | Keys.S); // save as
 
             //MarkerEnableHighlight(true);
 
