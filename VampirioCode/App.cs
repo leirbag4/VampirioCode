@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using VampDocManager;
 using VampEditor;
 using VampirioCode.Builder;
+using VampirioCode.Command;
 using VampirioCode.Command.Dotnet;
 using VampirioCode.SaveData;
 using VampirioCode.UI;
@@ -655,6 +656,9 @@ namespace VampirioCode
 
             // Save config file
             Config.Save();
+
+            // TODO: close all pending process but needs to view revied later
+            //CmdRun.KillAllProcess_TODO_FIX();
 
             base.OnClosing(e);
         }

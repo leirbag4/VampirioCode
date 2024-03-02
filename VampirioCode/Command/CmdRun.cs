@@ -26,13 +26,15 @@ namespace VampirioCode.Command
 
         private Process? _process;
         private bool _error = false;
-        
+
 
         public CmdRun(string fileName, string arguments)
         {
             WorkingDirectory = ".";
             FileName = fileName;
             Arguments = arguments;
+
+            //AddCmd_TODO_FIX(this);
         }
 
         public CmdRun(string workingDirectory, string fileName, string arguments)
@@ -40,8 +42,9 @@ namespace VampirioCode.Command
             WorkingDirectory = workingDirectory;
             FileName = fileName;
             Arguments = arguments;
+
+            //AddCmd_TODO_FIX(this);
         }
-        
 
         public void Start()
         {
@@ -61,7 +64,11 @@ namespace VampirioCode.Command
             startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
-            //compiler.StartInfo.RedirectStandardInput = true;
+
+            // IMPORTANT: this line makes the launched process a child of
+            //            this appliaction, so if it fails or gets stuck,
+            //            then the are killed after closing
+            startInfo.RedirectStandardInput = true;
 
             //if (_type == CmdType.WSL)
             {
