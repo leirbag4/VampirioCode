@@ -376,13 +376,11 @@ namespace VampirioCode
 
             foreach (SavedDocument doc in docs)
             {
-                docManager.OpenDocument(doc.FullFilePath, doc.DocumentSettings);
+                if (!File.Exists(doc.FullFilePath))
+                    XConsole.PrintWarning("Can't find file at '" + doc.FullFilePath + "'. It will not be loaded.");
+                else
+                    docManager.OpenDocument(doc.FullFilePath, doc.DocumentSettings);
             }
-
-            
-
-            //if(docManager.DocumentTabs.Length > 0)
-            //    docManager.
 
             CleanUpTempFiles();
         }
