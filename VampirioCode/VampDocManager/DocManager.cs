@@ -439,7 +439,7 @@ namespace VampDocManager
                     try
                     {
                         text = CurrDocument.Text;
-                        File.Delete(CurrDocument.FullFilePath);
+                        //File.Delete(CurrDocument.FullFilePath);
                         CurrDocument.CopyFrom(Document.Load(newFilePath));
                         CurrDocument.Text = text;
                         CurrDocument.Save();
