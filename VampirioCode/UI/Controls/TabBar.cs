@@ -21,6 +21,7 @@ namespace VampirioCode.UI.Controls
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
+        public event TabIndexPositionChangedEvent TabIndexPositionChanged;
         public event RightClickContextEvent RightClickContext;
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
@@ -77,18 +78,18 @@ namespace VampirioCode.UI.Controls
             Height = controller.Height;
 
             // controller events
-            controller.SelectedTabChanged +=    OnSelectedTabChanged;
-            controller.UnselectedTabChanged +=  OnUnselectedTabChanged;
-            controller.TabAdded +=              OnTabAdded;
-            controller.TabRemoved +=            OnTabRemoved;
-            controller.StartDragTab +=          OnStartDragTab;
-            controller.StopDragTab +=           OnStopDragTab;
-            controller.TabIndexChanged +=       OnTabIndexChanged;
-            controller.TabDetached +=           OnTabDetached;
-            controller.TabItemTextChanged +=    OnTabItemTextChanged;
-            controller.CloseTabInvoked +=       OnCloseTabInvoked;
+            controller.SelectedTabChanged +=        OnSelectedTabChanged;
+            controller.UnselectedTabChanged +=      OnUnselectedTabChanged;
+            controller.TabAdded +=                  OnTabAdded;
+            controller.TabRemoved +=                OnTabRemoved;
+            controller.StartDragTab +=              OnStartDragTab;
+            controller.StopDragTab +=               OnStopDragTab;
+            controller.TabIndexPositionChanged +=   OnTabIndexPositionChanged;
+            controller.TabDetached +=               OnTabDetached;
+            controller.TabItemTextChanged +=        OnTabItemTextChanged;
+            controller.CloseTabInvoked +=           OnCloseTabInvoked;
 #if USE_AUTO_SHIFT_TIMERS
-            controller.TimerRepaintNeeded +=    OnTimerRepaintNeeded;
+            controller.TimerRepaintNeeded +=        OnTimerRepaintNeeded;
 #endif
 
             // items events
@@ -586,7 +587,7 @@ namespace VampirioCode.UI.Controls
             Invalidate();
         }
 
-        private void OnTabIndexChanged(int oldIndex, int newIndex)
+        private void OnTabIndexPositionChanged(int oldIndex, int newIndex)
         {
             _itemEventsEnabled = false;
             
@@ -595,6 +596,9 @@ namespace VampirioCode.UI.Controls
             Items.Insert(newIndex, item);
 
             _itemEventsEnabled = true;
+
+            if (TabIndexPositionChanged != null)
+                TabIndexPositionChanged(oldIndex, newIndex);
         }
 
         private void OnTabDetached(int index, TabItem item, int offsetX)

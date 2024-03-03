@@ -17,7 +17,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.UI.VampGraphics;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace VampirioCode.UI.Controls.TabManagement
 {
@@ -30,7 +29,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
-        public event TabIndexChangedEvent TabIndexChanged;
+        public event TabIndexPositionChangedEvent TabIndexPositionChanged;
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
         public event CloseTabInvokedEvent CloseTabInvoked;
@@ -364,8 +363,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             if (prevSelectedIndexTab != selectedTab.Index())
             {
-                if (TabIndexChanged != null)
-                    TabIndexChanged(prevSelectedIndexTab, selectedTab.Index());
+                if (TabIndexPositionChanged != null)
+                    TabIndexPositionChanged(prevSelectedIndexTab, selectedTab.Index());
             }
         }
 

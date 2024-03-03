@@ -17,6 +17,7 @@ namespace VampirioCode.UI.Controls
         public event TabRemovedEvent TabRemoved;
         public event StartDragTabEvent StartDragTab;
         public event StopDragTabEvent StopDragTab;
+        public event TabIndexPositionChangedEvent TabIndexPositionChanged;
         public event RightClickContextEvent RightClickContext;
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
@@ -143,21 +144,22 @@ namespace VampirioCode.UI.Controls
             splitBar.Visible =      false;
 
             // Events
-            tabBar.SelectedTabChanged +=    OnSelectedTabChanged;
-            tabBar.UnselectedTabChanged +=  OnUnselectedTabChanged;
-            tabBar.TabAdded +=              OnTabAdded;
-            tabBar.TabRemoved +=            OnTabRemoved;
-            tabBar.StartDragTab +=          OnStartDragTab;
-            tabBar.StopDragTab +=           OnStopDragTab;
-            tabBar.RightClickContext +=     OnRightClickContext;
-            tabBar.TabDetached +=           OnTabDetached;
-            tabBar.TabItemTextChanged +=    OnTabItemTextChanged;
-            tabBar.CloseTabInvoked +=       OnCloseTabInvoked;
+            tabBar.SelectedTabChanged +=        OnSelectedTabChanged;
+            tabBar.UnselectedTabChanged +=      OnUnselectedTabChanged;
+            tabBar.TabAdded +=                  OnTabAdded;
+            tabBar.TabRemoved +=                OnTabRemoved;
+            tabBar.StartDragTab +=              OnStartDragTab;
+            tabBar.StopDragTab +=               OnStopDragTab;
+            tabBar.TabIndexPositionChanged +=   OnTabIndexPositionChanged;
+            tabBar.RightClickContext +=         OnRightClickContext;
+            tabBar.TabDetached +=               OnTabDetached;
+            tabBar.TabItemTextChanged +=        OnTabItemTextChanged;
+            tabBar.CloseTabInvoked +=           OnCloseTabInvoked;
 
-            leftArrowButton.MouseDown +=    OnLeftArrowBtnDown;
-            rightArrowButton.MouseDown +=   OnRightArrowBtnDown;
-            leftArrowButton.MouseUp +=      OnLeftArrowBtnUp;
-            rightArrowButton.MouseUp +=     OnRightArrowBtnUp;
+            leftArrowButton.MouseDown +=        OnLeftArrowBtnDown;
+            rightArrowButton.MouseDown +=       OnRightArrowBtnDown;
+            leftArrowButton.MouseUp +=          OnLeftArrowBtnUp;
+            rightArrowButton.MouseUp +=         OnRightArrowBtnUp;
 
             // Timers
             arrowTimer =                    new System.Windows.Forms.Timer();
@@ -180,6 +182,7 @@ namespace VampirioCode.UI.Controls
             this.Controls.Add(splitBar);
             this.Controls.Add(container);
         }
+
 
         /*public List<T> GetItems<T>()
         {
@@ -435,6 +438,13 @@ namespace VampirioCode.UI.Controls
             if(StopDragTab != null)
                 StopDragTab(index, item);
         }
+
+        private void OnTabIndexPositionChanged(int oldIndex, int newIndex)
+        {
+            if(TabIndexPositionChanged != null)
+                TabIndexPositionChanged(oldIndex, newIndex);
+        }
+
         private void OnRightClickContext(TabItem item)
         {
             if(RightClickContext != null)
