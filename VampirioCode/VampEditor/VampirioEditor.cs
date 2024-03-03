@@ -69,6 +69,8 @@ namespace VampEditor
             ClearCmdKey(Keys.Control | Keys.Z);
             ClearCmdKey(Keys.Control | Keys.Shift | Keys.Z);
             ClearCmdKey(Keys.Control | Keys.Shift | Keys.S); // save as
+            ClearCmdKey(Keys.Alt | Keys.Up);
+            ClearCmdKey(Keys.Alt | Keys.Down);
 
             //MarkerEnableHighlight(true);
 
@@ -129,6 +131,18 @@ namespace VampEditor
         {
             this.Text = text;
             EmptyUndoBuffer();
+        }
+
+        // Must be fix: not always works. If next line have a TAB space this doesn't work
+        public void LineUp_TODO()
+        { 
+            DirectMessage(2620, IntPtr.Zero, IntPtr.Zero);
+        }
+
+        // Must be fix: not always works. If next line have a TAB space this doesn't work
+        public void LineDown_TODO()
+        {
+            DirectMessage(2621, IntPtr.Zero, IntPtr.Zero);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

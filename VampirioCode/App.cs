@@ -158,8 +158,20 @@ namespace VampirioCode
             HotKeyManager.AddHotKey(Undo,           Keys.Control | Keys.Z);
             HotKeyManager.AddHotKey(Redo,           Keys.Control | Keys.Shift | Keys.Z);
             HotKeyManager.AddHotKey(SaveAs,         Keys.Control | Keys.Shift | Keys.S);
+            HotKeyManager.AddHotKey(LineUp,         Keys.Alt | Keys.Up);
+            HotKeyManager.AddHotKey(LineDown,       Keys.Alt | Keys.Down);
 
             //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
+        }
+
+        private void LineUp()
+        {
+            CurrEditor.LineUp_TODO();
+        }
+
+        private void LineDown()
+        {
+            CurrEditor.LineDown_TODO();
         }
 
         private void FillBuilderItems()
