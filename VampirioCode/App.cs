@@ -70,6 +70,11 @@ namespace VampirioCode
 
             Reposition();
 
+            // if there is no saved documents on config file because of an error
+            // or if application opens for the first time and config.cfg didn't exist
+            if (docManager.Documents.Length == 0)
+                New();
+
             SelectBuilder(CurrDocument.DocType, CurrDocument.BuilderType);
 
             base.OnLoad(e);
