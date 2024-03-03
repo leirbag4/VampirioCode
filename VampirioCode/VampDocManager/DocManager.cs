@@ -70,6 +70,7 @@ namespace VampDocManager
 
             tabPanel.ControlAdded +=            OnDocumentTabAdded;
             tabPanel.SelectedTabChanged +=      OnSelectedIndexChanged;
+            tabPanel.TabIndexPositionChanged += OnTabIndexPositionChanged;
             tabPanel.CloseTabInvoked +=         OnCloseButtonPressed;
             CreateContextItems();
 
@@ -178,6 +179,11 @@ namespace VampDocManager
                 // Focus to the editor to gain user control
                 CurrDocumentTab.Editor.Focus();
             }
+        }
+
+        private void OnTabIndexPositionChanged(int oldIndex, int newIndex)
+        {
+            RefreshDocs();
         }
 
         private void OnDocumentTabAdded(object? sender, ControlEventArgs e)
