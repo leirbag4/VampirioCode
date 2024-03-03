@@ -23,6 +23,7 @@ namespace VampirioCode.Builder
 
             _Register(DocumentType.CSHARP,    new SimpleCSharpBuilder());
             _Register(DocumentType.CPP,       new SimpleCppBuilder());
+            _Register(DocumentType.CPP,       new SimpleGnuGppWSLBuilder());
             _Register(DocumentType.CPP,       new SimpleWasmCppBuilder());
             _Register(DocumentType.JS,        new SimpleJsBuilder());
             _Register(DocumentType.PHP,       new SimplePhpBuilder());
