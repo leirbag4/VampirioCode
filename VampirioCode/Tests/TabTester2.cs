@@ -54,7 +54,17 @@ namespace VampirioCode.Tests
             return item;*/
 
 
-            DocumentTab item = DocumentTab.Create(VampDocManager.Document.NewTemporary());
+            /*DocumentTab item = DocumentTab.Create(VampDocManager.Document.NewTemporary());
+            return item;*/
+
+            TabItem item = new TabItem("document " + counter++);
+            TextBox txtBox = new TextBox();
+            txtBox.Multiline = true;
+            txtBox.BackColor = Color.FromArgb(30, 30, 30);
+            txtBox.ForeColor = Color.Silver;
+            txtBox.BorderStyle = BorderStyle.None;
+            txtBox.Dock = DockStyle.Fill;
+            item.Content.Controls.Add(txtBox);
             return item;
 
         }
