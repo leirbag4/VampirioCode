@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -336,6 +337,14 @@ namespace VampEditor
                 _highlighted = false;
             }
         }
+
+        /*private int dbgCount = 60;
+        public void TestDebug()
+        {
+            XConsole.Println(dbgCount.ToString());
+            Styles[dbgCount].ForeColor = Color.Magenta;
+            dbgCount++;
+        }*/
 
     }
 }

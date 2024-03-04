@@ -164,16 +164,6 @@ namespace VampirioCode
             //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
         }
 
-        private void LineUp()
-        {
-            CurrEditor.LineUp_TODO();
-        }
-
-        private void LineDown()
-        {
-            CurrEditor.LineDown_TODO();
-        }
-
         private void FillBuilderItems()
         {
             ToolStripMenuItem[] items = Builders.CreateMenuItems();
@@ -380,6 +370,16 @@ namespace VampirioCode
         private void Redo()
         {
             CurrEditor.Redo();
+        }
+
+        private void LineUp()
+        {
+            CurrEditor.LineUp_TODO();
+        }
+
+        private void LineDown()
+        {
+            CurrEditor.LineDown_TODO();
         }
 
         private void OpenLastDocuments()

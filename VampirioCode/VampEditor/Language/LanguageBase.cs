@@ -206,6 +206,16 @@ namespace VampEditor.Language
             Margins[0].Width = _minLineMarginWidth;
         }
 
+        protected Style PreprocessStyle(int index)
+        {
+            return Styles[64 + index];
+        }
+
+        protected Style PreprocessStyle(int startIndex, int index)
+        {
+            return Styles[startIndex + index];
+        }
+
         protected Color CColor(int red, int green, int blue)
         {
             return Color.FromArgb(red, green, blue);

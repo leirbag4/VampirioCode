@@ -68,6 +68,8 @@ namespace VampEditor.Language
 
                 Styles[19].ForeColor =                          CColor(179, 153, 255);   // if else do while for
 
+                SetInactivePreprocessor(CColor(100, 100, 100));
+
                 //IndentationGuides = IndentView.LookBoth;
 
                 editor.SetKeywords(0, CPP_LANG_KEYWORDS);
@@ -88,6 +90,15 @@ namespace VampEditor.Language
                 SetLinesNumber(true, 40);
             }
 
+        }
+
+        private void SetInactivePreprocessor(Color color)
+        {
+            int[] styleArr = new int[] {    Style.Cpp.Identifier, Style.Cpp.Comment, Style.Cpp.CommentLine, Style.Cpp.CommentLineDoc, Style.Cpp.Number, Style.Cpp.Word, 
+                                            Style.Cpp.Word2, Style.Cpp.String, Style.Cpp.Character, Style.Cpp.Verbatim, Style.Cpp.StringEol, Style.Cpp.Operator, Style.Cpp.Preprocessor, 19 };
+
+            foreach (int style in styleArr)
+                PreprocessStyle(style).ForeColor = color;
         }
     }
 }
