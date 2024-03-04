@@ -102,11 +102,11 @@
             // 
             // xconsole
             // 
-            xconsole.BackColor = Color.FromArgb(40, 40, 40);
-            xconsole.Dock = DockStyle.Fill;
-            xconsole.Location = new Point(0, 0);
+            xconsole.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            xconsole.BackColor = Color.FromArgb(30, 30, 30);
+            xconsole.Location = new Point(0, 2);
             xconsole.Name = "xconsole";
-            xconsole.Size = new Size(792, 149);
+            xconsole.Size = new Size(792, 147);
             xconsole.TabIndex = 0;
             // 
             // menuStrip
