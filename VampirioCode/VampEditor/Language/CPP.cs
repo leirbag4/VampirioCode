@@ -9,7 +9,7 @@ namespace VampEditor.Language
 {
     public class CPP : LanguageBase
     {
-        private const String CPP_STD_COMMON_CLASSES_STRUCTS = "string vector fstream ifstream ofstream rotl rotr pair tuple map set list array deque queue stack priority_queue forward_list unordered_map unordered_set unordered_multimap unordered_multiset multimap multiset iterator function unique_ptr shared_ptr weak_ptr atomic mutex condition_variable";
+        private const String CPP_STD_COMMON_CLASSES_STRUCTS = "string_view string vector fstream ifstream ofstream rotl rotr pair tuple map set list array deque queue stack priority_queue forward_list unordered_map unordered_set unordered_multimap unordered_multiset multimap multiset iterator function unique_ptr shared_ptr weak_ptr atomic mutex condition_variable";
 
 
         private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default ";
