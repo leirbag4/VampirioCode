@@ -32,7 +32,6 @@
             footer = new UI.FooterUI();
             splitContainer = new SplitContainer();
             docManager = new VampDocManager.DocManager();
-            clearButton = new UI.Controls.ButtonAdv();
             xconsole = new UI.XConsole();
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -54,8 +53,8 @@
             cppToolStripMenuItem = new ToolStripMenuItem();
             jsToolStripMenuItem = new ToolStripMenuItem();
             phpToolStripMenuItem = new ToolStripMenuItem();
-            toolBar = new UI.ToolBar();
             builderToolStripMenuItem = new ToolStripMenuItem();
+            toolBar = new UI.ToolBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -87,7 +86,6 @@
             // 
             // splitContainer.Panel2
             // 
-            splitContainer.Panel2.Controls.Add(clearButton);
             splitContainer.Panel2.Controls.Add(xconsole);
             splitContainer.Size = new Size(792, 615);
             splitContainer.SplitterDistance = 462;
@@ -101,34 +99,6 @@
             docManager.Name = "docManager";
             docManager.Size = new Size(792, 462);
             docManager.TabIndex = 0;
-            // 
-            // clearButton
-            // 
-            clearButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            clearButton.BorderColor = Color.FromArgb(20, 20, 20);
-            clearButton.BorderSize = 1;
-            clearButton.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
-            clearButton.expandImage = false;
-            clearButton.extraText = "";
-            clearButton.extraTextAlign = ContentAlignment.MiddleCenter;
-            clearButton.extraTextColor = Color.Black;
-            clearButton.extraTextFont = null;
-            clearButton.extraTextOffset = new Point(0, 0);
-            clearButton.FocusColor = Color.FromArgb(24, 81, 115);
-            clearButton.FocusEnabled = false;
-            clearButton.ForeColor = Color.Silver;
-            clearButton.Location = new Point(719, 2);
-            clearButton.Name = "clearButton";
-            clearButton.PaintImageOnSelected = true;
-            clearButton.processEnterKey = true;
-            clearButton.resizeImage = new Point(0, 0);
-            clearButton.Selected = false;
-            clearButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            clearButton.Size = new Size(69, 22);
-            clearButton.TabIndex = 1;
-            clearButton.Text = "clear";
-            clearButton.UseVisualStyleBackColor = true;
-            clearButton.Click += OnClearPressed;
             // 
             // xconsole
             // 
@@ -284,7 +254,7 @@
             // 
             csharpToolStripMenuItem.ForeColor = Color.Silver;
             csharpToolStripMenuItem.Name = "csharpToolStripMenuItem";
-            csharpToolStripMenuItem.Size = new Size(224, 26);
+            csharpToolStripMenuItem.Size = new Size(156, 26);
             csharpToolStripMenuItem.Text = "C#";
             csharpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -292,7 +262,7 @@
             // 
             cppToolStripMenuItem.ForeColor = Color.Silver;
             cppToolStripMenuItem.Name = "cppToolStripMenuItem";
-            cppToolStripMenuItem.Size = new Size(224, 26);
+            cppToolStripMenuItem.Size = new Size(156, 26);
             cppToolStripMenuItem.Text = "C++";
             cppToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -300,7 +270,7 @@
             // 
             jsToolStripMenuItem.ForeColor = Color.Silver;
             jsToolStripMenuItem.Name = "jsToolStripMenuItem";
-            jsToolStripMenuItem.Size = new Size(224, 26);
+            jsToolStripMenuItem.Size = new Size(156, 26);
             jsToolStripMenuItem.Text = "Javascript";
             jsToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -308,9 +278,15 @@
             // 
             phpToolStripMenuItem.ForeColor = Color.Silver;
             phpToolStripMenuItem.Name = "phpToolStripMenuItem";
-            phpToolStripMenuItem.Size = new Size(224, 26);
+            phpToolStripMenuItem.Size = new Size(156, 26);
             phpToolStripMenuItem.Text = "PHP";
             phpToolStripMenuItem.Click += OnLanguagePressed;
+            // 
+            // builderToolStripMenuItem
+            // 
+            builderToolStripMenuItem.Name = "builderToolStripMenuItem";
+            builderToolStripMenuItem.Size = new Size(70, 24);
+            builderToolStripMenuItem.Text = "Builder";
             // 
             // toolBar
             // 
@@ -320,12 +296,6 @@
             toolBar.Name = "toolBar";
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
-            // 
-            // builderToolStripMenuItem
-            // 
-            builderToolStripMenuItem.Name = "builderToolStripMenuItem";
-            builderToolStripMenuItem.Size = new Size(70, 24);
-            builderToolStripMenuItem.Text = "Builder";
             // 
             // App
             // 
@@ -372,7 +342,6 @@
         private ToolStripMenuItem closeAllToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private UI.ToolBar toolBar;
-        private UI.Controls.ButtonAdv clearButton;
         private ToolStripMenuItem languageToolStripMenuItem;
         private ToolStripMenuItem csharpToolStripMenuItem;
         private ToolStripMenuItem cppToolStripMenuItem;

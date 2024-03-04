@@ -23,7 +23,7 @@ namespace VampirioCode.UI
         {
             InitializeComponent();
 
-            
+
             // set tab panel skin
             SetupTabSkin();
 
@@ -32,11 +32,11 @@ namespace VampirioCode.UI
             TabItem errorsItem =    new TabItem("errors");
 
             // console textbox
-            RichTextBox outp =    new RichTextBox();
-            outp.BackColor =      Color.FromArgb(30, 30, 30);
-            outp.ForeColor =      Color.Silver;
-            outp.BorderStyle =    BorderStyle.None;
-            outp.Dock =           DockStyle.Fill;
+            RichTextBox outp =  new RichTextBox();
+            outp.BackColor =    Color.FromArgb(30, 30, 30);
+            outp.ForeColor =    Color.Silver;
+            outp.BorderStyle =  BorderStyle.None;
+            outp.Dock =         DockStyle.Fill;
 
             // add textbox to console item
             consoleItem.Content.Controls.Add(outp);
@@ -50,8 +50,7 @@ namespace VampirioCode.UI
         }
 
         private void SetupTabSkin()
-        { 
-            // tab panel skin
+        {
             //tabPanel.SetSkin(TabSkin.DarkRectThin);
 
             tabPanel.AllowDragging =                    false;
@@ -61,21 +60,21 @@ namespace VampirioCode.UI
             tabPanel.NormalTabSize.paddingBottom =      0;
             tabPanel.TabBorderSize =                    1;
 
-            tabPanel.TabBarHeight =                 23;
-            tabPanel.TabBar.BackColor =             Color.FromArgb(40, 40, 40);
-            
-            tabPanel.SelectedStyle.BackColor =      Color.FromArgb(170, 60, 85);
-            tabPanel.SelectedStyle.TextColor =      Color.White;
-            tabPanel.SelectedStyle.BorderColor =    Color.FromArgb(143, 50, 71);
-            tabPanel.NormalStyle.BackColor =        Color.FromArgb(39, 40, 34);
-            tabPanel.NormalStyle.TextColor =        Color.White;
-            tabPanel.OverStyle.BackColor =          Color.FromArgb(46, 45, 40);
-            tabPanel.OverStyle.TextColor =          Color.White;
+            tabPanel.TabBarHeight =                     23;
+            tabPanel.TabBar.BackColor =                 Color.FromArgb(40, 40, 40);
 
-            tabPanel.SizeMode =         UI.Controls.TabManagement.TabSizeMode.Fixed;
-            tabPanel.MaxTabWidth =      75;
-            tabPanel.LeftPadding =      0;
-            tabPanel.RightPadding =     0;
+            tabPanel.SelectedStyle.BackColor =          Color.FromArgb(170, 60, 85);
+            tabPanel.SelectedStyle.TextColor =          Color.White;
+            tabPanel.SelectedStyle.BorderColor =        Color.FromArgb(143, 50, 71);
+            tabPanel.NormalStyle.BackColor =            Color.FromArgb(39, 40, 34);
+            tabPanel.NormalStyle.TextColor =            Color.White;
+            tabPanel.OverStyle.BackColor =              Color.FromArgb(46, 45, 40);
+            tabPanel.OverStyle.TextColor =              Color.White;
+
+            tabPanel.SizeMode =                         UI.Controls.TabManagement.TabSizeMode.Fixed;
+            tabPanel.MaxTabWidth =                      75;
+            tabPanel.LeftPadding =                      0;
+            tabPanel.RightPadding =                     0;
         }
 
         public static void Setup(FooterUI footer)
@@ -84,7 +83,7 @@ namespace VampirioCode.UI
         }
 
         private static Color CColor(int red, int green, int blue)
-        { 
+        {
             return Color.FromArgb(red, green, blue);
         }
 
@@ -104,7 +103,7 @@ namespace VampirioCode.UI
         }
 
         public static void Alert(string str)
-        { 
+        {
             MessageBox.Show(str);
         }
 
@@ -115,7 +114,7 @@ namespace VampirioCode.UI
 
         public static void Alert(string[] strArr)
         {
-            foreach(var str in strArr)
+            foreach (var str in strArr)
                 MessageBox.Show(str);
         }
 
@@ -153,9 +152,9 @@ namespace VampirioCode.UI
         {
             int length = _outp.TextLength;  // at end of text
             _outp.AppendText(str);
-            _outp.SelectionStart =  length;
+            _outp.SelectionStart = length;
             _outp.SelectionLength = str.Length;
-            _outp.SelectionColor =  color;
+            _outp.SelectionColor = color;
             _outp.ScrollToCaret();
         }
 
@@ -166,7 +165,7 @@ namespace VampirioCode.UI
             _outp.ScrollToCaret();
         }
 
-        
+
         public static void Println(String str)
         {
             if (_outp.InvokeRequired)
@@ -243,5 +242,9 @@ namespace VampirioCode.UI
             _footer.SetInfo(str);
         }
 
+        private void OnClearPressed(object sender, EventArgs e)
+        {
+            Clear();
+        }
     }
 }

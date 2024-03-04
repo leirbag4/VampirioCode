@@ -687,10 +687,5 @@ namespace VampirioCode
             Build();
         }
 
-        private void OnClearPressed(object sender, EventArgs e)
-        {
-            XConsole.Clear();
-        }
-
     }
 }
