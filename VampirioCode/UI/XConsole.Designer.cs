@@ -57,7 +57,7 @@
             clearButton.FocusColor = Color.FromArgb(24, 81, 115);
             clearButton.FocusEnabled = false;
             clearButton.ForeColor = Color.Silver;
-            clearButton.Location = new Point(615, 1);
+            clearButton.Location = new Point(615, 0);
             clearButton.Name = "clearButton";
             clearButton.PaintImageOnSelected = true;
             clearButton.processEnterKey = true;
