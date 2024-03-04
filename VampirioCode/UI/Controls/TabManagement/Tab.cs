@@ -133,6 +133,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         public void SetText(string text)
         {
+            if (text == originalText)
+                return;
+
             this.originalText = text;
             this.text =         "";
             this.textWidth =    TextRenderer.MeasureText(originalText, font, new Size(1, Height)).Width;
