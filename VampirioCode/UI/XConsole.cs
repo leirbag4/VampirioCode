@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.IO;
+using VampirioCode.UI.Controls;
+using VampirioCode.UI.Controls.TabManagement;
 
 namespace VampirioCode.UI
 {
@@ -21,9 +23,59 @@ namespace VampirioCode.UI
         {
             InitializeComponent();
 
-            tabControl.SetSkin(22, CColor(40, 40, 40), CColor(39, 40, 34), CColor(170, 60, 85), CColor(255, 255, 255));
+            
+            // set tab panel skin
+            SetupTabSkin();
 
+            // create tabs
+            TabItem consoleItem =   new TabItem("console");
+            TabItem errorsItem =    new TabItem("errors");
+
+            // console textbox
+            RichTextBox outp =    new RichTextBox();
+            outp.BackColor =      Color.FromArgb(30, 30, 30);
+            outp.ForeColor =      Color.Silver;
+            outp.BorderStyle =    BorderStyle.None;
+            outp.Dock =           DockStyle.Fill;
+
+            // add textbox to console item
+            consoleItem.Content.Controls.Add(outp);
+
+            // add tabs
+            tabPanel.Add(consoleItem);
+            tabPanel.Add(errorsItem);
+
+            // set output
             SetOutput(outp);
+        }
+
+        private void SetupTabSkin()
+        { 
+            // tab panel skin
+            //tabPanel.SetSkin(TabSkin.DarkRectThin);
+
+            tabPanel.AllowDragging =                    false;
+            tabPanel.SelectedTabSize.paddingTop =       0;
+            tabPanel.SelectedTabSize.paddingBottom =    0;
+            tabPanel.NormalTabSize.paddingTop =         0;
+            tabPanel.NormalTabSize.paddingBottom =      0;
+            tabPanel.TabBorderSize =                    1;
+
+            tabPanel.TabBarHeight =                 23;
+            tabPanel.TabBar.BackColor =             Color.FromArgb(40, 40, 40);
+            
+            tabPanel.SelectedStyle.BackColor =      Color.FromArgb(170, 60, 85);
+            tabPanel.SelectedStyle.TextColor =      Color.White;
+            tabPanel.SelectedStyle.BorderColor =    Color.FromArgb(143, 50, 71);
+            tabPanel.NormalStyle.BackColor =        Color.FromArgb(39, 40, 34);
+            tabPanel.NormalStyle.TextColor =        Color.White;
+            tabPanel.OverStyle.BackColor =          Color.FromArgb(46, 45, 40);
+            tabPanel.OverStyle.TextColor =          Color.White;
+
+            tabPanel.SizeMode =         UI.Controls.TabManagement.TabSizeMode.Fixed;
+            tabPanel.MaxTabWidth =      75;
+            tabPanel.LeftPadding =      0;
+            tabPanel.RightPadding =     0;
         }
 
         public static void Setup(FooterUI footer)
