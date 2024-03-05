@@ -37,10 +37,12 @@ namespace VampirioCode.Builder
 
         protected void CreateProjectStructure()
         {
-            if (Directory.Exists(TempDir))
-                Directory.Delete(TempDir, true);
+            if (!Directory.Exists(TempDir))
+                Directory.CreateDirectory(TempDir);
 
-            Directory.CreateDirectory(TempDir);
+            if (Directory.Exists(ProjectDir))
+                Directory.Delete(ProjectDir, true);
+
             Directory.CreateDirectory(ProjectDir);
         }
 
