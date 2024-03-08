@@ -280,6 +280,7 @@ namespace VampirioCode
             else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
             else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
             else if (sender == phpToolStripMenuItem)    docType = DocumentType.PHP;
+            else if (sender == cmakeToolStripMenuItem)  docType = DocumentType.TXT;
 
             if (CurrDocument.DocType != docType)
             {
@@ -423,7 +424,7 @@ namespace VampirioCode
 
         private void SelectLanguage(DocumentType docType)
         {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, phpToolStripMenuItem };
+            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, phpToolStripMenuItem, cmakeToolStripMenuItem };
 
             foreach (var item in items)
             {
@@ -435,6 +436,7 @@ namespace VampirioCode
             else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
             else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
             else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
+            else if (docType == DocumentType.TXT)       cmakeToolStripMenuItem.ForeColor =  Color.SlateBlue;
 
             footer.DocType = docType;
         }
@@ -472,59 +474,8 @@ namespace VampirioCode
                 }
             }
 
-            /*// first check if builders exists on toolstrip menu
-            bool foundBuilder = false;
-
-            foreach (ToolStripMenuItem builder in builderToolStripMenuItem.DropDownItems)
-            {
-                BuilderType buildType = (BuilderType)builder.Tag;
-                if (buildType == selBuilderType)
-                {
-                    foundBuilder = true;
-                    break;
-                }
-            }
-
-            // if no builder item found on menu strip, we must add them all
-            if (!foundBuilder)
-            { 
-                builderToolStripMenuItem.DropDownItems.Clear();
-                builderToolStripMenuItem.DropDownItems.AddRange(Builders.CreateMenuItems(docType));
-            }
-
-            // select the item
-            foreach (ToolStripMenuItem item in builderToolStripMenuItem.DropDownItems)
-            {
-                BuilderType buildType = (BuilderType)item.Tag;
-
-                // selected
-                if (buildType == selBuilderType)
-                {
-                    if (item.ForeColor != Color.SlateBlue)
-                        item.ForeColor = Color.SlateBlue;
-                }
-                // non selected items
-                else
-                {
-                    if (item.ForeColor != Color.Silver)
-                        item.ForeColor = Color.Silver;
-                }
-            }
-
-
-            //ToolStripMenuItem
-
-            //builderToolStripMenuItem.DropDownItems[0].visi*/
         }
 
-        /*private Builder.Builder GetSimpleBuilder(DocumentType docType)
-        {
-                 if (docType == DocumentType.CSHARP)    return csBuilder;
-            else if (docType == DocumentType.CPP)       return cppBuilder;
-            else if (docType == DocumentType.JS)        return jsBuilder;
-            else if (docType == DocumentType.PHP)       return phpBuilder;
-            return null;
-        }*/
 
         private void OnCurrDocumentTabChanged(int index, Document doc)
         {

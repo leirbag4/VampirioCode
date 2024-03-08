@@ -16,6 +16,7 @@ namespace VampDocManager
         C,
         PHP,
         H,
-        INC
+        INC,
+        TXT
     }
 }
