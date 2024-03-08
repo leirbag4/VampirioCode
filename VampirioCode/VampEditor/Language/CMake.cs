@@ -48,10 +48,15 @@ namespace VampEditor.Language
         private const String CMAKE_CONTROL_STATEMENTS =             "if else elseif endif foreach endforeach while endwhile continue break return ";
         private const String CMAKE_BODIES =                         "block endblock function endfunction macro endmacro ";
         private const String CMAKE_SCRIPTING_COMMANDS =             "cmake_host_system_information cmake_language cmake_minimum_required cmake_parse_arguments cmake_path cmake_policy configure_file execute_process file find_file find_library find_package find_path find_program get_cmake_property get_directory_property get_filename_component get_property include include_guard list mark_as_advanced math message option separate_arguments set set_directory_properties set_property site_name string unset variable_watch ";
+        private const String CMAKE_PROJECT_COMMANDS =               "add_compile_definitions add_compile_options add_custom_command add_custom_target add_definitions add_dependencies add_executable add_library add_link_options add_subdirectory add_test aux_source_directory build_command cmake_file_api create_test_sourcelist define_property enable_language enable_testing export fltk_wrap_ui get_source_file_property get_target_property get_test_property include_directories include_external_msproject include_regular_expression install link_directories link_libraries load_cache project remove_definitions set_source_files_properties set_target_properties set_tests_properties source_group target_compile_definitions target_compile_features target_compile_options target_include_directories target_link_directories target_link_libraries target_link_options target_precompile_headers target_sources try_compile try_run ";
+        private const String CMAKE_CTEST_COMMANDS =                 "ctest_build ctest_configure ctest_coverage ctest_empty_binary_directory ctest_memcheck ctest_read_custom_files ctest_run_script ctest_sleep ctest_start ctest_submit ctest_test ctest_update ctest_upload ";
+
 
         private const String ALL_KEYWORDS_0 =   CMAKE_CONTROL_STATEMENTS + 
                                                 CMAKE_BODIES + 
-                                                CMAKE_SCRIPTING_COMMANDS;
+                                                CMAKE_SCRIPTING_COMMANDS + 
+                                                CMAKE_PROJECT_COMMANDS +
+                                                CMAKE_CTEST_COMMANDS;
 
         private const String CMAKE_CONDITIONAL_UNARY =              "EXISTS COMMAND DEFINED ";
         private const String CMAKE_CONDITIONAL_BINARY  =            "EQUAL LESS LESS_EQUAL GREATER GREATER_EQUAL STREQUAL STRLESS STRLESS_EQUAL STRGREATER STRGREATER_EQUAL VERSION_EQUAL VERSION_LESS VERSION_LESS_EQUAL VERSION_GREATER VERSION_GREATER_EQUAL PATH_EQUAL MATCHES ";
@@ -64,9 +69,7 @@ namespace VampEditor.Language
         //private const String VERSION_COMPARISONS =                  "VERSION_LESS VERSION_GREATER VERSION_EQUAL VERSION_LESS_EQUAL VERSION_GREATER_EQUAL ";
         //private const String PATH_COMPARISONS =                     "PATH_EQUAL ";
 
-        private const String CMAKE_PROJECT_COMMANDS =               "add_compile_definitions add_compile_options add_custom_command add_custom_target add_definitions add_dependencies add_executable add_library add_link_options add_subdirectory add_test aux_source_directory build_command cmake_file_api create_test_sourcelist define_property enable_language enable_testing export fltk_wrap_ui get_source_file_property get_target_property get_test_property include_directories include_external_msproject include_regular_expression install link_directories link_libraries load_cache project remove_definitions set_source_files_properties set_target_properties set_tests_properties source_group target_compile_definitions target_compile_features target_compile_options target_include_directories target_link_directories target_link_libraries target_link_options target_precompile_headers target_sources try_compile try_run ";
-        private const String CMAKE_CTEST_COMMANDS =                 "ctest_build ctest_configure ctest_coverage ctest_empty_binary_directory ctest_memcheck ctest_read_custom_files ctest_run_script ctest_sleep ctest_start ctest_submit ctest_test ctest_update ctest_upload ";
-        private const String CMAKE_MORE =                           "INTERFACE INTERFACE_INCLUDE_DIRECTORIES COMMENT VERBATIM VERSION CACHE STRING ON OFF REPLACE REMOVE_DUPLICATES APPEND PARENT_SCOPE ";
+        private const String CMAKE_MORE =                           "INTERFACE INTERFACE_INCLUDE_DIRECTORIES COMMENT VERBATIM VERSION CACHE STRING ON OFF REPLACE REMOVE_DUPLICATES APPEND PARENT_SCOPE FORCE PRIVATE REQUIRED ";
 
 
         private const String ALL_KEYWORDS_1 =   CMAKE_CONDITIONAL_UNARY + 
@@ -75,8 +78,7 @@ namespace VampEditor.Language
                                                 CMAKE_CONDITIONAL_BINARY_LOGICAL + 
                                                 CMAKE_CONDITIONAL_OTHERS + 
                                                 CMAKE_FILE_OPERATION_FUNCTIONS + 
-                                                CMAKE_PROJECT_COMMANDS + 
-                                                CMAKE_CTEST_COMMANDS + CMAKE_MORE;
+                                                CMAKE_MORE;
 
 
 
@@ -111,30 +113,23 @@ namespace VampEditor.Language
                 Styles[Style.Cpp.CommentLine].ForeColor =       CColor(0, 178, 45);                 
                 Styles[Style.Cpp.CommentLineDoc].ForeColor =    CColor(128, 128, 128);              
                 Styles[Style.Cpp.Number].ForeColor =            CColor(166, 226, 46);
-                Styles[Style.Cpp.Word].ForeColor =              CColor(170, 60, 85);    // void public static             //CColor(31, 144, 255);// CColor(57, 135, 214);
-                Styles[Style.Cpp.Word2].ForeColor =             CColor(61, 201, 176);   // string vector fstream
-                Styles[Style.Cpp.String].ForeColor =            CColor(214, 157, 65);
+                Styles[Style.Cpp.Word].ForeColor =          CColor(179, 255, 153);//CColor(170, 60, 85);    // void public static             //CColor(31, 144, 255);// CColor(57, 135, 214);
+                Styles[Style.Cpp.Word2].ForeColor =         CColor(255, 115, 115);// CColor(61, 201, 176);   // string vector fstream
+                Styles[Style.Cpp.String].ForeColor =        CColor(199, 123, 170);    //CColor(214, 157, 65);
                 Styles[Style.Cpp.Character].ForeColor =         CColor(163, 21, 21);
                 Styles[Style.Cpp.Verbatim].ForeColor =          CColor(214, 157, 65);               
                 Styles[Style.Cpp.StringEol].BackColor =         Color.Pink;
                 Styles[Style.Cpp.Operator].ForeColor =          CColor(170, 170, 200);  // - + = ( )
-                Styles[Style.Cpp.Preprocessor].ForeColor =      CColor(155, 0, 0);                  //Color.Maroon;// CColor(105, 0, 140);    // #define <iostream>
+                Styles[Style.Cpp.Preprocessor].ForeColor =  CColor(0, 217, 109);                  //Color.Maroon;// CColor(105, 0, 140);    // #define <iostream>
 
-                Styles[19].ForeColor =                          CColor(179, 153, 255);   // if else do while for
+                Styles[19].ForeColor =                      CColor(147, 38, 255); // CColor(179, 153, 255);   // if else do while for
 
                 SetInactivePreprocessor(CColor(100, 100, 100));
 
                 //IndentationGuides = IndentView.LookBoth;
 
-                editor.SetKeywords(0, ALL_KEYWORDS_0);
-                editor.SetKeywords(3, ALL_KEYWORDS_1);
-
-                //string classes = "";
-
-                //for (int a = 0; a < CPP_EXTRA_CLASSES.Count; a++)
-                //    classes += CPP_EXTRA_CLASSES[a] + " ";
-
-
+                editor.SetKeywords(0, ALL_KEYWORDS_1);
+                editor.SetKeywords(3, ALL_KEYWORDS_0);
 
                 editor.SetKeywords(1, ALL_KEYWORDS_2);
                 //editor.SetKeywordsSafe(1, classes + CSHARP_COMMON_CLASSES);
