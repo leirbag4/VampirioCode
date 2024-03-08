@@ -33,6 +33,7 @@ namespace VampirioCode
 
         protected override void OnLoad(EventArgs e)
         {
+            FilesStructInit();
             Config.Initialize();
             MsgBox.Setup(this);
             XConsole.Setup(footer);
@@ -381,6 +382,12 @@ namespace VampirioCode
         private void LineDown()
         {
             CurrEditor.LineDown_TODO();
+        }
+
+        private void FilesStructInit()
+        { 
+            if(!Directory.Exists(AppInfo.TemporaryFilesPath))
+                Directory.CreateDirectory(AppInfo.TemporaryFilesPath);
         }
 
         private void OpenLastDocuments()
