@@ -25,7 +25,7 @@ namespace VampirioCode.Command.Clang
             {
                 string runBatFilename = Path.GetDirectoryName(Filename) + "\\run.bat";
                 CreateRunHelper(runBatFilename);
-                //LogParams = false;
+                LogParams = false;
                 return await CreateCommand<RunResult>(runBatFilename, "");
             }
             // The call to the program is -> \path\app.exe
