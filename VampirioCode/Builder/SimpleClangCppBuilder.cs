@@ -1,25 +1,26 @@
-﻿using System;
+﻿// Just comment this define in case you don't need libclang.dll
+#define USE_LIBCLANG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using VampirioCode.Command.GnuGppWSL;
-using VampirioCode.Command.GnuGppWSL.Result;
+using VampirioCode.Command.Clang;
+using VampirioCode.Command.Clang.Result;
 using VampirioCode.UI;
 
 namespace VampirioCode.Builder
 {
-    public class SimpleGnuGppWSLBuilder : Builder
+    public class SimpleClangCppBuilder : Builder
     {
-        private string objsDir;
+        //private string objsDir;
         private string outputDir;
 
-        public SimpleGnuGppWSLBuilder()
+        public SimpleClangCppBuilder()
         {
-            Name = "GNU g++";
-            Type = BuilderType.SimpleGnuGppCpp;
+            Name = "Clang++";
+            Type = BuilderType.SimpleClangCpp;
         }
 
         public override void Prepare()
@@ -27,9 +28,9 @@ namespace VampirioCode.Builder
             TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
             ProjectDir =            TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
             ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\proj.cpp
-            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\obj\
+            //objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\obj\
             outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
-            OutputFilename =        outputDir + projectName;            // output binaries dir ->   \temp_build\proj_name\bin\proj
+            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\bin\proj.exe
         }
 
         protected override async Task OnBuildAndRun()
@@ -40,8 +41,13 @@ namespace VampirioCode.Builder
             if (result.IsOk)
             {
                 XConsole.Clear();
-                GnuGppWSL msvc = new GnuGppWSL();
-                runResult = await msvc.RunAsync(result.OutputFilename);
+                Clang clang = new Clang();
+                
+                List<string> libPaths = new List<string>();
+#if USE_LIBCLANG                
+                libPaths.Add(@"C:\programs_dev\clang_llvm_18_1_0\lib");
+#endif
+                runResult = await clang.RunAsync(result.OutputFilename, libPaths);
                 //return runResult;
             }
 
@@ -56,19 +62,12 @@ namespace VampirioCode.Builder
         {
             Prepare();
 
-            // if '\temp_build' dir does not exist, just create it for the first time
-            //if (!Directory.Exists(TempDir))
-            //    Directory.CreateDirectory(TempDir);
-
-            // if '\temp_build\proj_name' dir does not exist, just create it for the first time
-            //if (!Directory.Exists(ProjectDir))
-            //    Directory.CreateDirectory(ProjectDir);
 
             CreateProjectStructure();
 
             // if '\temp_build\proj_name\obj' dir does not exist, just create it for the first time
-            if (!Directory.Exists(objsDir))
-                Directory.CreateDirectory(objsDir);
+            //if (!Directory.Exists(objsDir))
+            //    Directory.CreateDirectory(objsDir);
 
             // if '\temp_build\proj_name\bin' dir does not exist, just create it for the first time
             if (!Directory.Exists(outputDir))
@@ -82,16 +81,24 @@ namespace VampirioCode.Builder
 
 
             // [ COMPILATION PROCESS ]
-            List<string> sourceFiles = new string[] { GnuGppWSL.ToRelativePath(ProgramFile) }.ToList();
+            List<string> sourceFiles = new string[] { ProgramFile }.ToList();
 
+            List<string> includes = new List<string>();
+            List<string> libPaths = new List<string>();
+            List<string> libFiles = new List<string>();
 
-            GnuGppWSL msvc = new GnuGppWSL();
-            var result = await msvc.BuildAsync(sourceFiles, GnuGppWSL.ToRelativePath(OutputFilename));
-            result.OutputFilename = GnuGppWSL.ToRelativePath(OutputFilename);
+#if USE_LIBCLANG
+            includes.Add(@"C:\programs_dev\clang_llvm_18_1_0\include");
+            libPaths.Add(@"C:\programs_dev\clang_llvm_18_1_0\lib");
+            libFiles.Add("libclang.lib");
+#endif
+
+            Clang clang = new Clang();
+            var result = await clang.BuildAsync(sourceFiles, OutputFilename, includes, libPaths, libFiles);
+            result.OutputFilename = OutputFilename;
 
             return result;
         }
-
 
     }
 }

@@ -12,6 +12,7 @@ namespace VampirioCode.Builder
         SimpleCSharp,
         SimpleCpp,
         SimpleGnuGppCpp,
+        SimpleClangCpp,
         SimpleWasmCpp,
         SimpleJs,
         SimplePhp

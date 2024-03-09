@@ -161,7 +161,7 @@ set EMCC_CMD=%4
 set ""EMCC_PARAMS=""
 set ""COUNT=0""
 
-REM Ignoramos los primeros tres parámetros
+REM ignoring first parameters until 4
 for %%i in (%*) do (
     set /a ""COUNT+=1""
     if !COUNT! gtr 4 (
