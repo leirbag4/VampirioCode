@@ -59,7 +59,6 @@ namespace VampirioCode.Tests
             hscrollBarX.Maximum = max;
             hscrollBarX.SmallChange = small;
             hscrollBarX.LargeChange = large;
-            hscrollBarX.Invalidate();
         }
 
         private void OnHScrollChanged(object sender, ScrollEventArgs e)
@@ -69,18 +68,19 @@ namespace VampirioCode.Tests
 
         private void OnHScrollOrigChanged(object sender, ScrollEventArgs e)
         {
+            XConsole.PrintError("value changed orig: " + hscrollBarX.Value);
             hscrollOrigOutp.value = hscrollBarOrig.Value;
         }
 
         private void OnHScrollXChanged(int newValue, int oldValue)
         {
+            XConsole.PrintWarning("value changed: " + hscrollBarX.Value);
             hscrollXOutp.value = hscrollBarX.Value;
         }
 
         private void OnSetValuePressed(object sender, EventArgs e)
         {
             hscrollBarX.Value = (int)hscrollXOutp.value;
-            hscrollBarX.Invalidate();
         }
 
         private void OnReadValuesPressed(object sender, EventArgs e)
