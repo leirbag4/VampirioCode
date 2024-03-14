@@ -693,7 +693,7 @@
         // leirbag
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            XConsole.Println("d: " + e.Delta);
+            //XConsole.Println("d: " + e.Delta);
             if (e.Delta < 0)
             {
                 this.bottomArrowClicked = true;
@@ -1041,6 +1041,8 @@
                   // the new value is somewhere between max and min, starting
                   // at min position
                   this.value = Convert.ToInt32((perc * (this.maximum - this.minimum)) + this.minimum);
+                        //this.value = Convert.ToInt32((perc * (this.maximum - LargeChange - this.minimum)) + this.minimum);
+                        //XConsole.PrintError("this.v: " + this.value);
                }
 
                // raise scroll event if new value different

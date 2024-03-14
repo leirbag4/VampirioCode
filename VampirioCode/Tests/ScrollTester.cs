@@ -40,15 +40,26 @@ namespace VampirioCode.Tests
 
         private void RefreshScrollBars()
         {
-            hscrollBar.Minimum = (int)minimumInput.value;
-            hscrollBar.Maximum = (int)maximumInput.value;
-            hscrollBar.SmallChange = (int)smallChangeInput.value;
-            hscrollBar.LargeChange = (int)largeChangeInput.value;
+            int min = (int)minimumInput.value;
+            int max = (int)maximumInput.value;
+            int small = (int)smallChangeInput.value;
+            int large = (int)largeChangeInput.value;
 
-            hscrollBarOrig.Minimum = (int)minimumInput.value;
-            hscrollBarOrig.Maximum = (int)maximumInput.value;
-            hscrollBarOrig.SmallChange = (int)smallChangeInput.value;
-            hscrollBarOrig.LargeChange = (int)largeChangeInput.value;
+            hscrollBar.Minimum = min;
+            hscrollBar.Maximum = max;
+            hscrollBar.SmallChange = small;
+            hscrollBar.LargeChange = large;
+
+            hscrollBarOrig.Minimum = min;
+            hscrollBarOrig.Maximum = max;
+            hscrollBarOrig.SmallChange = small;
+            hscrollBarOrig.LargeChange = large;
+
+            hscrollBarX.Minimum = min;
+            hscrollBarX.Maximum = max;
+            hscrollBarX.SmallChange = small;
+            hscrollBarX.LargeChange = large;
+            hscrollBarX.Invalidate();
         }
 
         private void OnHScrollChanged(object sender, ScrollEventArgs e)
@@ -59,6 +70,24 @@ namespace VampirioCode.Tests
         private void OnHScrollOrigChanged(object sender, ScrollEventArgs e)
         {
             hscrollOrigOutp.value = hscrollBarOrig.Value;
+        }
+
+        private void OnHScrollXChanged(int newValue, int oldValue)
+        {
+            hscrollXOutp.value = hscrollBarX.Value;
+        }
+
+        private void OnSetValuePressed(object sender, EventArgs e)
+        {
+            hscrollBarX.Value = (int)hscrollXOutp.value;
+            hscrollBarX.Invalidate();
+        }
+
+        private void OnReadValuesPressed(object sender, EventArgs e)
+        {
+            hscrollOutp.value =     hscrollBar.Value;
+            hscrollOrigOutp.value = hscrollBarOrig.Value;
+            hscrollXOutp.value =    hscrollBarX.Value;
         }
     }
 }

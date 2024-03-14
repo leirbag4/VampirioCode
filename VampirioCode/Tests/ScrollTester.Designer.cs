@@ -43,6 +43,11 @@
             hscrollBarOrig = new HScrollBar();
             hscrollOrigOutp = new UI.Controls.DecimalTextBox();
             hscrollOutp = new UI.Controls.DecimalTextBox();
+            hscrollXOutp = new UI.Controls.DecimalTextBox();
+            hscrollBarX = new UI.Controls.ScrollBarX();
+            vscrollBarX = new UI.Controls.ScrollBarX();
+            buttonAdv1 = new UI.Controls.ButtonAdv();
+            buttonAdv2 = new UI.Controls.ButtonAdv();
             SuspendLayout();
             // 
             // console
@@ -65,7 +70,7 @@
             vscrollBar.ButtonDownColor = Color.FromArgb(120, 120, 120);
             vscrollBar.ButtonNormalColor = Color.FromArgb(70, 70, 70);
             vscrollBar.ButtonOverColor = Color.FromArgb(140, 140, 140);
-            vscrollBar.Location = new Point(594, 24);
+            vscrollBar.Location = new Point(568, 21);
             vscrollBar.Name = "vscrollBar";
             vscrollBar.Size = new Size(19, 263);
             vscrollBar.TabIndex = 9;
@@ -86,7 +91,7 @@
             hscrollBar.ButtonDownColor = Color.FromArgb(120, 120, 120);
             hscrollBar.ButtonNormalColor = Color.FromArgb(70, 70, 70);
             hscrollBar.ButtonOverColor = Color.FromArgb(140, 140, 140);
-            hscrollBar.Location = new Point(30, 78);
+            hscrollBar.Location = new Point(30, 21);
             hscrollBar.Name = "hscrollBar";
             hscrollBar.Orientation = UI.Controls.ScrollBarManagement.ScrollBarOrientation.Horizontal;
             hscrollBar.Size = new Size(373, 19);
@@ -105,7 +110,7 @@
             labelAdv1.BorderSize = 1;
             labelAdv1.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv1.ForeColor = Color.Silver;
-            labelAdv1.Location = new Point(140, 134);
+            labelAdv1.Location = new Point(138, 176);
             labelAdv1.ModifyClampMax = 0F;
             labelAdv1.ModifyClampMin = 0F;
             labelAdv1.ModifyControlName = "";
@@ -122,7 +127,7 @@
             labelAdv2.BorderSize = 1;
             labelAdv2.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv2.ForeColor = Color.Silver;
-            labelAdv2.Location = new Point(140, 169);
+            labelAdv2.Location = new Point(138, 211);
             labelAdv2.ModifyClampMax = 0F;
             labelAdv2.ModifyClampMin = 0F;
             labelAdv2.ModifyControlName = "";
@@ -135,7 +140,7 @@
             // maximumInput
             // 
             maximumInput.AllowEmptyInput = false;
-            maximumInput.Location = new Point(30, 166);
+            maximumInput.Location = new Point(28, 208);
             maximumInput.MaxDecimalPlaces = 0;
             maximumInput.Name = "maximumInput";
             maximumInput.Size = new Size(104, 27);
@@ -147,7 +152,7 @@
             // minimumInput
             // 
             minimumInput.AllowEmptyInput = false;
-            minimumInput.Location = new Point(30, 133);
+            minimumInput.Location = new Point(28, 175);
             minimumInput.MaxDecimalPlaces = 0;
             minimumInput.Name = "minimumInput";
             minimumInput.Size = new Size(104, 27);
@@ -159,7 +164,7 @@
             // smallChangeInput
             // 
             smallChangeInput.AllowEmptyInput = false;
-            smallChangeInput.Location = new Point(30, 199);
+            smallChangeInput.Location = new Point(28, 241);
             smallChangeInput.MaxDecimalPlaces = 0;
             smallChangeInput.Name = "smallChangeInput";
             smallChangeInput.Size = new Size(104, 27);
@@ -175,7 +180,7 @@
             labelAdv3.BorderSize = 1;
             labelAdv3.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv3.ForeColor = Color.Silver;
-            labelAdv3.Location = new Point(140, 235);
+            labelAdv3.Location = new Point(138, 277);
             labelAdv3.ModifyClampMax = 0F;
             labelAdv3.ModifyClampMin = 0F;
             labelAdv3.ModifyControlName = "";
@@ -188,7 +193,7 @@
             // largeChangeInput
             // 
             largeChangeInput.AllowEmptyInput = false;
-            largeChangeInput.Location = new Point(30, 232);
+            largeChangeInput.Location = new Point(28, 274);
             largeChangeInput.MaxDecimalPlaces = 0;
             largeChangeInput.Name = "largeChangeInput";
             largeChangeInput.Size = new Size(104, 27);
@@ -204,7 +209,7 @@
             labelAdv4.BorderSize = 1;
             labelAdv4.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv4.ForeColor = Color.Silver;
-            labelAdv4.Location = new Point(140, 200);
+            labelAdv4.Location = new Point(138, 242);
             labelAdv4.ModifyClampMax = 0F;
             labelAdv4.ModifyClampMin = 0F;
             labelAdv4.ModifyControlName = "";
@@ -217,7 +222,7 @@
             // hscrollBarOrig
             // 
             hscrollBarOrig.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            hscrollBarOrig.Location = new Point(30, 24);
+            hscrollBarOrig.Location = new Point(30, 66);
             hscrollBarOrig.Name = "hscrollBarOrig";
             hscrollBarOrig.Size = new Size(373, 26);
             hscrollBarOrig.TabIndex = 20;
@@ -227,7 +232,7 @@
             // 
             hscrollOrigOutp.AllowEmptyInput = false;
             hscrollOrigOutp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            hscrollOrigOutp.Location = new Point(423, 24);
+            hscrollOrigOutp.Location = new Point(423, 66);
             hscrollOrigOutp.MaxDecimalPlaces = 0;
             hscrollOrigOutp.Name = "hscrollOrigOutp";
             hscrollOrigOutp.Size = new Size(104, 27);
@@ -238,12 +243,136 @@
             // 
             hscrollOutp.AllowEmptyInput = false;
             hscrollOutp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            hscrollOutp.Location = new Point(423, 70);
+            hscrollOutp.Location = new Point(423, 17);
             hscrollOutp.MaxDecimalPlaces = 0;
             hscrollOutp.Name = "hscrollOutp";
             hscrollOutp.Size = new Size(104, 27);
             hscrollOutp.TabIndex = 21;
             hscrollOutp.UseNegativeValues = false;
+            // 
+            // hscrollXOutp
+            // 
+            hscrollXOutp.AllowEmptyInput = false;
+            hscrollXOutp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            hscrollXOutp.Location = new Point(423, 115);
+            hscrollXOutp.MaxDecimalPlaces = 0;
+            hscrollXOutp.Name = "hscrollXOutp";
+            hscrollXOutp.Size = new Size(104, 27);
+            hscrollXOutp.TabIndex = 23;
+            hscrollXOutp.UseNegativeValues = false;
+            // 
+            // hscrollBarX
+            // 
+            hscrollBarX.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            hscrollBarX.ArrowColor = Color.FromArgb(200, 200, 200);
+            hscrollBarX.BackgroundColor = Color.FromArgb(70, 70, 70);
+            hscrollBarX.BorderColor = Color.Black;
+            hscrollBarX.BorderColorDisabled = Color.Gray;
+            hscrollBarX.BordersVisible = false;
+            hscrollBarX.ButtonDownColor = Color.FromArgb(100, 100, 100);
+            hscrollBarX.ButtonNormalColor = Color.FromArgb(70, 70, 70);
+            hscrollBarX.ButtonOverColor = Color.FromArgb(140, 140, 140);
+            hscrollBarX.ButtonSize = 20;
+            hscrollBarX.LargeChange = 10;
+            hscrollBarX.Location = new Point(30, 115);
+            hscrollBarX.Maximum = 100;
+            hscrollBarX.Minimum = 0;
+            hscrollBarX.Name = "hscrollBarX";
+            hscrollBarX.Orientation = UI.Controls.ScrollBarMan.ScrollBarOrientation.Horizontal;
+            hscrollBarX.Size = new Size(373, 27);
+            hscrollBarX.SmallChange = 1;
+            hscrollBarX.TabIndex = 24;
+            hscrollBarX.Text = "scrollBarx1";
+            hscrollBarX.ThumbDownColor = Color.FromArgb(100, 100, 100);
+            hscrollBarX.ThumbNormalColor = Color.FromArgb(130, 130, 130);
+            hscrollBarX.ThumbOverColor = Color.FromArgb(120, 120, 120);
+            hscrollBarX.TrackDownColor = Color.FromArgb(70, 70, 70);
+            hscrollBarX.TrackNormalColor = Color.FromArgb(50, 50, 50);
+            hscrollBarX.TrackOverColor = Color.FromArgb(60, 60, 60);
+            hscrollBarX.Value = 0;
+            hscrollBarX.Scroll += OnHScrollXChanged;
+            // 
+            // vscrollBarX
+            // 
+            vscrollBarX.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            vscrollBarX.ArrowColor = Color.FromArgb(200, 200, 200);
+            vscrollBarX.BackgroundColor = Color.FromArgb(70, 70, 70);
+            vscrollBarX.BorderColor = Color.Black;
+            vscrollBarX.BorderColorDisabled = Color.Gray;
+            vscrollBarX.BordersVisible = false;
+            vscrollBarX.ButtonDownColor = Color.FromArgb(100, 100, 100);
+            vscrollBarX.ButtonNormalColor = Color.FromArgb(70, 70, 70);
+            vscrollBarX.ButtonOverColor = Color.FromArgb(140, 140, 140);
+            vscrollBarX.ButtonSize = 20;
+            vscrollBarX.LargeChange = 10;
+            vscrollBarX.Location = new Point(609, 21);
+            vscrollBarX.Maximum = 100;
+            vscrollBarX.Minimum = 0;
+            vscrollBarX.Name = "vscrollBarX";
+            vscrollBarX.Orientation = UI.Controls.ScrollBarMan.ScrollBarOrientation.Vertical;
+            vscrollBarX.Size = new Size(23, 263);
+            vscrollBarX.SmallChange = 1;
+            vscrollBarX.TabIndex = 25;
+            vscrollBarX.Text = "scrollBarx2";
+            vscrollBarX.ThumbDownColor = Color.FromArgb(100, 100, 100);
+            vscrollBarX.ThumbNormalColor = Color.FromArgb(130, 130, 130);
+            vscrollBarX.ThumbOverColor = Color.FromArgb(120, 120, 120);
+            vscrollBarX.TrackDownColor = Color.FromArgb(70, 70, 70);
+            vscrollBarX.TrackNormalColor = Color.FromArgb(50, 50, 50);
+            vscrollBarX.TrackOverColor = Color.FromArgb(60, 60, 60);
+            vscrollBarX.Value = 0;
+            // 
+            // buttonAdv1
+            // 
+            buttonAdv1.BorderColor = Color.DarkGray;
+            buttonAdv1.BorderSize = 1;
+            buttonAdv1.CStyle = UI.Controls.ButtonAdv.CustomStyle.NORMAL;
+            buttonAdv1.expandImage = false;
+            buttonAdv1.extraText = "";
+            buttonAdv1.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv1.extraTextColor = Color.Black;
+            buttonAdv1.extraTextFont = null;
+            buttonAdv1.extraTextOffset = new Point(0, 0);
+            buttonAdv1.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv1.FocusEnabled = false;
+            buttonAdv1.Location = new Point(423, 167);
+            buttonAdv1.Name = "buttonAdv1";
+            buttonAdv1.PaintImageOnSelected = true;
+            buttonAdv1.processEnterKey = true;
+            buttonAdv1.resizeImage = new Point(0, 0);
+            buttonAdv1.Selected = false;
+            buttonAdv1.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv1.Size = new Size(104, 29);
+            buttonAdv1.TabIndex = 26;
+            buttonAdv1.Text = "Set Value";
+            buttonAdv1.UseVisualStyleBackColor = true;
+            buttonAdv1.Click += OnSetValuePressed;
+            // 
+            // buttonAdv2
+            // 
+            buttonAdv2.BorderColor = Color.DarkGray;
+            buttonAdv2.BorderSize = 1;
+            buttonAdv2.CStyle = UI.Controls.ButtonAdv.CustomStyle.NORMAL;
+            buttonAdv2.expandImage = false;
+            buttonAdv2.extraText = "";
+            buttonAdv2.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv2.extraTextColor = Color.Black;
+            buttonAdv2.extraTextFont = null;
+            buttonAdv2.extraTextOffset = new Point(0, 0);
+            buttonAdv2.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv2.FocusEnabled = false;
+            buttonAdv2.Location = new Point(423, 211);
+            buttonAdv2.Name = "buttonAdv2";
+            buttonAdv2.PaintImageOnSelected = true;
+            buttonAdv2.processEnterKey = true;
+            buttonAdv2.resizeImage = new Point(0, 0);
+            buttonAdv2.Selected = false;
+            buttonAdv2.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv2.Size = new Size(104, 29);
+            buttonAdv2.TabIndex = 27;
+            buttonAdv2.Text = "Read Values";
+            buttonAdv2.UseVisualStyleBackColor = true;
+            buttonAdv2.Click += OnReadValuesPressed;
             // 
             // ScrollTester
             // 
@@ -251,6 +380,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(691, 538);
+            Controls.Add(buttonAdv2);
+            Controls.Add(buttonAdv1);
+            Controls.Add(vscrollBarX);
+            Controls.Add(hscrollBarX);
+            Controls.Add(hscrollXOutp);
             Controls.Add(hscrollOrigOutp);
             Controls.Add(hscrollOutp);
             Controls.Add(hscrollBarOrig);
@@ -287,5 +421,10 @@
         private HScrollBar hscrollBarOrig;
         private UI.Controls.DecimalTextBox hscrollOrigOutp;
         private UI.Controls.DecimalTextBox hscrollOutp;
+        private UI.Controls.DecimalTextBox hscrollXOutp;
+        private UI.Controls.ScrollBarX hscrollBarX;
+        private UI.Controls.ScrollBarX vscrollBarX;
+        private UI.Controls.ButtonAdv buttonAdv1;
+        private UI.Controls.ButtonAdv buttonAdv2;
     }
 }
