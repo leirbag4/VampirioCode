@@ -147,6 +147,11 @@ namespace VampirioCode.UI.Controls
         [Browsable(true)]
         public event ScrollEvent Scroll;
 
+        // Maximum value that can be outputted.
+        // E.g: Minimum = 0     SmallChange = 5
+        //      Maximum = 100   LargeChange = 10
+        //
+        // Result = (100 - 0) - 10 + 1 =   [91]
         private int MaximumValue { get { return maximum - minimum - largeChange + 1; }  }
 
         private ColorState buttonColors = new ColorState(CColor(70), CColor(140), CColor(100));
@@ -169,14 +174,13 @@ namespace VampirioCode.UI.Controls
         private int largeChange =   10;
         private int _value =        0;
 
-        private bool _dragging = false;
-        private int _dragPos = 0;
-        private int _startDragPos = 0;
-        private int _thumbPrevPos = 0;
+        private bool _dragging = false; // 'true' if 'thumb' is being dragged
+        private int _dragPos = 0;       // The mouse start position stored at the beginning of the 'StartDrag' event
+        private int _thumbStartPos = 0; // The 'x' or 'y' position of the thumb stored at the beginning of the 'StartDrag' event
 
-        private float floatPos = 0.0f;
+        private float floatPos = 0.0f;  // This variable helps with pixel errors by storing a position with floating precision
 
-        private const int MinThumbSize = 10;
+        private const int MinThumbSize = 10; // Minimum width or height the thumb can get
 
         public ScrollBarX()
         {
@@ -311,18 +315,17 @@ namespace VampirioCode.UI.Controls
             RefreshAll();
         }
 
+        // Internal event that occurs when thumb is being
+        // dragged by the user
         private void OnDragging(int pos)
         {
 
             if (Orientation == ScrollBarOrientation.Horizontal)
             {
+                // Calculate new thumb position
+                thumb.x = _thumbStartPos + (pos - _dragPos);
 
-                int val = pos - _dragPos;
-                //_dragPos = pos;
-
-                //thumb.x += val;
-                thumb.x = _thumbPrevPos + val;
-
+                // Clamp values if outside bounds
                 if (thumb.x < leftButton.width)
                 {
                     thumb.x = leftButton.width;
@@ -333,9 +336,9 @@ namespace VampirioCode.UI.Controls
                 }
 
 
-                int freeTrack = track.width - thumb.width;
-                int maxValue = MaximumValue;
-                int currPos = thumb.x - leftButton.width;
+                int freeTrack = track.width - thumb.width; // The free space that is not used by the 'thumb'
+                int maxValue =  MaximumValue;
+                int currPos =   thumb.x - leftButton.width;
 
                 //int newVal = (int)(((float)maxValue / freeTrack) * currPos);
 
@@ -357,17 +360,18 @@ namespace VampirioCode.UI.Controls
 
         }
 
+        // Start drag for the thumb
         private void StartDrag(int pos)
         {
             if (Orientation == ScrollBarOrientation.Horizontal)
             {
-                _thumbPrevPos = thumb.x;
-                _startDragPos = pos;
+                _thumbStartPos = thumb.x;
                 _dragPos = pos;
                 _dragging = true;
             }
         }
 
+        // Stop drag for the thumb
         private void StopDrag(int pos)
         {
             if (Orientation == ScrollBarOrientation.Horizontal)
@@ -378,6 +382,8 @@ namespace VampirioCode.UI.Controls
             }
         }
 
+        // Check if any element like 'buttons', 'track' or 'thumb'
+        // is being pressed by the user
         private bool IsAnySelected()
         {
             foreach (var elem in elements)
@@ -430,7 +436,8 @@ namespace VampirioCode.UI.Controls
             }
         }
 
-
+        // Used only internally for updating the 'value' and also for triggering
+        // 'Scroll' events if the new value is different from the value before
         private void SetValueOnly(int newValue)
         {
             int oldValue = _value;
@@ -440,6 +447,10 @@ namespace VampirioCode.UI.Controls
                 Scroll(oldValue, newValue);
         }
 
+        // Calculate the thumb width or height depending on the 'Orientation'
+        // The 'largeChange' represents the visible part (viewport) of what the
+        // user wants to show. At the same time it will represents after the
+        // projection inside the 'track', the thumb size.
         private int CalcThumbSize()
         {
             int thumbSize = 0;
@@ -453,12 +464,16 @@ namespace VampirioCode.UI.Controls
                 thumbSize = (int)((largeChange / (float)(maximum - minimum)) * track.width);
             }
 
+            // Clamp the thumb size to a minimum because it
+            // can't be smaller to what the user can drag
             if (thumbSize < MinThumbSize)
                 thumbSize = MinThumbSize;
 
             return thumbSize;
         }
 
+
+        // Set basics layout for buttons and for the track.
         private void RefreshButtonsAndTrack()
         {
             if (Orientation == ScrollBarOrientation.Vertical)
@@ -491,7 +506,8 @@ namespace VampirioCode.UI.Controls
             }
         }
 
-        private void RefreshThumb()
+        // Calculate actual thumb size and set it
+        private void RefreshThumbSize()
         {
             if (Orientation == ScrollBarOrientation.Vertical)
             {
@@ -506,11 +522,15 @@ namespace VampirioCode.UI.Controls
 
         }
 
+        // Refresh buttons and tracks sizes and positions
+        // Refresh thumb size
+        // Refresh thumb position using SetValue() with the previous used 'float position'
+        // in order to conserve pixel's position errors
         public void RefreshAll()
         {
             RefreshButtonsAndTrack();
-            RefreshThumb();
-            SetValue(floatPos);//_value);
+            RefreshThumbSize();
+            SetValue(floatPos);
 
             Invalidate();
         }
