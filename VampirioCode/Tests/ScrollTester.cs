@@ -63,12 +63,13 @@ namespace VampirioCode.Tests
 
         private void OnHScrollChanged(object sender, ScrollEventArgs e)
         {
+            XConsole.PrintError("value changed adv: " + hscrollBar.Value);
             hscrollOutp.value = hscrollBar.Value;
         }
 
         private void OnHScrollOrigChanged(object sender, ScrollEventArgs e)
         {
-            XConsole.PrintError("value changed orig: " + hscrollBarX.Value);
+            XConsole.PrintError("value changed orig: " + hscrollBarOrig.Value);
             hscrollOrigOutp.value = hscrollBarOrig.Value;
         }
 
@@ -85,9 +86,19 @@ namespace VampirioCode.Tests
 
         private void OnReadValuesPressed(object sender, EventArgs e)
         {
-            hscrollOutp.value =     hscrollBar.Value;
+            hscrollOutp.value = hscrollBar.Value;
             hscrollOrigOutp.value = hscrollBarOrig.Value;
-            hscrollXOutp.value =    hscrollBarX.Value;
+            hscrollXOutp.value = hscrollBarX.Value;
+        }
+
+        private void OnSetOriginalPressed(object sender, EventArgs e)
+        {
+            hscrollBarOrig.Value = (int)hscrollOrigOutp.value;
+        }
+
+        private void OnSetAdvPressed(object sender, EventArgs e)
+        {
+            hscrollBar.Value = (int)hscrollOutp.value;
         }
     }
 }

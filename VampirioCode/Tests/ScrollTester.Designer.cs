@@ -48,6 +48,8 @@
             vscrollBarX = new UI.Controls.ScrollBarX();
             buttonAdv1 = new UI.Controls.ButtonAdv();
             buttonAdv2 = new UI.Controls.ButtonAdv();
+            buttonAdv3 = new UI.Controls.ButtonAdv();
+            buttonAdv4 = new UI.Controls.ButtonAdv();
             SuspendLayout();
             // 
             // console
@@ -70,7 +72,7 @@
             vscrollBar.ButtonDownColor = Color.FromArgb(120, 120, 120);
             vscrollBar.ButtonNormalColor = Color.FromArgb(70, 70, 70);
             vscrollBar.ButtonOverColor = Color.FromArgb(140, 140, 140);
-            vscrollBar.Location = new Point(568, 21);
+            vscrollBar.Location = new Point(588, 21);
             vscrollBar.Name = "vscrollBar";
             vscrollBar.Size = new Size(19, 263);
             vscrollBar.TabIndex = 9;
@@ -305,7 +307,7 @@
             vscrollBarX.ButtonOverColor = Color.FromArgb(140, 140, 140);
             vscrollBarX.ButtonSize = 20;
             vscrollBarX.LargeChange = 10;
-            vscrollBarX.Location = new Point(609, 21);
+            vscrollBarX.Location = new Point(629, 21);
             vscrollBarX.Maximum = 100;
             vscrollBarX.Minimum = 0;
             vscrollBarX.Name = "vscrollBarX";
@@ -374,12 +376,66 @@
             buttonAdv2.UseVisualStyleBackColor = true;
             buttonAdv2.Click += OnReadValuesPressed;
             // 
+            // buttonAdv3
+            // 
+            buttonAdv3.BorderColor = Color.DarkGray;
+            buttonAdv3.BorderSize = 1;
+            buttonAdv3.CStyle = UI.Controls.ButtonAdv.CustomStyle.NORMAL;
+            buttonAdv3.expandImage = false;
+            buttonAdv3.extraText = "";
+            buttonAdv3.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv3.extraTextColor = Color.Black;
+            buttonAdv3.extraTextFont = null;
+            buttonAdv3.extraTextOffset = new Point(0, 0);
+            buttonAdv3.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv3.FocusEnabled = false;
+            buttonAdv3.Location = new Point(533, 65);
+            buttonAdv3.Name = "buttonAdv3";
+            buttonAdv3.PaintImageOnSelected = true;
+            buttonAdv3.processEnterKey = true;
+            buttonAdv3.resizeImage = new Point(0, 0);
+            buttonAdv3.Selected = false;
+            buttonAdv3.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv3.Size = new Size(42, 29);
+            buttonAdv3.TabIndex = 28;
+            buttonAdv3.Text = "Set Value";
+            buttonAdv3.UseVisualStyleBackColor = true;
+            buttonAdv3.Click += OnSetOriginalPressed;
+            // 
+            // buttonAdv4
+            // 
+            buttonAdv4.BorderColor = Color.DarkGray;
+            buttonAdv4.BorderSize = 1;
+            buttonAdv4.CStyle = UI.Controls.ButtonAdv.CustomStyle.NORMAL;
+            buttonAdv4.expandImage = false;
+            buttonAdv4.extraText = "";
+            buttonAdv4.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv4.extraTextColor = Color.Black;
+            buttonAdv4.extraTextFont = null;
+            buttonAdv4.extraTextOffset = new Point(0, 0);
+            buttonAdv4.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv4.FocusEnabled = false;
+            buttonAdv4.Location = new Point(533, 16);
+            buttonAdv4.Name = "buttonAdv4";
+            buttonAdv4.PaintImageOnSelected = true;
+            buttonAdv4.processEnterKey = true;
+            buttonAdv4.resizeImage = new Point(0, 0);
+            buttonAdv4.Selected = false;
+            buttonAdv4.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv4.Size = new Size(42, 29);
+            buttonAdv4.TabIndex = 29;
+            buttonAdv4.Text = "Set Value";
+            buttonAdv4.UseVisualStyleBackColor = true;
+            buttonAdv4.Click += OnSetAdvPressed;
+            // 
             // ScrollTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(691, 538);
+            Controls.Add(buttonAdv4);
+            Controls.Add(buttonAdv3);
             Controls.Add(buttonAdv2);
             Controls.Add(buttonAdv1);
             Controls.Add(vscrollBarX);
@@ -426,5 +482,7 @@
         private UI.Controls.ScrollBarX vscrollBarX;
         private UI.Controls.ButtonAdv buttonAdv1;
         private UI.Controls.ButtonAdv buttonAdv2;
+        private UI.Controls.ButtonAdv buttonAdv3;
+        private UI.Controls.ButtonAdv buttonAdv4;
     }
 }

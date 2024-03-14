@@ -139,7 +139,7 @@ namespace VampirioCode.UI.Controls
         [Category("Extra Properties")]
         [Description("Value")]
         [Browsable(true)]
-        public int Value { get { return _value; } set { int val = value; if (val < minimum) val = minimum; else if (val > (maximum - largeChange + 1)) val = (maximum - largeChange + 1); SetValue((float)val); Invalidate(); } }
+        public int Value { get { return _value; } set { int val = value; if (val < minimum) val = minimum; else if (val > (maximum - largeChange + 1)) val = (maximum - largeChange + 1); if(val == _value) return; SetValue((float)val); Invalidate(); } }
 
         [Localizable(true)]
         [Category("Extra Events")]
@@ -380,7 +380,7 @@ namespace VampirioCode.UI.Controls
                 _thumbStartPos = thumb.x;
                 _dragPos = pos;
                 _dragging = true;
-                OnDragging(pos);
+                //OnDragging(pos);
             }
         }
 
@@ -417,6 +417,8 @@ namespace VampirioCode.UI.Controls
             // minimum must be substracted from the input because on other parts of the code it is added
             newValue -= minimum;
 
+            XConsole.Println("new floatPos:" + floatPos);
+
             if (Orientation == ScrollBarOrientation.Vertical)
             {
                 int freeTrack =     track.height - thumb.height;
@@ -436,9 +438,10 @@ namespace VampirioCode.UI.Controls
                 thumb.y = 0;
 
                 if (thumb.width > track.width)
-                { 
-                    thumb.width = track.width;
-                    thumb.x = leftButton.right;
+                {
+                    XConsole.PrintError("ENTER MAJORs");
+                    thumb.width =   track.width;
+                    thumb.x =       leftButton.right;
                     //floatPos = minimum;
                     //SetValueOnly((int)floatPos);
                 }
@@ -461,6 +464,10 @@ namespace VampirioCode.UI.Controls
 
                     thumb.right = rightButton.x;
                     floatPos = MaximumValue;
+                    SetValueOnly((int)floatPos);
+                }
+                else
+                {
                     SetValueOnly((int)floatPos);
                 }
 
