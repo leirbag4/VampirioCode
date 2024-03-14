@@ -147,12 +147,24 @@ namespace VampirioCode.UI.Controls
         [Browsable(true)]
         public event ScrollEvent Scroll;
 
-        // Maximum value that can be outputted.
-        // E.g: Minimum = 0     SmallChange = 5
-        //      Maximum = 100   LargeChange = 10
         //
-        // Result = (100 - 0) - 10 + 1 =   [91]
-        private int MaximumValue { get { return maximum - minimum - largeChange + 1; }  }
+        // Real maximum value the the user can reach with the thumb
+        //
+        // E.g: Minimum = 0     SmallChange = 5             Minimum = 20     SmallChange = 5
+        //      Maximum = 100   LargeChange = 10            Maximum = 100   LargeChange = 10
+        //
+        //      Result = 100 - 10 + 1 =   [91]              Result = 100 - 10 + 1 =   [71]
+        private int MaximumValue { get { return maximum - largeChange + 1; }  }
+
+        //
+        // This range represents the maximum value the the user can reach with the thumb
+        // but substracting also the 'minimum'
+        //
+        // E.g: Minimum = 0     SmallChange = 5             Minimum = 20     SmallChange = 5
+        //      Maximum = 100   LargeChange = 10            Maximum = 100   LargeChange = 10
+        //
+        //      Result = (100 - 0) - 10 + 1 =   [91]        Result = (100 - 20) - 10 + 1 =   [71]
+        private int MaxRangeValue { get { return MaximumValue - minimum; } }
 
         private ColorState buttonColors = new ColorState(CColor(70), CColor(140), CColor(100));
         private ColorState trackColors = new ColorState(CColor(50), CColor(60), CColor(70));
@@ -336,13 +348,13 @@ namespace VampirioCode.UI.Controls
                 }
 
 
-                int freeTrack = track.width - thumb.width; // The free space that is not used by the 'thumb'
-                int maxValue =  MaximumValue;
-                int currPos =   thumb.x - leftButton.width;
+                int freeTrack =     track.width - thumb.width; // The free space that is not used by the 'thumb'
+                int maxRangeVal =   MaxRangeValue;
+                int currPos =       thumb.x - leftButton.width;
 
                 //int newVal = (int)(((float)maxValue / freeTrack) * currPos);
 
-                floatPos = ((float)maxValue / freeTrack) * currPos;
+                floatPos = ((float)maxRangeVal / freeTrack) * currPos;
                 floatPos += minimum;
                 int newVal = (int)floatPos;
 
@@ -368,6 +380,7 @@ namespace VampirioCode.UI.Controls
                 _thumbStartPos = thumb.x;
                 _dragPos = pos;
                 _dragging = true;
+                OnDragging(pos);
             }
         }
 
@@ -406,31 +419,34 @@ namespace VampirioCode.UI.Controls
 
             if (Orientation == ScrollBarOrientation.Vertical)
             {
-                int freeTrack = track.height - thumb.height;
-                int maxValue = MaximumValue;
-                int currPos = (int)(newValue / (((float)maxValue / freeTrack)));
+                int freeTrack =     track.height - thumb.height;
+                int maxRangeVal =   MaxRangeValue;
+                int currPos =       (int)(newValue / (((float)maxRangeVal / freeTrack)));
 
                 thumb.x = 0;
                 thumb.y = currPos + upButton.height;
             }
             else if (Orientation == ScrollBarOrientation.Horizontal)
             {
-                int freeTrack = track.width - thumb.width;
-                int maxValue = MaximumValue;
-                int currPos = (int)((float)newValue / (((float)maxValue / freeTrack)));
+                int freeTrack =     track.width - thumb.width;
+                int maxRangeVal =   MaxRangeValue;
+                int currPos =       (int)((float)newValue / (((float)maxRangeVal / freeTrack)));
 
                 thumb.x = currPos + leftButton.width;
                 thumb.y = 0;
 
                 if (thumb.right > rightButton.x)
+                {
                     thumb.right = rightButton.x;
+                    SetValueOnly(MaximumValue);
+                }
 
                 if (thumb.x < leftButton.right)
                 {
                     thumb.x =   leftButton.right;
                     //floatPos =  minimum;
                     //_value =    minimum;
-                    //SetValueOnly(minimum);
+                    SetValueOnly(minimum);
                 }
 
             }
@@ -519,7 +535,6 @@ namespace VampirioCode.UI.Controls
                 thumb.height = Height;
                 thumb.width = CalcThumbSize();
             }
-
         }
 
         // Refresh buttons and tracks sizes and positions
@@ -560,7 +575,6 @@ namespace VampirioCode.UI.Controls
                 upButton.PaintCenteredImage(g, arrowLeft);
                 downButton.PaintCenteredImage(g, arrowRight);
             }
-                //XConsole.Println(" -> " + upButton.ToString());
             
         }
 
