@@ -4,7 +4,6 @@ using System.DirectoryServices;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -35,24 +34,10 @@ namespace VampEditor
 
     public class VampirioEditor : Scintilla
     {
-        [DllImport("user32")]
-        private static extern int GetScrollInfo(IntPtr hwnd, int nBar, ref ScrollInfo scrollInfo);
-
         public delegate void ContextItemPressedEvent(EditorEventType eventType);
         public delegate void PositionChangedEvent(VampirioEditor editor, int lineNumber, int columnNumber, int position);
         public event ContextItemPressedEvent ContextItemPressed;
         public event PositionChangedEvent PositionChanged;
-
-        public struct ScrollInfo
-        {
-            public int cbSize;
-            public int fMask;
-            public int min;
-            public int max;
-            public int nPage;
-            public int nPos;
-            public int nTrackPos;
-        }
 
         public int CurrentColumn { get { return GetColumn(CurrentPosition); } }
         public bool IsVerticalScrollVisible { get { return (Lines.Count > LinesOnScreen); } }
@@ -154,38 +139,12 @@ namespace VampEditor
         public void LineUp_TODO()
         { 
             DirectMessage(2620, IntPtr.Zero, IntPtr.Zero);
-            XConsole.PrintWarning("fix_me: 'LineUp_TODO()'");
         }
 
         // Must be fix: not always works. If next line have a TAB space this doesn't work
         public void LineDown_TODO()
         {
             DirectMessage(2621, IntPtr.Zero, IntPtr.Zero);
-            XConsole.PrintWarning("fix_me: 'LineDown_TODO()'");
-        }
-
-        // typeId = 0 -> horizontal
-        // typeId = 1 -> vertical
-        private ScrollInfo GetScrollInfo(int typeId)
-        {
-            ScrollInfo scrollInfo = new ScrollInfo();
-            scrollInfo.cbSize = Marshal.SizeOf(scrollInfo);
-            //SIF_RANGE = 0x1, SIF_TRACKPOS = 0x10,  SIF_PAGE= 0x2
-            scrollInfo.fMask = 0x10 | 0x1 | 0x2;
-            GetScrollInfo(this.Handle, typeId, ref scrollInfo);//nBar = 1 -> VScrollbar
-
-            return scrollInfo;
-            //return scrollInfo.max == scrollInfo.nTrackPos + scrollInfo.nPage;
-        }
-
-        public ScrollInfo GetVScrollInfo()
-        {
-            return GetScrollInfo(1);
-        }
-
-        public ScrollInfo GetHScrollInfo()
-        {
-            return GetScrollInfo(0);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
