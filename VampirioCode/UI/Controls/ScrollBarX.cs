@@ -176,8 +176,10 @@ namespace VampirioCode.UI.Controls
         private ScrollBarElement thumb;
         private ScrollBarElement track;
 
-        private ScrollBarElement leftButton;  // used as reference only for easy use. Do not include in element array!!!
-        private ScrollBarElement rightButton; // used as reference only for easy use. Do not include in element array!!!
+        private ScrollBarElement leftButton;    // used as reference only for easy use. Do not include in element array!!!
+        private ScrollBarElement rightButton;   // used as reference only for easy use. Do not include in element array!!!
+        private ScrollBarElement buttonA;       // used as reference only for easy use. Do not include in element array!!!
+        private ScrollBarElement buttonB;       // used as reference only for easy use. Do not include in element array!!!
 
         private ScrollBarElement[] elements;
         private int minimum =       0;
@@ -208,8 +210,10 @@ namespace VampirioCode.UI.Controls
             elements = new ScrollBarElement[] { upButton, downButton, thumb, track};
 
             // used as reference only for easy use. Do not include in element array!!!
-            leftButton =  upButton;
-            rightButton = downButton;
+            leftButton =    upButton;
+            rightButton =   downButton;
+            buttonA =       upButton;
+            buttonB =       downButton;
         }
 
         private void CreateArrows()
@@ -289,6 +293,12 @@ namespace VampirioCode.UI.Controls
                 {
                     if (elem == thumb)
                         StartDrag(Orientation == ScrollBarOrientation.Horizontal ? e.X : e.Y);
+                    else if (elem == buttonA)
+                        OnButtonDown(ScrollBarButton.ButtonA);
+                    else if (elem == buttonB)
+                        OnButtonDown(ScrollBarButton.ButtonB);
+                    else if (elem == track)
+                        OnTrackDown(Orientation == ScrollBarOrientation.Horizontal ? e.X : e.Y);
 
                     break;
                 }
@@ -304,11 +314,21 @@ namespace VampirioCode.UI.Controls
             if (_dragging)
                 StopDrag(Orientation == ScrollBarOrientation.Horizontal ? e.X : e.Y);
 
-            if (IsAnySelected())
-            {
+            //if (IsAnySelected())
+            //{
                 foreach (var elem in elements)
-                    elem.ResetSelection();
-            } 
+                {
+                    if(elem.Selected)
+                    { 
+                        if (elem == buttonA)
+                            OnButtonUp(ScrollBarButton.ButtonA);
+                        else if (elem == buttonB)
+                            OnButtonUp(ScrollBarButton.ButtonB);
+
+                        elem.ResetSelection();
+                    }
+                }
+            //} 
 
             foreach (var elem in elements)
             {
@@ -325,6 +345,55 @@ namespace VampirioCode.UI.Controls
             base.OnSizeChanged(e);
 
             RefreshAll();
+        }
+
+        private void SmallDecrement()
+        {
+            SetValue(_value - smallChange);
+            Invalidate();
+        }
+
+        private void SmallIncrement()
+        {
+            SetValue(_value + smallChange);
+            Invalidate();
+        }
+
+        private void OnButtonDown(ScrollBarButton button)
+        {
+            XConsole.PrintWarning("Button Down: " + button);
+
+            if (button == ScrollBarButton.ButtonA)
+                SmallDecrement();
+            else if(button == ScrollBarButton.ButtonB)
+                SmallIncrement();
+        }
+
+        private void OnButtonUp(ScrollBarButton button)
+        {
+            XConsole.PrintError("Button Up: " + button);
+        }
+
+        private void OnTrackDown(int pos)
+        {
+            if (Orientation == ScrollBarOrientation.Vertical)
+            {
+
+            }
+            else if (Orientation == ScrollBarOrientation.Horizontal)
+            { 
+            
+            }
+        }
+
+        private void OnTrackDown(TrackSide trackSide)
+        {
+            XConsole.PrintWarning("Track Down: " + trackSide);
+        }
+
+        private void OnTrackUp(TrackSide trackSide)
+        {
+            XConsole.PrintError("Track Up: " + trackSide);
         }
 
         // Internal event that occurs when thumb is being
