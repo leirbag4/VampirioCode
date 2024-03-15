@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VampEditor;
 using VampirioCode.UI;
+using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TabManagement;
+using static VampEditor.VampirioEditor;
 
 namespace VampDocManager
 {
@@ -32,6 +34,9 @@ namespace VampDocManager
             return new DocumentTab().Init(doc);
         }
 
+
+        private ScrollBarAdv vertScrollBar;
+
         private DocumentTab Init(Document doc)
         {
             // editor style
@@ -46,6 +51,17 @@ namespace VampDocManager
             //Controls.Add(editor);
             Content.Controls.Add(editor);
 
+            vertScrollBar = new ScrollBarAdv();
+            vertScrollBar.Height = Content.Height;
+            vertScrollBar.Location = new Point(Content.Width - vertScrollBar.Width - 30, 0);
+            vertScrollBar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            vertScrollBar.Scroll += OnVertScroll;
+
+            Content.Controls.Add(vertScrollBar);
+            vertScrollBar.BringToFront();
+
+
+
             // set data
             Document = doc;
             Editor.SetText(doc.Text);
@@ -54,10 +70,61 @@ namespace VampDocManager
             // events
             Editor.TextChanged += OnEditorTextChanged;
             Editor.ContextItemPressed += OnContextItemPressed;
+            Editor.SizeChanged += OnEditorSizeChanged;
             Document.OnSaved += OnSaved;
             Document.OnModified += OnModified;
 
             return this;
+        }
+
+        private void OnEditorSizeChanged(object sender, EventArgs e)
+        {
+            RefreshScrollBars();
+        }
+
+        private void RefreshScrollBars()
+        {
+            /*if (Editor.IsVerticalScrollVisible)
+                x = this.Content.Width - find.Width - SystemInformation.VerticalScrollBarWidth;
+            else
+                x = this.Content.Width - find.Width;*/
+
+            ScrollInfo scrollInfo = Editor.GetVScrollInfo();
+
+            vertScrollBar.Minimum = scrollInfo.min;
+            vertScrollBar.Maximum = scrollInfo.max;
+            vertScrollBar.LargeChange = scrollInfo.nPage;
+        }
+
+        private void OnVertScroll(object? sender, ScrollEventArgs e)
+        {
+            
+            var scrollInfo = Editor.GetVScrollInfo();
+
+            int limit = scrollInfo.max - (scrollInfo.nPage - 1);
+            int newVal = vertScrollBar.Value - (scrollInfo.nPage - 1);
+            int newVal2 = (int)(Math.Round(vertScrollBar.NormalizedValue * limit));
+            int newVal3 = (int)(Math.Round(vertScrollBar.NormalizedValue * (scrollInfo.max - (scrollInfo.nPage - 1))));
+
+            //vertScrollBar.LargeChange = 8;
+
+            XConsole.Println("VAL: " + vertScrollBar.Value + " [ "+newVal+" ] limit: " + limit + " ( min: " + vertScrollBar.Minimum + "  max: " + vertScrollBar.Maximum + "  large: " + vertScrollBar.LargeChange + " )");
+            XConsole.Println("NVal: " + vertScrollBar.NormalizedValue.ToString("0.00") + "  newVal3: " + newVal3);
+
+            XConsole.Println("min: " + scrollInfo.min + " max: " + scrollInfo.max + " nPos: " + scrollInfo.nPos +
+                            " nPage: " + scrollInfo.nPage + " cbSize: " + scrollInfo.cbSize + 
+                            " nTrackPos: " + scrollInfo.nTrackPos);
+
+
+            //vertScrollBar.Minimum = scrollInfo.min;
+            //vertScrollBar.Maximum = scrollInfo.max;
+            //vertScrollBar.SmallChange = 1;
+            //vertScrollBar.LargeChange = 1;
+
+            //vertScrollBar.LargeChange;
+
+            //Editor.VScrollBar = false;
+            //Editor.LineScroll(val, 0);
         }
 
         private void OnContextItemPressed(EditorEventType eventType)

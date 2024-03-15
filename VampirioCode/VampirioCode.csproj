@@ -9,6 +9,7 @@
     <Version>0.5.0</Version>
     <PackageIcon></PackageIcon>
     <ApplicationIcon>Res\Icons\icon_64_multiple.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
