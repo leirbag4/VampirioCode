@@ -360,8 +360,9 @@ namespace VampirioCode.UI.Controls
 
                 if (newVal < 0)
                 {
-                    floatPos =  0;
-                    newVal =    0;
+                    XConsole.PrintError("warn: " + newVal);
+                    floatPos =  minimum;
+                    newVal =    minimum;
                 }
 
                 SetValueOnly(newVal);
@@ -468,6 +469,7 @@ namespace VampirioCode.UI.Controls
                 }
                 else
                 {
+                    XConsole.PrintWarning("None -> floatPos: " + floatPos);
                     SetValueOnly((int)floatPos);
                 }
 
@@ -495,14 +497,14 @@ namespace VampirioCode.UI.Controls
 
             if (Orientation == ScrollBarOrientation.Vertical)
             {
-                thumbSize =(int)((largeChange / (float)(maximum - minimum)) * track.height);
+                thumbSize =(int)((largeChange / (float)(maximum - minimum + 1)) * track.height);
 
                 if (thumbSize > track.height)
                     thumbSize = track.height;
             }
             else  if (Orientation == ScrollBarOrientation.Horizontal)
             {
-                thumbSize = (int)((largeChange / (float)(maximum - minimum)) * track.width);
+                thumbSize = (int)((largeChange / (float)(maximum - minimum + 1)) * track.width);
 
                 if (thumbSize > track.width)
                     thumbSize = track.width;
