@@ -5,7 +5,7 @@
     using System.Drawing;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
-    using VampirioCode.UI.Controls.ScrollBarManagement;
+    using VampirioCode.UI.Controls.ScrollBarExternal;
 
     /// <summary>
     /// A custom scrollbar control.
@@ -13,7 +13,7 @@
     [Designer(typeof(ScrollBarControlDesigner))]
    [DefaultEvent("Scroll")]
    [DefaultProperty("Value")]
-   public class ScrollBarAdv : Control
+   public class ScrollBarEx : Control
    {
 
         [Localizable(true)]
@@ -334,9 +334,9 @@
         private ScrollBarExRenderer Renderer;
 
       /// <summary>
-      /// Initializes a new instance of the <see cref="ScrollBarAdv"/> class.
+      /// Initializes a new instance of the <see cref="ScrollBarEx"/> class.
       /// </summary>
-      public ScrollBarAdv()
+      public ScrollBarEx()
       {
 
         Renderer = new ScrollBarExRenderer(this);

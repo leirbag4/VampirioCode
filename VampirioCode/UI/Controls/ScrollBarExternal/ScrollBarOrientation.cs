@@ -1,4 +1,4 @@
-﻿namespace VampirioCode.UI.Controls.ScrollBarManagement
+﻿namespace VampirioCode.UI.Controls.ScrollBarExternal
 {
    /// <summary>
    /// Enum for the scrollbar orientation.

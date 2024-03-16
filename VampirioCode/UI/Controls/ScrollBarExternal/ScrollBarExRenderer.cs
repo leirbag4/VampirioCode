@@ -1,4 +1,4 @@
-﻿namespace VampirioCode.UI.Controls.ScrollBarManagement
+﻿namespace VampirioCode.UI.Controls.ScrollBarExternal
 {
     using System;
     using System.Drawing;
@@ -12,9 +12,9 @@
         private Bitmap resArrowLeft;
         private Bitmap resArrowRight;
 
-        private ScrollBarAdv scrollBar;
+        private ScrollBarEx scrollBar;
 
-        public ScrollBarExRenderer(ScrollBarAdv scrollBar)
+        public ScrollBarExRenderer(ScrollBarEx scrollBar)
         {
             //leirbag
             this.scrollBar = scrollBar;

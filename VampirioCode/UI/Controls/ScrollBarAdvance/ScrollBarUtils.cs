@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.UI.Controls.ScrollBarMan
+namespace VampirioCode.UI.Controls.ScrollBarAdvance
 {
     public class ScrollBarUtils
     {

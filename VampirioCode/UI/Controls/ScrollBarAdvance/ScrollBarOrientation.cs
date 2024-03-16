@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.UI.Controls.ScrollBarMan
+namespace VampirioCode.UI.Controls.ScrollBarAdvance
 {
-    public enum ElementState
+    public enum ScrollBarOrientation
     {
-        Normal,
-        Over,
-        Down
+        Horizontal,
+        Vertical
     }
 }

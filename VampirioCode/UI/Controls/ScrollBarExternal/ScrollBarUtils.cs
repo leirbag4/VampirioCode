@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.UI.Controls.ScrollBarManagement
+namespace VampirioCode.UI.Controls.ScrollBarExternal
 {
     public class ScrollBarUtils
     {

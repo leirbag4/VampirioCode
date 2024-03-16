@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VampirioCode.UI.Controls.ScrollBarMan;
+using VampirioCode.UI.Controls.ScrollBarAdvance;
 
 namespace VampirioCode.UI.Controls
 {
@@ -156,6 +156,7 @@ namespace VampirioCode.UI.Controls
         public event ScrollEvent Scroll;
         #endregion
 
+        #region FieldsAndProps
         //
         // Real maximum value the the user can reach with the thumb
         //
@@ -220,6 +221,8 @@ namespace VampirioCode.UI.Controls
         private const int TimerStartMillis =        500;    // Time in milliseconds the user must wait after pressing the buttons or the track to begin with the auto move
         private const int TimerStepMillis =         60;     // After first 'TimerStartMillis' wait time, this will be the new interval in millis for each step
         private const int TimerSmallStepMillis =    20;     // Only for track. If user reach the thumb, these millis are applied to move the thumb faster
+        #endregion
+
 
         public ScrollBarX()
         {
@@ -280,7 +283,7 @@ namespace VampirioCode.UI.Controls
             return Color.FromArgb(color, color, color);
         }
 
-        #region MouseEvents
+        #region ExternalEvents
         protected override void OnMouseMove(MouseEventArgs e)
         {
             mouseX = e.X;
@@ -529,7 +532,6 @@ namespace VampirioCode.UI.Controls
             TimerStop();
         }
 
-
         private void OnTrackDown()
         {
             if (trackA.Selected)
@@ -759,7 +761,6 @@ namespace VampirioCode.UI.Controls
 
             return thumbSize;
         }
-
 
         // Set basics layout for buttons and for the track.
         private void RefreshButtonsAndTrack()

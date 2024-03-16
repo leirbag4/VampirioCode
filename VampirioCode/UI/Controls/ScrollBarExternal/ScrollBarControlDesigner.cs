@@ -1,10 +1,10 @@
-﻿namespace VampirioCode.UI.Controls.ScrollBarManagement
+﻿namespace VampirioCode.UI.Controls.ScrollBarExternal
 {
    using System.ComponentModel;
    using System.Windows.Forms.Design;
 
    /// <summary>
-   /// The designer for the <see cref="ScrollBarManagement"/> control.
+   /// The designer for the <see cref="ScrollBarExternal"/> control.
    /// </summary>
    internal class ScrollBarControlDesigner : ControlDesigner
    {
