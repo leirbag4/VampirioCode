@@ -9,6 +9,8 @@ namespace VampirioCode.UI.Controls.ScrollBarMan
     public class ScrollBarElement
     {
         public bool Selected { get { return selected; } }
+        public bool IsOver { get { return state == ElementState.Over; } }
+        public bool ExtraState { get; set; } = false;
 
         public int right { get { return (x + width); } set { x = value - width; } }
         public int bottom { get { return (y + height); } set { y = value - height; } }
@@ -108,6 +110,9 @@ namespace VampirioCode.UI.Controls.ScrollBarMan
                  if (state == ElementState.Normal)  brush = new SolidBrush(colorState.NormalColor);
             else if (state == ElementState.Over)    brush = new SolidBrush(colorState.OverColor);
             else if (state == ElementState.Down)    brush = new SolidBrush(colorState.DownColor);
+
+            if (ExtraState)
+                brush = new SolidBrush(colorState.ExtraColor);
 
             g.FillRectangle(brush, x, y, width, height);
         }

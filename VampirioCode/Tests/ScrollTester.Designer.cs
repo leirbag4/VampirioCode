@@ -271,9 +271,9 @@
             hscrollBarX.BorderColor = Color.Black;
             hscrollBarX.BorderColorDisabled = Color.Gray;
             hscrollBarX.BordersVisible = false;
-            hscrollBarX.ButtonDownColor = Color.FromArgb(100, 100, 100);
+            hscrollBarX.ButtonDownColor = Color.FromArgb(75, 75, 75);
             hscrollBarX.ButtonNormalColor = Color.FromArgb(70, 70, 70);
-            hscrollBarX.ButtonOverColor = Color.FromArgb(140, 140, 140);
+            hscrollBarX.ButtonOverColor = Color.FromArgb(101, 101, 101);
             hscrollBarX.ButtonSize = 20;
             hscrollBarX.LargeChange = 10;
             hscrollBarX.Location = new Point(30, 115);
@@ -288,9 +288,10 @@
             hscrollBarX.ThumbDownColor = Color.FromArgb(100, 100, 100);
             hscrollBarX.ThumbNormalColor = Color.FromArgb(130, 130, 130);
             hscrollBarX.ThumbOverColor = Color.FromArgb(120, 120, 120);
-            hscrollBarX.TrackDownColor = Color.FromArgb(70, 70, 70);
+            hscrollBarX.TrackDownColor = Color.FromArgb(60, 60, 60);
             hscrollBarX.TrackNormalColor = Color.FromArgb(50, 50, 50);
-            hscrollBarX.TrackOverColor = Color.FromArgb(60, 60, 60);
+            hscrollBarX.TrackOverColor = Color.FromArgb(53, 53, 53);
+            hscrollBarX.TrackOverToButtonColor = Color.FromArgb(85, 85, 85);
             hscrollBarX.Value = 0;
             hscrollBarX.Scroll += OnHScrollXChanged;
             // 
@@ -322,6 +323,7 @@
             vscrollBarX.TrackDownColor = Color.FromArgb(70, 70, 70);
             vscrollBarX.TrackNormalColor = Color.FromArgb(50, 50, 50);
             vscrollBarX.TrackOverColor = Color.FromArgb(60, 60, 60);
+            vscrollBarX.TrackOverToButtonColor = Color.FromArgb(85, 85, 85);
             vscrollBarX.Value = 0;
             // 
             // buttonAdv1
