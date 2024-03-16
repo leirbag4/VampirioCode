@@ -174,7 +174,7 @@ namespace VampirioCode.UI.Controls
         private ScrollBarElement upButton;
         private ScrollBarElement downButton;
         private ScrollBarElement thumb;
-        private ScrollBarElement track;
+        private ScrollBarElement track;         // track is not visible but used for layout and calculations
         private ScrollBarElement upTrack;
         private ScrollBarElement downTrack;
 
@@ -204,11 +204,13 @@ namespace VampirioCode.UI.Controls
         private float floatPos = 0.0f;  // This variable helps with pixel errors by storing a position with floating precision
 
         private System.Windows.Forms.Timer timer;
-        private bool timerState = false; // if FALSE -> it will use TimerStartMillis for the first time and if TRUE -> it will use TimerStepMillis for each next step
+        private bool timerSmallStepActive = false; // if FALSE -> it will use TimerStepMillis and if TRUE -> it will use TimerSmallStepMillis for each next step
 
-        private const int MinThumbSize = 10; // Minimum width or height the thumb can get
-        private const int TimerStartMillis =    500;
-        private const int TimerStepMillis =     50;
+
+        private const int MinThumbSize = 10;                // Minimum width or height the thumb can get
+        private const int TimerStartMillis =        500;    // Time in milliseconds the user must wait after pressing the buttons or the track to begin with the auto move
+        private const int TimerStepMillis =         100;     // After first 'TimerStartMillis' wait time, this will be the new interval in millis for each step
+        private const int TimerSmallStepMillis =    20;     // Only for track. If user reach the thumb, these millis are applied to move the thumb faster
 
         public ScrollBarX()
         {
@@ -217,9 +219,9 @@ namespace VampirioCode.UI.Controls
             CreateArrows();
 
             // timers
-            timer = new System.Windows.Forms.Timer();
-            timer.Tick += OnTimerTick;
-            timer.Interval = TimerStartMillis;
+            timer =             new System.Windows.Forms.Timer();
+            timer.Tick +=       OnTimerTick;
+            timer.Interval =    TimerStartMillis;
 
             // setup elements
             upButton =      new ScrollBarElement(buttonColors);
@@ -229,7 +231,7 @@ namespace VampirioCode.UI.Controls
             upTrack =       new ScrollBarElement(trackColors);
             downTrack =     new ScrollBarElement(trackColors);
 
-            //elements = new ScrollBarElement[] { upButton, downButton, thumb, track };
+            // track is not included here because it's not visible but used for layout and calculations
             elements = new ScrollBarElement[] { upButton, downButton, thumb, upTrack, downTrack };
 
             // used as reference only for easy use. Do not include in element array!!!
@@ -335,7 +337,6 @@ namespace VampirioCode.UI.Controls
                 }
             }
 
-            //XConsole.PrintWarning("OnMouseDown");
             Invalidate();
             base.OnMouseDown(e);
         }
@@ -376,6 +377,16 @@ namespace VampirioCode.UI.Controls
             base.OnMouseUp(e);
         }
 
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            if (e.Delta < 0)
+                SmallIncrement();
+            else if(e.Delta > 0)
+                SmallDecrement();
+
+            base.OnMouseWheel(e);
+        }
+
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
@@ -400,12 +411,20 @@ namespace VampirioCode.UI.Controls
             if (Orientation == ScrollBarOrientation.Vertical)
             {
                 if (thumb.y < mouseY)
+                {
+                    timerSmallStepActive = true;
+                    timer.Interval = TimerSmallStepMillis;
                     return;
+                }
             }
             else if (Orientation == ScrollBarOrientation.Horizontal)
             {
                 if (thumb.x < mouseX)
+                {
+                    timerSmallStepActive = true;
+                    timer.Interval = TimerSmallStepMillis;
                     return;
+                }
             }
 
             SetValue(_value - largeChange);
@@ -417,12 +436,20 @@ namespace VampirioCode.UI.Controls
             if (Orientation == ScrollBarOrientation.Vertical)
             {
                 if (thumb.bottom > mouseY)
+                {
+                    timerSmallStepActive = true;
+                    timer.Interval = TimerSmallStepMillis;
                     return;
+                }
             }
             else if (Orientation == ScrollBarOrientation.Horizontal)
             {
                 if (thumb.right > mouseX)
+                {
+                    timerSmallStepActive = true;
+                    timer.Interval = TimerSmallStepMillis;
                     return;
+                }
             }
 
             SetValue(_value + largeChange);
@@ -431,6 +458,7 @@ namespace VampirioCode.UI.Controls
 
         private void TimerStart()
         {
+            timerSmallStepActive = false;
             timer.Interval = TimerStartMillis;
             timer.Start();
         }
@@ -442,9 +470,11 @@ namespace VampirioCode.UI.Controls
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-            XConsole.Println("[TIMER]");
 
-            timer.Interval = TimerStepMillis;
+            if(timerSmallStepActive)
+                timer.Interval = TimerSmallStepMillis;
+            else
+                timer.Interval = TimerStepMillis;
 
             if (buttonA.Selected)
             {
@@ -466,8 +496,6 @@ namespace VampirioCode.UI.Controls
 
         private void OnButtonDown()
         {
-            XConsole.PrintWarning("Button Down");
-
             if (buttonA.Selected)
                 SmallDecrement();
             else if(buttonB.Selected)
@@ -478,16 +506,12 @@ namespace VampirioCode.UI.Controls
 
         private void OnButtonUp()
         {
-            XConsole.PrintError("Button Up");
-
             TimerStop();
         }
 
 
         private void OnTrackDown()
         {
-            XConsole.PrintWarning("Track Down");
-
             if (trackA.Selected)
                 LargeDecrement();
             else if (trackB.Selected)
@@ -498,8 +522,6 @@ namespace VampirioCode.UI.Controls
 
         private void OnTrackUp()
         {
-            XConsole.PrintError("Track Up");
-
             TimerStop();
         }
 
@@ -528,23 +550,17 @@ namespace VampirioCode.UI.Controls
                 int maxRangeVal =   MaxRangeValue;
                 int currPos =       thumb.x - leftButton.width;
 
-                //int newVal = (int)(((float)maxValue / freeTrack) * currPos);
-
                 floatPos = ((float)maxRangeVal / freeTrack) * currPos;
                 floatPos += minimum;
                 int newVal = (int)floatPos;
 
                 if (newVal < 0)
                 {
-                    XConsole.PrintError("warn: " + newVal);
                     floatPos =  minimum;
                     newVal =    minimum;
                 }
 
                 SetValueOnly(newVal);
-                
-                XConsole.Println("f: " + floatPos + " newVal: " + newVal);
-                //XConsole.Println("currPos: " + currPos + " newVal: " + newVal + " freeTrack: " + freeTrack + " maxValue: " + maxValue);
             }
 
         }
@@ -594,7 +610,6 @@ namespace VampirioCode.UI.Controls
             // minimum must be substracted from the input because on other parts of the code it is added
             newValue -= minimum;
 
-            XConsole.Println("new floatPos:" + floatPos);
 
             if (Orientation == ScrollBarOrientation.Vertical)
             {
@@ -616,36 +631,23 @@ namespace VampirioCode.UI.Controls
 
                 if (thumb.width > track.width)
                 {
-                    XConsole.PrintError("ENTER MAJORs");
                     thumb.width =   track.width;
                     thumb.x =       leftButton.right;
-                    //floatPos = minimum;
-                    //SetValueOnly((int)floatPos);
                 }
                 else if (thumb.x < leftButton.right)
                 {
-                    XConsole.PrintError("MIN: " + minimum);
-
-                    thumb.x =   leftButton.right;
-                    floatPos =  minimum;
-                    //_value =    minimum;
+                    thumb.x =       leftButton.right;
+                    floatPos =      minimum;
                     SetValueOnly((int)floatPos);
                 }
                 else if (thumb.right > rightButton.x)
                 {
-                    //XConsole.Println("MaximumValue: " + MaximumValue + " Large: " + LargeChange);
-                    //XConsole.Println("thumb.width: " + thumb.width + " freeTrack: " + freeTrack);
-                    //if(MaximumValue < )
-                    XConsole.PrintError("Max: " + MaximumValue);
-
-
-                    thumb.right = rightButton.x;
-                    floatPos = MaximumValue;
+                    thumb.right =   rightButton.x;
+                    floatPos =      MaximumValue;
                     SetValueOnly((int)floatPos);
                 }
                 else
                 {
-                    XConsole.PrintWarning("None -> floatPos: " + floatPos);
                     SetValueOnly((int)floatPos);
                 }
 
