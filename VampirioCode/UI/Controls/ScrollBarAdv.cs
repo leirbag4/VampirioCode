@@ -8,7 +8,7 @@ using VampirioCode.UI.Controls.ScrollBarAdvance;
 
 namespace VampirioCode.UI.Controls
 {
-    public class ScrollBarX : Control
+    public class ScrollBarAdv : Control
     {
 
         #region VisualProperties
@@ -17,12 +17,6 @@ namespace VampirioCode.UI.Controls
         [Description("Button Size")]
         [Browsable(true)]
         public int ButtonSize { get; set; } = 20;
-
-        [Localizable(true)]
-        [Category("Extra Properties")]
-        [Description("Orientation")]
-        [Browsable(true)]
-        public ScrollBarOrientation Orientation { get; set; } = ScrollBarOrientation.Vertical;
 
         [Localizable(true)]
         [Category("Extra Properties")]
@@ -91,7 +85,7 @@ namespace VampirioCode.UI.Controls
         public Color TrackDownColor { get { return trackColors.DownColor; } set { trackColors.DownColor = value; } }
 
 
-        [Localizable(true)]
+        /*[Localizable(true)]
         [Category("Extra Properties")]
         [Description("Border Color")]
         [Browsable(true)]
@@ -113,10 +107,17 @@ namespace VampirioCode.UI.Controls
         [Category("Extra Properties")]
         [Description("Borders Visible")]
         [Browsable(true)]
-        public bool BordersVisible { get; set; } = false;
+        public bool BordersVisible { get; set; } = false;*/
         #endregion
 
         #region CustomProperties
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Orientation")]
+        [Browsable(true)]
+        public ScrollBarOrientation Orientation { get; set; } = ScrollBarOrientation.Vertical;
+
+
         [Localizable(true)]
         [Category("Extra Properties")]
         [Description("Minimum")]
@@ -224,7 +225,7 @@ namespace VampirioCode.UI.Controls
         #endregion
 
 
-        public ScrollBarX()
+        public ScrollBarAdv()
         {
             DoubleBuffered = true;
 

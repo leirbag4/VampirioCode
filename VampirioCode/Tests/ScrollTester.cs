@@ -55,15 +55,15 @@ namespace VampirioCode.Tests
             hscrollBarOrig.SmallChange = small;
             hscrollBarOrig.LargeChange = large;
 
-            hscrollBarX.Minimum = min;
-            hscrollBarX.Maximum = max;
-            hscrollBarX.SmallChange = small;
-            hscrollBarX.LargeChange = large;
+            hscrollBarAdv.Minimum = min;
+            hscrollBarAdv.Maximum = max;
+            hscrollBarAdv.SmallChange = small;
+            hscrollBarAdv.LargeChange = large;
         }
 
         private void OnHScrollChanged(object sender, ScrollEventArgs e)
         {
-            XConsole.PrintError("value changed adv: " + hscrollBarEx.Value);
+            XConsole.PrintError("value changed ex: " + hscrollBarEx.Value);
             hscrollExOutp.value = hscrollBarEx.Value;
         }
 
@@ -75,20 +75,20 @@ namespace VampirioCode.Tests
 
         private void OnHScrollXChanged(int newValue, int oldValue)
         {
-            XConsole.PrintWarning("value changed: " + hscrollBarX.Value);
-            hscrollXOutp.value = hscrollBarX.Value;
+            XConsole.PrintWarning("value changed adv: " + hscrollBarAdv.Value);
+            hscrollAdvOutp.value = hscrollBarAdv.Value;
         }
 
         private void OnSetValuePressed(object sender, EventArgs e)
         {
-            hscrollBarX.Value = (int)hscrollXOutp.value;
+            hscrollBarAdv.Value = (int)hscrollAdvOutp.value;
         }
 
         private void OnReadValuesPressed(object sender, EventArgs e)
         {
             hscrollExOutp.value = hscrollBarEx.Value;
             hscrollOrigOutp.value = hscrollBarOrig.Value;
-            hscrollXOutp.value = hscrollBarX.Value;
+            hscrollAdvOutp.value = hscrollBarAdv.Value;
         }
 
         private void OnSetOriginalPressed(object sender, EventArgs e)

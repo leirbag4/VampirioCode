@@ -43,9 +43,9 @@
             hscrollBarOrig = new HScrollBar();
             hscrollOrigOutp = new UI.Controls.DecimalTextBox();
             hscrollExOutp = new UI.Controls.DecimalTextBox();
-            hscrollXOutp = new UI.Controls.DecimalTextBox();
-            hscrollBarX = new UI.Controls.ScrollBarX();
-            vscrollBarX = new UI.Controls.ScrollBarX();
+            hscrollAdvOutp = new UI.Controls.DecimalTextBox();
+            hscrollBarAdv = new UI.Controls.ScrollBarAdv();
+            vscrollBarX = new UI.Controls.ScrollBarAdv();
             buttonAdv1 = new UI.Controls.ButtonAdv();
             buttonAdv2 = new UI.Controls.ButtonAdv();
             buttonAdv3 = new UI.Controls.ButtonAdv();
@@ -252,57 +252,49 @@
             hscrollExOutp.TabIndex = 21;
             hscrollExOutp.UseNegativeValues = false;
             // 
-            // hscrollXOutp
+            // hscrollAdvOutp
             // 
-            hscrollXOutp.AllowEmptyInput = false;
-            hscrollXOutp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            hscrollXOutp.Location = new Point(423, 115);
-            hscrollXOutp.MaxDecimalPlaces = 0;
-            hscrollXOutp.Name = "hscrollXOutp";
-            hscrollXOutp.Size = new Size(104, 27);
-            hscrollXOutp.TabIndex = 23;
-            hscrollXOutp.UseNegativeValues = false;
+            hscrollAdvOutp.AllowEmptyInput = false;
+            hscrollAdvOutp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            hscrollAdvOutp.Location = new Point(423, 115);
+            hscrollAdvOutp.MaxDecimalPlaces = 0;
+            hscrollAdvOutp.Name = "hscrollAdvOutp";
+            hscrollAdvOutp.Size = new Size(104, 27);
+            hscrollAdvOutp.TabIndex = 23;
+            hscrollAdvOutp.UseNegativeValues = false;
             // 
-            // hscrollBarX
+            // hscrollBarAdv
             // 
-            hscrollBarX.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            hscrollBarX.ArrowColor = Color.FromArgb(200, 200, 200);
-            hscrollBarX.BackgroundColor = Color.FromArgb(70, 70, 70);
-            hscrollBarX.BorderColor = Color.Black;
-            hscrollBarX.BorderColorDisabled = Color.Gray;
-            hscrollBarX.BordersVisible = false;
-            hscrollBarX.ButtonDownColor = Color.FromArgb(75, 75, 75);
-            hscrollBarX.ButtonNormalColor = Color.FromArgb(70, 70, 70);
-            hscrollBarX.ButtonOverColor = Color.FromArgb(101, 101, 101);
-            hscrollBarX.ButtonSize = 20;
-            hscrollBarX.LargeChange = 10;
-            hscrollBarX.Location = new Point(30, 115);
-            hscrollBarX.Maximum = 100;
-            hscrollBarX.Minimum = 0;
-            hscrollBarX.Name = "hscrollBarX";
-            hscrollBarX.Orientation = UI.Controls.ScrollBarAdvance.ScrollBarOrientation.Horizontal;
-            hscrollBarX.Size = new Size(373, 27);
-            hscrollBarX.SmallChange = 1;
-            hscrollBarX.TabIndex = 24;
-            hscrollBarX.Text = "scrollBarx1";
-            hscrollBarX.ThumbDownColor = Color.FromArgb(100, 100, 100);
-            hscrollBarX.ThumbNormalColor = Color.FromArgb(130, 130, 130);
-            hscrollBarX.ThumbOverColor = Color.FromArgb(120, 120, 120);
-            hscrollBarX.TrackDownColor = Color.FromArgb(60, 60, 60);
-            hscrollBarX.TrackNormalColor = Color.FromArgb(50, 50, 50);
-            hscrollBarX.TrackOverColor = Color.FromArgb(53, 53, 53);
-            hscrollBarX.TrackOverToButtonColor = Color.FromArgb(85, 85, 85);
-            hscrollBarX.Value = 0;
-            hscrollBarX.Scroll += OnHScrollXChanged;
+            hscrollBarAdv.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            hscrollBarAdv.ArrowColor = Color.FromArgb(200, 200, 200);
+            hscrollBarAdv.ButtonDownColor = Color.FromArgb(75, 75, 75);
+            hscrollBarAdv.ButtonNormalColor = Color.FromArgb(70, 70, 70);
+            hscrollBarAdv.ButtonOverColor = Color.FromArgb(101, 101, 101);
+            hscrollBarAdv.ButtonSize = 20;
+            hscrollBarAdv.LargeChange = 10;
+            hscrollBarAdv.Location = new Point(30, 115);
+            hscrollBarAdv.Maximum = 100;
+            hscrollBarAdv.Minimum = 0;
+            hscrollBarAdv.Name = "hscrollBarAdv";
+            hscrollBarAdv.Orientation = UI.Controls.ScrollBarAdvance.ScrollBarOrientation.Horizontal;
+            hscrollBarAdv.Size = new Size(373, 20);
+            hscrollBarAdv.SmallChange = 1;
+            hscrollBarAdv.TabIndex = 24;
+            hscrollBarAdv.Text = "scrollBarx1";
+            hscrollBarAdv.ThumbDownColor = Color.FromArgb(100, 100, 100);
+            hscrollBarAdv.ThumbNormalColor = Color.FromArgb(130, 130, 130);
+            hscrollBarAdv.ThumbOverColor = Color.FromArgb(120, 120, 120);
+            hscrollBarAdv.TrackDownColor = Color.FromArgb(60, 60, 60);
+            hscrollBarAdv.TrackNormalColor = Color.FromArgb(50, 50, 50);
+            hscrollBarAdv.TrackOverColor = Color.FromArgb(53, 53, 53);
+            hscrollBarAdv.TrackOverToButtonColor = Color.FromArgb(85, 85, 85);
+            hscrollBarAdv.Value = 0;
+            hscrollBarAdv.Scroll += OnHScrollXChanged;
             // 
             // vscrollBarX
             // 
             vscrollBarX.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             vscrollBarX.ArrowColor = Color.FromArgb(200, 200, 200);
-            vscrollBarX.BackgroundColor = Color.FromArgb(70, 70, 70);
-            vscrollBarX.BorderColor = Color.Black;
-            vscrollBarX.BorderColorDisabled = Color.Gray;
-            vscrollBarX.BordersVisible = false;
             vscrollBarX.ButtonDownColor = Color.FromArgb(100, 100, 100);
             vscrollBarX.ButtonNormalColor = Color.FromArgb(70, 70, 70);
             vscrollBarX.ButtonOverColor = Color.FromArgb(140, 140, 140);
@@ -441,8 +433,8 @@
             Controls.Add(buttonAdv2);
             Controls.Add(buttonAdv1);
             Controls.Add(vscrollBarX);
-            Controls.Add(hscrollBarX);
-            Controls.Add(hscrollXOutp);
+            Controls.Add(hscrollBarAdv);
+            Controls.Add(hscrollAdvOutp);
             Controls.Add(hscrollOrigOutp);
             Controls.Add(hscrollExOutp);
             Controls.Add(hscrollBarOrig);
@@ -479,9 +471,9 @@
         private HScrollBar hscrollBarOrig;
         private UI.Controls.DecimalTextBox hscrollOrigOutp;
         private UI.Controls.DecimalTextBox hscrollExOutp;
-        private UI.Controls.DecimalTextBox hscrollXOutp;
-        private UI.Controls.ScrollBarX hscrollBarX;
-        private UI.Controls.ScrollBarX vscrollBarX;
+        private UI.Controls.DecimalTextBox hscrollAdvOutp;
+        private UI.Controls.ScrollBarAdv hscrollBarAdv;
+        private UI.Controls.ScrollBarAdv vscrollBarX;
         private UI.Controls.ButtonAdv buttonAdv1;
         private UI.Controls.ButtonAdv buttonAdv2;
         private UI.Controls.ButtonAdv buttonAdv3;
