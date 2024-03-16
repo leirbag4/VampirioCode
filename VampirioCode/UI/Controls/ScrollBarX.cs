@@ -301,15 +301,15 @@ namespace VampirioCode.UI.Controls
                 elem.MouseMove(mouseX, mouseY, e.Button == MouseButtons.Left);
             }
 
-            if (leftTrack.IsOver || rightTrack.IsOver || thumb.IsOver)
+            if (trackA.IsOver || trackB.IsOver || thumb.IsOver)
             {
-                leftButton.ExtraState =  true;
-                rightButton.ExtraState = true;
+                buttonA.ExtraState = true;
+                buttonB.ExtraState = true;
             }
             else
-            { 
-                leftButton.ExtraState =  false;
-                rightButton.ExtraState = false;            
+            {
+                buttonA.ExtraState = false;
+                buttonB.ExtraState = false;            
             }
 
             Invalidate();
@@ -371,8 +371,7 @@ namespace VampirioCode.UI.Controls
             if (_dragging)
                 StopDrag(Orientation == ScrollBarOrientation.Horizontal ? mouseX : mouseY);
 
-            //if (IsAnySelected())
-            //{
+
             foreach (var elem in elements)
             {
                 if (elem.Selected)
@@ -387,7 +386,6 @@ namespace VampirioCode.UI.Controls
                     elem.ResetSelection();
                 }
             }
-            //} 
 
             foreach (var elem in elements)
             {
@@ -551,8 +549,31 @@ namespace VampirioCode.UI.Controls
         // dragged by the user
         private void OnDragging(int pos)
         {
+            int freeTrack =     0;
+            int maxRangeVal =   0;
+            int currPos =       0;
 
-            if (Orientation == ScrollBarOrientation.Horizontal)
+            if (Orientation == ScrollBarOrientation.Vertical)
+            {
+                // Calculate new thumb position
+                thumb.y = _thumbStartPos + (pos - _dragPos);
+
+                // Clamp values if outside bounds
+                if (thumb.y < upButton.height)
+                {
+                    thumb.y = upButton.height;
+                }
+                else if (thumb.bottom > downButton.y)
+                { 
+                    thumb.bottom = downButton.y;
+                }
+
+                freeTrack =     track.height - thumb.height; // The free space that is not used by the 'thumb'
+                maxRangeVal =   MaxRangeValue;
+                currPos =       thumb.y - upButton.height;
+
+            }
+            else if (Orientation == ScrollBarOrientation.Horizontal)
             {
                 // Calculate new thumb position
                 thumb.x = _thumbStartPos + (pos - _dragPos);
@@ -567,47 +588,45 @@ namespace VampirioCode.UI.Controls
                     thumb.right = rightButton.x;
                 }
 
+                freeTrack =     track.width - thumb.width; // The free space that is not used by the 'thumb'
+                maxRangeVal =   MaxRangeValue;
+                currPos =       thumb.x - leftButton.width;
 
-                int freeTrack =     track.width - thumb.width; // The free space that is not used by the 'thumb'
-                int maxRangeVal =   MaxRangeValue;
-                int currPos =       thumb.x - leftButton.width;
-
-                floatPos = ((float)maxRangeVal / freeTrack) * currPos;
-                floatPos += minimum;
-                int newVal = (int)floatPos;
-
-                if (newVal < 0)
-                {
-                    floatPos =  minimum;
-                    newVal =    minimum;
-                }
-
-                SetValueOnly(newVal);
             }
 
+
+            floatPos = ((float)maxRangeVal / freeTrack) * currPos;
+            floatPos += minimum;
+            int newVal = (int)floatPos;
+
+            if (newVal < 0)
+            {
+                floatPos =  minimum;
+                newVal =    minimum;
+            }
+
+            SetValueOnly(newVal);
         }
 
         // Start drag for the thumb
         private void StartDrag(int pos)
         {
-            if (Orientation == ScrollBarOrientation.Horizontal)
-            {
+            if (Orientation == ScrollBarOrientation.Vertical)
+                _thumbStartPos = thumb.y;
+            else if (Orientation == ScrollBarOrientation.Horizontal)
                 _thumbStartPos = thumb.x;
-                _dragPos = pos;
-                _dragging = true;
-                //OnDragging(pos);
-            }
+
+            _dragPos =  pos;
+            _dragging = true;
+            //OnDragging(pos);
         }
 
         // Stop drag for the thumb
         private void StopDrag(int pos)
         {
-            if (Orientation == ScrollBarOrientation.Horizontal)
-            {
-                _dragPos = pos;
-                _dragging = false;
-                //SetValue(_value);
-            }
+            _dragPos = pos;
+            _dragging = false;
+            //SetValue(_value);
         }
 
         // Check if any element like 'buttons', 'track' or 'thumb'
@@ -641,6 +660,28 @@ namespace VampirioCode.UI.Controls
 
                 thumb.x = 0;
                 thumb.y = currPos + upButton.height;
+
+                if (thumb.height > track.height)
+                {
+                    thumb.height =  track.height;
+                    thumb.y =       upButton.bottom;
+                }
+                else if (thumb.y < upButton.bottom)
+                {
+                    thumb.y =       upButton.bottom;
+                    floatPos =      minimum;
+                    SetValueOnly((int)floatPos);
+                }
+                else if (thumb.bottom > downButton.y)
+                {
+                    thumb.bottom =  downButton.y;
+                    floatPos =      MaximumValue;
+                    SetValueOnly((int)floatPos);
+                }
+                else
+                {
+                    SetValueOnly((int)floatPos);
+                }
             }
             else if (Orientation == ScrollBarOrientation.Horizontal)
             {
@@ -672,7 +713,6 @@ namespace VampirioCode.UI.Controls
                 {
                     SetValueOnly((int)floatPos);
                 }
-
             }
         }
 
@@ -773,7 +813,11 @@ namespace VampirioCode.UI.Controls
         {
             if (Orientation == ScrollBarOrientation.Vertical)
             {
+                upTrack.SetPos(0, upButton.bottom);
+                upTrack.SetSize(Width, thumb.y - upButton.bottom);
 
+                downTrack.SetPos(0, thumb.bottom);
+                downTrack.SetSize(Width, downButton.y - thumb.bottom);
             }
             else if (Orientation == ScrollBarOrientation.Horizontal)
             {
