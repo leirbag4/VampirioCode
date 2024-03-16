@@ -68,6 +68,12 @@ namespace VampirioCode.UI.Controls
 
         [Localizable(true)]
         [Category("Extra Properties")]
+        [Description("Track Over to Button Color")]
+        [Browsable(true)]
+        public Color TrackOverToButtonColor { get { return buttonColors.ExtraColor; } set { buttonColors.ExtraColor = value; } }
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
         [Description("Track Normal Color")]
         [Browsable(true)]
         public Color TrackNormalColor { get { return trackColors.NormalColor; } set { trackColors.NormalColor = value; } }
@@ -110,7 +116,7 @@ namespace VampirioCode.UI.Controls
         public bool BordersVisible { get; set; } = false;
         #endregion
 
-
+        #region CustomProperties
         [Localizable(true)]
         [Category("Extra Properties")]
         [Description("Minimum")]
@@ -140,12 +146,15 @@ namespace VampirioCode.UI.Controls
         [Description("Value")]
         [Browsable(true)]
         public int Value { get { return _value; } set { int val = value; if (val < minimum) val = minimum; else if (val > (maximum - largeChange + 1)) val = (maximum - largeChange + 1); if (val == _value) return; SetValue((float)val); Invalidate(); } }
+        #endregion
 
+        #region Events
         [Localizable(true)]
         [Category("Extra Events")]
         [Description("Scroll Event")]
         [Browsable(true)]
         public event ScrollEvent Scroll;
+        #endregion
 
         //
         // Real maximum value the the user can reach with the thumb
@@ -166,9 +175,9 @@ namespace VampirioCode.UI.Controls
         //      Result = (100 - 0) - 10 + 1 =   [91]        Result = (100 - 20) - 10 + 1 =   [71]
         private int MaxRangeValue { get { return MaximumValue - minimum; } }
 
-        private ColorState buttonColors = new ColorState(CColor(70), CColor(140), CColor(100));
-        private ColorState trackColors = new ColorState(CColor(50), CColor(60), CColor(70));
-        private ColorState thumbColors = new ColorState(CColor(130), CColor(120), CColor(100));
+        private ColorState buttonColors =   new ColorState(CColor(70),  CColor(100), CColor(75), CColor(85));
+        private ColorState trackColors =    new ColorState(CColor(50),  CColor(53),  CColor(60));
+        private ColorState thumbColors =    new ColorState(CColor(130), CColor(120), CColor(100));
         private Bitmap arrowUp, arrowDown, arrowLeft, arrowRight;
 
         private ScrollBarElement upButton;
@@ -207,9 +216,9 @@ namespace VampirioCode.UI.Controls
         private bool timerSmallStepActive = false; // if FALSE -> it will use TimerStepMillis and if TRUE -> it will use TimerSmallStepMillis for each next step
 
 
-        private const int MinThumbSize = 10;                // Minimum width or height the thumb can get
+        private const int MinThumbSize =            10;     // Minimum width or height the thumb can get
         private const int TimerStartMillis =        500;    // Time in milliseconds the user must wait after pressing the buttons or the track to begin with the auto move
-        private const int TimerStepMillis =         100;     // After first 'TimerStartMillis' wait time, this will be the new interval in millis for each step
+        private const int TimerStepMillis =         60;     // After first 'TimerStartMillis' wait time, this will be the new interval in millis for each step
         private const int TimerSmallStepMillis =    20;     // Only for track. If user reach the thumb, these millis are applied to move the thumb faster
 
         public ScrollBarX()
@@ -259,7 +268,6 @@ namespace VampirioCode.UI.Controls
 
             arrow.RotateFlip(RotateFlipType.Rotate180FlipNone);
             arrowRight = new Bitmap(arrow);
-
         }
 
         private static Color CColor(int red, int green, int blue)
@@ -272,6 +280,7 @@ namespace VampirioCode.UI.Controls
             return Color.FromArgb(color, color, color);
         }
 
+        #region MouseEvents
         protected override void OnMouseMove(MouseEventArgs e)
         {
             mouseX = e.X;
@@ -292,7 +301,17 @@ namespace VampirioCode.UI.Controls
                 elem.MouseMove(mouseX, mouseY, e.Button == MouseButtons.Left);
             }
 
-            //XConsole.PrintWarning("OnMouseMove");
+            if (leftTrack.IsOver || rightTrack.IsOver || thumb.IsOver)
+            {
+                leftButton.ExtraState =  true;
+                rightButton.ExtraState = true;
+            }
+            else
+            { 
+                leftButton.ExtraState =  false;
+                rightButton.ExtraState = false;            
+            }
+
             Invalidate();
             base.OnMouseMove(e);
         }
@@ -306,6 +325,9 @@ namespace VampirioCode.UI.Controls
             {
                 elem.MouseLeave();
             }
+
+            leftButton.ExtraState =  false;
+            rightButton.ExtraState = false;
 
             //XConsole.PrintWarning("OnMouseLeave");
             Invalidate();
@@ -393,6 +415,7 @@ namespace VampirioCode.UI.Controls
 
             RefreshAll();
         }
+        #endregion
 
         private void SmallDecrement()
         {
@@ -470,7 +493,6 @@ namespace VampirioCode.UI.Controls
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-
             if(timerSmallStepActive)
                 timer.Interval = TimerSmallStepMillis;
             else
@@ -782,7 +804,7 @@ namespace VampirioCode.UI.Controls
         {
             Graphics g = e.Graphics;
 
-            g.FillRectangle(Brushes.White, 0, 0, Width, Height);
+            //g.FillRectangle(Brushes.Red, 0, 0, Width, Height);
 
             foreach (var elem in elements)
             {
