@@ -8,6 +8,7 @@ using VampirioCode.UI.Controls.ScrollBarAdvance;
 
 namespace VampirioCode.UI.Controls
 {
+
     public class ScrollBarAdv : Control
     {
 
@@ -117,6 +118,11 @@ namespace VampirioCode.UI.Controls
         [Browsable(true)]
         public ScrollBarOrientation Orientation { get; set; } = ScrollBarOrientation.Vertical;
 
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Allow Mouse Scrolling")]
+        [Browsable(true)]
+        public bool AllowMouseScrolling { get; set; } = true;
 
         [Localizable(true)]
         [Category("Extra Properties")]
@@ -256,6 +262,9 @@ namespace VampirioCode.UI.Controls
             buttonB =       downButton;
             trackA =        upTrack;
             trackB =        downTrack;
+
+            // initial size
+            Size = new Size(20, 100);
         }
 
         private void CreateArrows()
@@ -403,6 +412,9 @@ namespace VampirioCode.UI.Controls
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
+            if (!AllowMouseScrolling)
+                return;
+
             if (e.Delta < 0)
                 SmallIncrement();
             else if(e.Delta > 0)
