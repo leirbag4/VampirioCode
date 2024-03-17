@@ -15,7 +15,7 @@ using static VampEditor.VampirioEditor;
 
 namespace VampDocManager
 {
-    public class DocumentTab : TabItem
+    public partial class DocumentTab : TabItem
     {
 
         public delegate void ContextItemPressedEvent(EditorEventType eventType, Document document);
@@ -39,10 +39,6 @@ namespace VampDocManager
         }
 
 
-        private ScrollBarAdv vertScrollBar;
-        private ScrollBarAdv horScrollBar;
-        private Control scrollBarCorner;
-
 #if DEBUG_SCROLLBARS
         private const int scrollBarOffset = 30;
 #else
@@ -57,42 +53,11 @@ namespace VampDocManager
             editor.BorderStyle = ScintillaNET.BorderStyle.None;
             editor.SetLanguage(doc.DocType, VampEditor.StyleMode.Dark);
 
-            // tab style
-            //BackColor = Color.FromArgb(30, 30, 30);
-            //BorderStyle = BorderStyle.None;
-            //Controls.Add(editor);
+            // add editor
             Content.Controls.Add(editor);
 
-
-            vertScrollBar =             new ScrollBarAdv();
-            vertScrollBar.ButtonSize =  SystemInformation.VerticalScrollBarWidth;
-            vertScrollBar.Width =       SystemInformation.VerticalScrollBarWidth;
-            vertScrollBar.Anchor =      AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            vertScrollBar.Scroll +=     OnVertScroll;
-
-
-            horScrollBar =              new ScrollBarAdv();
-            horScrollBar.Orientation = VampirioCode.UI.Controls.ScrollBarAdvance.ScrollBarOrientation.Horizontal;
-            horScrollBar.AllowMouseScrolling = false;
-            horScrollBar.ButtonSize =   SystemInformation.HorizontalScrollBarHeight;
-            horScrollBar.Height =       SystemInformation.HorizontalScrollBarHeight;
-            horScrollBar.Anchor =       AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-            horScrollBar.Scroll +=      OnHorScroll;
-
-            scrollBarCorner =           new Control();
-            scrollBarCorner.BackColor = Color.FromArgb(60, 60, 60);
-            scrollBarCorner.Size =      new Size(SystemInformation.VerticalScrollBarWidth, SystemInformation.HorizontalScrollBarHeight);
-            scrollBarCorner.Location =  new Point(Content.Width - scrollBarCorner.Width, Content.Height - scrollBarCorner.Height);
-            scrollBarCorner.Anchor =    AnchorStyles.Bottom | AnchorStyles.Right;
-
-            Content.Controls.Add(vertScrollBar);
-            Content.Controls.Add(horScrollBar);
-            Content.Controls.Add(scrollBarCorner);
-            vertScrollBar.BringToFront();
-            horScrollBar.BringToFront();
-            scrollBarCorner.BringToFront();
-
-            RefreshScrollBarsVisibility();
+            // create scrollbars
+            CreateCustomScrollBars();
 
             // set data
             Document = doc;
@@ -116,79 +81,6 @@ namespace VampDocManager
         {
             VerticalScrollChanged(Editor.GetVScrollInfo(), Editor.FirstVisibleLine);
             HorizontalScrollChanged(Editor.GetHScrollInfo(), Editor.XOffset);
-            RefreshScrollBarsVisibility();
-        }
-
-        private void RefreshScrollBarsVisibility()
-        {
-            bool vscrollVisible = Editor.IsVerticalScrollVisible;
-            bool hscrollVisible = horScrollBar.Maximum >= horScrollBar.LargeChange;
-
-            
-            if(hscrollVisible)
-                vertScrollBar.Height =  Content.Height - horScrollBar.Height;
-            else
-                vertScrollBar.Height =  Content.Height;
-            
-            if (vscrollVisible)
-                horScrollBar.Width =    Content.Width - vertScrollBar.Width;
-            else
-                horScrollBar.Width =    Content.Width;
-
-
-            vertScrollBar.Location = new Point(Content.Width - vertScrollBar.Width - scrollBarOffset, 0);
-            horScrollBar.Location =  new Point(0, Content.Height - horScrollBar.Height - scrollBarOffset);
-
-
-            vertScrollBar.Visible =     vscrollVisible;
-            horScrollBar.Visible =      hscrollVisible;
-            scrollBarCorner.Visible =   vscrollVisible && hscrollVisible;
-        }
-
-
-        private void OnVertScroll(int newValue, int oldValue)
-        {
-            Editor.FirstVisibleLine = vertScrollBar.Value;
-        }
-
-        private void OnHorScroll(int newValue, int oldValue)
-        {
-            Editor.XOffset = horScrollBar.Value;
-        }
-
-        private void VerticalScrollChanged(ScrollInfo scrollInfo, int position)
-        {
-            OnVerticalScrollChanged(scrollInfo, position);
-        }
-
-        private void HorizontalScrollChanged(ScrollInfo scrollInfo, int position)
-        {
-            OnHorizontalScrollChanged(scrollInfo, position);
-        }
-
-        private void OnVerticalScrollChanged(ScrollInfo scrollInfo, int position)
-        {
-            ScrollBarAdv scroll =    vertScrollBar;
-
-            if(scroll.Minimum !=     scrollInfo.min)        scroll.Minimum =     scrollInfo.min;
-            if(scroll.Maximum !=     scrollInfo.max)        scroll.Maximum =     scrollInfo.max;
-            if(scroll.LargeChange != scrollInfo.nPage)      scroll.LargeChange = scrollInfo.nPage;
-            if(scroll.Value !=       position)              scroll.Value =       position;
-            // scroll.nTrackPos is not used here because not always has new values
-
-            RefreshScrollBarsVisibility();
-        }
-
-        private void OnHorizontalScrollChanged(ScrollInfo scrollInfo, int position)
-        {
-            ScrollBarAdv scroll =    horScrollBar;
-
-            if(scroll.Minimum !=     scrollInfo.min)        scroll.Minimum =     scrollInfo.min;
-            if(scroll.Maximum !=     scrollInfo.max)        scroll.Maximum =     scrollInfo.max;
-            if(scroll.LargeChange != scrollInfo.nPage)      scroll.LargeChange = scrollInfo.nPage;
-            if(scroll.Value !=       position)              scroll.Value =       position;
-            // scroll.nTrackPos is not used here because not always has new values
-
             RefreshScrollBarsVisibility();
         }
 
