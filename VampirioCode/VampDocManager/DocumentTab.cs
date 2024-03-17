@@ -67,8 +67,6 @@ namespace VampDocManager
             vertScrollBar =             new ScrollBarAdv();
             vertScrollBar.ButtonSize =  SystemInformation.VerticalScrollBarWidth;
             vertScrollBar.Width =       SystemInformation.VerticalScrollBarWidth;
-            vertScrollBar.Height =      Content.Height;
-            vertScrollBar.Location =    new Point(Content.Width - vertScrollBar.Width - scrollBarOffset, 0);
             vertScrollBar.Anchor =      AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             vertScrollBar.Scroll +=     OnVertScroll;
 
@@ -78,8 +76,6 @@ namespace VampDocManager
             horScrollBar.AllowMouseScrolling = false;
             horScrollBar.ButtonSize =   SystemInformation.HorizontalScrollBarHeight;
             horScrollBar.Height =       SystemInformation.HorizontalScrollBarHeight;
-            horScrollBar.Width =        Content.Width;
-            horScrollBar.Location =     new Point(0, Content.Height - horScrollBar.Height - scrollBarOffset);
             horScrollBar.Anchor =       AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             horScrollBar.Scroll +=      OnHorScroll;
 
