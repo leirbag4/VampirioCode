@@ -20,8 +20,10 @@ namespace VampirioCode.UI.Controls.ScrollBarAdvance
         public int width = 10;
         public int height = 10;
 
-        public ElementState state = ElementState.Normal;
-        public bool allowDragging = false;
+        public ElementState state =     ElementState.Normal;
+        public bool allowDragging =     false;
+        public int paddingX =           0;
+        public int paddingY =           0;
 
         private ColorState colorState;
         private bool selected = false;
@@ -114,7 +116,7 @@ namespace VampirioCode.UI.Controls.ScrollBarAdvance
             if (ExtraState)
                 brush = new SolidBrush(colorState.ExtraColor);
 
-            g.FillRectangle(brush, x, y, width, height);
+            g.FillRectangle(brush, x + paddingX, y + paddingY, width - (paddingX << 1), height - (paddingY << 1));
         }
 
         public override string ToString()

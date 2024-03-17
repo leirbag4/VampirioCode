@@ -21,6 +21,18 @@ namespace VampirioCode.UI.Controls
 
         [Localizable(true)]
         [Category("Extra Properties")]
+        [Description("Thumb Padding X")]
+        [Browsable(true)]
+        public int ThumbPaddingX { get { return thumb.paddingX; } set { thumb.paddingX = value; } }
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Thumb Padding Y")]
+        [Browsable(true)]
+        public int ThumbPaddingY { get { return thumb.paddingY; } set { thumb.paddingY = value; } }
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
         [Description("Arrow Color")]
         [Browsable(true)]
         public Color ArrowColor { get; set; } = CColor(200);

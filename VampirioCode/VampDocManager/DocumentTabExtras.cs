@@ -16,26 +16,36 @@ namespace VampDocManager
 
         private void CreateCustomScrollBars()
         {
-            vertScrollBar =             new ScrollBarAdv();
-            vertScrollBar.ButtonSize =  SystemInformation.VerticalScrollBarWidth;
-            vertScrollBar.Width =       SystemInformation.VerticalScrollBarWidth;
-            vertScrollBar.Anchor =      AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            vertScrollBar.Scroll +=     OnVertScroll;
+            vertScrollBar =                     new ScrollBarAdv();
+            vertScrollBar.ThumbPaddingX =       5;
+            vertScrollBar.ThumbPaddingY =       4;
+            vertScrollBar.ThumbNormalColor =    Color.FromArgb(65, 65, 65);
+            vertScrollBar.ThumbOverColor =      Color.FromArgb(75, 75, 75);
+            vertScrollBar.ButtonSize =          SystemInformation.VerticalScrollBarWidth;
+            vertScrollBar.Width =               SystemInformation.VerticalScrollBarWidth;
+            vertScrollBar.Anchor =              AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            vertScrollBar.Scroll +=             OnVertScroll;
 
 
-            horScrollBar =              new ScrollBarAdv();
-            horScrollBar.Orientation = VampirioCode.UI.Controls.ScrollBarAdvance.ScrollBarOrientation.Horizontal;
-            horScrollBar.AllowMouseScrolling = false;
-            horScrollBar.ButtonSize =   SystemInformation.HorizontalScrollBarHeight;
-            horScrollBar.Height =       SystemInformation.HorizontalScrollBarHeight;
-            horScrollBar.Anchor =       AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-            horScrollBar.Scroll +=      OnHorScroll;
+            horScrollBar =                      new ScrollBarAdv();
+            horScrollBar.Orientation =          VampirioCode.UI.Controls.ScrollBarAdvance.ScrollBarOrientation.Horizontal;
+            horScrollBar.AllowMouseScrolling =  false;
+            horScrollBar.ThumbPaddingX =        4;
+            horScrollBar.ThumbPaddingY =        5;
+            horScrollBar.ThumbNormalColor =     Color.FromArgb(65, 65, 65);
+            horScrollBar.ThumbOverColor =       Color.FromArgb(75, 75, 75);
+            horScrollBar.ButtonSize =           SystemInformation.HorizontalScrollBarHeight;
+            horScrollBar.Height =               SystemInformation.HorizontalScrollBarHeight;
+            horScrollBar.Anchor =               AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            horScrollBar.Scroll +=              OnHorScroll;
+
 
             scrollBarCorner =           new Control();
             scrollBarCorner.BackColor = Color.FromArgb(60, 60, 60);
             scrollBarCorner.Size =      new Size(SystemInformation.VerticalScrollBarWidth, SystemInformation.HorizontalScrollBarHeight);
             scrollBarCorner.Location =  new Point(Content.Width - scrollBarCorner.Width, Content.Height - scrollBarCorner.Height);
             scrollBarCorner.Anchor =    AnchorStyles.Bottom | AnchorStyles.Right;
+
 
             Content.Controls.Add(vertScrollBar);
             Content.Controls.Add(horScrollBar);
