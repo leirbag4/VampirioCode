@@ -79,12 +79,18 @@ namespace VampDocManager
             horScrollBar.Anchor =       AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             horScrollBar.Scroll +=      OnHorScroll;
 
-            scrollBarCorner = new Control();
+            scrollBarCorner =           new Control();
+            scrollBarCorner.BackColor = Color.FromArgb(60, 60, 60);
+            scrollBarCorner.Size =      new Size(SystemInformation.VerticalScrollBarWidth, SystemInformation.HorizontalScrollBarHeight);
+            scrollBarCorner.Location =  new Point(Content.Width - scrollBarCorner.Width, Content.Height - scrollBarCorner.Height);
+            scrollBarCorner.Anchor =    AnchorStyles.Bottom | AnchorStyles.Right;
 
             Content.Controls.Add(vertScrollBar);
             Content.Controls.Add(horScrollBar);
+            Content.Controls.Add(scrollBarCorner);
             vertScrollBar.BringToFront();
             horScrollBar.BringToFront();
+            scrollBarCorner.BringToFront();
 
             RefreshScrollBarsVisibility();
 
@@ -113,12 +119,6 @@ namespace VampDocManager
             RefreshScrollBarsVisibility();
         }
 
-
-        private string DebugScrollInfo(ScrollInfo scroll)
-        {
-            return $"cbSize: {scroll.cbSize} fMask: {scroll.fMask} min: {scroll.min} max: {scroll.max} nPage: {scroll.nPage} nPos: {scroll.nPos} nTrackPos: {scroll.nTrackPos}";
-        }
-
         private void RefreshScrollBarsVisibility()
         {
             bool vscrollVisible = Editor.IsVerticalScrollVisible;
@@ -140,9 +140,9 @@ namespace VampDocManager
             horScrollBar.Location =  new Point(0, Content.Height - horScrollBar.Height - scrollBarOffset);
 
 
-            vertScrollBar.Visible = vscrollVisible;
-            horScrollBar.Visible =  hscrollVisible;
-
+            vertScrollBar.Visible =     vscrollVisible;
+            horScrollBar.Visible =      hscrollVisible;
+            scrollBarCorner.Visible =   vscrollVisible && hscrollVisible;
         }
 
 
