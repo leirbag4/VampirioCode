@@ -4,6 +4,7 @@ using System.DirectoryServices;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ using VampirioCode.UI;
 
 namespace VampEditor
 {
+    public delegate void ScrollEvent(ScrollInfo scrollInfo, int position);
+
     public enum ItemType
     {
         Cut,
@@ -32,12 +35,39 @@ namespace VampEditor
         OpenOutputFilename
     }
 
+    public struct ScrollInfo
+    {
+        public int cbSize;
+        public int fMask;
+        public int min;
+        public int max;
+        public int nPage;
+        public int nPos;
+        public int nTrackPos;
+
+        public ScrollInfo()
+        { 
+            cbSize =    0;
+            fMask =     0;
+            min =       0;
+            max =       0;
+            nPage =     0;
+            nPos =      0;
+            nTrackPos = 0;        
+        }
+    }
+
     public class VampirioEditor : Scintilla
     {
+        [DllImport("user32")]
+        private static extern int GetScrollInfo(IntPtr hwnd, int nBar, ref ScrollInfo scrollInfo);
+
         public delegate void ContextItemPressedEvent(EditorEventType eventType);
         public delegate void PositionChangedEvent(VampirioEditor editor, int lineNumber, int columnNumber, int position);
         public event ContextItemPressedEvent ContextItemPressed;
         public event PositionChangedEvent PositionChanged;
+        public event ScrollEvent VerticalScrollChanged;
+        public event ScrollEvent HorizontalScrollChanged;
 
         public int CurrentColumn { get { return GetColumn(CurrentPosition); } }
         public bool IsVerticalScrollVisible { get { return (Lines.Count > LinesOnScreen); } }
@@ -46,6 +76,12 @@ namespace VampEditor
 
         private ContextMenu<ItemType> menu;
         private bool _highlighted = false;
+
+        // scrollbars
+        private int _oldFirstVisibleLine =  -1;
+        private int _oldXOffset =           -1;
+        private ScrollInfo _oldVScrollInfo = new ScrollInfo();
+        private ScrollInfo _oldHScrollInfo = new ScrollInfo();
 
         public VampirioEditor()
         {
@@ -139,12 +175,36 @@ namespace VampEditor
         public void LineUp_TODO()
         { 
             DirectMessage(2620, IntPtr.Zero, IntPtr.Zero);
+            XConsole.PrintWarning("fix_me: 'LineUp_TODO()'");
         }
 
         // Must be fix: not always works. If next line have a TAB space this doesn't work
         public void LineDown_TODO()
         {
             DirectMessage(2621, IntPtr.Zero, IntPtr.Zero);
+            XConsole.PrintWarning("fix_me: 'LineDown_TODO()'");
+        }
+
+        // typeId = 0 -> horizontal
+        // typeId = 1 -> vertical
+        private ScrollInfo GetScrollInfo(int typeId)
+        {
+            ScrollInfo scrollInfo = new ScrollInfo();
+            scrollInfo.cbSize = Marshal.SizeOf(scrollInfo);           
+            scrollInfo.fMask = 0x10 | 0x1 | 0x2; //SIF_RANGE = 0x1, SIF_TRACKPOS = 0x10,  SIF_PAGE= 0x2
+            GetScrollInfo(this.Handle, typeId, ref scrollInfo);
+
+            return scrollInfo;
+        }
+
+        public ScrollInfo GetVScrollInfo()
+        {
+            return GetScrollInfo(1);
+        }
+
+        public ScrollInfo GetHScrollInfo()
+        {
+            return GetScrollInfo(0);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -212,13 +272,54 @@ namespace VampEditor
             RaiseEvents();
             HighlightBraces();
 
+            ScrollInfo vscrollInfo = GetVScrollInfo();
+            ScrollInfo hscrollInfo = GetHScrollInfo();
+
+            //if (e.Change.HasFlag(UpdateChange.VScroll) || (_oldFirstVisibleLine != FirstVisibleLine))
+            if (HasScrollInfoChanged(ref _oldVScrollInfo, ref vscrollInfo) || (_oldFirstVisibleLine != FirstVisibleLine))
+                OnVerticalScroll(GetVScrollInfo(), FirstVisibleLine);
+
+            //if (e.Change.HasFlag(UpdateChange.HScroll) || (_oldXOffset != XOffset))
+            if (HasScrollInfoChanged(ref _oldHScrollInfo, ref hscrollInfo) || (_oldXOffset != XOffset))
+                OnHorizontalScroll(GetHScrollInfo(), XOffset);
+            
+            _oldFirstVisibleLine =  FirstVisibleLine;
+            _oldXOffset =           XOffset;
+
+            _oldVScrollInfo =       vscrollInfo;
+            _oldHScrollInfo =       hscrollInfo;
+
+
             base.OnUpdateUI(e);
+        }
+
+        private bool HasScrollInfoChanged(ref ScrollInfo scroll, ref ScrollInfo scroll2)
+        { 
+            return ( (scroll.cbSize    != scroll2.cbSize)   ||
+                     (scroll.fMask     != scroll2.fMask)    ||
+                     (scroll.min       != scroll2.min)      ||
+                     (scroll.max       != scroll2.max)      ||
+                     (scroll.nPage     != scroll2.nPage)    ||
+                     (scroll.nPos      != scroll2.nPos)     ||
+                     (scroll.nTrackPos != scroll2.nTrackPos));
         }
 
         private void RaiseEvents()
         {
             if (PositionChanged != null)
                 PositionChanged(this, CurrentLine, CurrentColumn, CurrentPosition);
+        }
+
+        protected void OnVerticalScroll(ScrollInfo scrollInfo, int position)
+        {
+            if (VerticalScrollChanged != null)
+                VerticalScrollChanged(scrollInfo, position);
+        }
+
+        protected void OnHorizontalScroll(ScrollInfo scrollInfo, int position)
+        {
+            if (HorizontalScrollChanged != null)
+                HorizontalScrollChanged(scrollInfo, position);
         }
 
         private bool HighlightBraces()
