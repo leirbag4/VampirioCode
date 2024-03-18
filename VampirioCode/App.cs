@@ -389,7 +389,7 @@ namespace VampirioCode
 
         private void SetTitle(Document doc)
         {
-            string title = "Vampirio Code      ";
+            string title = "Vampirio Code   •   ";
 
             if (doc.IsTemporary)
                 title += doc.FileName;
