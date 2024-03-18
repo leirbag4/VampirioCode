@@ -20,6 +20,7 @@ namespace VampDocManager
             vertScrollBar =                     new ScrollBarAdv();
             vertScrollBar.ThumbPaddingX =       5;
             vertScrollBar.ThumbPaddingY =       4;
+            vertScrollBar.MinThumbSize =        20;
             vertScrollBar.ThumbNormalColor =    Color.FromArgb(65, 65, 65);
             vertScrollBar.ThumbOverColor =      Color.FromArgb(75, 75, 75);
             vertScrollBar.ButtonSize =          SystemInformation.VerticalScrollBarWidth;
@@ -33,6 +34,7 @@ namespace VampDocManager
             horScrollBar.AllowMouseScrolling =  false;
             horScrollBar.ThumbPaddingX =        4;
             horScrollBar.ThumbPaddingY =        5;
+            horScrollBar.MinThumbSize =         20;
             horScrollBar.ThumbNormalColor =     Color.FromArgb(65, 65, 65);
             horScrollBar.ThumbOverColor =       Color.FromArgb(75, 75, 75);
             horScrollBar.ButtonSize =           SystemInformation.HorizontalScrollBarHeight;
@@ -115,7 +117,7 @@ namespace VampDocManager
             if (scroll.LargeChange !=   scrollInfo.nPage)       scroll.LargeChange =    scrollInfo.nPage;
             if (scroll.Value !=         position)               scroll.Value =          position;
             // scroll.nTrackPos is not used here because not always has new values
-            XConsole.Println("val: " + scroll.Value);
+
             RefreshScrollBarsVisibility();
         }
 

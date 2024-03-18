@@ -15,24 +15,6 @@ namespace VampirioCode.UI.Controls
         #region VisualProperties
         [Localizable(true)]
         [Category("Extra Properties")]
-        [Description("Button Size")]
-        [Browsable(true)]
-        public int ButtonSize { get; set; } = 20;
-
-        [Localizable(true)]
-        [Category("Extra Properties")]
-        [Description("Thumb Padding X")]
-        [Browsable(true)]
-        public int ThumbPaddingX { get { return thumb.paddingX; } set { thumb.paddingX = value; } }
-
-        [Localizable(true)]
-        [Category("Extra Properties")]
-        [Description("Thumb Padding Y")]
-        [Browsable(true)]
-        public int ThumbPaddingY { get { return thumb.paddingY; } set { thumb.paddingY = value; } }
-
-        [Localizable(true)]
-        [Category("Extra Properties")]
         [Description("Arrow Color")]
         [Browsable(true)]
         public Color ArrowColor { get; set; } = CColor(200);
@@ -129,6 +111,30 @@ namespace VampirioCode.UI.Controls
         [Description("Orientation")]
         [Browsable(true)]
         public ScrollBarOrientation Orientation { get; set; } = ScrollBarOrientation.Vertical;
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Minimum Thumb Size")]
+        [Browsable(true)]
+        public int MinThumbSize { get; set; } = 10;     // Minimum width or height the thumb can get
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Button Size")]
+        [Browsable(true)]
+        public int ButtonSize { get; set; } = 20;
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Thumb Padding X")]
+        [Browsable(true)]
+        public int ThumbPaddingX { get { return thumb.paddingX; } set { thumb.paddingX = value; } }
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Thumb Padding Y")]
+        [Browsable(true)]
+        public int ThumbPaddingY { get { return thumb.paddingY; } set { thumb.paddingY = value; } }
 
         [Localizable(true)]
         [Category("Extra Properties")]
@@ -236,7 +242,6 @@ namespace VampirioCode.UI.Controls
         private bool timerSmallStepActive = false; // if FALSE -> it will use TimerStepMillis and if TRUE -> it will use TimerSmallStepMillis for each next step
 
 
-        private const int MinThumbSize =            10;     // Minimum width or height the thumb can get
         private const int TimerStartMillis =        500;    // Time in milliseconds the user must wait after pressing the buttons or the track to begin with the auto move
         private const int TimerStepMillis =         60;     // After first 'TimerStartMillis' wait time, this will be the new interval in millis for each step
         private const int TimerSmallStepMillis =    20;     // Only for track. If user reach the thumb, these millis are applied to move the thumb faster
@@ -624,7 +629,7 @@ namespace VampirioCode.UI.Controls
 
             floatPos = ((float)maxRangeVal / freeTrack) * currPos;
             floatPos += minimum;
-            int newVal = (int)floatPos;
+            int newVal = (int)Math.Round(floatPos);
 
             if (newVal < 0)
             {
@@ -659,14 +664,30 @@ namespace VampirioCode.UI.Controls
 
         private void ReleaseAndClamp()
         {
+            //XConsole.Println("val: " + scroll.Value + " max: " + scroll.MaximumValue);
+
             if (_value == minimum)
             {
                 SetValue(minimum);
             }
-            else if (_value == maximum)
+            else if (_value == MaximumValue)
             {
-                SetValue(maximum);
+                SetValue(MaximumValue);
             }
+            /*else
+            {
+                if (Orientation == ScrollBarOrientation.Vertical)
+                {
+                    if (thumb.bottom == downButton.y)
+                        SetValue(MaximumValue);
+                }
+                else if (Orientation == ScrollBarOrientation.Horizontal)
+                {
+                    if (thumb.right == rightButton.x)
+                        SetValue(MaximumValue);
+                }
+            }*/
+
         }
 
 
