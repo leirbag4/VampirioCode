@@ -9,8 +9,9 @@ Its functionalities are:
 * Syntax highlighting
 * Already integrated to 'dotnet' and 'msvc' compilers
 * Tab manager
-* C#, C++, Javascript and PHP support 
-* Other utilities
+* C#, C++, Javascript, PHP and CMake supported
+* MSVC, GNU g++, CLang and Emscripten compilers supported
+* Node.js and Xampp supported 
 
 <br>
 
