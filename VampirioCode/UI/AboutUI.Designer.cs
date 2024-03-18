@@ -85,8 +85,8 @@
             labelAdv2.BorderColor = Color.DarkGray;
             labelAdv2.BorderSize = 1;
             labelAdv2.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
-            labelAdv2.ForeColor = Color.Silver;
-            labelAdv2.Location = new Point(246, 38);
+            labelAdv2.ForeColor = Color.FromArgb(150, 150, 150);
+            labelAdv2.Location = new Point(237, 38);
             labelAdv2.ModifyClampMax = 0F;
             labelAdv2.ModifyClampMin = 0F;
             labelAdv2.ModifyControlName = "";
@@ -146,7 +146,7 @@
             closeButton.extraTextOffset = new Point(0, 0);
             closeButton.FocusColor = Color.FromArgb(24, 81, 115);
             closeButton.FocusEnabled = false;
-            closeButton.ForeColor = Color.Silver;
+            closeButton.ForeColor = Color.FromArgb(120, 120, 120);
             closeButton.Location = new Point(229, 179);
             closeButton.Name = "closeButton";
             closeButton.PaintImageOnSelected = true;
@@ -166,7 +166,7 @@
             labelAdv4.BorderColor = Color.DarkGray;
             labelAdv4.BorderSize = 1;
             labelAdv4.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
-            labelAdv4.ForeColor = Color.Silver;
+            labelAdv4.ForeColor = Color.FromArgb(150, 150, 150);
             labelAdv4.Location = new Point(179, 76);
             labelAdv4.ModifyClampMax = 0F;
             labelAdv4.ModifyClampMin = 0F;
