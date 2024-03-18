@@ -444,6 +444,7 @@ namespace VampDocManager
                 {
                     try
                     {
+                        File.WriteAllText(newFilePath, "");
                         text = CurrDocument.Text;
                         //File.Delete(CurrDocument.FullFilePath);
                         CurrDocument.CopyFrom(Document.Load(newFilePath));
