@@ -110,6 +110,10 @@ namespace VampirioCode
                 this.Size = new Size(Config.Width, Config.Height);
             }
 
+            // resize splitter
+            if(Config.SplitterDistance != -1)
+                splitContainer.SplitterDistance = Config.SplitterDistance;
+
             // restore last selected document
             if (Config.LastSelectedTabIndex < docManager.Documents.Length)
                 docManager.SelectTabAt(Config.LastSelectedTabIndex);
@@ -642,6 +646,9 @@ namespace VampirioCode
                 Config.Height = this.Height;
                 Config.Maximized = false;
             }
+
+            // Splitter distance
+            Config.SplitterDistance = splitContainer.SplitterDistance;
 
             // Save config file
             Config.Save();

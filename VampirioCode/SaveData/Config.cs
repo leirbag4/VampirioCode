@@ -24,6 +24,7 @@ namespace VampirioCode.SaveData
 
         // Represent if last time before close, the windows was maximized. Used to restore that state
         public static bool Maximized { get { return config.maximized; } set { config.maximized = value; } }
+        public static int SplitterDistance { get { return config.splitter_distance; } set { config.splitter_distance = value; } }
 
         // The documents from the previous session that were still opened before close
         public static SavedDocument[] LastOpenDocuments {   get { return config.last_open_documents; }      set { config.last_open_documents = value; } }
@@ -37,6 +38,7 @@ namespace VampirioCode.SaveData
         public int width { get; set; } = 820;
         public int height { get; set; } = 750;
         public bool maximized { get; set; } = false;
+        public int splitter_distance { get; set; } = -1;
         public string version { get; set; } = "";
         public SavedDocument[] last_open_documents { get; set; }
         public int last_selected_tab_index { get; set; } = 0;
