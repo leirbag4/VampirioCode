@@ -9,6 +9,7 @@ using VampirioCode.Command;
 using VampirioCode.Command.Dotnet;
 using VampirioCode.SaveData;
 using VampirioCode.UI;
+using VampirioCode.UI.Style;
 using VampirioCode.Utils;
 
 namespace VampirioCode
@@ -33,6 +34,8 @@ namespace VampirioCode
 
         protected override void OnLoad(EventArgs e)
         {
+            DarkTitleBarHelper.UseImmersiveDarkMode(Handle, true);
+
             FilesStructInit();
             Config.Initialize();
             MsgBox.Setup(this);
