@@ -18,8 +18,8 @@ namespace VampDocManager
         private void CreateCustomScrollBars()
         {
             vertScrollBar =                     new ScrollBarAdv();
-            //vertScrollBar.ThumbPaddingX =       5;
-            //vertScrollBar.ThumbPaddingY =       4;
+            vertScrollBar.ThumbPaddingX =       5;
+            vertScrollBar.ThumbPaddingY =       4;
             vertScrollBar.ThumbNormalColor =    Color.FromArgb(65, 65, 65);
             vertScrollBar.ThumbOverColor =      Color.FromArgb(75, 75, 75);
             vertScrollBar.ButtonSize =          SystemInformation.VerticalScrollBarWidth;
@@ -31,8 +31,8 @@ namespace VampDocManager
             horScrollBar =                      new ScrollBarAdv();
             horScrollBar.Orientation =          VampirioCode.UI.Controls.ScrollBarAdvance.ScrollBarOrientation.Horizontal;
             horScrollBar.AllowMouseScrolling =  false;
-            //horScrollBar.ThumbPaddingX =        4;
-            //horScrollBar.ThumbPaddingY =        5;
+            horScrollBar.ThumbPaddingX =        4;
+            horScrollBar.ThumbPaddingY =        5;
             horScrollBar.ThumbNormalColor =     Color.FromArgb(65, 65, 65);
             horScrollBar.ThumbOverColor =       Color.FromArgb(75, 75, 75);
             horScrollBar.ButtonSize =           SystemInformation.HorizontalScrollBarHeight;
