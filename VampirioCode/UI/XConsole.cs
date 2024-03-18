@@ -34,7 +34,7 @@ namespace VampirioCode.UI
             // console textbox
             RichTextBox outp =  new RichTextBox();
             outp.BackColor =    Color.FromArgb(30, 30, 30);
-            outp.ForeColor =    Color.Silver;
+            outp.ForeColor =    Color.FromArgb(164, 164, 176);// Color.Silver;
             outp.BorderStyle =  BorderStyle.None;
             outp.Dock =         DockStyle.Fill;
 
@@ -61,7 +61,7 @@ namespace VampirioCode.UI
             tabPanel.TabBorderSize =                    1;
 
             tabPanel.TabBarHeight =                     23;
-            tabPanel.TabBar.BackColor =                 Color.FromArgb(40, 40, 40);
+            tabPanel.TabBar.BackColor =                 Color.FromArgb(33, 33, 33); // Color.FromArgb(40, 40, 40);
 
             tabPanel.SelectedStyle.BackColor =          Color.FromArgb(170, 60, 85);
             tabPanel.SelectedStyle.TextColor =          Color.White;

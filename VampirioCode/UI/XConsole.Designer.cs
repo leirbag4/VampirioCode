@@ -45,19 +45,19 @@
             // clearButton
             // 
             clearButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            clearButton.BorderColor = Color.FromArgb(20, 20, 20);
+            clearButton.BorderColor = Color.FromArgb(24, 24, 24);
             clearButton.BorderSize = 1;
             clearButton.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
             clearButton.expandImage = false;
             clearButton.extraText = "";
             clearButton.extraTextAlign = ContentAlignment.MiddleCenter;
-            clearButton.extraTextColor = Color.Black;
+            clearButton.extraTextColor = SystemColors.ButtonShadow;
             clearButton.extraTextFont = null;
             clearButton.extraTextOffset = new Point(0, 0);
             clearButton.FocusColor = Color.FromArgb(24, 81, 115);
             clearButton.FocusEnabled = false;
-            clearButton.ForeColor = Color.Silver;
-            clearButton.Location = new Point(615, 0);
+            clearButton.ForeColor = SystemColors.ButtonShadow;
+            clearButton.Location = new Point(616, 0);
             clearButton.Name = "clearButton";
             clearButton.PaintImageOnSelected = true;
             clearButton.processEnterKey = true;
