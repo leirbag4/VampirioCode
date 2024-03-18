@@ -13,7 +13,7 @@ namespace VampEditor.Language
 
 
         private const String CPP_CONTROL_STATEMENTS =   "if else goto case break continue for do while return switch default ";
-        private const String CPP_COMMON_FUNCTIONS =     "malloc free cout endl cin";
+        private const String CPP_COMMONS =              "malloc free cout endl cin nullptr null";
         
         private const String CPP_TYPES =                "bool int double float short signed long void char wchar_t ";
         private const String CPP_TYPES_2 =              "uint8_t int8_t uint16_t int16_t uint32_t int32_t uint64_t int64_t size_t ";
@@ -73,7 +73,7 @@ namespace VampEditor.Language
                 //IndentationGuides = IndentView.LookBoth;
 
                 editor.SetKeywords(0, CPP_LANG_KEYWORDS);
-                editor.SetKeywords(3, CPP_CONTROL_STATEMENTS + CPP_COMMON_FUNCTIONS);
+                editor.SetKeywords(3, CPP_CONTROL_STATEMENTS + CPP_COMMONS);
 
                 string classes = "";
 
