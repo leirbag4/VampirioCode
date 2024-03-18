@@ -664,7 +664,7 @@ namespace VampirioCode.UI.Controls
 
         private void ReleaseAndClamp()
         {
-            //XConsole.Println("val: " + scroll.Value + " max: " + scroll.MaximumValue);
+            //XConsole.Println("val: " + Value + " max: " + MaximumValue);
 
             if (_value == minimum)
             {
@@ -706,6 +706,12 @@ namespace VampirioCode.UI.Controls
 
         private void SetValue(float newValue)
         {
+            // clamp values
+            if(newValue < minimum)
+                newValue = minimum;
+            else if(newValue > MaximumValue)
+                newValue = MaximumValue;
+
             // 'SetValue()' can be called from outside and not only from inside this class so we update
             // 'floatPos' for external calls. For internal calls it makes no difference, just value is re-assigned
             floatPos = newValue;
