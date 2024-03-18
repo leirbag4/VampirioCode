@@ -654,7 +654,21 @@ namespace VampirioCode.UI.Controls
             _dragPos = pos;
             _dragging = false;
             //SetValue(_value);
+            ReleaseAndClamp();
         }
+
+        private void ReleaseAndClamp()
+        {
+            if (_value == minimum)
+            {
+                SetValue(minimum);
+            }
+            else if (_value == maximum)
+            {
+                SetValue(maximum);
+            }
+        }
+
 
         // Check if any element like 'buttons', 'track' or 'thumb'
         // is being pressed by the user

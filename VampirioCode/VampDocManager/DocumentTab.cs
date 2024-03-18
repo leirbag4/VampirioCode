@@ -1,4 +1,4 @@
-﻿//#define DEBUG_SCROLLBARS
+﻿#define DEBUG_SCROLLBARS
 
 using ScintillaNET;
 using System;

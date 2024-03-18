@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampEditor;
+using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 
 namespace VampDocManager
@@ -17,8 +18,8 @@ namespace VampDocManager
         private void CreateCustomScrollBars()
         {
             vertScrollBar =                     new ScrollBarAdv();
-            vertScrollBar.ThumbPaddingX =       5;
-            vertScrollBar.ThumbPaddingY =       4;
+            //vertScrollBar.ThumbPaddingX =       5;
+            //vertScrollBar.ThumbPaddingY =       4;
             vertScrollBar.ThumbNormalColor =    Color.FromArgb(65, 65, 65);
             vertScrollBar.ThumbOverColor =      Color.FromArgb(75, 75, 75);
             vertScrollBar.ButtonSize =          SystemInformation.VerticalScrollBarWidth;
@@ -30,8 +31,8 @@ namespace VampDocManager
             horScrollBar =                      new ScrollBarAdv();
             horScrollBar.Orientation =          VampirioCode.UI.Controls.ScrollBarAdvance.ScrollBarOrientation.Horizontal;
             horScrollBar.AllowMouseScrolling =  false;
-            horScrollBar.ThumbPaddingX =        4;
-            horScrollBar.ThumbPaddingY =        5;
+            //horScrollBar.ThumbPaddingX =        4;
+            //horScrollBar.ThumbPaddingY =        5;
             horScrollBar.ThumbNormalColor =     Color.FromArgb(65, 65, 65);
             horScrollBar.ThumbOverColor =       Color.FromArgb(75, 75, 75);
             horScrollBar.ButtonSize =           SystemInformation.HorizontalScrollBarHeight;
@@ -40,11 +41,11 @@ namespace VampDocManager
             horScrollBar.Scroll +=              OnHorScroll;
 
 
-            scrollBarCorner =           new Control();
-            scrollBarCorner.BackColor = Color.FromArgb(60, 60, 60);
-            scrollBarCorner.Size =      new Size(SystemInformation.VerticalScrollBarWidth, SystemInformation.HorizontalScrollBarHeight);
-            scrollBarCorner.Location =  new Point(Content.Width - scrollBarCorner.Width, Content.Height - scrollBarCorner.Height);
-            scrollBarCorner.Anchor =    AnchorStyles.Bottom | AnchorStyles.Right;
+            scrollBarCorner =                   new Control();
+            scrollBarCorner.BackColor =         Color.FromArgb(60, 60, 60);
+            scrollBarCorner.Size =              new Size(SystemInformation.VerticalScrollBarWidth, SystemInformation.HorizontalScrollBarHeight);
+            scrollBarCorner.Location =          new Point(Content.Width - scrollBarCorner.Width, Content.Height - scrollBarCorner.Height);
+            scrollBarCorner.Anchor =            AnchorStyles.Bottom | AnchorStyles.Right;
 
 
             Content.Controls.Add(vertScrollBar);
@@ -75,13 +76,13 @@ namespace VampDocManager
                 horScrollBar.Width = Content.Width;
 
 
-            vertScrollBar.Location = new Point(Content.Width - vertScrollBar.Width - scrollBarOffset, 0);
-            horScrollBar.Location = new Point(0, Content.Height - horScrollBar.Height - scrollBarOffset);
+            vertScrollBar.Location =    new Point(Content.Width - vertScrollBar.Width - scrollBarOffset, 0);
+            horScrollBar.Location =     new Point(0, Content.Height - horScrollBar.Height - scrollBarOffset);
 
 
-            vertScrollBar.Visible = vscrollVisible;
-            horScrollBar.Visible = hscrollVisible;
-            scrollBarCorner.Visible = vscrollVisible && hscrollVisible;
+            vertScrollBar.Visible =     vscrollVisible;
+            horScrollBar.Visible =      hscrollVisible;
+            scrollBarCorner.Visible =   vscrollVisible && hscrollVisible;
         }
 
 
@@ -109,12 +110,12 @@ namespace VampDocManager
         {
             ScrollBarAdv scroll = vertScrollBar;
 
-            if (scroll.Minimum != scrollInfo.min) scroll.Minimum = scrollInfo.min;
-            if (scroll.Maximum != scrollInfo.max) scroll.Maximum = scrollInfo.max;
-            if (scroll.LargeChange != scrollInfo.nPage) scroll.LargeChange = scrollInfo.nPage;
-            if (scroll.Value != position) scroll.Value = position;
+            if (scroll.Minimum !=       scrollInfo.min)         scroll.Minimum =        scrollInfo.min;
+            if (scroll.Maximum !=       scrollInfo.max)         scroll.Maximum =        scrollInfo.max;
+            if (scroll.LargeChange !=   scrollInfo.nPage)       scroll.LargeChange =    scrollInfo.nPage;
+            if (scroll.Value !=         position)               scroll.Value =          position;
             // scroll.nTrackPos is not used here because not always has new values
-
+            XConsole.Println("val: " + scroll.Value);
             RefreshScrollBarsVisibility();
         }
 
@@ -122,10 +123,10 @@ namespace VampDocManager
         {
             ScrollBarAdv scroll = horScrollBar;
 
-            if (scroll.Minimum != scrollInfo.min) scroll.Minimum = scrollInfo.min;
-            if (scroll.Maximum != scrollInfo.max) scroll.Maximum = scrollInfo.max;
-            if (scroll.LargeChange != scrollInfo.nPage) scroll.LargeChange = scrollInfo.nPage;
-            if (scroll.Value != position) scroll.Value = position;
+            if (scroll.Minimum !=       scrollInfo.min)     scroll.Minimum =        scrollInfo.min;
+            if (scroll.Maximum !=       scrollInfo.max)     scroll.Maximum =        scrollInfo.max;
+            if (scroll.LargeChange !=   scrollInfo.nPage)   scroll.LargeChange =    scrollInfo.nPage;
+            if (scroll.Value !=         position)           scroll.Value =          position;
             // scroll.nTrackPos is not used here because not always has new values
 
             RefreshScrollBarsVisibility();
