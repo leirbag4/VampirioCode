@@ -387,6 +387,18 @@ namespace VampirioCode
             CurrEditor.LineDown_TODO();
         }
 
+        private void SetTitle(Document doc)
+        {
+            string title = "Vampirio Code      ";
+
+            if (doc.IsTemporary)
+                title += doc.FileName;
+            else
+                title += doc.FullFilePath;
+
+            this.Text = title;
+        }
+
         private void FilesStructInit()
         {
             if (!Directory.Exists(AppInfo.TemporaryFilesPath))
@@ -486,13 +498,13 @@ namespace VampirioCode
 
         }
 
-
         private void OnCurrDocumentTabChanged(int index, Document doc)
         {
             if (doc != null)
             {
                 SelectLanguage(doc.DocType);
                 SelectBuilder(doc.DocType, doc.BuilderType);
+                SetTitle(doc);
             }
         }
 
