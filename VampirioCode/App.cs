@@ -46,26 +46,26 @@ namespace VampirioCode
             menuStrip.ForeColor = Color.Silver;
 
             // doc manager events
-            docManager.CurrDocumentTabChanged +=    OnCurrDocumentTabChanged;
-            docManager.EditorContextItemPressed +=  OnEditorContextItemPressed;
-            docManager.DocumentCreated +=           OnDocumentCreated;
-            docManager.DocumentRemoved +=           OnDocumentRemoved;
+            docManager.CurrDocumentTabChanged += OnCurrDocumentTabChanged;
+            docManager.EditorContextItemPressed += OnEditorContextItemPressed;
+            docManager.DocumentCreated += OnDocumentCreated;
+            docManager.DocumentRemoved += OnDocumentRemoved;
 
             // tool bar events
-            toolBar.StartPressed +=     OnStartPressed;
-            toolBar.ReloadPressed +=    OnReloadPressed;
+            toolBar.StartPressed += OnStartPressed;
+            toolBar.ReloadPressed += OnReloadPressed;
 
             // drag and drop
-            this.AllowDrop =    true;
-            this.DragEnter +=   OnDragEnter;
-            this.DragDrop +=    OnDragDrop;
+            this.AllowDrop = true;
+            this.DragEnter += OnDragEnter;
+            this.DragDrop += OnDragDrop;
 
 
             // open last documents
             OpenLastDocuments();
 
             // start builders
-            dotnet =            new Dotnet();
+            dotnet = new Dotnet();
 
             FillBuilderItems();
 
@@ -93,11 +93,11 @@ namespace VampirioCode
             // resize the window to the last size
             if (Config.Maximized)
             {
-                if((Config.PosX != -1) && (Config.PosY != -1))
+                if ((Config.PosX != -1) && (Config.PosY != -1))
                     Location = new Point(Config.PosX, Config.PosY);
 
-                WindowState =   FormWindowState.Maximized;
-                this.Size =     new Size(Config.Width, Config.Height);
+                WindowState = FormWindowState.Maximized;
+                this.Size = new Size(Config.Width, Config.Height);
             }
             else
             {
@@ -146,21 +146,21 @@ namespace VampirioCode
 
         private void RegisterCmdKeys()
         {
-            HotKeyManager.AddHotKey(New,            Keys.Control | Keys.N);
-            HotKeyManager.AddHotKey(Open,           Keys.Control | Keys.O);
-            HotKeyManager.AddHotKey(CloseDoc,       Keys.Control | Keys.W);
-            HotKeyManager.AddHotKey(Find,           Keys.Control | Keys.F);
+            HotKeyManager.AddHotKey(New, Keys.Control | Keys.N);
+            HotKeyManager.AddHotKey(Open, Keys.Control | Keys.O);
+            HotKeyManager.AddHotKey(CloseDoc, Keys.Control | Keys.W);
+            HotKeyManager.AddHotKey(Find, Keys.Control | Keys.F);
             HotKeyManager.AddHotKey(FindAndReplace, Keys.Control | Keys.H);
-            HotKeyManager.AddHotKey(Save,           Keys.Control | Keys.S);
-            HotKeyManager.AddHotKey(GoTo,           Keys.Control | Keys.G);
-            HotKeyManager.AddHotKey(Duplicate,      Keys.Control | Keys.D);
-            HotKeyManager.AddHotKey(BuildAndRun,    Keys.F5);
-            HotKeyManager.AddHotKey(Build,          Keys.F6);
-            HotKeyManager.AddHotKey(Undo,           Keys.Control | Keys.Z);
-            HotKeyManager.AddHotKey(Redo,           Keys.Control | Keys.Shift | Keys.Z);
-            HotKeyManager.AddHotKey(SaveAs,         Keys.Control | Keys.Shift | Keys.S);
-            HotKeyManager.AddHotKey(LineUp,         Keys.Alt | Keys.Up);
-            HotKeyManager.AddHotKey(LineDown,       Keys.Alt | Keys.Down);
+            HotKeyManager.AddHotKey(Save, Keys.Control | Keys.S);
+            HotKeyManager.AddHotKey(GoTo, Keys.Control | Keys.G);
+            HotKeyManager.AddHotKey(Duplicate, Keys.Control | Keys.D);
+            HotKeyManager.AddHotKey(BuildAndRun, Keys.F5);
+            HotKeyManager.AddHotKey(Build, Keys.F6);
+            HotKeyManager.AddHotKey(Undo, Keys.Control | Keys.Z);
+            HotKeyManager.AddHotKey(Redo, Keys.Control | Keys.Shift | Keys.Z);
+            HotKeyManager.AddHotKey(SaveAs, Keys.Control | Keys.Shift | Keys.S);
+            HotKeyManager.AddHotKey(LineUp, Keys.Alt | Keys.Up);
+            HotKeyManager.AddHotKey(LineDown, Keys.Alt | Keys.Down);
 
             //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
         }
@@ -169,7 +169,7 @@ namespace VampirioCode
         {
             ToolStripMenuItem[] items = Builders.CreateMenuItems();
 
-            foreach(ToolStripMenuItem item in items)
+            foreach (ToolStripMenuItem item in items)
                 item.Click += OnBuilderPressed;
 
             builderToolStripMenuItem.DropDownItems.Clear();
@@ -226,13 +226,13 @@ namespace VampirioCode
         {
             string sel = (string)((ToolStripMenuItem)sender).Tag;
 
-                 if (sel == "new")          New();
-            else if (sel == "open")         Open();
-            else if (sel == "save")         Save();
-            else if (sel == "save_as")      SaveAs();
-            else if (sel == "close")        CloseDoc();
-            else if (sel == "close_all")    CloseAll();
-            else if (sel == "exit")         Exit();
+            if (sel == "new") New();
+            else if (sel == "open") Open();
+            else if (sel == "save") Save();
+            else if (sel == "save_as") SaveAs();
+            else if (sel == "close") CloseDoc();
+            else if (sel == "close_all") CloseAll();
+            else if (sel == "exit") Exit();
         }
 
         private void OnEditPressed(object sender, EventArgs e)
@@ -243,7 +243,7 @@ namespace VampirioCode
         private void OnEditorContextItemPressed(EditorEventType eventType, Document document)
         {
             if (eventType == VampEditor.EditorEventType.OpenFileLocation)
-            { 
+            {
                 Process.Start("explorer.exe", string.Format("/select,\"{0}\"", document.FullFilePath));
             }
             else if (eventType == VampEditor.EditorEventType.OpenOutputFilename)
@@ -277,16 +277,16 @@ namespace VampirioCode
         {
             DocumentType docType = DocumentType.OTHER;
 
-                 if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
-            else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
-            else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
-            else if (sender == phpToolStripMenuItem)    docType = DocumentType.PHP;
-            else if (sender == cmakeToolStripMenuItem)  docType = DocumentType.TXT;
+            if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
+            else if (sender == cppToolStripMenuItem) docType = DocumentType.CPP;
+            else if (sender == jsToolStripMenuItem) docType = DocumentType.JS;
+            else if (sender == phpToolStripMenuItem) docType = DocumentType.PHP;
+            else if (sender == cmakeToolStripMenuItem) docType = DocumentType.TXT;
 
             if (CurrDocument.DocType != docType)
             {
-                CurrDocument.DocType =      docType;
-                CurrDocument.BuilderType =  Builders.GetDefaultTypeFor(docType);
+                CurrDocument.DocType = docType;
+                CurrDocument.BuilderType = Builders.GetDefaultTypeFor(docType);
                 SelectLanguage(CurrDocument.DocType);
                 SelectBuilder(CurrDocument.DocType, CurrDocument.BuilderType);
 
@@ -385,8 +385,8 @@ namespace VampirioCode
         }
 
         private void FilesStructInit()
-        { 
-            if(!Directory.Exists(AppInfo.TemporaryFilesPath))
+        {
+            if (!Directory.Exists(AppInfo.TemporaryFilesPath))
                 Directory.CreateDirectory(AppInfo.TemporaryFilesPath);
         }
 
@@ -439,11 +439,11 @@ namespace VampirioCode
                     item.ForeColor = Color.Silver;
             }
 
-                 if (docType == DocumentType.CSHARP)    csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
-            else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
-            else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
-            else if (docType == DocumentType.TXT)       cmakeToolStripMenuItem.ForeColor =  Color.SlateBlue;
+            if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.CPP) cppToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.JS) jsToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.PHP) phpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.TXT) cmakeToolStripMenuItem.ForeColor = Color.SlateBlue;
 
             footer.DocType = docType;
         }
@@ -472,7 +472,7 @@ namespace VampirioCode
                         allow += al.ToString() + ", ";
 
                     //XConsole.Alert("docType: " + docType + "     allowed: " + allow + " buildType: " + buildType + " contain: " + allowedBuilders.Contains(buildType));
-                    
+
                     // hide menu item if it doesn't belong to the language or docType
                     item.Visible = allowedBuilders.Contains(buildType);
 
@@ -574,11 +574,12 @@ namespace VampirioCode
                     }
                 }
 
-                lastOpenDocs[a] = new SavedDocument()   { 
-                                                            FullFilePath =  doc.FullFilePath, 
-                                                            IsTemporary =   doc.IsTemporary,
-                                                            DocumentSettings = new DocumentSettings() { DocType = doc.DocType, BuilderType = doc.BuilderType }
-                                                        };
+                lastOpenDocs[a] = new SavedDocument()
+                {
+                    FullFilePath = doc.FullFilePath,
+                    IsTemporary = doc.IsTemporary,
+                    DocumentSettings = new DocumentSettings() { DocType = doc.DocType, BuilderType = doc.BuilderType }
+                };
             }
 
             // There are modified open documents
@@ -601,8 +602,8 @@ namespace VampirioCode
             }
 
             // Set last documents and last index
-            Config.LastOpenDocuments =      lastOpenDocs;
-            Config.LastSelectedTabIndex =   docManager.CurrIndex;
+            Config.LastOpenDocuments = lastOpenDocs;
+            Config.LastSelectedTabIndex = docManager.CurrIndex;
 
             // Store last window width and height
             //Config.Width =  RestoreBounds.Width; 
@@ -611,20 +612,20 @@ namespace VampirioCode
             if (WindowState == FormWindowState.Maximized)
             {
                 //Properties.Settings.Default.Location = RestoreBounds.Location;
-                Config.PosX =       RestoreBounds.X; 
-                Config.PosY =       RestoreBounds.Y;
-                Config.Width =      RestoreBounds.Width;
-                Config.Height =     RestoreBounds.Height;
-                Config.Maximized =  true;
+                Config.PosX = RestoreBounds.X;
+                Config.PosY = RestoreBounds.Y;
+                Config.Width = RestoreBounds.Width;
+                Config.Height = RestoreBounds.Height;
+                Config.Maximized = true;
             }
             else if (WindowState == FormWindowState.Normal)
             {
                 //Properties.Settings.Default.Location = Location;
-                Config.PosX =       this.Location.X; 
-                Config.PosY =       this.Location.Y;
-                Config.Width =      this.Width;
-                Config.Height =     this.Height;
-                Config.Maximized =  false;
+                Config.PosX = this.Location.X;
+                Config.PosY = this.Location.Y;
+                Config.Width = this.Width;
+                Config.Height = this.Height;
+                Config.Maximized = false;
             }
 
             // Save config file
@@ -645,5 +646,10 @@ namespace VampirioCode
             Build();
         }
 
+        private void OnAboutPressed(object sender, EventArgs e)
+        {
+            AboutUI about = new AboutUI();
+            about.ShowMe(this);
+        }
     }
 }

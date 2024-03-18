@@ -408,8 +408,8 @@ namespace VampirioCode.UI.Controls
 
             if (state == ImageState.OVER)
             {
-                borColor = ImageFX.Tint(BorderColor, Color.White, 0.05f);
-                bkgColor = ImageFX.Tint(BackColor, Color.White, 0.05f);
+                borColor = ImageFX.Tint(BorderColor, Color.White, 0.025f);
+                bkgColor = ImageFX.Tint(BackColor, Color.White, 0.025f);
             }
 
             if (Selected)
