@@ -60,6 +60,7 @@ namespace VampEditor.Language
                 Styles[Style.Cpp.Word].ForeColor =              CColor(170, 60, 85);    // void public static             //CColor(31, 144, 255);// CColor(57, 135, 214);
                 Styles[Style.Cpp.Word2].ForeColor =             CColor(61, 201, 176);   // string vector fstream
                 Styles[Style.Cpp.String].ForeColor =            CColor(214, 157, 65);
+                Styles[Style.Cpp.StringEol].ForeColor =         CColor(214, 175, 90);   // string with no closed quotation marks -> ["start string]
                 Styles[Style.Cpp.Character].ForeColor =         CColor(163, 21, 21);
                 Styles[Style.Cpp.Verbatim].ForeColor =          CColor(214, 157, 65);               
                 Styles[Style.Cpp.StringEol].BackColor =         Color.Pink;

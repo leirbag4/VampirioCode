@@ -50,9 +50,9 @@ namespace VampEditor.Language
                 Styles[Style.Cpp.Word].ForeColor =              CColor(140, 100, 235);  // void public static        //CColor(170, 60, 85); //CColor(31, 144, 255);// CColor(57, 135, 214);
                 Styles[Style.Cpp.Word2].ForeColor =             CColor(61, 201, 176);
                 Styles[Style.Cpp.String].ForeColor =            CColor(214, 157, 65);
+                Styles[Style.Cpp.StringEol].ForeColor =         CColor(214, 175, 90);   // string with no closed quotation marks -> ["start string]
                 Styles[Style.Cpp.Character].ForeColor =         CColor(163, 21, 21);
                 Styles[Style.Cpp.Verbatim].ForeColor =          CColor(214, 157, 65);//CColor(163, 21, 21); // Red
-                Styles[Style.Cpp.StringEol].BackColor =         Color.Pink;
                 Styles[Style.Cpp.Operator].ForeColor =          CColor(170, 170, 200);  // - + = ( )
                 Styles[Style.Cpp.Preprocessor].ForeColor =      Color.Maroon;
 
