@@ -200,6 +200,7 @@ namespace VampDocManager
         {
             DocumentTab doc = (DocumentTab)item;
 
+            toolTipPath.Hide(this);
             toolTipPath.Show(doc.Document.FullFilePath, this, positionX < 0 ? 0 : positionX, tabPanel.TabBarHeight);
         }
 
