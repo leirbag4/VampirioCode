@@ -110,6 +110,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
         private System.Windows.Forms.Timer overTabTimer;
         private Tab prevOverTab = null;
+        private bool overTabAllowInstant = false;
 
         // IMPORTANT: A global offset position used to shift all the tabs to the left or right
         //            This variable is used to calculate LocalToGlobal() and GlobalToLocal()
@@ -636,7 +637,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         }
 
         // This is called every time the user hover on a tab and wait some time
-        private void OnOverTabTick(object? sender, EventArgs e)
+        private void OnOverTabTick(object sender, EventArgs e)
         {
 #if USE_OVER_TAB_TIMERS
             overTabTimer.Stop();
@@ -649,6 +650,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                         CancelOverNewTab();
                     else
                         OverTabElapsedTime(prevOverTab.Index(), prevOverTab.Item, LocalToGlobal(prevOverTab.X));
+
+                    overTabAllowInstant = true;
                 }
             }
 #endif
@@ -660,12 +663,17 @@ namespace VampirioCode.UI.Controls.TabManagement
         private void CheckOverNewTab()
         {
 #if USE_OVER_TAB_TIMERS
+            bool diffButNotNull = false;
+
             foreach (Tab tab in tabs)
             {
                 if (tab.IsOver())
                 {
                     if (prevOverTab != tab)
                     {
+                        if (prevOverTab != null)
+                            diffButNotNull = true;
+
                         prevOverTab = tab;
 
                         if (OverTabChanged != null)
@@ -674,14 +682,18 @@ namespace VampirioCode.UI.Controls.TabManagement
                         if (OverTabElapsedTime != null)
                         {
                             overTabTimer.Stop();
-                            overTabTimer.Start();
+
+                            if (diffButNotNull && overTabAllowInstant)
+                                OnOverTabTick(null, EventArgs.Empty);
+                            else
+                                overTabTimer.Start();
                         }
                     }
                 }
             }
 #endif
         }
-
+        
         // Used in conjunction with 'CheckOverNewTab' and 'OnOverTabTick'
         private void CancelOverNewTab()
         {
@@ -692,6 +704,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             prevOverTab = null;
             if (OverTabChanged != null)
                 OverTabChanged(-1, null);
+
+            overTabAllowInstant = false;
 #endif
         }
         // --------------------------------------------------------
