@@ -513,7 +513,7 @@ namespace VampirioCode.UI.Controls.TabManagement
             }
 
             MouseMove(x, y, false);
-
+            CancelOverNewTab();
         }
         // --------------------------------------------------------
 
