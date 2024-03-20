@@ -22,6 +22,8 @@ namespace VampirioCode.UI.Controls
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
         public event CloseTabInvokedEvent CloseTabInvoked;
+        public event OverTabChangedEvent OverTabChanged;
+        public event OverTabElapsedTimeEvent OverTabElapsedTime;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabItemCollection Items { get { return tabBar.Items; } set { tabBar.Items = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -155,6 +157,8 @@ namespace VampirioCode.UI.Controls
             tabBar.TabDetached +=               OnTabDetached;
             tabBar.TabItemTextChanged +=        OnTabItemTextChanged;
             tabBar.CloseTabInvoked +=           OnCloseTabInvoked;
+            tabBar.OverTabChanged +=            OnOverTabChanged;
+            tabBar.OverTabElapsedTime +=        OnOverTabElapsedTime;
 
             leftArrowButton.MouseDown +=        OnLeftArrowBtnDown;
             rightArrowButton.MouseDown +=       OnRightArrowBtnDown;
@@ -182,7 +186,6 @@ namespace VampirioCode.UI.Controls
             this.Controls.Add(splitBar);
             this.Controls.Add(container);
         }
-
 
         /*public List<T> GetItems<T>()
         {
@@ -470,6 +473,18 @@ namespace VampirioCode.UI.Controls
         {
             if (CloseTabInvoked != null)
                 CloseTabInvoked(index, item);
+        }
+
+        private void OnOverTabChanged(int index, TabItem item)
+        {
+            if (OverTabChanged != null)
+                OverTabChanged(index, item);
+        }
+
+        private void OnOverTabElapsedTime(int index, TabItem item, int positionX)
+        {
+            if (OverTabElapsedTime != null)
+                OverTabElapsedTime(index, item, positionX);
         }
 
     }

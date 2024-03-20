@@ -26,6 +26,8 @@ namespace VampirioCode.UI.Controls
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
         public event CloseTabInvokedEvent CloseTabInvoked;
+        public event OverTabChangedEvent OverTabChanged;
+        public event OverTabElapsedTimeEvent OverTabElapsedTime;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public TabItemCollection Items { get { return items; } set { items = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -88,6 +90,8 @@ namespace VampirioCode.UI.Controls
             controller.TabDetached +=               OnTabDetached;
             controller.TabItemTextChanged +=        OnTabItemTextChanged;
             controller.CloseTabInvoked +=           OnCloseTabInvoked;
+            controller.OverTabChanged +=            OnOverTabChanged;
+            controller.OverTabElapsedTime +=        OnOverTabElapsedTime;
 #if USE_AUTO_SHIFT_TIMERS
             controller.TimerRepaintNeeded +=        OnTimerRepaintNeeded;
 #endif
@@ -619,6 +623,18 @@ namespace VampirioCode.UI.Controls
         {
             if (CloseTabInvoked != null)
                 CloseTabInvoked(index, item);
+        }
+
+        private void OnOverTabChanged(int index, TabItem item)
+        {
+            if(OverTabChanged != null)
+                OverTabChanged(index, item);
+        }
+
+        private void OnOverTabElapsedTime(int index, TabItem item, int positionX)
+        {
+            if(OverTabElapsedTime != null)
+                OverTabElapsedTime(index, item, positionX);
         }
 
         protected override void OnMouseEnter(EventArgs e)

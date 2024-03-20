@@ -64,6 +64,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             state = State.Up;
         }
 
+        public bool IsOver()
+        { 
+            return (state == State.Over);
+        }
+
         public bool IsInside(int mx, int my)
         {
             return (mx >= X) && (mx < (X + Width)) && (my >= Y) && (my <= (Y + Height));

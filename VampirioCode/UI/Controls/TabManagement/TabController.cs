@@ -9,6 +9,8 @@
 #define AUTO_SHIFT_VERSION_B    // VERSION_A (ver_b commented): will compute more resources because it will use a numeri counter and a smallest timer. It could be easier to implement in other languages like C++
                                 // VERSION_B: will use less resources because it will have a longer initial interval timer and then it will be set to a smaller one. Maybe best for C#, just test it.
 
+#define USE_OVER_TAB_TIMERS     // USE_OVER_TAB_TIMERS: will trigger events when mouse hover from one tab to another and also if the user wait some time another event will be triggered called 'OverTabElapsedTime'
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -33,6 +35,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         public event TabDetachedEvent TabDetached;
         public event TabItemTextChangedEvent TabItemTextChanged;
         public event CloseTabInvokedEvent CloseTabInvoked;
+        public event OverTabChangedEvent OverTabChanged;
+        public event OverTabElapsedTimeEvent OverTabElapsedTime;
 
         public int Height { get { return height; } }
 
@@ -71,6 +75,7 @@ namespace VampirioCode.UI.Controls.TabManagement
         public bool AllowDragging { get; set; } = true;
         public bool AllowDetach { get; set; } = false;
         public int MinDetachThreshold { get; set; } = 20; // Amount of minimum pixels the user have to move on in order to activate the detach event
+        public int MinOverTabWait { get; set; } = 1000; // Minimum time to wait when user is over a tab to trigger the 'OverTabElapsedTime' event
         private Tab LastTab { get { if (tabs.Count == 0) return null; else return tabs[tabs.Count - 1]; } }
 
         #region AutoShiftProperties
@@ -102,6 +107,9 @@ namespace VampirioCode.UI.Controls.TabManagement
         // -----------------------------------------------
         #endregion
 
+
+        private System.Windows.Forms.Timer overTabTimer;
+        private Tab prevOverTab = null;
 
         // IMPORTANT: A global offset position used to shift all the tabs to the left or right
         //            This variable is used to calculate LocalToGlobal() and GlobalToLocal()
@@ -167,6 +175,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             timer.Interval = TimerStepsMillis;
 #endif
 #endif
+
+            overTabTimer =          new System.Windows.Forms.Timer();
+            overTabTimer.Tick +=    OnOverTabTick;
+            overTabTimer.Interval = MinOverTabWait;
+
         }
 
         #region BasicActions
@@ -416,6 +429,8 @@ namespace VampirioCode.UI.Controls.TabManagement
                 tab.OnMouseDown(mouseX, mouseY);
             }
 
+            CancelOverNewTab();
+
             // These are events triggered by internal subItems of the tabs or tabItems that can't be
             // triggered for example while looping on the foreach array because if you trigger a closeTab event
             // and the user delete the tab, the foreach loop will crash because that tab won't exist anymore
@@ -440,8 +455,10 @@ namespace VampirioCode.UI.Controls.TabManagement
                 {
                     tab.OnMouseMove(mouseX, mouseY, mouseDown);
                 }
-            }
 
+                if (!mouseDown)
+                    CheckOverNewTab();
+            }
         }
 
         // Triggered by the parent container when the mouse is up
@@ -452,6 +469,8 @@ namespace VampirioCode.UI.Controls.TabManagement
             mouseDown = false;
             foreach (Tab tab in tabs)
                 tab.OnMouseUp(mouseX, mouseY);
+
+            CancelOverNewTab();
         }
 
         // Triggered by the parent container when the mouse leaves
@@ -459,6 +478,8 @@ namespace VampirioCode.UI.Controls.TabManagement
         {
             foreach (Tab tab in tabs)
                 tab.OnMouseLeave();
+
+            CancelOverNewTab();
         }
 
         // Triggered by the parent container when the mouse scrolls
@@ -612,6 +633,66 @@ namespace VampirioCode.UI.Controls.TabManagement
 
                 //Remove(selectedTab.Item);
             }
+        }
+
+        // This is called every time the user hover on a tab and wait some time
+        private void OnOverTabTick(object? sender, EventArgs e)
+        {
+#if USE_OVER_TAB_TIMERS
+            overTabTimer.Stop();
+
+            if (OverTabElapsedTime != null)
+            {
+                if (prevOverTab != null)
+                {
+                    if (prevOverTab.Item.CloseButton.IsOver())
+                        CancelOverNewTab();
+                    else
+                        OverTabElapsedTime(prevOverTab.Index(), prevOverTab.Item, LocalToGlobal(prevOverTab.X));
+                }
+            }
+#endif
+        }
+
+        // This will trigger an event each time the user hover from one tab to another
+        // and also will work with 'OnOverTabTick' if the user wait some time another the same
+        // tab to trigger another different event
+        private void CheckOverNewTab()
+        {
+#if USE_OVER_TAB_TIMERS
+            foreach (Tab tab in tabs)
+            {
+                if (tab.IsOver())
+                {
+                    if (prevOverTab != tab)
+                    {
+                        prevOverTab = tab;
+
+                        if (OverTabChanged != null)
+                            OverTabChanged(tab.Index(), tab.Item);
+
+                        if (OverTabElapsedTime != null)
+                        {
+                            overTabTimer.Stop();
+                            overTabTimer.Start();
+                        }
+                    }
+                }
+            }
+#endif
+        }
+
+        // Used in conjunction with 'CheckOverNewTab' and 'OnOverTabTick'
+        private void CancelOverNewTab()
+        {
+#if USE_OVER_TAB_TIMERS
+            if (OverTabElapsedTime != null)
+                overTabTimer.Stop();
+
+            prevOverTab = null;
+            if (OverTabChanged != null)
+                OverTabChanged(-1, null);
+#endif
         }
         // --------------------------------------------------------
         #endregion

@@ -251,6 +251,11 @@ namespace VampirioCode.UI.Controls.TabManagement
             return (mx >= X) && (mx < (X + Width)) && (my >= Y) && (my <= (Y + Height));
         }
 
+        public bool IsOver()
+        {
+            return (state == State.Over);
+        }
+
         // Short and reduce text to enter inside width adding '...' at the end
         // e.g: converting [hello tab world] to
         //                 [hello ...]

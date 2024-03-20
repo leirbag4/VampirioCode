@@ -17,4 +17,6 @@ namespace VampirioCode.UI.Controls.TabManagement
     public delegate void TabDetachedEvent(int index, TabItem item, int offsetX);
     public delegate void TabItemTextChangedEvent(int index, TabItem item);
     public delegate void CloseTabInvokedEvent(int index, TabItem item);
+    public delegate void OverTabChangedEvent(int index, TabItem item);
+    public delegate void OverTabElapsedTimeEvent(int index, TabItem item, int positionX);
 }

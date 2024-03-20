@@ -51,6 +51,8 @@ namespace VampDocManager
 
         // controls
         private TabPanel tabPanel;
+        ToolTipAdv toolTipPath;
+
 
         // context menu
         private ContextMenuStrip contextMenu;
@@ -63,7 +65,8 @@ namespace VampDocManager
         {
             Color tabColor = CColor(139, 70, 166); // CColor(170, 60, 85);
 
-            tabPanel = new TabPanel();
+            tabPanel =      new TabPanel();
+            toolTipPath =   new ToolTipAdv();
 
             SetTheme(Theme.DarkMiddleRound);
 
@@ -71,13 +74,20 @@ namespace VampDocManager
             tabPanel.ControlAdded +=            OnDocumentTabAdded;
             tabPanel.SelectedTabChanged +=      OnSelectedIndexChanged;
             tabPanel.TabIndexPositionChanged += OnTabIndexPositionChanged;
+            tabPanel.OverTabElapsedTime +=      OnOverTabElapsedTime;
+            tabPanel.OverTabChanged +=          OnOverTabChanged;
             tabPanel.CloseTabInvoked +=         OnCloseButtonPressed;
             CreateContextItems();
 
             //tabControl.DragAndDrop = true;
             //tabControl.AllowDrop = true;
             this.Controls.Add(tabPanel);
+        }
 
+        private void OnOverTabChanged(int index, TabItem item)
+        {
+            if (item == null)
+                toolTipPath.Hide(this);
         }
 
         public void SetTheme(Theme theme)
@@ -184,6 +194,13 @@ namespace VampDocManager
         private void OnTabIndexPositionChanged(int oldIndex, int newIndex)
         {
             RefreshDocs();
+        }
+
+        private void OnOverTabElapsedTime(int index, TabItem item, int positionX)
+        {
+            DocumentTab doc = (DocumentTab)item;
+
+            toolTipPath.Show(doc.Document.FullFilePath, this, positionX < 0 ? 0 : positionX, tabPanel.TabBarHeight);
         }
 
         private void OnDocumentTabAdded(object? sender, ControlEventArgs e)
