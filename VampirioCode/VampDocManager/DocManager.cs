@@ -199,9 +199,15 @@ namespace VampDocManager
         private void OnOverTabElapsedTime(int index, TabItem item, int positionX)
         {
             DocumentTab doc = (DocumentTab)item;
+            string outPath;
+
+            if (doc.Document.IsTemporary)
+                outPath = doc.Document.FileName;
+            else
+                outPath = doc.Document.FullFilePath;
 
             toolTipPath.Hide(this);
-            toolTipPath.Show(doc.Document.FullFilePath, this, positionX < 0 ? 0 : positionX, tabPanel.TabBarHeight);
+            toolTipPath.Show(outPath, this, positionX < 0 ? 0 : positionX + 10, tabPanel.TabBarHeight);
         }
 
         private void OnDocumentTabAdded(object? sender, ControlEventArgs e)
