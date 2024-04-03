@@ -284,11 +284,12 @@ namespace VampirioCode
         {
             DocumentType docType = DocumentType.OTHER;
 
-            if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
-            else if (sender == cppToolStripMenuItem) docType = DocumentType.CPP;
-            else if (sender == jsToolStripMenuItem) docType = DocumentType.JS;
-            else if (sender == phpToolStripMenuItem) docType = DocumentType.PHP;
-            else if (sender == cmakeToolStripMenuItem) docType = DocumentType.TXT;
+                 if (sender == csharpToolStripMenuItem)     docType = DocumentType.CSHARP;
+            else if (sender == cppToolStripMenuItem)        docType = DocumentType.CPP;
+            else if (sender == jsToolStripMenuItem)         docType = DocumentType.JS;
+            else if (sender == javaToolStripMenuItem)       docType = DocumentType.JAVA;
+            else if (sender == phpToolStripMenuItem)        docType = DocumentType.PHP;
+            else if (sender == cmakeToolStripMenuItem)      docType = DocumentType.TXT;
 
             if (CurrDocument.DocType != docType)
             {
@@ -450,7 +451,7 @@ namespace VampirioCode
 
         private void SelectLanguage(DocumentType docType)
         {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, phpToolStripMenuItem, cmakeToolStripMenuItem };
+            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, cmakeToolStripMenuItem };
 
             foreach (var item in items)
             {
@@ -458,11 +459,12 @@ namespace VampirioCode
                     item.ForeColor = Color.Silver;
             }
 
-            if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.CPP) cppToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.JS) jsToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.PHP) phpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.TXT) cmakeToolStripMenuItem.ForeColor = Color.SlateBlue;
+                 if (docType == DocumentType.CSHARP)    csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
+            else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
+            else if (docType == DocumentType.JAVA)      javaToolStripMenuItem.ForeColor =   Color.SlateBlue;
+            else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
+            else if (docType == DocumentType.TXT)       cmakeToolStripMenuItem.ForeColor =  Color.SlateBlue;
 
             footer.DocType = docType;
         }

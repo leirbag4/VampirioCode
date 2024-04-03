@@ -15,6 +15,7 @@ namespace VampirioCode.Builder
         SimpleClangCpp,
         SimpleWasmCpp,
         SimpleJs,
+        SimpleJava,
         SimplePhp
     }
 }

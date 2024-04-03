@@ -22,6 +22,7 @@ namespace VampirioCode.UI
                 else if (value == DocumentType.CSHARP)  languageLabel.Text = "C#";
                 else if (value == DocumentType.CPP)     languageLabel.Text = "C++";
                 else if (value == DocumentType.JS)      languageLabel.Text = "JS";
+                else if (value == DocumentType.JAVA)    languageLabel.Text = "JAVA";
                 else if (value == DocumentType.PHP)     languageLabel.Text = "PHP";
                 else if (value == DocumentType.TXT)     languageLabel.Text = "TXT";
             } 

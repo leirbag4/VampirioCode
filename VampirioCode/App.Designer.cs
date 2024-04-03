@@ -52,6 +52,7 @@
             csharpToolStripMenuItem = new ToolStripMenuItem();
             cppToolStripMenuItem = new ToolStripMenuItem();
             jsToolStripMenuItem = new ToolStripMenuItem();
+            javaToolStripMenuItem = new ToolStripMenuItem();
             phpToolStripMenuItem = new ToolStripMenuItem();
             cmakeToolStripMenuItem = new ToolStripMenuItem();
             builderToolStripMenuItem = new ToolStripMenuItem();
@@ -248,7 +249,7 @@
             // 
             // languageToolStripMenuItem
             // 
-            languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, phpToolStripMenuItem, cmakeToolStripMenuItem });
+            languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, cmakeToolStripMenuItem });
             languageToolStripMenuItem.Name = "languageToolStripMenuItem";
             languageToolStripMenuItem.Size = new Size(88, 24);
             languageToolStripMenuItem.Text = "Language";
@@ -257,7 +258,7 @@
             // 
             csharpToolStripMenuItem.ForeColor = Color.Silver;
             csharpToolStripMenuItem.Name = "csharpToolStripMenuItem";
-            csharpToolStripMenuItem.Size = new Size(156, 26);
+            csharpToolStripMenuItem.Size = new Size(224, 26);
             csharpToolStripMenuItem.Text = "C#";
             csharpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -265,7 +266,7 @@
             // 
             cppToolStripMenuItem.ForeColor = Color.Silver;
             cppToolStripMenuItem.Name = "cppToolStripMenuItem";
-            cppToolStripMenuItem.Size = new Size(156, 26);
+            cppToolStripMenuItem.Size = new Size(224, 26);
             cppToolStripMenuItem.Text = "C++";
             cppToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -273,15 +274,23 @@
             // 
             jsToolStripMenuItem.ForeColor = Color.Silver;
             jsToolStripMenuItem.Name = "jsToolStripMenuItem";
-            jsToolStripMenuItem.Size = new Size(156, 26);
+            jsToolStripMenuItem.Size = new Size(224, 26);
             jsToolStripMenuItem.Text = "Javascript";
             jsToolStripMenuItem.Click += OnLanguagePressed;
+            // 
+            // javaToolStripMenuItem
+            // 
+            javaToolStripMenuItem.ForeColor = Color.Silver;
+            javaToolStripMenuItem.Name = "javaToolStripMenuItem";
+            javaToolStripMenuItem.Size = new Size(224, 26);
+            javaToolStripMenuItem.Text = "Java";
+            javaToolStripMenuItem.Click += OnLanguagePressed;
             // 
             // phpToolStripMenuItem
             // 
             phpToolStripMenuItem.ForeColor = Color.Silver;
             phpToolStripMenuItem.Name = "phpToolStripMenuItem";
-            phpToolStripMenuItem.Size = new Size(156, 26);
+            phpToolStripMenuItem.Size = new Size(224, 26);
             phpToolStripMenuItem.Text = "PHP";
             phpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -289,7 +298,7 @@
             // 
             cmakeToolStripMenuItem.ForeColor = Color.Silver;
             cmakeToolStripMenuItem.Name = "cmakeToolStripMenuItem";
-            cmakeToolStripMenuItem.Size = new Size(156, 26);
+            cmakeToolStripMenuItem.Size = new Size(224, 26);
             cmakeToolStripMenuItem.Text = "CMake";
             cmakeToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -310,7 +319,7 @@
             // 
             aboutToolStripMenuItem.ForeColor = Color.Silver;
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(224, 26);
+            aboutToolStripMenuItem.Size = new Size(133, 26);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += OnAboutPressed;
             // 
@@ -377,5 +386,6 @@
         private ToolStripMenuItem cmakeToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem javaToolStripMenuItem;
     }
 }
