@@ -51,7 +51,7 @@ namespace VampirioCode.Builder
         }
 
 
-        public async Task<BuildResult> _Build()
+        private async Task<BuildResult> _Build()
         {
             Prepare();
 

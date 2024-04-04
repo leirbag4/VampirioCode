@@ -46,6 +46,33 @@ namespace VampirioCode.Builder
             Directory.CreateDirectory(ProjectDir);
         }
 
+        protected string _quotes(string str)
+        {
+            return '"' + str + '"';
+        }
+
+        protected string _fixNameSpaces(string name)
+        {
+            return name.Replace(" ", "_");
+        }
+
+        //
+        // FIX the last bar that escapes a quote at the end.
+        // Input  -> "C:\tests\"  [BAD] to
+        // Output -> "C:\tests\\" [OK]
+        //
+        // If you don't fix it, this could happened:
+        //   -> [cmd.exe "C:\tests\" "app"]  will be see as
+        //      [cmd.exe "C:\tests\ "app" ]
+        //
+        protected string _fixLastEscapeBar(string str)
+        {
+            if (str.EndsWith("\\") && !str.EndsWith("\\\\"))
+                return (str + "\\");
+
+            return str;
+        }
+
         public virtual void Prepare()
         { }
 

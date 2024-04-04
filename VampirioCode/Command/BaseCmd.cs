@@ -169,6 +169,15 @@ namespace VampirioCode.Command
             }
         }
 
+        protected void SetIfExists(List<string> value)
+        {
+            if ((value != null) && (value.Count > 0))
+            {
+                foreach (string val in value)
+                    cmd += "\"" + val + "\" ";
+            }
+        }
+
         /*protected void SetIfExists(string argumentName, int? value)
         {
             if (value.HasValue)
