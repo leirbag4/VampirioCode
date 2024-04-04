@@ -21,6 +21,8 @@ namespace VampirioCode
         public DocumentTab CurrDocumentTab { get { return docManager.CurrDocumentTab; } }
         public VampirioEditor CurrEditor { get { return docManager.CurrDocumentTab.Editor; } }
 
+        public bool FullScreen { get { return this.FormBorderStyle == FormBorderStyle.None; } set { if (value) { SuspendLayout(); this.FormBorderStyle = FormBorderStyle.None; this.WindowState = FormWindowState.Maximized; ResumeLayout(); } else { SuspendLayout(); this.WindowState = FormWindowState.Normal; this.FormBorderStyle = FormBorderStyle.Sizable; ResumeLayout(); } } }
+
         private Dotnet dotnet;
 
         private Control screenLock;
@@ -50,19 +52,19 @@ namespace VampirioCode
             menuStrip.ForeColor = Color.Silver;
 
             // doc manager events
-            docManager.CurrDocumentTabChanged += OnCurrDocumentTabChanged;
-            docManager.EditorContextItemPressed += OnEditorContextItemPressed;
-            docManager.DocumentCreated += OnDocumentCreated;
-            docManager.DocumentRemoved += OnDocumentRemoved;
+            docManager.CurrDocumentTabChanged +=    OnCurrDocumentTabChanged;
+            docManager.EditorContextItemPressed +=  OnEditorContextItemPressed;
+            docManager.DocumentCreated +=           OnDocumentCreated;
+            docManager.DocumentRemoved +=           OnDocumentRemoved;
 
             // tool bar events
-            toolBar.StartPressed += OnStartPressed;
-            toolBar.ReloadPressed += OnReloadPressed;
+            toolBar.StartPressed +=     OnStartPressed;
+            toolBar.ReloadPressed +=    OnReloadPressed;
 
             // drag and drop
-            this.AllowDrop = true;
-            this.DragEnter += OnDragEnter;
-            this.DragDrop += OnDragDrop;
+            this.AllowDrop =    true;
+            this.DragEnter +=   OnDragEnter;
+            this.DragDrop +=    OnDragDrop;
 
 
             // open last documents
@@ -154,21 +156,22 @@ namespace VampirioCode
 
         private void RegisterCmdKeys()
         {
-            HotKeyManager.AddHotKey(New, Keys.Control | Keys.N);
-            HotKeyManager.AddHotKey(Open, Keys.Control | Keys.O);
-            HotKeyManager.AddHotKey(CloseDoc, Keys.Control | Keys.W);
-            HotKeyManager.AddHotKey(Find, Keys.Control | Keys.F);
-            HotKeyManager.AddHotKey(FindAndReplace, Keys.Control | Keys.H);
-            HotKeyManager.AddHotKey(Save, Keys.Control | Keys.S);
-            HotKeyManager.AddHotKey(GoTo, Keys.Control | Keys.G);
-            HotKeyManager.AddHotKey(Duplicate, Keys.Control | Keys.D);
-            HotKeyManager.AddHotKey(BuildAndRun, Keys.F5);
-            HotKeyManager.AddHotKey(Build, Keys.F6);
-            HotKeyManager.AddHotKey(Undo, Keys.Control | Keys.Z);
-            HotKeyManager.AddHotKey(Redo, Keys.Control | Keys.Shift | Keys.Z);
-            HotKeyManager.AddHotKey(SaveAs, Keys.Control | Keys.Shift | Keys.S);
-            HotKeyManager.AddHotKey(LineUp, Keys.Alt | Keys.Up);
-            HotKeyManager.AddHotKey(LineDown, Keys.Alt | Keys.Down);
+            HotKeyManager.AddHotKey(New,                Keys.Control | Keys.N);
+            HotKeyManager.AddHotKey(Open,               Keys.Control | Keys.O);
+            HotKeyManager.AddHotKey(CloseDoc,           Keys.Control | Keys.W);
+            HotKeyManager.AddHotKey(Find,               Keys.Control | Keys.F);
+            HotKeyManager.AddHotKey(FindAndReplace,     Keys.Control | Keys.H);
+            HotKeyManager.AddHotKey(Save,               Keys.Control | Keys.S);
+            HotKeyManager.AddHotKey(GoTo,               Keys.Control | Keys.G);
+            HotKeyManager.AddHotKey(Duplicate,          Keys.Control | Keys.D);
+            HotKeyManager.AddHotKey(BuildAndRun,        Keys.F5);
+            HotKeyManager.AddHotKey(Build,              Keys.F6);
+            HotKeyManager.AddHotKey(FullScreenToggle,   Keys.F11);
+            HotKeyManager.AddHotKey(Undo,               Keys.Control | Keys.Z);
+            HotKeyManager.AddHotKey(Redo,               Keys.Control | Keys.Shift | Keys.Z);
+            HotKeyManager.AddHotKey(SaveAs,             Keys.Control | Keys.Shift | Keys.S);
+            HotKeyManager.AddHotKey(LineUp,             Keys.Alt | Keys.Up);
+            HotKeyManager.AddHotKey(LineDown,           Keys.Alt | Keys.Down);
 
             //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
         }
@@ -234,13 +237,13 @@ namespace VampirioCode
         {
             string sel = (string)((ToolStripMenuItem)sender).Tag;
 
-            if (sel == "new") New();
-            else if (sel == "open") Open();
-            else if (sel == "save") Save();
-            else if (sel == "save_as") SaveAs();
-            else if (sel == "close") CloseDoc();
-            else if (sel == "close_all") CloseAll();
-            else if (sel == "exit") Exit();
+                 if (sel == "new")          New();
+            else if (sel == "open")         Open();
+            else if (sel == "save")         Save();
+            else if (sel == "save_as")      SaveAs();
+            else if (sel == "close")        CloseDoc();
+            else if (sel == "close_all")    CloseAll();
+            else if (sel == "exit")         Exit();
         }
 
         private void OnEditPressed(object sender, EventArgs e)
@@ -285,12 +288,12 @@ namespace VampirioCode
         {
             DocumentType docType = DocumentType.OTHER;
 
-            if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
-            else if (sender == cppToolStripMenuItem) docType = DocumentType.CPP;
-            else if (sender == jsToolStripMenuItem) docType = DocumentType.JS;
-            else if (sender == javaToolStripMenuItem) docType = DocumentType.JAVA;
-            else if (sender == phpToolStripMenuItem) docType = DocumentType.PHP;
-            else if (sender == cmakeToolStripMenuItem) docType = DocumentType.TXT;
+                 if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
+            else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
+            else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
+            else if (sender == javaToolStripMenuItem)   docType = DocumentType.JAVA;
+            else if (sender == phpToolStripMenuItem)    docType = DocumentType.PHP;
+            else if (sender == cmakeToolStripMenuItem)  docType = DocumentType.TXT;
 
             if (CurrDocument.DocType != docType)
             {
@@ -460,12 +463,12 @@ namespace VampirioCode
                     item.ForeColor = Color.Silver;
             }
 
-            if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.CPP) cppToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.JS) jsToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.JAVA) javaToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.PHP) phpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.TXT) cmakeToolStripMenuItem.ForeColor = Color.SlateBlue;
+                 if (docType == DocumentType.CSHARP)    csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
+            else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
+            else if (docType == DocumentType.JAVA)      javaToolStripMenuItem.ForeColor =   Color.SlateBlue;
+            else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
+            else if (docType == DocumentType.TXT)       cmakeToolStripMenuItem.ForeColor =  Color.SlateBlue;
 
             footer.DocType = docType;
         }
@@ -686,5 +689,11 @@ namespace VampirioCode
                 colorChanger.Show();
             }
         }
+
+        private void FullScreenToggle()
+        { 
+            FullScreen = !FullScreen;
+        }
+
     }
 }

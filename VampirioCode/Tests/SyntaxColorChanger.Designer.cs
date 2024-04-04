@@ -492,7 +492,7 @@
             Controls.Add(generateButton);
             Controls.Add(styleList);
             Name = "SyntaxColorChanger";
-            Text = "SyntaxColorChanger";
+            Text = "Syntax Color Changer";
             ((System.ComponentModel.ISupportInitialize)redSlider).EndInit();
             ((System.ComponentModel.ISupportInitialize)greenSlider).EndInit();
             ((System.ComponentModel.ISupportInitialize)blueSlider).EndInit();
