@@ -21,7 +21,7 @@ namespace VampirioCode
         public DocumentTab CurrDocumentTab { get { return docManager.CurrDocumentTab; } }
         public VampirioEditor CurrEditor { get { return docManager.CurrDocumentTab.Editor; } }
 
-        public bool FullScreen { get { return this.FormBorderStyle == FormBorderStyle.None; } set { if (value) { SuspendLayout(); this.FormBorderStyle = FormBorderStyle.None; this.WindowState = FormWindowState.Maximized; ResumeLayout(); } else { SuspendLayout(); this.WindowState = FormWindowState.Normal; this.FormBorderStyle = FormBorderStyle.Sizable; ResumeLayout(); } } }
+        public bool FullScreen { get { return this.FormBorderStyle == FormBorderStyle.None; } set { if (value) { if (this.WindowState == FormWindowState.Maximized) this.WindowState = FormWindowState.Normal; this.FormBorderStyle = FormBorderStyle.None; this.WindowState = FormWindowState.Maximized; ResumeLayout(); } else { SuspendLayout(); this.WindowState = FormWindowState.Normal; this.FormBorderStyle = FormBorderStyle.Sizable; ResumeLayout(); } } }
 
         private Dotnet dotnet;
 
