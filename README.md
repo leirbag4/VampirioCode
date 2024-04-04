@@ -1,5 +1,5 @@
 # Vampirio Code
-A versatile code editor that supports syntax highlighting and compilation on many well known languages like C#, C++, Javascript and PHP
+A versatile code editor that supports syntax highlighting and compilation on many well known languages like C#, C++, Javascript, JAVA and PHP
 
 ![reference image](_RES/logo_med_flat.png)
 
@@ -9,8 +9,9 @@ Its functionalities are:
 * Syntax highlighting
 * Already integrated to 'dotnet' and 'msvc' compilers
 * Tab manager
-* C#, C++, Javascript, PHP and CMake supported
+* C#, C++, Javascript, JAVA, PHP and CMake supported
 * MSVC, GNU g++, CLang and Emscripten compilers supported
+* Javac and Java supported
 * Node.js and Xampp supported 
 
 <br>
