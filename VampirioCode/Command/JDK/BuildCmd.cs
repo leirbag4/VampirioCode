@@ -158,7 +158,7 @@ namespace VampirioCode.Command.JDK
 
         protected override void OnErrorDataReceived(string data)
         {
-            PrintError("error: " + data);
+            //PrintError("error: " + data);
         }
 
         protected override void OnComplete(BaseResult result)
