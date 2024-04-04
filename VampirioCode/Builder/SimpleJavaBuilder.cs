@@ -60,6 +60,8 @@ namespace VampirioCode.Builder
         {
             Prepare();
 
+            XConsole.Println("Class Name found: " + className);
+
             // if '\temp_build' dir does not exist, just create it for the first time
             //if (!Directory.Exists(TempDir))
             //    Directory.CreateDirectory(TempDir);
