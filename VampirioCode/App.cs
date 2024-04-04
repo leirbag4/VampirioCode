@@ -8,6 +8,7 @@ using VampirioCode.Builder;
 using VampirioCode.Command;
 using VampirioCode.Command.Dotnet;
 using VampirioCode.SaveData;
+using VampirioCode.Tests;
 using VampirioCode.UI;
 using VampirioCode.UI.Style;
 using VampirioCode.Utils;
@@ -111,7 +112,7 @@ namespace VampirioCode
             }
 
             // resize splitter
-            if(Config.SplitterDistance != -1)
+            if (Config.SplitterDistance != -1)
                 splitContainer.SplitterDistance = Config.SplitterDistance;
 
             // restore last selected document
@@ -284,12 +285,12 @@ namespace VampirioCode
         {
             DocumentType docType = DocumentType.OTHER;
 
-                 if (sender == csharpToolStripMenuItem)     docType = DocumentType.CSHARP;
-            else if (sender == cppToolStripMenuItem)        docType = DocumentType.CPP;
-            else if (sender == jsToolStripMenuItem)         docType = DocumentType.JS;
-            else if (sender == javaToolStripMenuItem)       docType = DocumentType.JAVA;
-            else if (sender == phpToolStripMenuItem)        docType = DocumentType.PHP;
-            else if (sender == cmakeToolStripMenuItem)      docType = DocumentType.TXT;
+            if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
+            else if (sender == cppToolStripMenuItem) docType = DocumentType.CPP;
+            else if (sender == jsToolStripMenuItem) docType = DocumentType.JS;
+            else if (sender == javaToolStripMenuItem) docType = DocumentType.JAVA;
+            else if (sender == phpToolStripMenuItem) docType = DocumentType.PHP;
+            else if (sender == cmakeToolStripMenuItem) docType = DocumentType.TXT;
 
             if (CurrDocument.DocType != docType)
             {
@@ -459,12 +460,12 @@ namespace VampirioCode
                     item.ForeColor = Color.Silver;
             }
 
-                 if (docType == DocumentType.CSHARP)    csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
-            else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
-            else if (docType == DocumentType.JAVA)      javaToolStripMenuItem.ForeColor =   Color.SlateBlue;
-            else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
-            else if (docType == DocumentType.TXT)       cmakeToolStripMenuItem.ForeColor =  Color.SlateBlue;
+            if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.CPP) cppToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.JS) jsToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.JAVA) javaToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.PHP) phpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.TXT) cmakeToolStripMenuItem.ForeColor = Color.SlateBlue;
 
             footer.DocType = docType;
         }
@@ -674,6 +675,16 @@ namespace VampirioCode
         {
             AboutUI about = new AboutUI();
             about.ShowMe(this);
+        }
+
+        private void OnDebugPressed(object sender, EventArgs e)
+        {
+            if (sender == syntaxColorChangerToolStripMenuItem)
+            {
+                SyntaxColorChanger colorChanger = new SyntaxColorChanger();
+                colorChanger.Setup(CurrEditor, CurrDocumentTab.Document);
+                colorChanger.Show();
+            }
         }
     }
 }

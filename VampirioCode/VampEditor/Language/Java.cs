@@ -43,12 +43,12 @@ namespace VampEditor.Language
                 // Custom Style
                 Styles[Style.Cpp.Identifier].ForeColor =        CColor(215, 215, 215); // any other text
                 //Styles[Style.Cpp.Default].ForeColor =           Color.Red; //DO NOTHING??? BUG???
-                Styles[Style.Cpp.Comment].ForeColor =           CColor(140, 198, 45); // Green
-                Styles[Style.Cpp.CommentLine].ForeColor =       CColor(140, 198, 45);//CColor(87, 166, 74);  // Green
+                Styles[Style.Cpp.Comment].ForeColor =           CColor(81, 198, 45); // Green
+                Styles[Style.Cpp.CommentLine].ForeColor =       CColor(67, 198, 45);//CColor(87, 166, 74);  // Green
                 Styles[Style.Cpp.CommentLineDoc].ForeColor =    CColor(128, 128, 128); // Gray
-                Styles[Style.Cpp.Number].ForeColor =            CColor(166, 226, 46);
-                Styles[Style.Cpp.Word].ForeColor =              CColor(70, 70, 235);   // void public static        //CColor(170, 60, 85); //CColor(31, 144, 255);// CColor(57, 135, 214);
-                Styles[Style.Cpp.Word2].ForeColor =             CColor(61, 201, 106);     // System
+                Styles[Style.Cpp.Number].ForeColor =            CColor(184, 121, 214);
+                Styles[Style.Cpp.Word].ForeColor =              CColor(115, 70, 235);   // void public static        //CColor(170, 60, 85); //CColor(31, 144, 255);// CColor(57, 135, 214);
+                Styles[Style.Cpp.Word2].ForeColor =             CColor(0, 255, 186);     // System
                 Styles[Style.Cpp.String].ForeColor =            CColor(50, 178, 145);
                 Styles[Style.Cpp.StringEol].ForeColor =         CColor(60, 178, 135);   // string with no closed quotation marks -> ["start string]
                 Styles[Style.Cpp.Character].ForeColor =         CColor(60, 198, 135);
@@ -56,7 +56,7 @@ namespace VampEditor.Language
                 Styles[Style.Cpp.Operator].ForeColor =          CColor(170, 170, 200);  // - + = ( )
                 Styles[Style.Cpp.Preprocessor].ForeColor =      Color.Maroon;
 
-                Styles[19].ForeColor =                          CColor(170, 130, 200);   // if else do while for
+                Styles[19].ForeColor =                          CColor(229, 0, 98);   // if else do while for
 
                 SetInactivePreprocessor(CColor(100, 100, 100));
 

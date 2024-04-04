@@ -58,6 +58,8 @@
             builderToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
+            debugToolStripMenuItem = new ToolStripMenuItem();
+            syntaxColorChangerToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
@@ -119,7 +121,7 @@
             menuStrip.AutoSize = false;
             menuStrip.Dock = DockStyle.None;
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, languageToolStripMenuItem, builderToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, languageToolStripMenuItem, builderToolStripMenuItem, helpToolStripMenuItem, debugToolStripMenuItem });
             menuStrip.Location = new Point(4, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(792, 28);
@@ -319,9 +321,24 @@
             // 
             aboutToolStripMenuItem.ForeColor = Color.Silver;
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(133, 26);
+            aboutToolStripMenuItem.Size = new Size(224, 26);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += OnAboutPressed;
+            // 
+            // debugToolStripMenuItem
+            // 
+            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem });
+            debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            debugToolStripMenuItem.Size = new Size(68, 24);
+            debugToolStripMenuItem.Text = "Debug";
+            // 
+            // syntaxColorChangerToolStripMenuItem
+            // 
+            syntaxColorChangerToolStripMenuItem.ForeColor = Color.Silver;
+            syntaxColorChangerToolStripMenuItem.Name = "syntaxColorChangerToolStripMenuItem";
+            syntaxColorChangerToolStripMenuItem.Size = new Size(234, 26);
+            syntaxColorChangerToolStripMenuItem.Text = "Syntax Color Changer";
+            syntaxColorChangerToolStripMenuItem.Click += OnDebugPressed;
             // 
             // toolBar
             // 
@@ -387,5 +404,7 @@
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem javaToolStripMenuItem;
+        private ToolStripMenuItem debugToolStripMenuItem;
+        private ToolStripMenuItem syntaxColorChangerToolStripMenuItem;
     }
 }
