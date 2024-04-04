@@ -30,7 +30,6 @@
         {
             styleList = new UI.Controls.VerticalItemListAdv();
             generateButton = new UI.Controls.ButtonAdv();
-            labelAdv4 = new UI.Controls.LabelAdv();
             versionLabel = new UI.Controls.LabelAdv();
             redInput = new UI.Controls.IntTextBox();
             labelAdv1 = new UI.Controls.LabelAdv();
@@ -50,6 +49,7 @@
             generateAllCKBox = new CheckBox();
             buttonAdv3 = new UI.Controls.ButtonAdv();
             buttonAdv4 = new UI.Controls.ButtonAdv();
+            docTypeLabel = new UI.Controls.LabelAdv();
             ((System.ComponentModel.ISupportInitialize)redSlider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)greenSlider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)blueSlider).BeginInit();
@@ -61,11 +61,11 @@
             styleList.BackColor = Color.FromArgb(54, 54, 54);
             styleList.ItemHeight = 35;
             styleList.ItemHeightType = UI.Controls.VerticalItemList.HeightType.FIXED_SIZE;
-            styleList.Location = new Point(29, 59);
+            styleList.Location = new Point(29, 22);
             styleList.Name = "styleList";
             styleList.SelectedIndex = -1;
             styleList.SelectionEnable = true;
-            styleList.Size = new Size(180, 338);
+            styleList.Size = new Size(180, 375);
             styleList.TabIndex = 0;
             // 
             // generateButton
@@ -96,24 +96,6 @@
             generateButton.UseVisualStyleBackColor = false;
             generateButton.Click += OnGeneratePressed;
             // 
-            // labelAdv4
-            // 
-            labelAdv4.AutoSize = true;
-            labelAdv4.BorderColor = Color.DarkGray;
-            labelAdv4.BorderSize = 1;
-            labelAdv4.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
-            labelAdv4.ForeColor = Color.FromArgb(150, 150, 150);
-            labelAdv4.Location = new Point(240, 28);
-            labelAdv4.ModifyClampMax = 0F;
-            labelAdv4.ModifyClampMin = 0F;
-            labelAdv4.ModifyControlName = "";
-            labelAdv4.ModifyScale = 1F;
-            labelAdv4.Name = "labelAdv4";
-            labelAdv4.Size = new Size(146, 20);
-            labelAdv4.TabIndex = 9;
-            labelAdv4.Text = "Current colored style";
-            labelAdv4.TextAlign = ContentAlignment.TopCenter;
-            // 
             // versionLabel
             // 
             versionLabel.AutoSize = true;
@@ -122,7 +104,7 @@
             versionLabel.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             versionLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             versionLabel.ForeColor = Color.FromArgb(130, 130, 130);
-            versionLabel.Location = new Point(492, 28);
+            versionLabel.Location = new Point(485, 28);
             versionLabel.ModifyClampMax = 0F;
             versionLabel.ModifyClampMin = 0F;
             versionLabel.ModifyControlName = "";
@@ -465,11 +447,29 @@
             buttonAdv4.UseVisualStyleBackColor = false;
             buttonAdv4.Click += OnPasteColorPressed;
             // 
+            // docTypeLabel
+            // 
+            docTypeLabel.BorderColor = Color.DarkGray;
+            docTypeLabel.BorderSize = 1;
+            docTypeLabel.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            docTypeLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            docTypeLabel.ForeColor = Color.FromArgb(170, 170, 210);
+            docTypeLabel.Location = new Point(240, 28);
+            docTypeLabel.ModifyClampMax = 0F;
+            docTypeLabel.ModifyClampMin = 0F;
+            docTypeLabel.ModifyControlName = "";
+            docTypeLabel.ModifyScale = 1F;
+            docTypeLabel.Name = "docTypeLabel";
+            docTypeLabel.Size = new Size(150, 26);
+            docTypeLabel.TabIndex = 29;
+            docTypeLabel.Text = "Document: java";
+            // 
             // SyntaxColorChanger
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(806, 425);
+            ClientSize = new Size(806, 417);
+            Controls.Add(docTypeLabel);
             Controls.Add(buttonAdv4);
             Controls.Add(buttonAdv3);
             Controls.Add(generateAllCKBox);
@@ -488,7 +488,6 @@
             Controls.Add(greenInput);
             Controls.Add(labelAdv1);
             Controls.Add(redInput);
-            Controls.Add(labelAdv4);
             Controls.Add(versionLabel);
             Controls.Add(generateButton);
             Controls.Add(styleList);
@@ -525,5 +524,6 @@
         private CheckBox generateAllCKBox;
         private UI.Controls.ButtonAdv buttonAdv3;
         private UI.Controls.ButtonAdv buttonAdv4;
+        private UI.Controls.LabelAdv docTypeLabel;
     }
 }

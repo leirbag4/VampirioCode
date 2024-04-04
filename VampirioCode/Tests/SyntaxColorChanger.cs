@@ -57,6 +57,8 @@ namespace VampirioCode.Tests
 
             DocumentType docType = document.DocType;
 
+            docTypeLabel.Text = "Document: " + docType;
+
             //assembly = Assembly.LoadFrom("Scintilla.NET.dll");
             assembly = Assembly.Load("Scintilla.NET, Culture=neutral, PublicKeyToken=null");
 
