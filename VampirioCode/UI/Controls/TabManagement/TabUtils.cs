@@ -8,6 +8,14 @@ namespace VampirioCode.UI.Controls.TabManagement
 {
     public class TabUtils
     {
+        private static String BmpHash(string subId, int width, int height, Color color)
+        { 
+            return $"{subId}{width}{height}{color.R}{color.G}{color.B}";
+        }
+
+
+        private static Dictionary<String, Bitmap> cachedBitmaps = new Dictionary<String, Bitmap>();
+
         public static Bitmap CreateX(int width, int height, Color color)
         {
             Bitmap bitmap = new Bitmap(width, height);
@@ -21,13 +29,21 @@ namespace VampirioCode.UI.Controls.TabManagement
                 g.DrawLine(pen, width - 1, 0, 0, height - 1);
             }
 
-            
-
             return bitmap;
         }
 
-        public static Bitmap CreateLeftArrow(int arrowWidth, int arrowHeight, Color color)
+        public static Bitmap CreateLeftArrow(int arrowWidth, int arrowHeight, Color color, bool cached = true)
         {
+            string hash = "";
+
+            if (cached)
+            {
+                hash = BmpHash("larr", arrowWidth, arrowHeight, color);
+
+                if(cachedBitmaps.ContainsKey(hash))
+                    return cachedBitmaps[hash];
+            }
+
             // Create bitmaps for arrows
             Bitmap arrow =   new Bitmap(arrowWidth, arrowHeight);
             
@@ -45,11 +61,24 @@ namespace VampirioCode.UI.Controls.TabManagement
                 g.FillPolygon(brush, bmp);
             }
 
+            if(cached)
+                cachedBitmaps.Add(hash, arrow);
+
             return arrow;
         }
 
-        public static Bitmap CreateRightArrow(int arrowWidth, int arrowHeight, Color color)
+        public static Bitmap CreateRightArrow(int arrowWidth, int arrowHeight, Color color, bool cached = true)
         {
+            string hash = "";
+
+            if (cached)
+            {
+                hash = BmpHash("rarr", arrowWidth, arrowHeight, color);
+
+                if(cachedBitmaps.ContainsKey(hash))
+                    return cachedBitmaps[hash];
+            }
+
             // Create bitmaps for arrows
             Bitmap arrow =   new Bitmap(arrowWidth, arrowHeight);
             
@@ -66,6 +95,9 @@ namespace VampirioCode.UI.Controls.TabManagement
                 };
                 g.FillPolygon(brush, rightArrowPoints);
             }
+
+            if (cached)
+                cachedBitmaps.Add(hash, arrow);
 
             return arrow;
         }
