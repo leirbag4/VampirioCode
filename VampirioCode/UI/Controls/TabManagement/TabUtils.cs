@@ -38,9 +38,9 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (cached)
             {
-                hash = BmpHash("larr", arrowWidth, arrowHeight, color);
+                hash = BmpHash("<-", arrowWidth, arrowHeight, color);
 
-                if(cachedBitmaps.ContainsKey(hash))
+                if (cachedBitmaps.ContainsKey(hash))
                     return cachedBitmaps[hash];
             }
 
@@ -73,7 +73,7 @@ namespace VampirioCode.UI.Controls.TabManagement
 
             if (cached)
             {
-                hash = BmpHash("rarr", arrowWidth, arrowHeight, color);
+                hash = BmpHash("->", arrowWidth, arrowHeight, color);
 
                 if(cachedBitmaps.ContainsKey(hash))
                     return cachedBitmaps[hash];

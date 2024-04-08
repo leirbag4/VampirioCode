@@ -68,9 +68,9 @@ namespace VampirioCode.UI.Controls
 
 
         public int ArrowButtonBorderSize { get { return leftArrowButton.BorderSize; } set { leftArrowButton.BorderSize = value; rightArrowButton.BorderSize = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public Color ArrowButtonBackColor { get { return leftArrowButton.BackColor; } set { leftArrowButton.BackColor = value; rightArrowButton.BackColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public Color ArrowButtonBorderColor { get { return leftArrowButton.BorderColor; } set { leftArrowButton.BorderColor = value; rightArrowButton.BorderColor = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public Color ArrowColor { get { return arrowColor; } set { arrowColor = value; CreateArrows(7, 14); } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabArrowButtonStyle ArrowButtonNormalStyle { get{ return leftArrowButton.UpStyle; } set { leftArrowButton.UpStyle = value; rightArrowButton.UpStyle = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabArrowButtonStyle ArrowButtonOverStyle { get{ return leftArrowButton.OverStyle; } set { leftArrowButton.OverStyle = value; rightArrowButton.OverStyle = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
+        public TabArrowButtonStyle ArrowButtonDownStyle { get{ return leftArrowButton.DownStyle; } set { leftArrowButton.DownStyle = value; rightArrowButton.DownStyle = value; } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public bool SplitBarVisible { get { return splitBar.Visible; } set { splitBar.Visible = value; ResizeLayout(); } }[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public int SplitBarSize { get { return splitBar.Height; } set { splitBar.Height = value; ResizeLayout(); } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public Color SplitBarColor { get { return splitBar.BackColor; } set { splitBar.BackColor = value; } } [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -84,11 +84,9 @@ namespace VampirioCode.UI.Controls
         private Control container;
         
         // arrows
-        private ButtonAdv leftArrowButton;
-        private ButtonAdv rightArrowButton;
+        private TabArrowButton leftArrowButton;
+        private TabArrowButton rightArrowButton;
         private int arrowButtonWidth = 20;
-        private Bitmap leftArrowBitmap;
-        private Bitmap rightArrowBitmap;
         private System.Windows.Forms.Timer arrowTimer;
         private bool arrowTimerDirection = false;
         private Color arrowColor = Color.FromArgb(20, 20, 20);
@@ -109,16 +107,8 @@ namespace VampirioCode.UI.Controls
             controller =        tabBar.GetController();
 
             // Arrow Buttons
-            leftArrowButton =               new ButtonAdv();
-            rightArrowButton =              new ButtonAdv();
-            leftArrowButton.CStyle =        ButtonAdv.CustomStyle.SOLID;
-            rightArrowButton.CStyle =       ButtonAdv.CustomStyle.SOLID;
-            leftArrowButton.BorderSize =    2;
-            rightArrowButton.BorderSize =   2;
-            leftArrowButton.BackColor =     Color.FromArgb(40, 40, 40);
-            rightArrowButton.BackColor =    Color.FromArgb(40, 40, 40);
-            leftArrowButton.BorderColor =   Color.FromArgb(25, 25, 25);
-            rightArrowButton.BorderColor =  Color.FromArgb(25, 25, 25);
+            leftArrowButton =               new TabArrowButton(TabArrowButton.ArrowDirection.Left);
+            rightArrowButton =              new TabArrowButton(TabArrowButton.ArrowDirection.Right);
             leftArrowButton.Width =         arrowButtonWidth;
             rightArrowButton.Width =        arrowButtonWidth;
             leftArrowButton.Location =      new Point(Width - TotalArrowButtonsWidth, 0);
@@ -127,7 +117,6 @@ namespace VampirioCode.UI.Controls
             rightArrowButton.Anchor =       AnchorStyles.Right | AnchorStyles.Top;
             leftArrowButton.Visible =       false;
             rightArrowButton.Visible =      false;
-            CreateArrows(7, 14);
 
             // Container
             container = new Control();
@@ -315,15 +304,6 @@ namespace VampirioCode.UI.Controls
                 leftArrowButton.Visible =   false;
                 rightArrowButton.Visible =  false;
             }
-        }
-
-        private void CreateArrows(int arrowWidth, int arrowHeight)
-        {
-            // Create bitmaps for arrows
-            leftArrowBitmap =           TabUtils.CreateLeftArrow(arrowWidth, arrowHeight, arrowColor);
-            rightArrowBitmap =          TabUtils.CreateRightArrow(arrowWidth, arrowHeight, arrowColor);
-            leftArrowButton.Image =     leftArrowBitmap;
-            rightArrowButton.Image =    rightArrowBitmap;
         }
 
         private void ResizeLayout()

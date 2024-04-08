@@ -96,10 +96,10 @@ namespace VampDocManager
             // DarkRect
             //
             if (theme == Theme.DarkRect)
-            { 
+            {
                 tabPanel.TabBarHeight = 28;
-                tabPanel.Dock =                   DockStyle.Fill;
-                tabPanel.BackColor =              Color.FromArgb(30, 30, 30);
+                tabPanel.Dock =                         DockStyle.Fill;
+                tabPanel.BackColor =                    Color.FromArgb(30, 30, 30);
 
 
                 tabPanel.SetSkin(TabSkin.DarkRectWClose);
@@ -123,6 +123,10 @@ namespace VampDocManager
                 tabPanel.SubButtonsParentOverStyle.BackColor =    CColor(44, 45, 39);
 
                 tabPanel.TabBorderSize = 1;
+
+                tabPanel.ArrowButtonNormalStyle =   new TabArrowButtonStyle(CColor(40), CColor(30), CColor(60));
+                tabPanel.ArrowButtonOverStyle =     new TabArrowButtonStyle(CColor(45), CColor(35), CColor(65));
+                tabPanel.ArrowButtonDownStyle =     new TabArrowButtonStyle(CColor(50), CColor(40), CColor(70));
 
                 tabPanel.SplitBarColor =      Color.FromArgb(139, 70, 166);
                 tabPanel.SplitBarSize =       2;
@@ -161,6 +165,10 @@ namespace VampDocManager
                 tabPanel.SubButtonsParentOverStyle.BackColor =    CColor(44, 45, 39);
 
                 tabPanel.TabBorderSize = 1;
+
+                tabPanel.ArrowButtonNormalStyle =   new TabArrowButtonStyle(CColor(40), CColor(30), CColor(60));
+                tabPanel.ArrowButtonOverStyle =     new TabArrowButtonStyle(CColor(45), CColor(35), CColor(65));
+                tabPanel.ArrowButtonDownStyle =     new TabArrowButtonStyle(CColor(50), CColor(40), CColor(70));
 
                 tabPanel.SplitBarColor =      Color.FromArgb(139, 70, 166);
                 tabPanel.SplitBarSize =       2;
@@ -236,9 +244,9 @@ namespace VampDocManager
             return Color.FromArgb(red, green, blue);
         }
 
-        private static Color CColor(int all)
+        private static Color CColor(int rgb)
         {
-            return Color.FromArgb(all, all, all);
+            return Color.FromArgb(rgb, rgb, rgb);
         }
 
         private void CreateContextItems()

@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace VampirioCode.UI.Controls.TabManagement
 {
-    public class TabStyle
+    public class TabArrowButtonStyle
     {
         public Color BackColor;
-        public Color TextColor;
         public Color BorderColor;
+        public Color ArrowColor;
 
-        public TabStyle(Color backColor,  Color textColor, Color borderColor)
-        { 
+        public TabArrowButtonStyle(Color backColor, Color borderColor, Color arrowColor)
+        {
             this.BackColor =    backColor;
-            this.TextColor =    textColor;
             this.BorderColor =  borderColor;
+            this.ArrowColor =   arrowColor;
         }
     }
 }
