@@ -19,8 +19,12 @@ namespace VampDocManager
     {
 
         public delegate void ContextItemPressedEvent(EditorEventType eventType, Document document);
+        public delegate void TextChangedEvent(Document document);
+        public delegate void ModifiedChangedEvent(Document document);
 
         public event ContextItemPressedEvent ContextItemPressed;
+        public event TextChangedEvent TextChanged;
+        public event ModifiedChangedEvent ModifiedChanged;
 
         //public string Text { get { return _editor.Text; } set { _editor.Text = value; } }
         public string Text { get { return ""; } set { } } // remove title behaviour
@@ -107,11 +111,17 @@ namespace VampDocManager
         {
             Document.Modified = true;
             Document.Text = Editor.Text;
+
+            if (TextChanged != null)
+                TextChanged(Document);
         }
 
         private void OnModified()
         {
             SetTitle(Document.FileName);
+
+            if (ModifiedChanged != null)
+                ModifiedChanged(Document);
         }
 
         private void OnSaved()

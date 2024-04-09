@@ -36,11 +36,15 @@ namespace VampDocManager
         public delegate void DocumentRemovedEvent(Document document, DocumentTab documentTab, CloseMode mode);
         public delegate void CurrDocumentTabChangedEvent(int index, Document doc);
         public delegate void EditorContextItemPressedEvent(EditorEventType eventType, Document document);
+        public delegate void CurrDocumentTextChangedEvent(Document doc);
+        public delegate void CurrDocumentModifiedChangedEvent(Document doc);
 
         public event DocumentCreatedEvent DocumentCreated;
         public event DocumentRemovedEvent DocumentRemoved;
         public event CurrDocumentTabChangedEvent CurrDocumentTabChanged;
         public event EditorContextItemPressedEvent EditorContextItemPressed;
+        public event CurrDocumentTextChangedEvent CurrDocumentTextChanged;
+        public event CurrDocumentModifiedChangedEvent CurrDocumentModifiedChanged;
 
         public DocumentTab CurrDocumentTab { get { return (DocumentTab)tabPanel.SelectedTab; } }
         public Document CurrDocument { get { return CurrDocumentTab.Document; } }
@@ -53,6 +57,8 @@ namespace VampDocManager
         private TabPanel tabPanel;
         ToolTipAdv toolTipPath;
 
+        // others
+        DocumentTab prevDocumentTab = null;
 
         // context menu
         private ContextMenuStrip contextMenu;
@@ -194,9 +200,35 @@ namespace VampDocManager
                 if (CurrDocumentTabChanged != null)
                     CurrDocumentTabChanged(CurrIndex, CurrDocument);
 
+
+                // Remove events from previous tab       (not left tab)
+                if (prevDocumentTab != null)
+                {
+                    prevDocumentTab.TextChanged -=      OnCurrDocumentTextChanged;
+                    prevDocumentTab.ModifiedChanged -=  OnCurrDocumentModifiedChanged;
+                }
+
+                // Add this events only for current document
+                CurrDocumentTab.TextChanged +=      OnCurrDocumentTextChanged;
+                CurrDocumentTab.ModifiedChanged +=  OnCurrDocumentModifiedChanged;
+
+                prevDocumentTab = CurrDocumentTab;
+
                 // Focus to the editor to gain user control
                 CurrDocumentTab.Editor.Focus();
             }
+        }
+
+        private void OnCurrDocumentTextChanged(Document document)
+        {
+            if (CurrDocumentTextChanged != null)
+                CurrDocumentTextChanged(document);
+        }
+
+        private void OnCurrDocumentModifiedChanged(Document document)
+        {
+            if (CurrDocumentModifiedChanged != null)
+                CurrDocumentModifiedChanged(document);
         }
 
         private void OnTabIndexPositionChanged(int oldIndex, int newIndex)

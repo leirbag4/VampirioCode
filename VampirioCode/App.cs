@@ -52,10 +52,12 @@ namespace VampirioCode
             menuStrip.ForeColor = Color.Silver;
 
             // doc manager events
-            docManager.CurrDocumentTabChanged +=    OnCurrDocumentTabChanged;
-            docManager.EditorContextItemPressed +=  OnEditorContextItemPressed;
-            docManager.DocumentCreated +=           OnDocumentCreated;
-            docManager.DocumentRemoved +=           OnDocumentRemoved;
+            docManager.CurrDocumentTabChanged +=        OnCurrDocumentTabChanged;
+            docManager.CurrDocumentTextChanged +=       OnCurrDocumentTextChanged;
+            docManager.CurrDocumentModifiedChanged +=   OnCurrDocumentModifiedChanged;
+            docManager.EditorContextItemPressed +=      OnEditorContextItemPressed;
+            docManager.DocumentCreated +=               OnDocumentCreated;
+            docManager.DocumentRemoved +=               OnDocumentRemoved;
 
             // tool bar events
             toolBar.StartPressed +=     OnStartPressed;
@@ -405,7 +407,24 @@ namespace VampirioCode
             else
                 title += doc.FullFilePath;
 
+            if (doc.Modified)
+                title += " *";
+
             this.Text = title;
+        }
+
+        private void SetTitleState(Document doc)
+        {
+            if (doc.Modified)
+            {
+                if ((this.Text.Length > 0) && (this.Text[this.Text.Length - 1] != '*'))
+                    this.Text += " *";
+            }
+            else
+            {
+                if ((this.Text.Length > 0) && (this.Text[this.Text.Length - 1] == '*'))
+                    this.Text = this.Text.Substring(0, this.Text.Length - 2);
+            }
         }
 
         private void FilesStructInit()
@@ -516,6 +535,16 @@ namespace VampirioCode
                 SelectBuilder(doc.DocType, doc.BuilderType);
                 SetTitle(doc);
             }
+        }
+
+        private void OnCurrDocumentTextChanged(Document doc)
+        {
+            //SetTitleState(doc);
+        }
+
+        private void OnCurrDocumentModifiedChanged(Document doc)
+        {
+            SetTitleState(doc);
         }
 
         private void OnDocumentCreated(Document document, DocumentTab documentTab, CreateMode mode)
