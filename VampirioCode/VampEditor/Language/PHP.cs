@@ -39,6 +39,7 @@ namespace VampEditor.Language
 
         public static string PHP_FUNCTIONS =        PHP_FUNCTIONS_MYSQL + PHP_FUNCTIONS_ARRAY + PHP_FUNCTIONS_CALENDAR + PHP_FUNCTIONS_DATE + PHP_FUNCTIONS_DIRECTORY + PHP_FUNCTIONS_ERROR + PHP_FUNCTIONS_FILESYSTEM + PHP_FUNCTIONS_FILTER + PHP_FUNCTIONS_FTP + PHP_FUNCTIONS_JSON + PHP_FUNCTIONS_LIBXML + PHP_FUNCTIONS_MAIL + PHP_FUNCTIONS_MATH + PHP_FUNCTIONS_MISC + PHP_FUNCTIONS_MYSQLI + PHP_FUNCTIONS_NETWORK + PHP_FUNCTIONS_OUTPUT_CONTROL + PHP_FUNCTIONS_REGEX + PHP_FUNCTIONS_SIMPLE_XML + PHP_FUNCTIONS_STRING + PHP_FUNCTIONS_VARIABLE_HANDLING + PHP_FUNCTIONS_XML_PARSER + PHP_FUNCTIONS_ZIP;
         //public static string PHP_COMMON_CLASSES =   "String Filesystem ArrayObject PDO mysqli SessionHandler DateTime SimpleXMLElement JSON ReflectionClass ReflectionMethod ReflectionFunction ReflectionParameter Exception Error SplFileObject SplFileInfo DirectoryIterator DateTimeZone DateInterval DatePeriod SimpleXMLIterator RecursiveIteratorIterator RecursiveArrayIterator ArrayIterator RegexIterator FilterIterator CallbackFilterIterator CachingIterator LimitIterator RecursiveDirectoryIterator PDOStatement PDOException PDOStatement SQLite3 SQLite3Stmt SQLite3Result SQLite3Exception SimpleXMLElement SoapClient SoapFault SoapHeader SoapParam SoapServer";
+        public static string PHP_DATA_TYPES =       "string float int bool void iterable ";
         public static string PHP_LANG_KEYWORDS =    "abstract and array as break callable case catch class clone const continue declare default do echo else elseif empty enddeclare endfor endforeach endif endswitch endwhile extends final finally for foreach function global goto if implements include include_once instanceof insteadof interface isset list namespace new or print private protected public require require_once return static switch throw trait try unset use var while xor yield ";
 
 
@@ -92,7 +93,7 @@ namespace VampEditor.Language
                     classes += PHP_EXTRA_CLASSES[a] + " ";
 
 
-                editor.SetKeywords(4, PHP_LANG_KEYWORDS + PHP_FUNCTIONS);
+                editor.SetKeywords(4, PHP_LANG_KEYWORDS + PHP_DATA_TYPES + PHP_FUNCTIONS);
 
                 //
                 // BUG: index 0 doesn't WORK!!!!!
