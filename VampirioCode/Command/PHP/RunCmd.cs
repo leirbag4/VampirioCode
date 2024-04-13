@@ -31,7 +31,7 @@ namespace VampirioCode.Command.PHP
 
         protected override void OnComplete(BaseResult result)
         {
-            Println("[complete]");
+            //Println("[complete]");
         }
 
     }
