@@ -25,7 +25,8 @@ namespace VampirioCode.Command.PHP
 
         protected override void OnErrorDataReceived(string data)
         {
-            PrintError("Error: " + data);
+            if (data.IndexOf("Unable to load dynamic library") == -1)
+                PrintError("Error: " + data);
         }
 
         protected override void OnComplete(BaseResult result)

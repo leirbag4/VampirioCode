@@ -9,7 +9,8 @@ namespace VampirioCode.Command.PHP
 {
     public class PHP : BaseCmdProgram
     {
-        public static string ProgramPath = @"C:\programs_dev\xampp\php\php.exe";
+        //public static string ProgramPath = @"C:\programs_dev\xampp_7.2.22\php\php.exe";
+        public static string ProgramPath = @"C:\programs_dev\php-v8.1.3_usbwebserver\php\php.exe";
 
         /// <summary>
         /// Run the script file '.php'
