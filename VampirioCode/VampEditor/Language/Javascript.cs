@@ -10,7 +10,7 @@ namespace VampEditor.Language
     public class Javascript : LanguageBase
     {
         private const String JS_VALUE_PROPERTIES =              "Infinity NaN undefined null ";
-        private const String JS_FUNCTION_PROPERTIES =           "eval uneval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent encodeURI encodeURIComponent ";
+        private const String JS_FUNCTION_PROPERTIES =           "btoa atob eval uneval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent encodeURI encodeURIComponent ";
         private const String JS_FUNDAMENTAL_OBJECTS =           "Object Function Boolean Symbol EvalError InternalError ReferenceError SyntaxError TypeError URIError ";
         private const String JS_NUMBER_AND_DATES =              "Number Math Date ";
         private const String JS_COMMON_TEXT_PROCESSING =        "String RegExp ";
@@ -20,7 +20,7 @@ namespace VampEditor.Language
         private const String JS_CONTROL_ABSTRACTION_OBJECTS =   "Promise Generator GeneratorFunction ";
         private const String JS_REFLECTION =                    "Reflect Proxy ";
         private const String JS_INTERNATIONALIZATION =          "Intl Intl.Collator Intl.DateTimeFormat Intl.NumberFormat ";
-        private const String JS_OTHERS =                        "arguments";
+        private const String JS_OTHERS =                        "console arguments alert";
         private static String JS_COMMON_CLASSES =               JS_VALUE_PROPERTIES + JS_FUNCTION_PROPERTIES + JS_FUNDAMENTAL_OBJECTS + JS_NUMBER_AND_DATES + JS_COMMON_TEXT_PROCESSING + JS_INDEXED_COLLECTIONS + JS_KEYED_COLLECTIONS + JS_STRUCTURED_DATA + JS_CONTROL_ABSTRACTION_OBJECTS + JS_REFLECTION + JS_INTERNATIONALIZATION + JS_OTHERS;
         private static String JS_LANG_KEYWORDS =                "async do if in for let new try var case else enum eval null this true void with await break catch class const false super throw while yield delete export import public return static switch typeof default extends finally package private continue debugger function arguments interface protected implements instanceof";
         
