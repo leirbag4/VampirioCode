@@ -161,11 +161,6 @@ namespace VampEditor.Language
                 //SetProperty("lexer.html.script", "1");
                 //SetProperty("asp.default.language", "javascript");
 
-                editor.StyleNeeded += (sender, eventArgs) =>
-                {
-                    XConsole.Alert("yes");
-                };
-
 
                 // Highlight Configuration for TAGs matching
                 editor.Indicators[8].Style = IndicatorStyle.CompositionThick; // IndicatorStyle.CompositionThin; // IndicatorStyle.Plain; // IndicatorStyle.RoundBox;
@@ -228,9 +223,6 @@ namespace VampEditor.Language
                 int openTagPos = text.LastIndexOf(openingTag, tagStart - 1);
                 if (openTagPos != -1)
                 {
-                    XConsole.Println("openingTag: " + openingTag);
-                    XConsole.Println("tag: " + tag);
-
                     string newOpen = text.Substring(openTagPos, openingTag.Length + 1);
 
                     // There's a space or argument ->   <script src='img.png'  on the openingTag
