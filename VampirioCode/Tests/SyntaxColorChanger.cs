@@ -83,6 +83,46 @@ namespace VampirioCode.Tests
                 AddStyle("Style.Cpp.Preprocessor");
                 AddStyle("19");
             }
+            else if (docType == DocumentType.HTML)
+            {
+                // HTML
+                AddStyle("Style.Html.Default");
+                AddStyle("Style.Html.Tag");
+                AddStyle("Style.Html.TagUnknown");
+                AddStyle("Style.Html.Attribute");
+                AddStyle("Style.Html.AttributeUnknown");
+                AddStyle("Style.Html.Number");
+                AddStyle("Style.Html.DoubleString");
+                AddStyle("Style.Html.SingleString");
+                AddStyle("Style.Html.Other");
+                AddStyle("Style.Html.Comment");
+                AddStyle("Style.Html.Entity");
+                AddStyle("Style.Html.TagEnd");
+                AddStyle("Style.Html.XmlStart");
+                AddStyle("Style.Html.XmlEnd");
+                AddStyle("Style.Html.Script");
+                AddStyle("Style.Html.Asp");
+                AddStyle("Style.Html.AspAt");
+                AddStyle("Style.Html.CData");
+                AddStyle("Style.Html.Question");
+                AddStyle("Style.Html.Value");
+                AddStyle("Style.Html.XcComment");
+
+                // JAVASCRIPT
+                AddStyle("Style.JavaScript.Start");
+                AddStyle("Style.JavaScript.Default");
+                AddStyle("Style.JavaScript.Comment");
+                AddStyle("Style.JavaScript.CommentLine");
+                AddStyle("Style.JavaScript.CommentDoc");
+                AddStyle("Style.JavaScript.Number");
+                AddStyle("Style.JavaScript.Word");
+                AddStyle("Style.JavaScript.Keyword");
+                AddStyle("Style.JavaScript.DoubleString");
+                AddStyle("Style.JavaScript.SingleString");
+                AddStyle("Style.JavaScript.Symbols");
+                AddStyle("Style.JavaScript.StringEol");
+                AddStyle("Style.JavaScript.Regex");
+            }
             else if (docType == DocumentType.PHP)
             {
                 AddStyle("Style.PhpScript.Default");

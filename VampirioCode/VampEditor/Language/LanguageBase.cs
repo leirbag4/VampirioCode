@@ -51,6 +51,16 @@ namespace VampEditor.Language
             //Styles[Style.Default].Bold = true;
         }
 
+        protected void SetProperty(string name, string value)
+        {
+            editor.SetProperty(name, value);
+        }
+
+        protected void SetKeywords(int set, string keywords)
+        {
+            editor.SetKeywords(set, keywords);
+        }
+
         protected void SetSelctionStyle()
         { 
             // selected text ->     if(░░░░░░code)

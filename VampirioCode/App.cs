@@ -295,6 +295,7 @@ namespace VampirioCode
             else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
             else if (sender == javaToolStripMenuItem)   docType = DocumentType.JAVA;
             else if (sender == phpToolStripMenuItem)    docType = DocumentType.PHP;
+            else if (sender == htmlToolStripMenuItem)   docType = DocumentType.HTML;
             else if (sender == cmakeToolStripMenuItem)  docType = DocumentType.TXT;
 
             if (CurrDocument.DocType != docType)
@@ -474,7 +475,7 @@ namespace VampirioCode
 
         private void SelectLanguage(DocumentType docType)
         {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, cmakeToolStripMenuItem };
+            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, htmlToolStripMenuItem, cmakeToolStripMenuItem };
 
             foreach (var item in items)
             {
@@ -487,6 +488,7 @@ namespace VampirioCode
             else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
             else if (docType == DocumentType.JAVA)      javaToolStripMenuItem.ForeColor =   Color.SlateBlue;
             else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
+            else if (docType == DocumentType.HTML)      htmlToolStripMenuItem.ForeColor =   Color.SlateBlue;
             else if (docType == DocumentType.TXT)       cmakeToolStripMenuItem.ForeColor =  Color.SlateBlue;
 
             footer.DocType = docType;

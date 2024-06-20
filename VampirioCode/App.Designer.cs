@@ -61,6 +61,7 @@
             debugToolStripMenuItem = new ToolStripMenuItem();
             syntaxColorChangerToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
+            htmlToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -251,7 +252,7 @@
             // 
             // languageToolStripMenuItem
             // 
-            languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, cmakeToolStripMenuItem });
+            languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, htmlToolStripMenuItem, cmakeToolStripMenuItem });
             languageToolStripMenuItem.Name = "languageToolStripMenuItem";
             languageToolStripMenuItem.Size = new Size(88, 24);
             languageToolStripMenuItem.Text = "Language";
@@ -349,6 +350,14 @@
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
             // 
+            // htmlToolStripMenuItem
+            // 
+            htmlToolStripMenuItem.ForeColor = Color.Silver;
+            htmlToolStripMenuItem.Name = "htmlToolStripMenuItem";
+            htmlToolStripMenuItem.Size = new Size(224, 26);
+            htmlToolStripMenuItem.Text = "HTML";
+            htmlToolStripMenuItem.Click += OnLanguagePressed;
+            // 
             // App
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -406,5 +415,6 @@
         private ToolStripMenuItem javaToolStripMenuItem;
         private ToolStripMenuItem debugToolStripMenuItem;
         private ToolStripMenuItem syntaxColorChangerToolStripMenuItem;
+        private ToolStripMenuItem htmlToolStripMenuItem;
     }
 }
