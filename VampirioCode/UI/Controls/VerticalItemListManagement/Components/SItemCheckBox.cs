@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace VampirioCode.UI.Controls.VerticalItemListManagement
+namespace VampirioCode.UI.Controls.VerticalItemListManagement.Components
 {
     public class SItemCheckBox : SItemImage
     {
@@ -28,9 +28,9 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
 
         public SItemCheckBox(Bitmap checkedImg, Bitmap uncheckedImg, Control parent)
         {
-            _checkedImg =   checkedImg;
+            _checkedImg = checkedImg;
             _uncheckedImg = uncheckedImg;
-            _parent =       parent;
+            _parent = parent;
         }
 
         public int X
@@ -39,9 +39,9 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
             {
                 int _w = Image.Width;
                 int _x = 0;
-                
-                Int32 lNum = (Int32)Math.Log((Double)ImageAlign, 2);
-                float xAlign = (lNum % 4);
+
+                int lNum = (int)Math.Log((double)ImageAlign, 2);
+                float xAlign = lNum % 4;
                 xAlign--;
                 //FROM -1 to 1
 
@@ -53,7 +53,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
                 else //if(xAlign == 1)
                     _x = _parent.Width - _w - _parent.Margin.Right;
 
-                return (_x + Offsets.X);
+                return _x + Offsets.X;
             }
         }
 
@@ -64,9 +64,9 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
                 int _h = Image.Height;
                 int _y = 0;
 
-                
-                Int32 lNum = (Int32)Math.Log((Double)ImageAlign, 2);
-                float yAlign = (lNum / 4);
+
+                int lNum = (int)Math.Log((double)ImageAlign, 2);
+                float yAlign = lNum / 4;
                 yAlign--;
                 //FROM -1 to 1
 
@@ -78,7 +78,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
                 else //if(yAlign == 1)
                     _y = _parent.Height - _h - _parent.Margin.Right;
 
-                return (_y + Offsets.Y);
+                return _y + Offsets.Y;
             }
         }
 
@@ -89,7 +89,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
             int _w = Image.Width;
             int _h = Image.Height;
 
-            return ((x >= _x) && (x <= (_x + _w)) && (y >= _y) && (y <= (_y + _h)));
+            return x >= _x && x <= _x + _w && y >= _y && y <= _y + _h;
         }
     }
 }

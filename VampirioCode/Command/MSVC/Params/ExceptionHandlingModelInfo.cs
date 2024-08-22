@@ -34,5 +34,19 @@ namespace VampirioCode.Command.MSVC.Params
                 default: return null;
             }
         }
+
+        public static ExceptionHandlingModelInfo GetByParam(string param)
+        {
+            switch (param)
+            {
+                case "":        return Get(ExceptionHandlingModel.None);
+                case "/EHa":    return Get(ExceptionHandlingModel.EHa);
+                case "/EHs":    return Get(ExceptionHandlingModel.EHs);
+                case "/EHc":    return Get(ExceptionHandlingModel.EHc);
+                case "/EHr":    return Get(ExceptionHandlingModel.EHr);
+                case "/EHsc":   return Get(ExceptionHandlingModel.EHsc);
+                default: return null;
+            }
+        }
     }
 }

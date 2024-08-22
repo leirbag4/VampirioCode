@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="packages\sdl2_msvc.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Res\Icons\icon_64_multiple.ico" />
   </ItemGroup>
 
@@ -55,6 +59,12 @@
     <Folder Include="Command\Emscripten\Emsdk\Params\" />
     <Folder Include="Command\Nodejs\Params\" />
     <Folder Include="Command\PHP\Params\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="packages\sdl2_msvc.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

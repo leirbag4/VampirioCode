@@ -31,6 +31,7 @@ namespace VampDocManager
         public string Text { get; set; }
         public DocumentType DocType { get; set; }
         public BuilderType BuilderType { get; set; }
+        public bool CustomBuild { get; set; }
         public bool IsTemporary { get; set; }        // if file was created using 'file -> new' and was never saved, it will be mark as temporary
         public bool Modified { get { return _modified; } set { _modified = value; if (OnModified != null) OnModified(); } }
 

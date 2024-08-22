@@ -136,6 +136,15 @@
   <data name="logo_mini_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\logo_mini_b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="mini_arrow_down_style_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\mini_arrow_down_style_b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mini_arrow_up_style_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\mini_arrow_up_style_b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mmenu_mini_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\mmenu_mini_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="mmenu_mini_copy_path" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\mmenu_mini_copy_path.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

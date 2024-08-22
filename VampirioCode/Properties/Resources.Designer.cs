@@ -123,6 +123,36 @@ namespace VampirioCode.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mini_arrow_down_style_b {
+            get {
+                object obj = ResourceManager.GetObject("mini_arrow_down_style_b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mini_arrow_up_style_b {
+            get {
+                object obj = ResourceManager.GetObject("mini_arrow_up_style_b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mmenu_mini_add {
+            get {
+                object obj = ResourceManager.GetObject("mmenu_mini_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mmenu_mini_copy_path {
             get {
                 object obj = ResourceManager.GetObject("mmenu_mini_copy_path", resourceCulture);

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.UI.Controls.VerticalItemListManagement
+namespace VampirioCode.UI.Controls.VerticalItemListManagement.Components
 {
     public class SItemImage
     {

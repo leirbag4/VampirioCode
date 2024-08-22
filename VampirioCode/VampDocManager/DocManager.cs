@@ -342,6 +342,7 @@ namespace VampDocManager
                     {
                         doc.DocType =       settings.DocType;
                         doc.BuilderType =   settings.BuilderType;
+                        doc.CustomBuild =   settings.Custom;
                     }
                 }
 

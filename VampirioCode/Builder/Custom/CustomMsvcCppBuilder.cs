@@ -1,24 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VampirioCode.BuilderSetting;
+using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.Command.MSVC;
 using VampirioCode.Command.MSVC.Result;
 using VampirioCode.UI;
 
-namespace VampirioCode.Builder
+namespace VampirioCode.Builder.Custom
 {
-    public class SimpleCppBuilder : Builder
+    public class CustomMsvcCppBuilder : CustomBuilder
     {
+        public MsvcCppBSetting Setting { get; set; }
+
+        private List<string> includes =     new List<string>();
+        private List<string> libPaths =     new List<string>();
+        private List<string> libFiles =     new List<string>();
 
         private string objsDir;
         private string outputDir;
 
-        public SimpleCppBuilder()
+        public CustomMsvcCppBuilder()
         {
-            Name = "MSVC";
-            Type = BuilderType.SimpleCpp;
+            Name = "CustomMsvc";
+            Type = BuilderType.SimpleMsvcCpp;
+
+            Setting = new MsvcCppBSetting();
         }
 
         public override void Prepare()
@@ -29,7 +39,49 @@ namespace VampirioCode.Builder
             objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\obj\
             outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
             OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\bin\proj.exe
+
+            // Custom Build Settings File
+            BuildSettingsFile =     ProjectDir + ".bsettings";        // build settings file ->   \temp_build\proj_name\.bsettings
         }
+
+        protected override void OnSave()
+        {
+            SaveSetting<MsvcCppBSetting>(Setting);
+        }
+
+        protected override void OnLoad()
+        {
+            XConsole.Alert("on load: " + BuildSettingsFile);
+            //PrintStackTrace();
+            Setting = LoadSetting<MsvcCppBSetting>();
+        }
+
+        /*static void PrintStackTrace()
+        {
+            StackTrace stackTrace = new StackTrace(true);
+            string stackTraceString = "Stack trace:\n";
+
+            foreach (StackFrame frame in stackTrace.GetFrames())
+            {
+                string fileName = frame.GetFileName();
+                if (fileName != null)
+                {
+                    fileName = Path.GetFileName(fileName);
+                }
+                else
+                {
+                    fileName = "Unknown file";
+                }
+
+                string method = frame.GetMethod().Name;
+                int lineNumber = frame.GetFileLineNumber();
+
+                if(lineNumber > 0)
+                    stackTraceString += $"{fileName}::{method} (Line {lineNumber})\n";
+            }
+
+            XConsole.Alert(stackTraceString);
+        }*/
 
         protected override async Task OnBuildAndRun()
         {
@@ -83,28 +135,13 @@ namespace VampirioCode.Builder
             // [ COMPILATION PROCESS ]
             List<string> sourceFiles = new string[] { ProgramFile }.ToList();
 
-            List<string> includes = new string[] {
-                @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include",
-                @"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt"
-            }.ToList();
-
-            List<string> libPaths = new string[] {
-                @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\lib\x64",
-                @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64",
-                @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64"
-            }.ToList();
-
-            List<string> libFiles = new string[] {
-                "libcpmt.lib",
-                "kernel32.lib",
-                "libucrt.lib"
-            }.ToList();
-
+            // Build Process
             MSVC msvc = new MSVC();
             var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, includes, libPaths, libFiles);
             result.OutputFilename = OutputFilename;
 
             return result;
         }
+
     }
 }

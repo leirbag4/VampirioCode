@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampirioCode.UI.Controls.VerticalItemListManagement.Components;
 
 namespace VampirioCode.UI.Controls.VerticalItemListManagement
 {
@@ -24,6 +25,16 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         {
             ONLY_ON_SELECTION,
             ALWAYS
+        }
+
+        protected enum MouseState
+        { 
+            Over,
+            Up,
+            Down,
+            Move,
+            Leave,
+            Click
         }
 
         [Localizable(true)]
@@ -143,6 +154,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         protected override void OnMouseDown(MouseEventArgs mevent)
         {
             state = LItemState.DOWN;
+            OnUpdate(mevent.X, mevent.Y, MouseState.Down, mevent.Button);
             Invalidate();
             base.OnMouseDown(mevent);
         }
@@ -150,6 +162,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         protected override void OnMouseUp(MouseEventArgs mevent)
         {
             state = LItemState.UP;
+            OnUpdate(mevent.X, mevent.Y, MouseState.Up, mevent.Button);
             Invalidate();
             base.OnMouseUp(mevent);
         }
@@ -157,6 +170,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         protected override void OnMouseLeave(EventArgs e)
         {
             state = LItemState.UP;
+            OnUpdate(-1, -1, MouseState.Leave, MouseButtons.None);
             Invalidate();
             base.OnMouseLeave(e);
         }
@@ -164,8 +178,14 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         protected override void OnMouseMove(MouseEventArgs mevent)
         {
             state = LItemState.OVER;
+            OnUpdate(mevent.X, mevent.Y, MouseState.Move, mevent.Button);
             Invalidate();
             base.OnMouseMove(mevent);
+        }
+
+        protected override void OnMouseClick(MouseEventArgs mevent)
+        {
+            OnUpdate(mevent.X, mevent.Y, MouseState.Click, mevent.Button);
         }
 
         protected void PaintCheckBox(Graphics g, SItemCheckBox checkBox, bool expand)
@@ -283,34 +303,39 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
             }
         }
 
+        protected Color GetCurrBackColor()
+        {
+            if (_selected)
+                return _selectedColor;
+            else
+            {
+                     if (state == LItemState.UP)    return _upColor;
+                else if (state == LItemState.OVER)  return _overColor;
+                else if (state == LItemState.DOWN)  return _downColor;
+            }
+
+            return Color.Transparent; // never reach here
+        }
+
+        protected Color GetCurrBorderColor()
+        {
+            if (_selected)
+                return _selectedBorderColor;
+            else
+                return _borderColor;
+        }
+
+        protected virtual void OnUpdate(int mouseX, int mouseY, MouseState mouseState, MouseButtons buttons)
+        { 
+            
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             //base.OnPaint(e);
-            SolidBrush itemBrush = null;
-            SolidBrush borderBrush = null;
+            SolidBrush itemBrush =      new SolidBrush(GetCurrBackColor());
+            SolidBrush borderBrush =    new SolidBrush(GetCurrBorderColor());
             
-            if (_selected)
-            {
-                itemBrush =     new SolidBrush(_selectedColor);
-                borderBrush =   new SolidBrush(_selectedBorderColor);
-            }
-            else
-            {
-                if (state == LItemState.UP)
-                {
-                    itemBrush = new SolidBrush(_upColor);
-                }
-                else if (state == LItemState.OVER)
-                {
-                    itemBrush = new SolidBrush(_overColor);
-                }
-                else if (state == LItemState.DOWN)
-                {
-                    itemBrush = new SolidBrush(_downColor);
-                }
-
-                borderBrush = new SolidBrush(_borderColor);
-            }
 
             if (_borderMode == BMode.ONLY_ON_SELECTION)
             {

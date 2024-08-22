@@ -10,12 +10,15 @@ namespace VampirioCode.Builder
     {
         None,
         SimpleCSharp,
-        SimpleCpp,
+        SimpleMsvcCpp,
         SimpleGnuGppCpp,
         SimpleClangCpp,
         SimpleWasmCpp,
         SimpleJs,
         SimpleJava,
-        SimplePhp
+        SimplePhp,
+
+        // Customs
+        CustomMsvcCpp
     }
 }

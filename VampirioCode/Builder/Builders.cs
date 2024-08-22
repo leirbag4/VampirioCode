@@ -22,7 +22,7 @@ namespace VampirioCode.Builder
             allBuilders =   new Dictionary<BuilderType, Builder>();
 
             _Register(DocumentType.CSHARP,      new SimpleCSharpBuilder());
-            _Register(DocumentType.CPP,         new SimpleCppBuilder());
+            _Register(DocumentType.CPP,         new SimpleMsvcCppBuilder());
             _Register(DocumentType.CPP,         new SimpleGnuCppWSLBuilder());
             _Register(DocumentType.CPP,         new SimpleClangCppBuilder());
             _Register(DocumentType.CPP,         new SimpleWasmCppBuilder());

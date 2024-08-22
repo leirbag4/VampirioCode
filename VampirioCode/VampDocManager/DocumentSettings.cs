@@ -13,5 +13,7 @@ namespace VampDocManager
 
         public BuilderType BuilderType { get; set; } = BuilderType.None;
 
+        public bool Custom { get; set; } = false;
+
     }
 }

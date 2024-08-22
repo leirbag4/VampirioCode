@@ -1,0 +1,125 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using VampirioCode.UI.Controls.VerticalItemListManagement;
+
+namespace VampirioCode.BuilderSetting
+{
+    public partial class ItemList : UserControl
+    {
+        struct ValuePairInfo
+        {
+            public bool leftEditable;
+            public bool rightEditable;
+
+            public ValuePairInfo(bool leftEditable, bool rightEditable)
+            { 
+                this.leftEditable = leftEditable;
+                this.rightEditable = rightEditable;
+            }
+        }
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Icon")]
+        [Browsable(true)]
+        public Image Icon { get { return iconImg.Image; } set { iconImg.Image = value; } }
+
+        [Localizable(true)]
+        [Category("Extra Properties")]
+        [Description("Title")]
+        [Browsable(true)]
+        public string Title { get { return titleLabel.Text; } set { titleLabel.Text = value; }  }
+
+        public ObservableRangeCollection<Control> Items { get { return list.Items; } }
+
+        public SItemType Type { get { return _type; } }
+        
+        private BrowseMode _mode;
+        private BrowseInfo _browseInfo;
+        private SItemType _type = SItemType.SItem;
+        private float _division = 0.5f;
+        private ValuePairInfo _valuePairInfo;
+
+        public ItemList()
+        {
+            InitializeComponent();
+        }
+
+        public void SetupDirMode()
+        {
+            _type =         SItemType.Browsable;
+            _mode =         BrowseMode.Directory;
+            _browseInfo =   new DirBrowseInfo();
+        }
+
+        public void SetupFileMode(FileBrowseInfo browseInfo)
+        {
+            _type =         SItemType.Browsable;
+            _mode =         BrowseMode.File;
+            _browseInfo =   browseInfo;
+        }
+
+        public void SetupValuePair(float division = 0.5f, bool leftEditable = true, bool rightEditable = true)
+        {
+            _type =     SItemType.ValuePairEditable;
+            _division = division;
+            _valuePairInfo = new ValuePairInfo(leftEditable, rightEditable);
+        }
+
+        public void Add(SItemBrowsable item)
+        {
+            item.BrowseInfo = _browseInfo;
+            list.Items.Add(item);
+        }
+
+        public void Add(SItemValuePairEditable item)
+        {
+            list.Items.Add(item);
+        }
+
+        private void OnAddPressed(object sender, EventArgs e)
+        {
+            if (Type == SItemType.Browsable)
+            {
+                SItemBrowsable item = new SItemBrowsable();
+                item.BrowseInfo = _browseInfo;
+                item.Text = "-";
+                list.Items.Add(item);
+            }
+            else if (Type == SItemType.ValuePairEditable)
+            {
+                SItemValuePairEditable item = new SItemValuePairEditable();
+                item.LeftValue =  "-";
+                item.RightValue = "-";
+                item.LeftEditable = _valuePairInfo.leftEditable;
+                item.RightEditable = _valuePairInfo.rightEditable;
+                list.Items.Add(item);
+            }
+        }
+
+        private void OnRemovePressed(object sender, EventArgs e)
+        {
+            if (list.SelectedIndex != -1)
+                list.Items.RemoveAt(list.SelectedIndex);
+        }
+
+        private void OnUpPressed(object sender, EventArgs e)
+        {
+            if (list.SelectedIndex != -1)
+                list.MoveItemUp(list.SelectedIndex);
+        }
+
+        private void OnDownPressed(object sender, EventArgs e)
+        {
+            if (list.SelectedIndex != -1)
+                list.MoveItemDown(list.SelectedIndex);
+        }
+    }
+}

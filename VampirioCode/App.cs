@@ -1,10 +1,14 @@
 using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using VampDocManager;
 using VampEditor;
 using VampirioCode.Builder;
+using VampirioCode.Builder.Custom;
+using VampirioCode.BuilderSetting;
+using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.Command;
 using VampirioCode.Command.Dotnet;
 using VampirioCode.SaveData;
@@ -44,6 +48,7 @@ namespace VampirioCode
             MsgBox.Setup(this);
             XConsole.Setup(footer);
             Builders.Initialize();
+            CustomBuilders.Initialize();
             RegisterCmdKeys();
 
             // theme
@@ -52,21 +57,21 @@ namespace VampirioCode
             menuStrip.ForeColor = Color.Silver;
 
             // doc manager events
-            docManager.CurrDocumentTabChanged +=        OnCurrDocumentTabChanged;
-            docManager.CurrDocumentTextChanged +=       OnCurrDocumentTextChanged;
-            docManager.CurrDocumentModifiedChanged +=   OnCurrDocumentModifiedChanged;
-            docManager.EditorContextItemPressed +=      OnEditorContextItemPressed;
-            docManager.DocumentCreated +=               OnDocumentCreated;
-            docManager.DocumentRemoved +=               OnDocumentRemoved;
+            docManager.CurrDocumentTabChanged += OnCurrDocumentTabChanged;
+            docManager.CurrDocumentTextChanged += OnCurrDocumentTextChanged;
+            docManager.CurrDocumentModifiedChanged += OnCurrDocumentModifiedChanged;
+            docManager.EditorContextItemPressed += OnEditorContextItemPressed;
+            docManager.DocumentCreated += OnDocumentCreated;
+            docManager.DocumentRemoved += OnDocumentRemoved;
 
             // tool bar events
-            toolBar.StartPressed +=     OnStartPressed;
-            toolBar.ReloadPressed +=    OnReloadPressed;
+            toolBar.StartPressed += OnStartPressed;
+            toolBar.ReloadPressed += OnReloadPressed;
 
             // drag and drop
-            this.AllowDrop =    true;
-            this.DragEnter +=   OnDragEnter;
-            this.DragDrop +=    OnDragDrop;
+            this.AllowDrop = true;
+            this.DragEnter += OnDragEnter;
+            this.DragDrop += OnDragDrop;
 
 
             // open last documents
@@ -85,6 +90,12 @@ namespace VampirioCode
                 New();
 
             SelectBuilder(CurrDocument.DocType, CurrDocument.BuilderType);
+
+            //VampirioCode.Tests.ItemListTester tester = new ItemListTester();
+            //tester.ShowDialog();
+
+            //BuilderSetting.CustomMsvcCppBuilderSetting bsetting = new BuilderSetting.CustomMsvcCppBuilderSetting();
+            //bsetting.ShowDialog();
 
             base.OnLoad(e);
         }
@@ -158,22 +169,22 @@ namespace VampirioCode
 
         private void RegisterCmdKeys()
         {
-            HotKeyManager.AddHotKey(New,                Keys.Control | Keys.N);
-            HotKeyManager.AddHotKey(Open,               Keys.Control | Keys.O);
-            HotKeyManager.AddHotKey(CloseDoc,           Keys.Control | Keys.W);
-            HotKeyManager.AddHotKey(Find,               Keys.Control | Keys.F);
-            HotKeyManager.AddHotKey(FindAndReplace,     Keys.Control | Keys.H);
-            HotKeyManager.AddHotKey(Save,               Keys.Control | Keys.S);
-            HotKeyManager.AddHotKey(GoTo,               Keys.Control | Keys.G);
-            HotKeyManager.AddHotKey(Duplicate,          Keys.Control | Keys.D);
-            HotKeyManager.AddHotKey(BuildAndRun,        Keys.F5);
-            HotKeyManager.AddHotKey(Build,              Keys.F6);
-            HotKeyManager.AddHotKey(FullScreenToggle,   Keys.F11);
-            HotKeyManager.AddHotKey(Undo,               Keys.Control | Keys.Z);
-            HotKeyManager.AddHotKey(Redo,               Keys.Control | Keys.Shift | Keys.Z);
-            HotKeyManager.AddHotKey(SaveAs,             Keys.Control | Keys.Shift | Keys.S);
-            HotKeyManager.AddHotKey(LineUp,             Keys.Alt | Keys.Up);
-            HotKeyManager.AddHotKey(LineDown,           Keys.Alt | Keys.Down);
+            HotKeyManager.AddHotKey(New, Keys.Control | Keys.N);
+            HotKeyManager.AddHotKey(Open, Keys.Control | Keys.O);
+            HotKeyManager.AddHotKey(CloseDoc, Keys.Control | Keys.W);
+            HotKeyManager.AddHotKey(Find, Keys.Control | Keys.F);
+            HotKeyManager.AddHotKey(FindAndReplace, Keys.Control | Keys.H);
+            HotKeyManager.AddHotKey(Save, Keys.Control | Keys.S);
+            HotKeyManager.AddHotKey(GoTo, Keys.Control | Keys.G);
+            HotKeyManager.AddHotKey(Duplicate, Keys.Control | Keys.D);
+            HotKeyManager.AddHotKey(BuildAndRun, Keys.F5);
+            HotKeyManager.AddHotKey(Build, Keys.F6);
+            HotKeyManager.AddHotKey(FullScreenToggle, Keys.F11);
+            HotKeyManager.AddHotKey(Undo, Keys.Control | Keys.Z);
+            HotKeyManager.AddHotKey(Redo, Keys.Control | Keys.Shift | Keys.Z);
+            HotKeyManager.AddHotKey(SaveAs, Keys.Control | Keys.Shift | Keys.S);
+            HotKeyManager.AddHotKey(LineUp, Keys.Alt | Keys.Up);
+            HotKeyManager.AddHotKey(LineDown, Keys.Alt | Keys.Down);
 
             //HotKeyManager.AddHotKey(Function,     Keys.Control | Keys.P);
         }
@@ -229,9 +240,24 @@ namespace VampirioCode
             }
             else
             {
-                Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
-                builder.Setup(projName, CurrDocument.Text);
-                await builder.BuildAndRun();
+                if (CurrDocument.CustomBuild)
+                {
+                    //Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
+                    //builder.Setup(projName, CurrDocument.Text);
+                    //await builder.Build();
+                    
+                    //XConsole.Alert("is: " + CurrDocument.BuilderType);
+                    Builder.Custom.CustomBuilder builder = CustomBuilders.Get(projName, CurrDocument.BuilderType);
+                    //builder.Setup(projName, CurrDocument.Text);
+                    //await builder.Build();
+                    
+                }
+                else
+                {
+                    Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
+                    builder.Setup(projName, CurrDocument.Text);
+                    await builder.BuildAndRun();
+                }
             }
         }
 
@@ -239,13 +265,28 @@ namespace VampirioCode
         {
             string sel = (string)((ToolStripMenuItem)sender).Tag;
 
-                 if (sel == "new")          New();
-            else if (sel == "open")         Open();
-            else if (sel == "save")         Save();
-            else if (sel == "save_as")      SaveAs();
-            else if (sel == "close")        CloseDoc();
-            else if (sel == "close_all")    CloseAll();
-            else if (sel == "exit")         Exit();
+            if (sel == "new") New();
+            else if (sel == "open") Open();
+            else if (sel == "save") Save();
+            else if (sel == "save_as") SaveAs();
+            else if (sel == "close") CloseDoc();
+            else if (sel == "close_all") CloseAll();
+            else if (sel == "exit") Exit();
+        }
+
+        private void OnCustomBuildPressed(object sender, EventArgs e)
+        {
+            NewCustomBuild((string)((ToolStripMenuItem)sender).Tag);
+        }
+
+        private void OnSetupBuildPressed(object sender, EventArgs e)
+        {
+            string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+            
+            CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
+            builderSettings.Open(projName, CurrDocument.BuilderType);
+
+            //builderSettings.ShowDialog();
         }
 
         private void OnEditPressed(object sender, EventArgs e)
@@ -289,7 +330,7 @@ namespace VampirioCode
         private void OnLanguagePressed(object sender, EventArgs e)
         {
             DocumentType docType = DocumentType.OTHER;
-
+    
                  if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
             else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
             else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
@@ -357,6 +398,28 @@ namespace VampirioCode
         private void Exit()
         {
             this.Close();
+        }
+
+        private Document CreateCustomDocument(DocumentType docType, BuilderType builderType)
+        {
+            DocumentTab tab =       docManager.NewDocument();
+            Document document =     tab.Document;
+            document.DocType =      docType;
+            document.BuilderType =  builderType;
+            document.CustomBuild =  true;
+            SelectLanguage(docType);
+            SelectBuilder(docType, builderType);
+
+            return document;
+        }
+
+        private void NewCustomBuild(string type)
+        {
+            if (type == "cpp_msvc_sdl2")
+            {
+                Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
+                CustomBuilders.Create_CPP_SDL2(document);
+            }
         }
 
         private void Find()
@@ -483,13 +546,13 @@ namespace VampirioCode
                     item.ForeColor = Color.Silver;
             }
 
-                 if (docType == DocumentType.CSHARP)    csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.CPP)       cppToolStripMenuItem.ForeColor =    Color.SlateBlue;
-            else if (docType == DocumentType.JS)        jsToolStripMenuItem.ForeColor =     Color.SlateBlue;
-            else if (docType == DocumentType.JAVA)      javaToolStripMenuItem.ForeColor =   Color.SlateBlue;
-            else if (docType == DocumentType.PHP)       phpToolStripMenuItem.ForeColor =    Color.SlateBlue;
-            else if (docType == DocumentType.HTML)      htmlToolStripMenuItem.ForeColor =   Color.SlateBlue;
-            else if (docType == DocumentType.TXT)       cmakeToolStripMenuItem.ForeColor =  Color.SlateBlue;
+            if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.CPP) cppToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.JS) jsToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.JAVA) javaToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.PHP) phpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.HTML) htmlToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.TXT) cmakeToolStripMenuItem.ForeColor = Color.SlateBlue;
 
             footer.DocType = docType;
         }
@@ -634,7 +697,7 @@ namespace VampirioCode
                 {
                     FullFilePath = doc.FullFilePath,
                     IsTemporary = doc.IsTemporary,
-                    DocumentSettings = new DocumentSettings() { DocType = doc.DocType, BuilderType = doc.BuilderType }
+                    DocumentSettings = new DocumentSettings() { DocType = doc.DocType, BuilderType = doc.BuilderType, Custom = doc.CustomBuild }
                 };
             }
 
@@ -722,9 +785,10 @@ namespace VampirioCode
         }
 
         private void FullScreenToggle()
-        { 
+        {
             FullScreen = !FullScreen;
         }
 
+        
     }
 }

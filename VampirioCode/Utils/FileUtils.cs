@@ -26,9 +26,18 @@ namespace VampirioCode.Utils
             return Directory.GetFiles(path);
         }
 
-        public static string[] GetFileNamesAt(string path)
+        public static string[] GetFileNamesAt(string path, bool includeExtension = true)
         {
-            return Directory.GetFiles(path).Select(Path.GetFileName).ToArray();
+            if (includeExtension)
+            {
+                return Directory.GetFiles(path).Select(Path.GetFileName).ToArray();
+            }
+            else
+            {
+                return Directory.GetFiles(path)
+                        .Select(file => Path.GetFileNameWithoutExtension(file))
+                        .ToArray();
+            }
         }
 
         public static string SaveFileDialog()
