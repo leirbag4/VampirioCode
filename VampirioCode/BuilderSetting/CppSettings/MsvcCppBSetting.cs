@@ -25,6 +25,7 @@ namespace VampirioCode.BuilderSetting.CppSettings
 
         public string InstallPackage { get; set; } = "";
 
+        public StandardVersion StandardVersion { get; set; } = StandardVersion.None;
         public ExceptionHandlingModel ExceptionHanldingModel { get; set; } = ExceptionHandlingModel.None;
 
         // Methods

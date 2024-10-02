@@ -150,6 +150,7 @@ namespace VampirioCode.Builder.Custom
             cmd.LibraryPaths =              Setting.LibraryDirs;
             cmd.LibraryFiles =              Setting.LibraryFiles;
 
+            cmd.StandardVersion =           Setting.StandardVersion;
             
             if (Setting.InstallPackage != "")
             {

@@ -40,6 +40,8 @@
             labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
             postCopyDirsList = new ItemList();
             postCopyFilesList = new ItemList();
+            standardVersionCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
+            labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
             SuspendLayout();
             // 
             // includeDirsList
@@ -147,7 +149,7 @@
             labelAdv1.BorderSize = 1;
             labelAdv1.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv1.ForeColor = Color.Silver;
-            labelAdv1.Location = new Point(336, 287);
+            labelAdv1.Location = new Point(516, 287);
             labelAdv1.ModifyClampMax = 0F;
             labelAdv1.ModifyClampMin = 0F;
             labelAdv1.ModifyControlName = "";
@@ -166,7 +168,7 @@
             exceptHandlModeCBox.DropDownStyle = ComboBoxStyle.DropDownList;
             exceptHandlModeCBox.ForeColor = Color.Silver;
             exceptHandlModeCBox.FormattingEnabled = true;
-            exceptHandlModeCBox.Location = new Point(336, 319);
+            exceptHandlModeCBox.Location = new Point(516, 319);
             exceptHandlModeCBox.Name = "exceptHandlModeCBox";
             exceptHandlModeCBox.Size = new Size(186, 28);
             exceptHandlModeCBox.TabIndex = 28;
@@ -174,7 +176,7 @@
             // findPackageInput
             // 
             findPackageInput.BackColor = Color.FromArgb(40, 40, 40);
-            findPackageInput.Location = new Point(595, 314);
+            findPackageInput.Location = new Point(753, 314);
             findPackageInput.Name = "findPackageInput";
             findPackageInput.SelectedPackage = "";
             findPackageInput.Size = new Size(164, 35);
@@ -187,7 +189,7 @@
             labelAdv2.BorderSize = 1;
             labelAdv2.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv2.ForeColor = Color.Silver;
-            labelAdv2.Location = new Point(595, 287);
+            labelAdv2.Location = new Point(753, 287);
             labelAdv2.ModifyClampMax = 0F;
             labelAdv2.ModifyClampMin = 0F;
             labelAdv2.ModifyControlName = "";
@@ -217,11 +219,44 @@
             postCopyFilesList.TabIndex = 32;
             postCopyFilesList.Title = "Post Copy Files";
             // 
+            // standardVersionCBox
+            // 
+            standardVersionCBox.BackColor = Color.FromArgb(52, 52, 52);
+            standardVersionCBox.BorderColor = Color.FromArgb(100, 100, 100);
+            standardVersionCBox.BorderSize = 2;
+            standardVersionCBox.ButtonColor = SystemColors.Control;
+            standardVersionCBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            standardVersionCBox.ForeColor = Color.Silver;
+            standardVersionCBox.FormattingEnabled = true;
+            standardVersionCBox.Location = new Point(339, 319);
+            standardVersionCBox.Name = "standardVersionCBox";
+            standardVersionCBox.Size = new Size(121, 28);
+            standardVersionCBox.TabIndex = 34;
+            // 
+            // labelAdv3
+            // 
+            labelAdv3.AutoSize = true;
+            labelAdv3.BorderColor = Color.DarkGray;
+            labelAdv3.BorderSize = 1;
+            labelAdv3.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv3.ForeColor = Color.Silver;
+            labelAdv3.Location = new Point(339, 287);
+            labelAdv3.ModifyClampMax = 0F;
+            labelAdv3.ModifyClampMin = 0F;
+            labelAdv3.ModifyControlName = "";
+            labelAdv3.ModifyScale = 1F;
+            labelAdv3.Name = "labelAdv3";
+            labelAdv3.Size = new Size(121, 20);
+            labelAdv3.TabIndex = 33;
+            labelAdv3.Text = "Standard Version";
+            // 
             // CustomMsvcCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(934, 607);
+            Controls.Add(standardVersionCBox);
+            Controls.Add(labelAdv3);
             Controls.Add(postCopyFilesList);
             Controls.Add(postCopyDirsList);
             Controls.Add(labelAdv2);
@@ -254,5 +289,7 @@
         private VampirioCode.UI.Controls.LabelAdv labelAdv2;
         private ItemList postCopyDirsList;
         private ItemList postCopyFilesList;
+        private VampirioCode.UI.Controls.ComboBoxAdv standardVersionCBox;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv3;
     }
 }

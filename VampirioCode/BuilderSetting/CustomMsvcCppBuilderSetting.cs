@@ -50,6 +50,13 @@ namespace VampirioCode.BuilderSetting
             postCopyDirsList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { BrowseInfo = new DirBrowseInfo() { Title = "Select a Directory" } });
             postCopyFilesList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { LeftBrowseInfo = new FileBrowseInfo("Select Files", true, "DLL files (*.dll)|*.dll|LIB files (*.lib)|*.lib|All Files (*.*)|*.*"), RightBrowseInfo = new DirBrowseInfo() { Title = "Select a Directory"} });
 
+            foreach (StandardVersion std in Enum.GetValues(typeof(StandardVersion)))
+            {
+                var stdInfo = StandardVersionInfo.Get(std);
+                if (stdInfo.Param != "")
+                    standardVersionCBox.Items.Add(stdInfo.Param);
+            }
+
             foreach (ExceptionHandlingModel model in Enum.GetValues(typeof(ExceptionHandlingModel)))
             {
                 var modelInfo = ExceptionHandlingModelInfo.Get(model);
@@ -75,6 +82,7 @@ namespace VampirioCode.BuilderSetting
             SetItemListValuePairBrowsable(postCopyDirsList,     settings.CopyDirsPost);
             SetItemListValuePairBrowsable(postCopyFilesList,    settings.CopyFilesPost);
 
+            SetStandardVersion(standardVersionCBox,             settings.StandardVersion);
             SetExceptionHandlingMode(exceptHandlModeCBox,       settings.ExceptionHanldingModel);
         }
 
@@ -90,12 +98,17 @@ namespace VampirioCode.BuilderSetting
             settings.CopyDirsPost =             GetItemListValuePairBrowsable(postCopyDirsList);
             settings.CopyFilesPost =            GetItemListValuePairBrowsable(postCopyFilesList);
 
+            settings.StandardVersion =          GetStandardVersion(standardVersionCBox);
             settings.ExceptionHanldingModel =   GetExceptionHandlingMode(exceptHandlModeCBox);
 
             builder.Save();
         }
 
-        
+        private void SetStandardVersion(ComboBoxAdv comboBox, StandardVersion std)
+        {
+            string param = StandardVersionInfo.Get(std).Param;
+            comboBox.SelectedItem = param;
+        }
 
         private void SetExceptionHandlingMode(ComboBoxAdv comboBox, ExceptionHandlingModel model)
         {
@@ -106,6 +119,12 @@ namespace VampirioCode.BuilderSetting
         // ---------------------------------------------------------------
         // ---------------------------------------------------------------
         // ---------------------------------------------------------------
+
+        private StandardVersion GetStandardVersion(ComboBoxAdv comboBox)
+        {
+            string param = comboBox.SelectedItem.ToString();
+            return StandardVersionInfo.GetByParam(param).StandardVersion;
+        }
 
         private ExceptionHandlingModel GetExceptionHandlingMode(ComboBoxAdv comboBox)
         {

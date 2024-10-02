@@ -91,6 +91,7 @@ namespace VampirioCode.Builder.Custom
 
             setting.CopyFilePostAdd("${projDir}\\SDL2.dll", "${projDir}\\bin", true);
 
+            setting.StandardVersion = Command.MSVC.Params.StandardVersion.StdCpp17;
             setting.ExceptionHanldingModel = Command.MSVC.Params.ExceptionHandlingModel.EHsc;
 
             setting.InstallPackage = "sdl2_msvc";
@@ -134,6 +135,7 @@ namespace VampirioCode.Builder.Custom
             setting.LibraryFileAdd("kernel32.lib");
             setting.LibraryFileAdd("libucrt.lib");
 
+            setting.StandardVersion = Command.MSVC.Params.StandardVersion.StdCpp17;
             setting.ExceptionHanldingModel = Command.MSVC.Params.ExceptionHandlingModel.EHsc;
 
             // Save build settings
