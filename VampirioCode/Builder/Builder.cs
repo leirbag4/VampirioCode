@@ -27,6 +27,11 @@ namespace VampirioCode.Builder
             this.code = code;
         }
 
+        public string GetTempDir() { return TempDir; }
+        public string GetProjectDir() { return ProjectDir; }
+        public string GetProgramFile() { return ProgramFile; }
+        public string GetOutputFilename() { return OutputFilename; }
+
         protected void CheckResult(BaseResult result)
         {
             if (result.IsOk)
@@ -35,7 +40,7 @@ namespace VampirioCode.Builder
                 XConsole.FooterInfo("build with errors");
         }
 
-        protected void CreateProjectStructure()
+        protected virtual void CreateProjectStructure()
         {
             if (!Directory.Exists(TempDir))
                 Directory.CreateDirectory(TempDir);

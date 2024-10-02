@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VampirioCode.BuilderSetting.Actions
 {
-    public class CopyFileAction
+    public class CopyAction
     {
         public bool Overwrite { get; set; } = true;
         public string From { get; set; }

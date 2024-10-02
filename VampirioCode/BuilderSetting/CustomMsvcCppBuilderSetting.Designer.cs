@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomMsvcCppBuilderSetting));
             includeDirsList = new ItemList();
             libraryDirsList = new ItemList();
             libraryFilesList = new ItemList();
@@ -39,12 +38,14 @@
             exceptHandlModeCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
             findPackageInput = new UI.FindPackageInput();
             labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
+            postCopyDirsList = new ItemList();
+            postCopyFilesList = new ItemList();
             SuspendLayout();
             // 
             // includeDirsList
             // 
             includeDirsList.BackColor = Color.FromArgb(40, 40, 40);
-            includeDirsList.Icon = (Image)resources.GetObject("includeDirsList.Icon");
+            includeDirsList.Icon = null;
             includeDirsList.Location = new Point(12, 12);
             includeDirsList.Name = "includeDirsList";
             includeDirsList.Size = new Size(299, 258);
@@ -87,7 +88,7 @@
             okButton.FocusColor = Color.FromArgb(24, 81, 115);
             okButton.FocusEnabled = false;
             okButton.ForeColor = Color.Silver;
-            okButton.Location = new Point(706, 475);
+            okButton.Location = new Point(706, 565);
             okButton.Name = "okButton";
             okButton.PaintImageOnSelected = true;
             okButton.processEnterKey = true;
@@ -116,7 +117,7 @@
             cancelButton.FocusColor = Color.FromArgb(24, 81, 115);
             cancelButton.FocusEnabled = false;
             cancelButton.ForeColor = Color.Silver;
-            cancelButton.Location = new Point(818, 475);
+            cancelButton.Location = new Point(818, 565);
             cancelButton.Name = "cancelButton";
             cancelButton.PaintImageOnSelected = true;
             cancelButton.processEnterKey = true;
@@ -135,7 +136,7 @@
             macrosList.Icon = Properties.Resources.omenu_mini_select_all;
             macrosList.Location = new Point(12, 287);
             macrosList.Name = "macrosList";
-            macrosList.Size = new Size(299, 180);
+            macrosList.Size = new Size(299, 245);
             macrosList.TabIndex = 26;
             macrosList.Title = "Preprocessor Directive Macros";
             // 
@@ -196,11 +197,33 @@
             labelAdv2.TabIndex = 30;
             labelAdv2.Text = "Install Package";
             // 
+            // postCopyDirsList
+            // 
+            postCopyDirsList.BackColor = Color.FromArgb(40, 40, 40);
+            postCopyDirsList.Icon = null;
+            postCopyDirsList.Location = new Point(317, 371);
+            postCopyDirsList.Name = "postCopyDirsList";
+            postCopyDirsList.Size = new Size(299, 161);
+            postCopyDirsList.TabIndex = 31;
+            postCopyDirsList.Title = "Post Copy Dirs";
+            // 
+            // postCopyFilesList
+            // 
+            postCopyFilesList.BackColor = Color.FromArgb(40, 40, 40);
+            postCopyFilesList.Icon = null;
+            postCopyFilesList.Location = new Point(625, 371);
+            postCopyFilesList.Name = "postCopyFilesList";
+            postCopyFilesList.Size = new Size(299, 161);
+            postCopyFilesList.TabIndex = 32;
+            postCopyFilesList.Title = "Post Copy Files";
+            // 
             // CustomMsvcCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(934, 517);
+            ClientSize = new Size(934, 607);
+            Controls.Add(postCopyFilesList);
+            Controls.Add(postCopyDirsList);
             Controls.Add(labelAdv2);
             Controls.Add(findPackageInput);
             Controls.Add(exceptHandlModeCBox);
@@ -229,5 +252,7 @@
         private VampirioCode.UI.Controls.ComboBoxAdv exceptHandlModeCBox;
         private UI.FindPackageInput findPackageInput;
         private VampirioCode.UI.Controls.LabelAdv labelAdv2;
+        private ItemList postCopyDirsList;
+        private ItemList postCopyFilesList;
     }
 }

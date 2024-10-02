@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VampirioCode.BuilderSetting;
 using VampirioCode.BuilderSetting.Actions;
+using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.Command.MSVC;
 using VampirioCode.Command.MSVC.Result;
 using VampirioCode.UI;
+using VampirioCode.Utils;
 
 namespace VampirioCode.Builder.Custom
 {
@@ -51,7 +52,7 @@ namespace VampirioCode.Builder.Custom
 
         protected override void OnLoad()
         {
-            XConsole.Alert("on load: " + BuildSettingsFile);
+            //XConsole.Alert("on load: " + BuildSettingsFile);
             //PrintStackTrace();
             Setting = LoadSetting<MsvcCppBSetting>();
         }
@@ -137,7 +138,34 @@ namespace VampirioCode.Builder.Custom
 
             // Build Process
             MSVC msvc = new MSVC();
-            var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, includes, libPaths, libFiles);
+
+            BuildCmd cmd = new BuildCmd();
+            //BuildHelper.AddBasicVars(this);
+            cmd.AddVariable("${projDir}",   ProjectDir);
+            cmd.Sources =                   sourceFiles;
+            cmd.OutputFilename =            OutputFilename;
+            //cmd.OutputObjsDir =             objsDir;
+            cmd.PreprocessorDefinitions =   VariableAction.ToString(Setting.PreprocessorMacros, "=");
+            cmd.Includes =                  Setting.IncludeDirs;
+            cmd.LibraryPaths =              Setting.LibraryDirs;
+            cmd.LibraryFiles =              Setting.LibraryFiles;
+
+            
+            if (Setting.InstallPackage != "")
+            {
+                await ImportPackage(Setting.InstallPackage, ProjectDir);
+            }
+            
+            
+            bool copied;
+            copied = await CopyDirs(Setting.CopyDirsPost, cmd);
+            if (!copied) XConsole.Alert("error");
+
+            copied = await CopyFiles(Setting.CopyFilesPost, cmd);
+            if (!copied) XConsole.Alert("error");
+
+            //var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, Setting.IncludeDirs, Setting.LibraryDirs, Setting.LibraryFiles);
+            var result = await msvc.BuildAsync(cmd);
             result.OutputFilename = OutputFilename;
 
             return result;

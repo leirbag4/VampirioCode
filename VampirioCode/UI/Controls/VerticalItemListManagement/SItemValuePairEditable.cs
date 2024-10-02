@@ -22,9 +22,9 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         //public string LeftText { get { return Text0.Text; } set { Text0.Text = value; if (LeftTextChanged != null) LeftTextChanged(Text0, Text0.Text); } }
         //public string RightText { get { return Text1.Text; } set { Text1.Text = value; if (RightTextChanged != null) RightTextChanged(Text1, Text1.Text); } }
 
-        private TextBox editableTxtBox;
-        private SItemText currSitem;
-        private bool _editing = false;
+        protected TextBox editableTxtBox;
+        protected SItemText currSitem;
+        protected bool _editing = false;
 
         public SItemValuePairEditable() :base() 
         {

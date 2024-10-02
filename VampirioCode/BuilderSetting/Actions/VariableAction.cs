@@ -10,5 +10,14 @@ namespace VampirioCode.BuilderSetting.Actions
     {
         public string Name { get; set; }
         public string Value { get; set; }
+
+        public static List<String> ToString(List<VariableAction> varActions, string middleSymbol = "")
+        {
+            List<String> actions = new List<String>();
+            foreach (var varAction in varActions)
+                actions.Add(varAction.Name + middleSymbol + varAction.Value);
+
+            return actions;
+        }
     }
 }

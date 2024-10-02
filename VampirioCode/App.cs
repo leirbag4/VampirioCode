@@ -7,6 +7,7 @@ using VampDocManager;
 using VampEditor;
 using VampirioCode.Builder;
 using VampirioCode.Builder.Custom;
+using VampirioCode.Builder.Utils;
 using VampirioCode.BuilderSetting;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.Command;
@@ -26,8 +27,6 @@ namespace VampirioCode
         public VampirioEditor CurrEditor { get { return docManager.CurrDocumentTab.Editor; } }
 
         public bool FullScreen { get { return this.FormBorderStyle == FormBorderStyle.None; } set { if (value) { if (this.WindowState == FormWindowState.Maximized) this.WindowState = FormWindowState.Normal; this.FormBorderStyle = FormBorderStyle.None; this.WindowState = FormWindowState.Maximized; ResumeLayout(); } else { SuspendLayout(); this.WindowState = FormWindowState.Normal; this.FormBorderStyle = FormBorderStyle.Sizable; ResumeLayout(); } } }
-
-        private Dotnet dotnet;
 
         private Control screenLock;
 
@@ -49,6 +48,7 @@ namespace VampirioCode
             XConsole.Setup(footer);
             Builders.Initialize();
             CustomBuilders.Initialize();
+            BuilderUtils.Initialize();
             RegisterCmdKeys();
 
             // theme
@@ -76,9 +76,6 @@ namespace VampirioCode
 
             // open last documents
             OpenLastDocuments();
-
-            // start builders
-            dotnet = new Dotnet();
 
             FillBuilderItems();
 
@@ -212,9 +209,18 @@ namespace VampirioCode
             }
             else
             {
-                Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
-                builder.Setup(projName, CurrDocument.Text);
-                await builder.Build();
+                if (CurrDocument.CustomBuild)
+                {
+                    Builder.Custom.CustomBuilder builder = CustomBuilders.GetBuilder(projName, CurrDocument.BuilderType);
+                    builder.Setup(projName, CurrDocument.Text);
+                    await builder.Build();
+                }
+                else
+                {
+                    Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
+                    builder.Setup(projName, CurrDocument.Text);
+                    await builder.Build();
+                }
             }
         }
 
@@ -245,12 +251,12 @@ namespace VampirioCode
                     //Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
                     //builder.Setup(projName, CurrDocument.Text);
                     //await builder.Build();
-                    
+
                     //XConsole.Alert("is: " + CurrDocument.BuilderType);
-                    Builder.Custom.CustomBuilder builder = CustomBuilders.Get(projName, CurrDocument.BuilderType);
-                    //builder.Setup(projName, CurrDocument.Text);
-                    //await builder.Build();
-                    
+                    Builder.Custom.CustomBuilder builder = CustomBuilders.GetBuilder(projName, CurrDocument.BuilderType);
+                    builder.Setup(projName, CurrDocument.Text);
+                    await builder.BuildAndRun();
+
                 }
                 else
                 {
@@ -260,6 +266,8 @@ namespace VampirioCode
                 }
             }
         }
+
+
 
         private void OnFilePressed(object sender, EventArgs e)
         {
@@ -276,17 +284,83 @@ namespace VampirioCode
 
         private void OnCustomBuildPressed(object sender, EventArgs e)
         {
-            NewCustomBuild((string)((ToolStripMenuItem)sender).Tag);
+            string templateTag = (string)((ToolStripMenuItem)sender).Tag;
+            BuilderTemplateInfo binfo = BuilderTemplateInfo.GetFromTag(templateTag);
+
+            XConsole.Alert(binfo.ToString());
+
+            if (binfo == null)
+            {
+                MsgBox.Show("Not compatible build");
+                return;
+            }
+
+            NewCustomBuild(binfo);
+        }
+
+        private void OnConfigPressed(object sender, EventArgs e)
+        {
+            bool customBuild = CurrDocument.CustomBuild;
+
+            if(CurrDocument.CustomBuild)
+            { 
+                setupBuildToolStripMenuItem.Enabled =           true;
+                clearBuildSettingsToolStripMenuItem.Enabled =   true;
+            }
+            else // SimpleBuild
+            {
+                if (BuilderUtils.HasEquivalent(CurrDocument.BuilderType))
+                { 
+                    setupBuildToolStripMenuItem.Enabled =           true;
+                    clearBuildSettingsToolStripMenuItem.Enabled =   false;
+                }
+                else
+                {
+                    setupBuildToolStripMenuItem.Enabled =           false;
+                    clearBuildSettingsToolStripMenuItem.Enabled =   false;
+                }
+            }
         }
 
         private void OnSetupBuildPressed(object sender, EventArgs e)
         {
             string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
-            
-            CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
-            builderSettings.Open(projName, CurrDocument.BuilderType);
 
-            //builderSettings.ShowDialog();
+            if (CurrDocument.CustomBuild)
+            {
+                //XConsole.Alert("CurrDocument.BuilderType: " + CurrDocument.BuilderType);
+                BuilderTemplateInfo binfo = BuilderTemplateInfo.GetFromType(CurrDocument.BuilderType);
+
+                if (binfo == null)
+                    return;
+
+                //CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
+                var builderSettings = binfo.BuilderSetting;
+                builderSettings.Open(projName, CurrDocument.BuilderType);
+            }
+            else // SimpleBuild
+            {
+                // Convert a Simple project like:   BuilderType.SimpleMsvcCpp to
+                //              The equivalent ->   BuilderType.CustomMsvcCpp
+                BuilderUtils.ConvertSimpleToCustomBuild(CurrDocument);
+
+            }
+
+        }
+
+        private void OnClearBuildSettingPressed(object sender, EventArgs e)
+        {
+            if (CurrDocument.CustomBuild)
+            {
+                if (BuilderUtils.HasEquivalent(CurrDocument.BuilderType))
+                {
+                    BuilderUtils.ConvertCustomToSimpleBuild(CurrDocument);
+                }
+            }
+            else // SimpleBuild
+            {
+                MsgBox.Show("Already a Simple Build", "This build is already a 'Simple Build' so it's not needed to go back.\n\nIt's not a 'Custom Build'");
+            }
         }
 
         private void OnEditPressed(object sender, EventArgs e)
@@ -310,7 +384,12 @@ namespace VampirioCode
                 {
                     string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
 
-                    Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
+                    Builder.Builder builder;
+
+                    if (CurrDocument.CustomBuild)
+                        builder = CustomBuilders.GetBuilder(CurrDocument.FileName, CurrDocument.BuilderType);
+                    else
+                        builder = Builders.GetBuilder(CurrDocument.BuilderType);
                     builder.Setup(projName, CurrDocument.Text);
                     builder.Prepare();
 
@@ -330,7 +409,7 @@ namespace VampirioCode
         private void OnLanguagePressed(object sender, EventArgs e)
         {
             DocumentType docType = DocumentType.OTHER;
-    
+
                  if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
             else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
             else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
@@ -402,23 +481,30 @@ namespace VampirioCode
 
         private Document CreateCustomDocument(DocumentType docType, BuilderType builderType)
         {
-            DocumentTab tab =       docManager.NewDocument();
-            Document document =     tab.Document;
-            document.DocType =      docType;
-            document.BuilderType =  builderType;
-            document.CustomBuild =  true;
+            DocumentTab tab = docManager.NewDocument();
+            Document document = tab.Document;
+            document.DocType = docType;
+            document.BuilderType = builderType;
+            document.CustomBuild = true;
             SelectLanguage(docType);
             SelectBuilder(docType, builderType);
 
             return document;
         }
 
-        private void NewCustomBuild(string type)
+        private void NewCustomBuild(BuilderTemplateInfo builderTemplateInfo)
         {
-            if (type == "cpp_msvc_sdl2")
+            BuilderTemplate template = builderTemplateInfo.Template;
+
+            if (template == BuilderTemplate.CppMsvcBasic)
             {
                 Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
-                CustomBuilders.Create_CPP_SDL2(document);
+                CustomBuilders.Create_CPP_MSVC_BASIC(document, CurrEditor, builderTemplateInfo);
+            }
+            else if (template == BuilderTemplate.CppMsvcSDL2)
+            {
+                Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
+                CustomBuilders.Create_CPP_MSVC_SDL2(document, CurrEditor, builderTemplateInfo);
             }
         }
 
@@ -546,21 +632,42 @@ namespace VampirioCode
                     item.ForeColor = Color.Silver;
             }
 
-            if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.CPP) cppToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.JS) jsToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.JAVA) javaToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.PHP) phpToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.HTML) htmlToolStripMenuItem.ForeColor = Color.SlateBlue;
-            else if (docType == DocumentType.TXT) cmakeToolStripMenuItem.ForeColor = Color.SlateBlue;
+                 if (docType == DocumentType.CSHARP)csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.CPP)   cppToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.JS)    jsToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.JAVA)  javaToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.PHP)   phpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.HTML)  htmlToolStripMenuItem.ForeColor = Color.SlateBlue;
+            else if (docType == DocumentType.TXT)   cmakeToolStripMenuItem.ForeColor = Color.SlateBlue;
 
             footer.DocType = docType;
         }
 
         private void SelectBuilder(DocumentType docType, BuilderType selBuilderType)
         {
+            //XConsole.Println("--------------");
+            //XConsole.Println("docType: " + docType + "   selBuilderType: " + selBuilderType);
+
+            BuilderCategory category = BuilderUtils.GetCategory(selBuilderType);
+
+            if (category == BuilderCategory.Custom)
+            {
+                selBuilderType = BuilderUtils.GetEquivalent(selBuilderType);
+                //XConsole.Println("docType: " + docType + "   [equivalent builder type]: " + selBuilderType);
+            }
+
+
+            // Get equivalent BuilderType if it is a custom one, so we should't 
+            // have to duplicate code and check both Custom and Simple.
+            // So as a result: Custom will be transform to its Simple version
+            //
+            // For example:
+            //         From a custom  -> BuilderType.CustomMsvcCpp
+            //         The equivalent -> BuilderType.SimpleMsvcCpp
+
             BuilderType[] allowedBuilders = Builders.GetBuilderypesFor(docType);
 
+            // Loop for turning on and off
             foreach (ToolStripMenuItem item in builderToolStripMenuItem.DropDownItems)
             {
                 BuilderType buildType = (BuilderType)item.Tag;
@@ -576,10 +683,9 @@ namespace VampirioCode
                 // non selected items
                 else
                 {
-                    String allow = "";
-                    foreach (var al in allowedBuilders)
-                        allow += al.ToString() + ", ";
-
+                    //String allow = "";
+                    //foreach (var al in allowedBuilders)
+                    //    allow += al.ToString() + ", ";
                     //XConsole.Alert("docType: " + docType + "     allowed: " + allow + " buildType: " + buildType + " contain: " + allowedBuilders.Contains(buildType));
 
                     // hide menu item if it doesn't belong to the language or docType
@@ -774,7 +880,7 @@ namespace VampirioCode
             about.ShowMe(this);
         }
 
-        private void OnDebugPressed(object sender, EventArgs e)
+        private void OnDebugSyntaxColorChangerPressed(object sender, EventArgs e)
         {
             if (sender == syntaxColorChangerToolStripMenuItem)
             {
@@ -784,11 +890,17 @@ namespace VampirioCode
             }
         }
 
+        private void OnDebugCurrDocument(object sender, EventArgs e)
+        {
+            XConsole.Println(CurrDocument.FullFilePath);
+            XConsole.Println(CurrDocument.FileName);
+            XConsole.Println($"CustomBuild: {CurrDocument.CustomBuild}, BuildType: {CurrDocument.BuilderType}");
+        }
+
         private void FullScreenToggle()
         {
             FullScreen = !FullScreen;
         }
 
-        
     }
 }

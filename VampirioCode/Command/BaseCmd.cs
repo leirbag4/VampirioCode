@@ -21,6 +21,8 @@ namespace VampirioCode.Command
         protected BaseResult baseResult = null;
         protected string cmd = "";
 
+        private Dictionary<string, string> variables = new Dictionary<string, string>() { { "${base}", AppInfo.BasePath } };
+
         /*protected async Task<T> CreateCommand<T>(string command, string param0 = "", string param1 = "") where T : BaseResult, new()
         {
             return await _CreateCommand<T>("dotnet", command, param0, param1);
@@ -45,7 +47,7 @@ namespace VampirioCode.Command
 
             if(LogParams)
                 Println(program + " " + arguments);
-
+            
             proc = new CmdRun(program, arguments);
             proc.DataReceived += _OnDataReceived;
             proc.ErrorDataReceived += _OnErrorDataReceived;
@@ -202,6 +204,24 @@ namespace VampirioCode.Command
         { 
             if(value != notThisValue)
                 cmd += argumentName + " \"" + value + "\"";
+        }
+
+        public void AddVariable(string varName, string varValue)
+        { 
+            if(variables.ContainsKey(varName))
+                variables[varName] = varValue;
+            else
+                variables.Add(varName, varValue);
+
+        }
+        public string ReplaceVars(string path)
+        {
+            foreach (var currVar in variables)
+            {
+                path = path.Replace(currVar.Key, currVar.Value);
+                path = path.Replace("\\\\", "\\");
+            }
+            return path;
         }
 
         protected string _quotes(string str)

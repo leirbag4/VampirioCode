@@ -19,7 +19,7 @@ using VampirioCode.UI.Controls.VerticalItemListManagement;
 
 namespace VampirioCode.BuilderSetting
 {
-    public partial class CustomMsvcCppBuilderSetting : VampirioForm
+    public partial class CustomMsvcCppBuilderSetting : CustomBuilderSettingBase
     {
         private CustomMsvcCppBuilder builder;
 
@@ -28,9 +28,9 @@ namespace VampirioCode.BuilderSetting
             InitializeComponent();
         }
 
-        public void Open(string projName, BuilderType builderType)
+        public override void Open(string projName, BuilderType builderType)
         {
-            builder = (CustomMsvcCppBuilder)CustomBuilders.Get(projName, builderType);
+            builder = (CustomMsvcCppBuilder)CustomBuilders.GetBuilder(projName, builderType);
 
             //XConsole.Alert("t:" + builder.Setting.CopyDirsPre.Count);
             //XConsole.Alert("t -> " + builder.Setting.CopyDirsPre[0].From);
@@ -46,6 +46,9 @@ namespace VampirioCode.BuilderSetting
             libraryDirsList.SetupDirMode();
             libraryFilesList.SetupFileMode(new FileBrowseInfo("Choose .lib files", false, "DLL files (*.dll)|*.dll|LIB files (*.lib)|*.lib"));
             macrosList.SetupValuePair(0.5f, true, true);
+
+            postCopyDirsList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { BrowseInfo = new DirBrowseInfo() { Title = "Select a Directory" } });
+            postCopyFilesList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { LeftBrowseInfo = new FileBrowseInfo("Select Files", true, "DLL files (*.dll)|*.dll|LIB files (*.lib)|*.lib|All Files (*.*)|*.*"), RightBrowseInfo = new DirBrowseInfo() { Title = "Select a Directory"} });
 
             foreach (ExceptionHandlingModel model in Enum.GetValues(typeof(ExceptionHandlingModel)))
             {
@@ -64,13 +67,15 @@ namespace VampirioCode.BuilderSetting
         {
             var settings = builder.Setting;
 
-            SetItemListSBrowsable(includeDirsList,          settings.IncludeDirs);
-            SetItemListSBrowsable(libraryDirsList,          settings.LibraryDirs);
-            SetItemListSBrowsable(libraryFilesList,         settings.LibraryFiles);
-            SetItemListValuePair(macrosList,                settings.PreprocessorMacros);
-            SetFindPackage(findPackageInput,                settings.InstallPackage);
+            SetItemListSBrowsable(includeDirsList,              settings.IncludeDirs);
+            SetItemListSBrowsable(libraryDirsList,              settings.LibraryDirs);
+            SetItemListSBrowsable(libraryFilesList,             settings.LibraryFiles);
+            SetItemListValuePair(macrosList,                    settings.PreprocessorMacros);
+            SetFindPackage(findPackageInput,                    settings.InstallPackage);
+            SetItemListValuePairBrowsable(postCopyDirsList,     settings.CopyDirsPost);
+            SetItemListValuePairBrowsable(postCopyFilesList,    settings.CopyFilesPost);
 
-            SetExceptionHandlingMode(exceptHandlModeCBox,   settings.ExceptionHanldingModel);
+            SetExceptionHandlingMode(exceptHandlModeCBox,       settings.ExceptionHanldingModel);
         }
 
         private void OnSaveData()
@@ -82,34 +87,15 @@ namespace VampirioCode.BuilderSetting
             settings.LibraryFiles =             GetItemListSBrowsable(libraryFilesList);
             settings.PreprocessorMacros =       GetItemListValuePair(macrosList);
             settings.InstallPackage =           GetFindPackage(findPackageInput);
+            settings.CopyDirsPost =             GetItemListValuePairBrowsable(postCopyDirsList);
+            settings.CopyFilesPost =            GetItemListValuePairBrowsable(postCopyFilesList);
 
             settings.ExceptionHanldingModel =   GetExceptionHandlingMode(exceptHandlModeCBox);
 
             builder.Save();
         }
 
-        private void SetItemListSBrowsable(ItemList itemList, List<string> items)
-        {
-            foreach (string itemStr in items)
-            {
-                SItemBrowsable item = new SItemBrowsable() { Text = itemStr };
-                itemList.Add(item);
-            }
-        }
-
-        private void SetItemListValuePair(ItemList itemList, List<VariableAction> items)
-        {
-            foreach (VariableAction itm in items)
-            {
-                SItemValuePairEditable item = new SItemValuePairEditable() { LeftValue = itm.Name, RightValue = itm.Value };
-                itemList.Add(item);
-            }
-        }
-
-        private void SetFindPackage(FindPackageInput findPackageInp, string packageName)
-        {
-            findPackageInp.SelectedPackage = packageName;
-        }
+        
 
         private void SetExceptionHandlingMode(ComboBoxAdv comboBox, ExceptionHandlingModel model)
         {
@@ -120,31 +106,6 @@ namespace VampirioCode.BuilderSetting
         // ---------------------------------------------------------------
         // ---------------------------------------------------------------
         // ---------------------------------------------------------------
-
-        private List<string> GetItemListSBrowsable(ItemList itemList)
-        {
-            List<string> arr = new List<string>();
-
-            foreach (SItemBrowsable itm in itemList.Items)
-                arr.Add(itm.Text);
-
-            return arr;
-        }
-
-        private List<VariableAction> GetItemListValuePair(ItemList itemList)
-        {
-            List<VariableAction> vars = new List<VariableAction>();
-
-            foreach (SItemValuePairEditable itm in itemList.Items)
-                vars.Add(new VariableAction() { Name = itm.LeftValue, Value = itm.RightValue });
-
-            return vars;
-        }
-
-        private string GetFindPackage(FindPackageInput findPackageInp)
-        {
-            return findPackageInp.SelectedPackage;
-        }
 
         private ExceptionHandlingModel GetExceptionHandlingMode(ComboBoxAdv comboBox)
         {

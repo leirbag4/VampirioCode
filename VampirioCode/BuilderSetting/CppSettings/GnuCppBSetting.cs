@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VampirioCode.BuilderSetting.Actions;
 
-namespace VampirioCode.BuilderSetting
+namespace VampirioCode.BuilderSetting.CppSettings
 {
-    public class BuilderSettingBase
+    public class GnuCppBSetting : BuilderSettingBase
     {
-
     }
 }

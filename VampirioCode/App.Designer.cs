@@ -61,11 +61,13 @@
             cmakeToolStripMenuItem = new ToolStripMenuItem();
             builderToolStripMenuItem = new ToolStripMenuItem();
             builderSettingsToolStripMenuItem = new ToolStripMenuItem();
-            settingsToolStripMenuItem = new ToolStripMenuItem();
+            setupBuildToolStripMenuItem = new ToolStripMenuItem();
+            clearBuildSettingsToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             debugToolStripMenuItem = new ToolStripMenuItem();
             syntaxColorChangerToolStripMenuItem = new ToolStripMenuItem();
+            debugCurrDocumentToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
@@ -291,7 +293,7 @@
             // 
             csharpToolStripMenuItem.ForeColor = Color.Silver;
             csharpToolStripMenuItem.Name = "csharpToolStripMenuItem";
-            csharpToolStripMenuItem.Size = new Size(224, 26);
+            csharpToolStripMenuItem.Size = new Size(156, 26);
             csharpToolStripMenuItem.Text = "C#";
             csharpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -299,7 +301,7 @@
             // 
             cppToolStripMenuItem.ForeColor = Color.Silver;
             cppToolStripMenuItem.Name = "cppToolStripMenuItem";
-            cppToolStripMenuItem.Size = new Size(224, 26);
+            cppToolStripMenuItem.Size = new Size(156, 26);
             cppToolStripMenuItem.Text = "C++";
             cppToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -307,7 +309,7 @@
             // 
             jsToolStripMenuItem.ForeColor = Color.Silver;
             jsToolStripMenuItem.Name = "jsToolStripMenuItem";
-            jsToolStripMenuItem.Size = new Size(224, 26);
+            jsToolStripMenuItem.Size = new Size(156, 26);
             jsToolStripMenuItem.Text = "Javascript";
             jsToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -315,7 +317,7 @@
             // 
             javaToolStripMenuItem.ForeColor = Color.Silver;
             javaToolStripMenuItem.Name = "javaToolStripMenuItem";
-            javaToolStripMenuItem.Size = new Size(224, 26);
+            javaToolStripMenuItem.Size = new Size(156, 26);
             javaToolStripMenuItem.Text = "Java";
             javaToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -323,7 +325,7 @@
             // 
             phpToolStripMenuItem.ForeColor = Color.Silver;
             phpToolStripMenuItem.Name = "phpToolStripMenuItem";
-            phpToolStripMenuItem.Size = new Size(224, 26);
+            phpToolStripMenuItem.Size = new Size(156, 26);
             phpToolStripMenuItem.Text = "PHP";
             phpToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -331,7 +333,7 @@
             // 
             htmlToolStripMenuItem.ForeColor = Color.Silver;
             htmlToolStripMenuItem.Name = "htmlToolStripMenuItem";
-            htmlToolStripMenuItem.Size = new Size(224, 26);
+            htmlToolStripMenuItem.Size = new Size(156, 26);
             htmlToolStripMenuItem.Text = "HTML";
             htmlToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -339,7 +341,7 @@
             // 
             cmakeToolStripMenuItem.ForeColor = Color.Silver;
             cmakeToolStripMenuItem.Name = "cmakeToolStripMenuItem";
-            cmakeToolStripMenuItem.Size = new Size(224, 26);
+            cmakeToolStripMenuItem.Size = new Size(156, 26);
             cmakeToolStripMenuItem.Text = "CMake";
             cmakeToolStripMenuItem.Click += OnLanguagePressed;
             // 
@@ -351,18 +353,27 @@
             // 
             // builderSettingsToolStripMenuItem
             // 
-            builderSettingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { settingsToolStripMenuItem });
+            builderSettingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setupBuildToolStripMenuItem, clearBuildSettingsToolStripMenuItem });
             builderSettingsToolStripMenuItem.Name = "builderSettingsToolStripMenuItem";
             builderSettingsToolStripMenuItem.Size = new Size(67, 24);
             builderSettingsToolStripMenuItem.Text = "Config";
+            builderSettingsToolStripMenuItem.Click += OnConfigPressed;
             // 
-            // settingsToolStripMenuItem
+            // setupBuildToolStripMenuItem
             // 
-            settingsToolStripMenuItem.ForeColor = Color.Silver;
-            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(224, 26);
-            settingsToolStripMenuItem.Text = "Setup Build";
-            settingsToolStripMenuItem.Click += OnSetupBuildPressed;
+            setupBuildToolStripMenuItem.ForeColor = Color.Silver;
+            setupBuildToolStripMenuItem.Name = "setupBuildToolStripMenuItem";
+            setupBuildToolStripMenuItem.Size = new Size(224, 26);
+            setupBuildToolStripMenuItem.Text = "Setup Build";
+            setupBuildToolStripMenuItem.Click += OnSetupBuildPressed;
+            // 
+            // clearBuildSettingsToolStripMenuItem
+            // 
+            clearBuildSettingsToolStripMenuItem.ForeColor = Color.Silver;
+            clearBuildSettingsToolStripMenuItem.Name = "clearBuildSettingsToolStripMenuItem";
+            clearBuildSettingsToolStripMenuItem.Size = new Size(224, 26);
+            clearBuildSettingsToolStripMenuItem.Text = "Clear Build Setting";
+            clearBuildSettingsToolStripMenuItem.Click += OnClearBuildSettingPressed;
             // 
             // helpToolStripMenuItem
             // 
@@ -381,7 +392,7 @@
             // 
             // debugToolStripMenuItem
             // 
-            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem });
+            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem });
             debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             debugToolStripMenuItem.Size = new Size(68, 24);
             debugToolStripMenuItem.Text = "Debug";
@@ -390,9 +401,17 @@
             // 
             syntaxColorChangerToolStripMenuItem.ForeColor = Color.Silver;
             syntaxColorChangerToolStripMenuItem.Name = "syntaxColorChangerToolStripMenuItem";
-            syntaxColorChangerToolStripMenuItem.Size = new Size(234, 26);
+            syntaxColorChangerToolStripMenuItem.Size = new Size(237, 26);
             syntaxColorChangerToolStripMenuItem.Text = "Syntax Color Changer";
-            syntaxColorChangerToolStripMenuItem.Click += OnDebugPressed;
+            syntaxColorChangerToolStripMenuItem.Click += OnDebugSyntaxColorChangerPressed;
+            // 
+            // debugCurrDocumentToolStripMenuItem
+            // 
+            debugCurrDocumentToolStripMenuItem.ForeColor = Color.Silver;
+            debugCurrDocumentToolStripMenuItem.Name = "debugCurrDocumentToolStripMenuItem";
+            debugCurrDocumentToolStripMenuItem.Size = new Size(237, 26);
+            debugCurrDocumentToolStripMenuItem.Text = "Debug CurrDocument";
+            debugCurrDocumentToolStripMenuItem.Click += OnDebugCurrDocument;
             // 
             // toolBar
             // 
@@ -465,6 +484,8 @@
         private ToolStripMenuItem cToolStripMenuItem;
         private ToolStripMenuItem sDL2ToolStripMenuItem;
         private ToolStripMenuItem builderSettingsToolStripMenuItem;
-        private ToolStripMenuItem settingsToolStripMenuItem;
+        private ToolStripMenuItem setupBuildToolStripMenuItem;
+        private ToolStripMenuItem debugCurrDocumentToolStripMenuItem;
+        private ToolStripMenuItem clearBuildSettingsToolStripMenuItem;
     }
 }

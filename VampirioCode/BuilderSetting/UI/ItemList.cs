@@ -46,6 +46,7 @@ namespace VampirioCode.BuilderSetting
         private SItemType _type = SItemType.SItem;
         private float _division = 0.5f;
         private ValuePairInfo _valuePairInfo;
+        private ValuePairBrowseInfo _valuePairBrowseInfo = null;
 
         public ItemList()
         {
@@ -68,9 +69,21 @@ namespace VampirioCode.BuilderSetting
 
         public void SetupValuePair(float division = 0.5f, bool leftEditable = true, bool rightEditable = true)
         {
-            _type =     SItemType.ValuePairEditable;
-            _division = division;
-            _valuePairInfo = new ValuePairInfo(leftEditable, rightEditable);
+            _type =             SItemType.ValuePairEditable;
+            _division =         division;
+            _valuePairInfo =    new ValuePairInfo(leftEditable, rightEditable);
+        }
+
+        public void SetupValuePairBrowsable(ValuePairBrowseInfo valuePairBrowseInfo)
+        {
+            SetupValuePairBrowsable(0.5f, true, true, valuePairBrowseInfo);
+        }
+        public void SetupValuePairBrowsable(float division = 0.5f, bool leftEditable = true, bool rightEditable = true, ValuePairBrowseInfo valuePairBrowseInfo = null)
+        {
+            _type =                 SItemType.ValuePairBrowsable;
+            _division =             division;
+            _valuePairInfo =        new ValuePairInfo(leftEditable, rightEditable);
+            _valuePairBrowseInfo =  valuePairBrowseInfo;
         }
 
         public void Add(SItemBrowsable item)
@@ -80,6 +93,11 @@ namespace VampirioCode.BuilderSetting
         }
 
         public void Add(SItemValuePairEditable item)
+        {
+            list.Items.Add(item);
+        }
+
+        public void Add(SItemValuePairBrowsable item)
         {
             list.Items.Add(item);
         }
@@ -96,10 +114,36 @@ namespace VampirioCode.BuilderSetting
             else if (Type == SItemType.ValuePairEditable)
             {
                 SItemValuePairEditable item = new SItemValuePairEditable();
-                item.LeftValue =  "-";
+                item.LeftValue = "-";
                 item.RightValue = "-";
                 item.LeftEditable = _valuePairInfo.leftEditable;
                 item.RightEditable = _valuePairInfo.rightEditable;
+                list.Items.Add(item);
+            }
+            else if (Type == SItemType.ValuePairEditable)
+            {
+                SItemValuePairBrowsable item = new SItemValuePairBrowsable();
+                item.LeftValue = "-";
+                item.RightValue = "-";
+                item.LeftEditable = _valuePairInfo.leftEditable;
+                item.RightEditable = _valuePairInfo.rightEditable;
+                list.Items.Add(item);
+            }
+            else if (Type == SItemType.ValuePairBrowsable)
+            {
+                SItemValuePairBrowsable item = new SItemValuePairBrowsable();
+                item.LeftValue =        "-";
+                item.RightValue =       "-";
+                item.LeftEditable =     _valuePairInfo.leftEditable;
+                item.RightEditable =    _valuePairInfo.rightEditable;
+
+                if (_valuePairBrowseInfo != null)
+                {
+                    item.BrowseInfo =       _valuePairBrowseInfo.BrowseInfo;
+                    item.LeftBrowseInfo =   _valuePairBrowseInfo.LeftBrowseInfo;
+                    item.RightBrowseInfo =  _valuePairBrowseInfo.RightBrowseInfo;
+                }
+
                 list.Items.Add(item);
             }
         }

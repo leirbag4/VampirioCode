@@ -6,50 +6,50 @@ using System.Threading.Tasks;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.Command.MSVC.Params;
 
-namespace VampirioCode.BuilderSetting
+namespace VampirioCode.BuilderSetting.CppSettings
 {
     public class MsvcCppBSetting : BuilderSettingBase
     {
         // Copyables
-        public List<CopyDirAction> CopyDirsPre { get; set; }
-        public List<CopyDirAction> CopyDirsPost { get; set; }
-        public List<CopyFileAction> CopyFilesPre { get; set; }
-        public List<CopyFileAction> CopyFilesPost { get; set; }
-        public List<VariableAction> PreprocessorMacros { get; set; }
+        //public List<CopyDirAction> CopyDirsPre { get; set; }
+        public List<CopyAction> CopyDirsPost { get; set; } = new List<CopyAction>();
+        //public List<CopyFileAction> CopyFilesPre { get; set; }
+        public List<CopyAction> CopyFilesPost { get; set; } = new List<CopyAction>();
+        public List<VariableAction> PreprocessorMacros { get; set; } = new List<VariableAction>();
 
-        public List<string> PathValues { get; set; }
+        public List<string> PathValues { get; set; } = new List<string>();
 
-        public List<string> IncludeDirs { get; set; }
-        public List<string> LibraryDirs { get; set; }
-        public List<string> LibraryFiles { get; set; }
+        public List<string> IncludeDirs { get; set; } = new List<string>();
+        public List<string> LibraryDirs { get; set; } = new List<string>();
+        public List<string> LibraryFiles { get; set; } = new List<string>();
 
-        public string InstallPackage { get; set; }
+        public string InstallPackage { get; set; } = "";
 
-        public ExceptionHandlingModel ExceptionHanldingModel { get; set; }
+        public ExceptionHandlingModel ExceptionHanldingModel { get; set; } = ExceptionHandlingModel.None;
 
         // Methods
-        public void CopyDirPreAdd(string from, string to, bool overwrite = true)
+        /*public void CopyDirPreAdd(string from, string to, bool overwrite = true)
         {
             if (CopyDirsPre == null) CopyDirsPre = new List<CopyDirAction>();
             CopyDirsPre.Add(new CopyDirAction() { From = from, To = to, Overwrite = overwrite});
-        }
+        }*/
 
         public void CopyDirPostAdd(string from, string to, bool overwrite = true)
         {
-            if (CopyDirsPost == null) CopyDirsPost = new List<CopyDirAction>();
-            CopyDirsPost.Add(new CopyDirAction() { From = from, To = to, Overwrite = overwrite});
+            if (CopyDirsPost == null) CopyDirsPost = new List<CopyAction>();
+            CopyDirsPost.Add(new CopyAction() { From = from, To = to, Overwrite = overwrite });
         }
 
-        public void CopyFilePreAdd(string from, string to, bool overwrite = true)
+        /*public void CopyFilePreAdd(string from, string to, bool overwrite = true)
         {
             if (CopyFilesPre == null) CopyFilesPre = new List<CopyFileAction>();
             CopyFilesPre.Add(new CopyFileAction() { From = from, To = to, Overwrite = overwrite});
-        }
+        }*/
 
         public void CopyFilePostAdd(string from, string to, bool overwrite = true)
         {
-            if (CopyFilesPost == null) CopyFilesPost = new List<CopyFileAction>();
-            CopyFilesPost.Add(new CopyFileAction() { From = from, To = to, Overwrite = overwrite });
+            if (CopyFilesPost == null) CopyFilesPost = new List<CopyAction>();
+            CopyFilesPost.Add(new CopyAction() { From = from, To = to, Overwrite = overwrite });
         }
 
         public void PreprocessorMacroAdd(string name, string value)

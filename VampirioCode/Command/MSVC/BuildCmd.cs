@@ -7,6 +7,10 @@ using VampirioCode.Command.MSVC.Result;
 using VampirioCode.Command.MSVC.Params;
 using System.DirectoryServices.ActiveDirectory;
 using System.Xml.Linq;
+using Microsoft.VisualBasic.ApplicationServices;
+using ScintillaNET;
+using System.Numerics;
+using System.Windows.Forms;
 
 namespace VampirioCode.Command.MSVC
 {
@@ -76,12 +80,26 @@ namespace VampirioCode.Command.MSVC
         /// </summary>
         public string OutputObjsDir { get; set; } = "";
 
+        /// <summary>
+        /// /D (Preprocessor Definitions)
+        /// You can use this symbol together with #if or #ifdef to compile source code conditionally. The symbol definition remains in effect until it's redefined in the code, or is undefined in the code by an #undef directive.
+        /// /D has the same effect as a
+        /// #define directive at the beginning of a source code file. The difference is that /D strips quotation marks on the command line, and a #define directive keeps them. You can have whitespace between the /D and the symbol. There can't be whitespace between the symbol and the equals sign, or between the equals sign and any value assigned.
+        /// By default, the value associated with a symbol is 1. For example, /D name is equivalent to /D name = 1.In the example at the end of this article, the definition of TEST is shown to print 1.
+        /// Compiling by using /D name = causes the symbol name to have no associated value.Although the symbol can still be used to conditionally compile code, it otherwise evaluates to nothing.In the example, if you compile by using /DTEST=, an error occurs.This behavior resembles the use of
+        /// #define with or without a value.
+        /// The /D option doesn't support function-like macro definitions. To insert definitions that can't be defined on the command line, consider the /FI(Name forced include file) compiler option.
+        /// You can use /D multiple times on the command line to define more symbols.If the same symbol is defined more than once, the last definition is used.
+        /// </summary>
+        public List<string> PreprocessorDefinitions { get; set; } = new List<string>();
+
         public async Task<BuildResult> BuildAsync()
         {
             SetIfExists("/Fo:", _fixLastEscapeBar(OutputObjsDir), false);
             SetIfExists(StandardVersionInfo.Get(StandardVersion).Param);
             SetIfExists(ExceptionHandlingModelInfo.Get(ExceptionHandlingModel).Param);
             SetIncludes(Includes);
+            SetPreprocessor(PreprocessorDefinitions);
             SetIfExists(Sources.ToArray());
 
             if (CanUse(LibraryPaths) || CanUse(LibraryFiles))
@@ -102,7 +120,10 @@ namespace VampirioCode.Command.MSVC
             if ((includes != null) && (includes.Count > 0))
             {
                 foreach (string include in includes)
-                    cmd += "/I\"" + _fixLastEscapeBar(include) + "\" ";
+                {
+                    string inc = ReplaceVars(include);
+                    cmd += "/I\"" + _fixLastEscapeBar(inc) + "\" ";
+                }
             }
         }
 
@@ -110,8 +131,20 @@ namespace VampirioCode.Command.MSVC
         {
             if ((libraries != null) && (libraries.Count > 0))
             {
-                foreach (string lib in libraries)
+                foreach (string library in libraries)
+                {
+                    string lib = ReplaceVars(library);
                     cmd += "/LIBPATH:\"" + _fixLastEscapeBar(lib) + "\" ";
+                }
+            }
+        }
+
+        private void SetPreprocessor(List<string> preprocessorDefinitions)
+        {
+            if ((preprocessorDefinitions != null) && (preprocessorDefinitions.Count > 0))
+            {
+                foreach (string directive in preprocessorDefinitions)
+                    cmd += "/D\"" + _fixLastEscapeBar(directive) + "\" ";
             }
         }
 

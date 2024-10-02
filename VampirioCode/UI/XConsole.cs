@@ -102,9 +102,29 @@ namespace VampirioCode.UI
             _outp = _savedOutp;
         }
 
-        public static void Alert(string str)
+        public static void Alert(string str, bool editable = false)
         {
-            MessageBox.Show(str);
+            if (editable)
+            {
+                Form msgBox = new Form();
+                msgBox.BackColor = Color.FromArgb(40, 40, 40);
+                msgBox.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+                msgBox.Size = new Size(400, 300);
+                TextBox txtBox = new TextBox();
+                txtBox.Multiline = true;
+                txtBox.Width = 380;
+                txtBox.Height= 280;
+                msgBox.Controls.Add(txtBox);
+                txtBox.Location = new Point(10, 10);
+                txtBox.Text = str;
+                txtBox.BackColor = Color.FromArgb(20, 20, 20);
+                txtBox.ForeColor = Color.Silver;
+                msgBox.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show(str);
+            }
         }
 
         public static void ErrorAlert(string str)

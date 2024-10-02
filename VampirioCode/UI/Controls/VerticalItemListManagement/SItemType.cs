@@ -13,6 +13,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         CheckBox,
         Editable,
         ValuePair,
-        ValuePairEditable
+        ValuePairEditable,
+        ValuePairBrowsable
     }
 }
