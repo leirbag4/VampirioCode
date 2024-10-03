@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VampDocManager;
 using VampirioCode.UI;
+using VampirioCode.Builder.Simple;
 
 namespace VampirioCode.Builder
 {

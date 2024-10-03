@@ -9,7 +9,7 @@ using VampirioCode.SaveData;
 using VampirioCode.UI;
 using VampirioCode.Utils;
 
-namespace VampirioCode.Builder
+namespace VampirioCode.Builder.Simple
 {
     public class SimpleCSharpBuilder : Builder
     {
@@ -24,12 +24,12 @@ namespace VampirioCode.Builder
 
         public override void Prepare()
         {
-            TempDir =               AppInfo.TemporaryBuildPath;                         // temporary directory ->   \temp_build\
-            ProjectDir =            TempDir + projectName + "\\";                       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile =           ProjectDir + projectName + ".cs";                   // .cs program file ->      \temp_build\proj_name\proj.cs
-            csprojFilePath =        ProjectDir + projectName + ".csproj";               // temp .csproj file ->     \temp_build\proj_name\proj.csproj
-            outputDir =             ProjectDir + "bin";                                 // output binaries dir ->   \temp_build\proj_name\bin
-            OutputFilename =        outputDir + "\\net8.0\\" + projectName + ".exe";    // output filename ->       \temp_build\proj_name\bin\net8.0\proj.exe
+            TempDir = AppInfo.TemporaryBuildPath;                         // temporary directory ->   \temp_build\
+            ProjectDir = TempDir + projectName + "\\";                       // temporary project dir -> \temp_build\proj_name\
+            ProgramFile = ProjectDir + projectName + ".cs";                   // .cs program file ->      \temp_build\proj_name\proj.cs
+            csprojFilePath = ProjectDir + projectName + ".csproj";               // temp .csproj file ->     \temp_build\proj_name\proj.csproj
+            outputDir = ProjectDir + "bin";                                 // output binaries dir ->   \temp_build\proj_name\bin
+            OutputFilename = outputDir + "\\net8.0\\" + projectName + ".exe";    // output filename ->       \temp_build\proj_name\bin\net8.0\proj.exe
         }
 
         protected override async Task OnBuildAndRun()
@@ -64,8 +64,8 @@ namespace VampirioCode.Builder
         }
 
         private string GetCsprojData()
-        { 
-            return  "<Project Sdk=\"Microsoft.NET.Sdk\">\n" +
+        {
+            return "<Project Sdk=\"Microsoft.NET.Sdk\">\n" +
                     "   <PropertyGroup>\n" +
                     "       <OutputType>Exe</OutputType>\n" +
                     "       <TargetFramework>net8.0</TargetFramework>\n" +

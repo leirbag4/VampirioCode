@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VampirioCode.Command.Nodejs;
+using VampirioCode.Command.PHP;
 
-namespace VampirioCode.Builder
+namespace VampirioCode.Builder.Simple
 {
-    public class SimpleJsBuilder : Builder
+    public class SimplePhpBuilder : Builder
     {
-        public SimpleJsBuilder() 
+        public SimplePhpBuilder()
         {
-            Name = "Nodejs";
-            Type = BuilderType.SimpleJs;
+            Name = "Xampp PHP";
+            Type = BuilderType.SimplePhp;
         }
 
         public override void Prepare()
-        { 
-            TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            ProjectDir =            TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile =           ProjectDir + projectName + ".js";   // .js program file ->      \temp_build\proj_name\proj.js
-            OutputFilename =        "";
+        {
+            TempDir = AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
+            ProjectDir = TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
+            ProgramFile = ProjectDir + projectName + ".php";  // .php program file ->     \temp_build\proj_name\proj.php
+            OutputFilename = "";
         }
 
         protected override async Task OnBuildAndRun()
@@ -44,8 +44,8 @@ namespace VampirioCode.Builder
             File.WriteAllText(ProgramFile, code);
 
             // [ COMPILATION PROCESS ]
-            Nodejs nodejs = new Nodejs();
-            var result = await nodejs.RunAsync(ProgramFile);
+            PHP php = new PHP();
+            var result = await php.RunAsync(ProgramFile);
 
             CheckResult(result);
         }

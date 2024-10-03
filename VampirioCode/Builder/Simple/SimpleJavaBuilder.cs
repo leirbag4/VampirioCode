@@ -7,7 +7,7 @@ using VampirioCode.Command.JDK;
 using VampirioCode.Command.JDK.Result;
 using VampirioCode.UI;
 
-namespace VampirioCode.Builder
+namespace VampirioCode.Builder.Simple
 {
     public class SimpleJavaBuilder : Builder
     {
@@ -23,17 +23,17 @@ namespace VampirioCode.Builder
 
         public override void Prepare()
         {
-            className =      GetClassName(code);
+            className = GetClassName(code);
 
             if (className == "")
                 className = projectName; // set this to get less errors if files needs to be deleted on the future maybe
 
-            TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            ProjectDir =            TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile =           ProjectDir + className + ".java";   // .cpp program file ->     \temp_build\proj_name\className.java
+            TempDir = AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
+            ProjectDir = TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
+            ProgramFile = ProjectDir + className + ".java";   // .cpp program file ->     \temp_build\proj_name\className.java
             //objsDir =               ProjectDir + "obj\\";             // output binaries dir ->   \temp_build\proj_name\obj\
-            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
-            OutputFilename =        outputDir + className + ".class";   // output binaries dir ->   \temp_build\proj_name\bin\proj.class
+            outputDir = ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
+            OutputFilename = outputDir + className + ".class";   // output binaries dir ->   \temp_build\proj_name\bin\proj.class
         }
 
         protected override async Task OnBuildAndRun()
@@ -46,7 +46,7 @@ namespace VampirioCode.Builder
                 XConsole.Clear();
                 Java java = new Java();
                 //runResult = await java.RunAsync(result.OutputFilename, new List<string>() { _fixLastEscapeBar(outputDir) });
-                runResult = await java.RunAsync(className, new List<string>() {_quotes(_fixLastEscapeBar(outputDir)) });
+                runResult = await java.RunAsync(className, new List<string>() { _quotes(_fixLastEscapeBar(outputDir)) });
                 //return runResult;
             }
 

@@ -9,7 +9,7 @@ using VampirioCode.Command.Emscripten.Emsdk;
 using VampirioCode.Command.Nodejs;
 using VampirioCode.UI;
 
-namespace VampirioCode.Builder
+namespace VampirioCode.Builder.Simple
 {
     public class SimpleWasmCppBuilder : Builder
     {
@@ -25,12 +25,12 @@ namespace VampirioCode.Builder
 
         public override void Prepare()
         {
-            TempDir =           AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            ProjectDir =        TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile =       ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\proj.cpp
-            objsDir =           ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\obj\
-            outputDir =         ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
-            OutputFilename =    outputDir + projectName + ".js";    // output binaries dir ->   \temp_build\proj_name\bin\proj.js
+            TempDir = AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
+            ProjectDir = TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
+            ProgramFile = ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\proj.cpp
+            objsDir = ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\obj\
+            outputDir = ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
+            OutputFilename = outputDir + projectName + ".js";    // output binaries dir ->   \temp_build\proj_name\bin\proj.js
         }
 
         protected override async Task OnBuildAndRun()

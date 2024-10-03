@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.BuilderSetting.Actions;
-using VampirioCode.Command.MSVC.Params;
 
 namespace VampirioCode.BuilderSetting.CppSettings
 {
-    public class MsvcCppBSetting : BuilderSettingBase
+    public class CppBSettingBase : BuilderSettingBase
     {
         // Copyables
         //public List<CopyDirAction> CopyDirsPre { get; set; }
@@ -24,9 +23,6 @@ namespace VampirioCode.BuilderSetting.CppSettings
         public List<string> LibraryFiles { get; set; } = new List<string>();
 
         public string InstallPackage { get; set; } = "";
-
-        public StandardVersion StandardVersion { get; set; } = StandardVersion.None;
-        public ExceptionHandlingModel ExceptionHanldingModel { get; set; } = ExceptionHandlingModel.None;
 
         // Methods
         /*public void CopyDirPreAdd(string from, string to, bool overwrite = true)
@@ -82,7 +78,5 @@ namespace VampirioCode.BuilderSetting.CppSettings
             if (LibraryFiles == null) LibraryFiles = new List<string>();
             LibraryFiles.Add(path);
         }
-
-
     }
 }

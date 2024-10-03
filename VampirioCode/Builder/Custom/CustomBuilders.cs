@@ -7,7 +7,7 @@ using VampDocManager;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.UI;
 using VampEditor;
-using VampirioCode.BuilderSetting.CppSettings;
+using VampirioCode.BuilderSetting.CppSettings.Settings;
 
 namespace VampirioCode.Builder.Custom
 {
