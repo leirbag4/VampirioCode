@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.BuilderSetting.Actions;
+using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.BuilderSetting.CppSettings.Settings;
 using VampirioCode.Command.MSVC;
 using VampirioCode.Command.MSVC.Result;
