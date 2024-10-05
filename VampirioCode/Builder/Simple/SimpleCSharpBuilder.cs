@@ -24,12 +24,13 @@ namespace VampirioCode.Builder.Simple
 
         public override void Prepare()
         {
-            TempDir = AppInfo.TemporaryBuildPath;                         // temporary directory ->   \temp_build\
-            ProjectDir = TempDir + projectName + "\\";                       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile = ProjectDir + projectName + ".cs";                   // .cs program file ->      \temp_build\proj_name\proj.cs
-            csprojFilePath = ProjectDir + projectName + ".csproj";               // temp .csproj file ->     \temp_build\proj_name\proj.csproj
-            outputDir = ProjectDir + "bin";                                 // output binaries dir ->   \temp_build\proj_name\bin
-            OutputFilename = outputDir + "\\net8.0\\" + projectName + ".exe";    // output filename ->       \temp_build\proj_name\bin\net8.0\proj.exe
+            TempDir = AppInfo.TemporaryBuildPath;                               // temporary directory ->   \temp_build\
+            BaseProjDir = TempDir + projectName + "\\";                         // temporary project dir -> \temp_build\proj_name\
+            ProjectDir = BaseProjDir;                                           // temporary project dir -> \temp_build\proj_name\
+            ProgramFile = ProjectDir + projectName + ".cs";                     // .cs program file ->      \temp_build\proj_name\proj.cs
+            csprojFilePath = ProjectDir + projectName + ".csproj";              // temp .csproj file ->     \temp_build\proj_name\proj.csproj
+            outputDir = ProjectDir + "bin";                                     // output binaries dir ->   \temp_build\proj_name\bin
+            OutputFilename = outputDir + "\\net8.0\\" + projectName + ".exe";   // output filename ->       \temp_build\proj_name\bin\net8.0\proj.exe
         }
 
         protected override async Task OnBuildAndRun()

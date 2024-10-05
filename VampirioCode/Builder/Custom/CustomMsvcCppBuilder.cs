@@ -28,7 +28,7 @@ namespace VampirioCode.Builder.Custom
         public CustomMsvcCppBuilder()
         {
             Name = "CustomMsvc";
-            Type = BuilderType.SimpleMsvcCpp;
+            Type = BuilderType.CustomMsvcCpp;
 
             Setting = new MsvcCppBSetting();
         }
@@ -36,11 +36,12 @@ namespace VampirioCode.Builder.Custom
         public override void Prepare()
         {
             TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            ProjectDir =            TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\proj.cpp
-            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\obj\
-            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
-            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\bin\proj.exe
+            BaseProjDir =           TempDir + projectName + "\\";       // temporary base dir ->    \temp_build\proj_name\
+            ProjectDir =            BaseProjDir + "msvc\\";             // temporary project dir -> \temp_build\proj_name\msvc\
+            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\msvc\proj.cpp
+            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\msvc\obj\
+            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\msvc\bin\
+            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\msvc\bin\proj.exe
 
             // Custom Build Settings File
             BuildSettingsFile =     ProjectDir + ".bsettings";        // build settings file ->   \temp_build\proj_name\.bsettings

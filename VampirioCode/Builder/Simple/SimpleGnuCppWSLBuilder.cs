@@ -24,12 +24,13 @@ namespace VampirioCode.Builder.Simple
 
         public override void Prepare()
         {
-            TempDir = AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            ProjectDir = TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile = ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\proj.cpp
-            objsDir = ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\obj\
-            outputDir = ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
-            OutputFilename = outputDir + projectName;            // output binaries dir ->   \temp_build\proj_name\bin\proj
+            TempDir = AppInfo.TemporaryBuildPath;               // temporary directory ->   \temp_build\
+            BaseProjDir = TempDir + projectName + "\\";         // temporary project dir -> \temp_build\proj_name\
+            ProjectDir = BaseProjDir;                           // temporary project dir -> \temp_build\proj_name\
+            ProgramFile = ProjectDir + projectName + ".cpp";    // .cpp program file ->     \temp_build\proj_name\proj.cpp
+            objsDir = ProjectDir + "obj\\";                     // output binaries dir ->   \temp_build\proj_name\obj\
+            outputDir = ProjectDir + "bin\\";                   // output binaries dir ->   \temp_build\proj_name\bin\
+            OutputFilename = outputDir + projectName;           // output binaries dir ->   \temp_build\proj_name\bin\proj
         }
 
         protected override async Task OnBuildAndRun()

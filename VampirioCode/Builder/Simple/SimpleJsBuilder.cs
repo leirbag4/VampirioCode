@@ -17,9 +17,10 @@ namespace VampirioCode.Builder.Simple
 
         public override void Prepare()
         {
-            TempDir = AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            ProjectDir = TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile = ProjectDir + projectName + ".js";   // .js program file ->      \temp_build\proj_name\proj.js
+            TempDir = AppInfo.TemporaryBuildPath;               // temporary directory ->   \temp_build\
+            BaseProjDir = TempDir + projectName + "\\";         // temporary project dir -> \temp_build\proj_name\
+            ProjectDir = BaseProjDir;                           // temporary project dir -> \temp_build\proj_name\
+            ProgramFile = ProjectDir + projectName + ".js";     // .js program file ->      \temp_build\proj_name\proj.js
             OutputFilename = "";
         }
 

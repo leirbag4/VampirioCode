@@ -29,6 +29,27 @@ namespace VampirioCode.Builder.Utils
             }
         }
 
+        public static void DeleteProject(VampDocManager.Document currDocument)
+        {
+            if (currDocument.BuilderType == BuilderType.None)
+                return;
+
+            if (currDocument.CustomBuild)
+            {
+                string projName = Path.GetFileNameWithoutExtension(currDocument.FullFilePath);
+                CustomBuilder customBuilder = CustomBuilders.GetBuilder(projName, currDocument.BuilderType);
+                customBuilder.Prepare();
+                customBuilder.DeleteBuild();
+            }
+            else
+            {
+                Builder builder = Builders.GetBuilder(currDocument.BuilderType);
+                builder.Setup(currDocument.FileName, "");
+                builder.Prepare();
+                builder.DeleteBuild();
+            }
+        }
+
         public static void ConvertCustomToSimpleBuild(Document document)
         {
             string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);

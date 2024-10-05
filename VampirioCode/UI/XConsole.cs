@@ -15,6 +15,8 @@ namespace VampirioCode.UI
 {
     public partial class XConsole : UserControl
     {
+        public static bool InternalLogEnabled { get; set; } = true;
+
         private static RichTextBox _outp;
         private static RichTextBox _savedOutp;
         private static FooterUI _footer;
@@ -232,6 +234,27 @@ namespace VampirioCode.UI
         public static void PrintWarning(String str)
         {
             Println(str, Color.Orange);
+        }
+
+        // Internal Log
+        public static void LogInfo(String str)
+        {
+            if (InternalLogEnabled)
+                Println(str, Color.MediumSlateBlue);
+        }
+
+        // Internal Log
+        public static void LogError(String str)
+        {
+            if(InternalLogEnabled)
+                Println(str, Color.Crimson);
+        }
+
+        // Internal Log
+        public static void LogWarning(String str)
+        {
+            if (InternalLogEnabled)
+                Println(str, Color.PeachPuff);
         }
 
         /*public static void PrintError(ErrorInfo error)

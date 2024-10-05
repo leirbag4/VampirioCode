@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command;
 using VampirioCode.UI;
+using VampirioCode.Utils;
 
 namespace VampirioCode.Builder
 {
@@ -14,6 +15,7 @@ namespace VampirioCode.Builder
         public BuilderType Type = BuilderType.None;
 
         protected string TempDir { get; set; } = "";
+        protected string BaseProjDir { get; set; } = "";
         protected string ProjectDir { get; set; } = "";
         protected string ProgramFile { get; set; } = "";    // e.g: main.cpp  or  Program.cs
         public string OutputFilename { get; set; } = "";    // e.g: 'project.exe' or 'untitled 2.exe'
@@ -28,6 +30,7 @@ namespace VampirioCode.Builder
         }
 
         public string GetTempDir() { return TempDir; }
+        public string GetBaseProjDir() { return BaseProjDir; }
         public string GetProjectDir() { return ProjectDir; }
         public string GetProgramFile() { return ProgramFile; }
         public string GetOutputFilename() { return OutputFilename; }
@@ -98,5 +101,22 @@ namespace VampirioCode.Builder
 
         protected virtual async Task OnBuild()
         { }
+
+        public void DeleteBuild()
+        {
+            if (Directory.Exists(BaseProjDir))
+            {
+                try
+                {
+                    Directory.Delete(BaseProjDir, true);
+                    XConsole.LogInfo("Build for '" + BaseProjDir + "' deleted [done]");
+                }
+                catch (Exception e)
+                {
+                    XConsole.LogError("Can't delete build for'" + BaseProjDir + "'");
+                }
+            }
+            
+        }
     }
 }

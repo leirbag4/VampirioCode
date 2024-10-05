@@ -10,16 +10,66 @@ namespace VampirioCode.Utils
 {
     public class FileUtils
     {
-        public static void DeleteFilesAndDirs(String dirPath)
+        public static void DeleteFilesAndDirs(string dirPath, string[] except = null)
+        {
+            if (!Directory.Exists(dirPath))
+                return;
+
+            // Normalize all paths 
+            if (except != null)
+            {
+                except = except.Select(path => Path.GetFullPath(path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))).ToArray();
+            }
+
+            DirectoryInfo di = new DirectoryInfo(dirPath);
+
+            // Delete Files
+            foreach (FileInfo file in di.GetFiles())
+            {
+                string fileFullPath = Path.GetFullPath(file.FullName);
+
+                if (except == null || !except.Contains(fileFullPath, StringComparer.OrdinalIgnoreCase))
+                {
+                    file.Delete();
+                }
+            }
+
+            // Delete directories
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                string dirFullPath = Path.GetFullPath(dir.FullName.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+
+                if (except == null || !except.Contains(dirFullPath, StringComparer.OrdinalIgnoreCase))
+                {
+                    dir.Delete(true);
+                }
+            }
+        }
+        /*public static void DeleteFilesAndDirs(string dirPath, string[] except = null)
         {
             System.IO.DirectoryInfo di = new DirectoryInfo(dirPath);
 
             foreach (FileInfo file in di.GetFiles())
-                file.Delete();
+            {
+                if (except == null)
+                    file.Delete();
+                else
+                { 
+                    file.FullName
+                }
+            }
 
             foreach (DirectoryInfo dir in di.GetDirectories())
-                dir.Delete(true);
-        }
+            {
+                if (except == null)
+                    dir.Delete(true);
+                else
+                {
+                    dir.FullName
+                }
+            }
+                
+        }*/
 
         public static string[] GetFilesAt(string path)
         {

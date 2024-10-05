@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampEditor;
 using VampirioCode;
+using VampirioCode.Builder.Utils;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TabManagement;
@@ -395,7 +396,6 @@ namespace VampDocManager
             bool saved =    false;
             bool deleted =  false;
 
-
             if (doc.Modified)
             {
                 var result = MsgBox.Show("File modified", "Save changes to '" + doc.FileName + "'?", "Save", "Don't Save", "Cancel", DialogIcon.Question);
@@ -410,13 +410,15 @@ namespace VampDocManager
                 {
                     if (doc.IsTemporary)
                         deleted = Document.Delete(doc);
+
+                    BuilderUtils.DeleteProject(doc);
                 }
                 else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
                 {
                     return false;
                 }
             }
-            else if(CurrDocument.IsTemporary)
+            else if (CurrDocument.IsTemporary)
             {
                 // Doc is empty. User never write anything
                 if (CurrDocument.Text == "")
@@ -436,6 +438,7 @@ namespace VampDocManager
                     else if (result == OptionResult.OptionB) // Don't Save
                     {
                         deleted = Document.Delete(doc);
+                        BuilderUtils.DeleteProject(doc);
                     }
                     else if ((result == OptionResult.OptionC) || (result == OptionResult.None)) // Cancel
                     {
@@ -443,6 +446,13 @@ namespace VampDocManager
                     }
                 }
             }
+            // Is a UserFile with a custom name like c:\\tests\\testermon.cpp
+            else
+            {
+                BuilderUtils.DeleteProject(doc);
+            }
+
+
 
             // Removed Event
             CloseMode closeMode =   CloseMode.Normal;

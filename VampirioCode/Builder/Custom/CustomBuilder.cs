@@ -11,6 +11,7 @@ using VampirioCode.UI;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.Command;
 using VampirioCode.BuilderSetting;
+using VampirioCode.Utils;
 
 namespace VampirioCode.Builder.Custom
 {
@@ -104,8 +105,10 @@ namespace VampirioCode.Builder.Custom
             if (!Directory.Exists(TempDir))
                 Directory.CreateDirectory(TempDir);
 
-            //XConsole.Alert("exist ProjectDir:" + Directory.Exists(ProjectDir));
-
+            // [DELETE]     temporary base dir [dir]  ->    \temp_build\proj_name\something_old\
+            // [DELETE]     temporary base dir [file] ->    \temp_build\proj_name\something_old_2.bin
+            // [CONSERVE]   temporary project dir ->        \temp_build\proj_name\msvc\
+            FileUtils.DeleteFilesAndDirs(BaseProjDir, new[] { ProjectDir });
 
             if (!Directory.Exists(ProjectDir))
             {

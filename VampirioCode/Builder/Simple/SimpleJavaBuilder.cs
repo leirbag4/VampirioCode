@@ -28,12 +28,13 @@ namespace VampirioCode.Builder.Simple
             if (className == "")
                 className = projectName; // set this to get less errors if files needs to be deleted on the future maybe
 
-            TempDir = AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            ProjectDir = TempDir + projectName + "\\";       // temporary project dir -> \temp_build\proj_name\
-            ProgramFile = ProjectDir + className + ".java";   // .cpp program file ->     \temp_build\proj_name\className.java
-            //objsDir =               ProjectDir + "obj\\";             // output binaries dir ->   \temp_build\proj_name\obj\
-            outputDir = ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\bin\
-            OutputFilename = outputDir + className + ".class";   // output binaries dir ->   \temp_build\proj_name\bin\proj.class
+            TempDir = AppInfo.TemporaryBuildPath;               // temporary directory ->   \temp_build\
+            BaseProjDir = TempDir + projectName + "\\";         // temporary project dir -> \temp_build\proj_name\
+            ProjectDir = BaseProjDir;                           // temporary project dir -> \temp_build\proj_name\
+            ProgramFile = ProjectDir + className + ".java";     // .cpp program file ->     \temp_build\proj_name\className.java
+            //objsDir =               ProjectDir + "obj\\";     // output binaries dir ->   \temp_build\proj_name\obj\
+            outputDir = ProjectDir + "bin\\";                   // output binaries dir ->   \temp_build\proj_name\bin\
+            OutputFilename = outputDir + className + ".class";  // output binaries dir ->   \temp_build\proj_name\bin\proj.class
         }
 
         protected override async Task OnBuildAndRun()
