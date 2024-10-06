@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.BuilderSetting.CppSettings.Settings;
-using VampirioCode.Command.MSVC;
-using VampirioCode.Command.MSVC.Result;
+using VampirioCode.Command.GnuGppWSL;
+using VampirioCode.Command.GnuGppWSL.Result;
 using VampirioCode.UI;
 using VampirioCode.Utils;
 
 namespace VampirioCode.Builder.Custom
 {
-    public class CustomMsvcCppBuilder : CustomBuilder
+    public class CustomGnuCppWSLBuilder : CustomBuilder
     {
-        public MsvcCppBSetting Setting { get; set; }
+        public GnuCppBSetting Setting { get; set; }
 
         private List<string> includes =     new List<string>();
         private List<string> libPaths =     new List<string>();
@@ -25,26 +25,26 @@ namespace VampirioCode.Builder.Custom
         private string objsDir;
         private string outputDir;
 
-        public CustomMsvcCppBuilder()
+        public CustomGnuCppWSLBuilder()
         {
-            Name = "CustomMsvc";
+            Name = "CustomGnuCppWSL";
             Type = BuilderType.CustomMsvcCpp;
 
-            Setting = new MsvcCppBSetting();
+            Setting = new GnuCppBSetting();
         }
 
         public override void Prepare()
         {
             TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
             BaseProjDir =           TempDir + projectName + "\\";       // temporary base dir ->    \temp_build\proj_name\
-            ProjectDir =            BaseProjDir + "msvc\\";             // temporary project dir -> \temp_build\proj_name\msvc\
-            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\msvc\proj.cpp
-            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\msvc\obj\
-            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\msvc\bin\
-            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\msvc\bin\proj.exe
+            ProjectDir =            BaseProjDir + "gnuCppWsl\\";        // temporary project dir -> \temp_build\proj_name\gnuCppWsl\
+            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\gnuCppWsl\proj.cpp
+            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\obj\
+            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\bin\
+            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\bin\proj.exe
 
             // Custom Build Settings File
-            BuildSettingsFile =     ProjectDir + ".bsettings";          // build settings file ->   \temp_build\proj_name\msvc\.bsettings
+            BuildSettingsFile =     ProjectDir + ".bsettings";        // build settings file ->   \temp_build\proj_name\gnuCppWsl\.bsettings
         }
 
         protected override void OnSave()
@@ -56,35 +56,9 @@ namespace VampirioCode.Builder.Custom
         {
             //XConsole.Alert("on load: " + BuildSettingsFile);
             //PrintStackTrace();
-            Setting = LoadSetting<MsvcCppBSetting>();
+            Setting = LoadSetting<GnuCppBSetting>();
         }
 
-        /*static void PrintStackTrace()
-        {
-            StackTrace stackTrace = new StackTrace(true);
-            string stackTraceString = "Stack trace:\n";
-
-            foreach (StackFrame frame in stackTrace.GetFrames())
-            {
-                string fileName = frame.GetFileName();
-                if (fileName != null)
-                {
-                    fileName = Path.GetFileName(fileName);
-                }
-                else
-                {
-                    fileName = "Unknown file";
-                }
-
-                string method = frame.GetMethod().Name;
-                int lineNumber = frame.GetFileLineNumber();
-
-                if(lineNumber > 0)
-                    stackTraceString += $"{fileName}::{method} (Line {lineNumber})\n";
-            }
-
-            XConsole.Alert(stackTraceString);
-        }*/
 
         protected override async Task OnBuildAndRun()
         {
@@ -94,8 +68,8 @@ namespace VampirioCode.Builder.Custom
             if (result.IsOk)
             {
                 XConsole.Clear();
-                MSVC msvc = new MSVC();
-                runResult = await msvc.RunAsync(result.OutputFilename);
+                GnuGppWSL gnuGppWSL = new GnuGppWSL();
+                runResult = await gnuGppWSL.RunAsync(result.OutputFilename);
                 //return runResult;
             }
 
@@ -109,14 +83,6 @@ namespace VampirioCode.Builder.Custom
         private async Task<BuildResult> _Build()
         {
             Prepare();
-
-            // if '\temp_build' dir does not exist, just create it for the first time
-            //if (!Directory.Exists(TempDir))
-            //    Directory.CreateDirectory(TempDir);
-
-            // if '\temp_build\proj_name' dir does not exist, just create it for the first time
-            //if (!Directory.Exists(ProjectDir))
-            //    Directory.CreateDirectory(ProjectDir);
 
             CreateProjectStructure();
 
@@ -139,7 +105,7 @@ namespace VampirioCode.Builder.Custom
             List<string> sourceFiles = new string[] { ProgramFile }.ToList();
 
             // Build Process
-            MSVC msvc = new MSVC();
+            GnuGppWSL gnuGppWSL = new GnuGppWSL();
 
             BuildCmd cmd = new BuildCmd();
             //BuildHelper.AddBasicVars(this);
@@ -153,7 +119,6 @@ namespace VampirioCode.Builder.Custom
             cmd.LibraryFiles =              Setting.LibraryFiles;
 
             cmd.StandardVersion =           Setting.StandardVersion;
-            cmd.ExceptionHandlingModel =    Setting.ExceptionHanldingModel;
             
             if (Setting.InstallPackage != "")
             {
@@ -169,7 +134,7 @@ namespace VampirioCode.Builder.Custom
             if (!copied) XConsole.Alert("error");
 
             //var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, Setting.IncludeDirs, Setting.LibraryDirs, Setting.LibraryFiles);
-            var result = await msvc.BuildAsync(cmd);
+            var result = await gnuGppWSL.BuildAsync(cmd);
             result.OutputFilename = OutputFilename;
 
             return result;

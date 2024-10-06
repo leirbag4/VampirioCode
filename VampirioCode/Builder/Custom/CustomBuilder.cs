@@ -22,24 +22,6 @@ namespace VampirioCode.Builder.Custom
         // custom build file -> .bsettings
         protected string BuildSettingsFile { get; set; } = "";
 
-        /*public void Save()
-        {
-            Prepare();
-
-            string json = JsonSerializer.Serialize(Setting);
-            File.WriteAllText(BuildSettingsFile, json);
-        }
-
-        public void Load()
-        {
-            string json =   File.ReadAllText(BuildSettingsFile);
-            Setting =       JsonSerializer.Deserialize<BuilderSettingBase>(json);
-        }*/
-
-        /*public void ImportPackage(string packagePath, string outputPath)
-        {
-            ZipFile.ExtractToDirectory(packagePath + ".zip", outputPath);
-        }*/
 
         public string GetBuildSettingsFile() { return BuildSettingsFile; }
 
