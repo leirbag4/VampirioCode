@@ -28,7 +28,7 @@ namespace VampirioCode.Builder.Custom
         public CustomGnuCppWSLBuilder()
         {
             Name = "CustomGnuCppWSL";
-            Type = BuilderType.CustomMsvcCpp;
+            Type = BuilderType.CustomGnuGppWSLCpp;
 
             Setting = new GnuCppBSetting();
         }
@@ -41,7 +41,7 @@ namespace VampirioCode.Builder.Custom
             ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\gnuCppWsl\proj.cpp
             objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\obj\
             outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\bin\
-            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\bin\proj.exe
+            OutputFilename =        outputDir + projectName;            // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\bin\proj
 
             // Custom Build Settings File
             BuildSettingsFile =     ProjectDir + ".bsettings";        // build settings file ->   \temp_build\proj_name\gnuCppWsl\.bsettings
@@ -49,7 +49,7 @@ namespace VampirioCode.Builder.Custom
 
         protected override void OnSave()
         {
-            SaveSetting<MsvcCppBSetting>(Setting);
+            SaveSetting<GnuCppBSetting>(Setting);
         }
 
         protected override void OnLoad()

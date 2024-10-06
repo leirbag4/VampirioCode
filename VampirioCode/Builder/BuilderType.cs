@@ -31,7 +31,7 @@ namespace VampirioCode.Builder
         // Customs
         //CustomCSharp =      0x00010000, // guide for future implementation
         CustomMsvcCpp =     0x00020000,
-        //CustomGnuGppCpp =   0x00040000  // guide for future implementation
+        CustomGnuGppWSLCpp =   0x00040000  // guide for future implementation
     }
 
 }

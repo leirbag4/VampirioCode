@@ -17,9 +17,11 @@ namespace VampirioCode.Builder
         public string Name { get; set; }
         public string Info { get; set; }
         public string Tag { get; set; }
+        public Type BuilderSettingUI { get; set; }
         public string Code { get { return CodeDB.GetCode(this.Template); } }
         //public CustomBuilderSettingBase BuilderSetting { get; set; }
-        public CustomBuilderSettingBase BuilderSetting { get { return new CustomMsvcCppBuilderSetting();/*GetBuilderSetting(this.BuilderType);*/ } }
+        //public CustomBuilderSettingBase BuilderSetting { get { return new CustomMsvcCppBuilderSetting();/*GetBuilderSetting(this.BuilderType);*/ } }
+        public CustomBuilderSettingBase BuilderSetting { get { return (CustomBuilderSettingBase)Activator.CreateInstance(BuilderSettingUI); } }
 
         private static List<BuilderTemplateInfo> _templatesArray = new List<BuilderTemplateInfo>();
         
@@ -51,20 +53,26 @@ namespace VampirioCode.Builder
             // IMPORTANT:       _Create(BuilderTemplate.CppMsvcBasic,   BuilderType.CustomMsvcCpp,
             // IMPORTANT:       _Create(BuilderTemplate.CppMsvcSDL2,    BuilderType.CustomMsvcCpp,
 
-            _Create(BuilderTemplate.CppMsvcBasic,   BuilderType.CustomMsvcCpp,  "Cpp Msvc Basic",   "C++ Basic Main",   "cpp_msvc_basic");
-            _Create(BuilderTemplate.CppMsvcSDL2,    BuilderType.CustomMsvcCpp,  "Cpp Msvc SDL2",    "C++ SDL2",         "cpp_msvc_sdl2");
+            // MSVC
+            _Create(BuilderTemplate.CppMsvcBasic,   BuilderType.CustomMsvcCpp,  "Cpp Msvc Basic",   "C++ Basic Main",   "cpp_msvc_basic",   typeof(CustomMsvcCppBuilderSetting));
+            _Create(BuilderTemplate.CppMsvcSDL2,    BuilderType.CustomMsvcCpp,  "Cpp Msvc SDL2",    "C++ SDL2",         "cpp_msvc_sdl2",    typeof(CustomMsvcCppBuilderSetting));
+
+            // GNU g++ WSL
+            _Create(BuilderTemplate.CppGnuGppWSLBasic, BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL Basic", "C++ Basic Main", "cpp_gnu_gpp_wsl_basic", typeof(CustomMsvcCppBuilderSetting));
+
 
             _init = true;
         }
 
-        private static BuilderTemplateInfo _Create(BuilderTemplate template, BuilderType type, string name, string info, string tag)
+        private static BuilderTemplateInfo _Create(BuilderTemplate template, BuilderType type, string name, string info, string tag, Type builderSettingUI)
         {
             BuilderTemplateInfo binfo = new BuilderTemplateInfo();
-            binfo.Template =    template;
-            binfo.BuilderType = type;
-            binfo.Name =        name;
-            binfo.Info =        info;
-            binfo.Tag =         tag;
+            binfo.Template =        template;
+            binfo.BuilderType =     type;
+            binfo.Name =            name;
+            binfo.Info =            info;
+            binfo.Tag =             tag;
+            binfo.BuilderSettingUI= builderSettingUI;
 
             if (!_tags.ContainsKey(tag))            _tags.Add(tag, binfo);
             if (!_templates.ContainsKey(template))  _templates.Add(template, binfo);

@@ -14,7 +14,8 @@ namespace VampirioCode.Builder.Utils
             {
                 // ------------------------------------
                 case BuilderTemplate.CppMsvcBasic:
-                // ------------------------------------
+                case BuilderTemplate.CppGnuGppWSLBasic:
+                    // ------------------------------------
 
                     return @"#include <iostream>
 

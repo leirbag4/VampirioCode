@@ -496,6 +496,9 @@ namespace VampirioCode
         {
             BuilderTemplate template = builderTemplateInfo.Template;
 
+            // -----------------------------------------
+            //                   MSVC
+            // -----------------------------------------
             if (template == BuilderTemplate.CppMsvcBasic)
             {
                 Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
@@ -505,6 +508,14 @@ namespace VampirioCode
             {
                 Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
                 CustomBuilders.Create_CPP_MSVC_SDL2(document, CurrEditor, builderTemplateInfo);
+            }
+            // -----------------------------------------
+            //               gnu g++ WSL
+            // -----------------------------------------
+            else if (template == BuilderTemplate.CppGnuGppWSLBasic)
+            {
+                Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomGnuGppWSLCpp);
+                CustomBuilders.Create_CPP_GNU_GPP_WSL_BASIC(document, CurrEditor, builderTemplateInfo);
             }
         }
 

@@ -8,6 +8,7 @@ namespace VampirioCode.Builder
 {
     public enum BuilderTemplate
     {
+        CppGnuGppWSLBasic,
         CppMsvcBasic,
         CppMsvcSDL2
     }

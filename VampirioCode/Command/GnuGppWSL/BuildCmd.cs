@@ -28,7 +28,6 @@ namespace VampirioCode.Command.GnuGppWSL
 
             if (CanUse(LibraryPaths) || CanUse(LibraryFiles))
             {
-                Set("/link");
                 SetLibPaths(LibraryPaths);
                 SetLibFiles(LibraryFiles);
             }
