@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VampirioCode.Builder.Utils;
 using VampirioCode.Command;
 using VampirioCode.UI;
 using VampirioCode.Utils;
@@ -20,15 +21,26 @@ namespace VampirioCode.Builder
         protected string ProgramFile { get; set; } = "";    // e.g: main.cpp  or  Program.cs
         public string OutputFilename { get; set; } = "";    // e.g: 'project.exe' or 'untitled 2.exe'
 
-        protected string projectName;
+        protected string originalFullFilePath;  // e.g: C:\projects\code\main.cpp  or  .\vampirio\temp_files\untitled 2
+        protected string originalBaseDir;       // e.g: C:\projects\code\          or  .\vampirio\temp_files\
+        protected string projectName;           // main                            or  untitled 2
         protected string code = "";
 
-        public void Setup(string projectName, string code)
+        public void Setup(string originalFullFilePath, string code)
         {
-            this.projectName = projectName;
+            this.originalFullFilePath = originalFullFilePath.Trim();
+            this.projectName = BuilderUtils.GetProjName(originalFullFilePath);
             this.code = code;
+
+            if (originalFullFilePath != "")
+                originalBaseDir = Path.GetDirectoryName(originalFullFilePath);
+            else
+                originalBaseDir = "";
         }
 
+        public string GetOriginalFullFilePath() { return originalFullFilePath; }
+        public string GetOriginalBaseDir() { return originalBaseDir; }
+        public string GetProjectName() { return projectName; }
         public string GetTempDir() { return TempDir; }
         public string GetBaseProjDir() { return BaseProjDir; }
         public string GetProjectDir() { return ProjectDir; }
@@ -118,5 +130,20 @@ namespace VampirioCode.Builder
             }
             
         }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}\n" +
+                   $"Type: {Type}\n" +
+                   $"TempDir: {TempDir}\n" +
+                   $"BaseProjDir: {BaseProjDir}\n" +
+                   $"ProjectDir: {ProjectDir}\n" +
+                   $"ProgramFile: {ProgramFile}\n" +
+                   $"OutputFilename: {OutputFilename}\n" +
+                   $"originalFullFilePath: {originalFullFilePath}\n" +
+                   $"originalBaseDir: {originalBaseDir}\n" +
+                   $"projectName: {projectName}";
+        }
+
     }
 }

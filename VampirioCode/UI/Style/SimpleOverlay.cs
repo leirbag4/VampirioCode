@@ -56,7 +56,7 @@ namespace VampirioCode.UI.Style
             this.Show(tocover);
             tocover.Focus();
             // Disable Aero transitions, the plexiglass gets too visible
-            if (Environment.OSVersion.Version.Major >= 6)
+            if (System.Environment.OSVersion.Version.Major >= 6)
             {
                 int value = 1;
                 DwmSetWindowAttribute(tocover.Handle, DWMWA_TRANSITIONS_FORCEDISABLED, ref value, 4);
@@ -77,7 +77,7 @@ namespace VampirioCode.UI.Style
             // Restore owner
             this.Owner.LocationChanged -= Cover_LocationChanged;
             this.Owner.ClientSizeChanged -= Cover_ClientSizeChanged;
-            if (!this.Owner.IsDisposed && Environment.OSVersion.Version.Major >= 6)
+            if (!this.Owner.IsDisposed && System.Environment.OSVersion.Version.Major >= 6)
             {
                 int value = 1;
                 DwmSetWindowAttribute(this.Owner.Handle, DWMWA_TRANSITIONS_FORCEDISABLED, ref value, 4);

@@ -104,6 +104,35 @@ namespace VampirioCode.UI
             _outp = _savedOutp;
         }
 
+        public static void Detach()
+        {
+            var form = new VampirioForm();
+            form.Size = new Size(800, 300);
+            form.StartPosition = FormStartPosition.CenterParent;
+
+            // console textbox
+            RichTextBox outp2 = new RichTextBox();
+            outp2.BackColor = Color.FromArgb(30, 30, 30);
+            outp2.ForeColor = Color.FromArgb(164, 164, 176);// Color.Silver;
+            outp2.BorderStyle = BorderStyle.None;
+            outp2.Dock = DockStyle.Fill;
+
+            Push();
+            SetOutput(outp2);
+
+            form.Controls.Add(outp2);
+            form.Show();
+            form.FormClosed += (object sender, FormClosedEventArgs e) => 
+            {
+                Pop();
+            };
+        }
+
+        /*public static void Reattach()
+        {
+            Pop();
+        }*/
+
         public static void Alert(string str, bool editable = false)
         {
             if (editable)

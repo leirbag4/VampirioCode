@@ -29,9 +29,9 @@ namespace VampirioCode.Builder
         SimplePhp =         0x00000014,
 
         // Customs
-        //CustomCSharp =      0x00010000, // guide for future implementation
-        CustomMsvcCpp =     0x00020000,
-        CustomGnuGppWSLCpp =   0x00040000  // guide for future implementation
+        //CustomCSharp =        0x00010000, // guide for future implementation
+        CustomMsvcCpp =         0x00020000,
+        CustomGnuGppWSLCpp =    0x00040000  // guide for future implementation
     }
 
 }

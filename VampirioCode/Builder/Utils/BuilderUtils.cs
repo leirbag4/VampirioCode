@@ -36,15 +36,15 @@ namespace VampirioCode.Builder.Utils
 
             if (currDocument.CustomBuild)
             {
-                string projName = Path.GetFileNameWithoutExtension(currDocument.FullFilePath);
-                CustomBuilder customBuilder = CustomBuilders.GetBuilder(projName, currDocument.BuilderType);
+                //string projName = Path.GetFileNameWithoutExtension(currDocument.FullFilePath);
+                CustomBuilder customBuilder = CustomBuilders.GetBuilder(currDocument.FullFilePath, currDocument.BuilderType);
                 customBuilder.Prepare();
                 customBuilder.DeleteBuild();
             }
             else
             {
                 Builder builder = Builders.GetBuilder(currDocument.BuilderType);
-                builder.Setup(currDocument.FileName, "");
+                builder.Setup(currDocument.FullFilePath, "");
                 builder.Prepare();
                 builder.DeleteBuild();
             }
@@ -52,15 +52,15 @@ namespace VampirioCode.Builder.Utils
 
         public static void ConvertCustomToSimpleBuild(Document document)
         {
-            string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
+            //string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
 
             if (document.CustomBuild)
             {
-                var result = MsgBox.Show("Build Conversion", "Go back to a Simple Build.\n\nAll project settings will be deleted but code conserved.\nDo you want to continue?", DialogButtons.YesNoCancel);
+                var result = MsgBox.Show("Build Conversion", "Go back to a Simple Build.\n\nAll project settings will be deleted but code conserved.\nDo you want to continue?\n\n\n[ " + document.BuilderType + " -> " + BuilderUtils.GetEquivalent(document.BuilderType) + " ]", DialogButtons.YesNoCancel);
 
                 if (result == DialogResult.Yes)
                 {
-                    CustomBuilder cbuilder = CustomBuilders.GetBuilder(projName, document.BuilderType);
+                    CustomBuilder cbuilder = CustomBuilders.GetBuilder(document.FullFilePath, document.BuilderType);
                     cbuilder.Prepare();
                     string buildSettingFile = cbuilder.GetBuildSettingsFile();
 
@@ -71,7 +71,7 @@ namespace VampirioCode.Builder.Utils
 
                         document.CustomBuild = false;
                         document.BuilderType = BuilderUtils.GetEquivalent(document.BuilderType);
-                        CustomBuilders.Remove(projName);
+                        CustomBuilders.Remove(document.FullFilePath);
                     }
                     catch (Exception ee)
                     {
@@ -86,7 +86,7 @@ namespace VampirioCode.Builder.Utils
 
         public static void ConvertSimpleToCustomBuild(Document document)
         {
-            string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
+            //string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
 
             if (!document.CustomBuild)
             {
@@ -99,26 +99,37 @@ namespace VampirioCode.Builder.Utils
                 }
 
 
-                var result = MsgBox.Show("Create custom build", "You have a 'simple document' right now.\n\nDo you want to convert it to a 'Custom Editable Project'?", DialogButtons.YesNoCancel, DialogIcon.Question);
+                var result = MsgBox.Show("Create custom build", "You have a 'simple document' right now.\n\nDo you want to convert it to a 'Custom Editable Project'?\n\n\n[ " + document.BuilderType + " -> " + BuilderUtils.GetEquivalent(document.BuilderType) + " ]", DialogButtons.YesNoCancel, DialogIcon.Question);
  
                 if (result == DialogResult.Yes)
                 {
                     BuilderType newBuilderType = BuilderType.None;
- 
-                    if (document.BuilderType == BuilderType.SimpleMsvcCpp)
+
+                    if (HasEquivalent(document.BuilderType) && (GetCategory(document.BuilderType) == BuilderCategory.Simple))
                     {
                         newBuilderType = GetEquivalent(document.BuilderType);
- 
                         document.CustomBuild = true;
-                        //Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
-                        document.BuilderType = newBuilderType;//BuilderType.CustomMsvcCpp;
-                        var builder = CustomBuilders.Create_CPP_MSVC_BASIC(document, null, null);
- 
-                        CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
-                        builderSettings.Open(projName, document.BuilderType);
+                        document.BuilderType = newBuilderType;
+
+                        if (newBuilderType == BuilderType.CustomMsvcCpp)
+                        {
+                            var builder = CustomBuilders.Create_CPP_MSVC_BASIC(document, null, null);
+                            CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
+                            builderSettings.Open(document.FullFilePath, document.BuilderType);
+                        }
+                        else if (newBuilderType == BuilderType.CustomGnuGppWSLCpp)
+                        {
+                            var builder = CustomBuilders.Create_CPP_GNU_GPP_WSL_BASIC(document, null, null);
+                            CustomGnuGppWSLCppBuilderSetting builderSettings = new CustomGnuGppWSLCppBuilderSetting();
+                            builderSettings.Open(document.FullFilePath, document.BuilderType);
+                        }
+                        else
+                        { 
+                            MsgBox.Show("Not found", "Can't convert the current custom build type '" + document.BuilderType + "'\n\nNew supposed build type '" + newBuilderType + "'");
+                        }
                     }
                     else
-                    {
+                    { 
                         MsgBox.Show("Not available", "Conversion is not available for the current custom build type '" + document.BuilderType + "'");
                     }
                 }
@@ -197,6 +208,30 @@ namespace VampirioCode.Builder.Utils
             // No equivalent compatible builder
             else
                 return BuilderType.None;*/
+        }
+
+        public static bool CanCompile(DocumentType docType)
+        {
+            switch (docType)
+            {
+                case DocumentType.HTML:
+                case DocumentType.OTHER:
+                case DocumentType.H:
+                case DocumentType.INC:
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        public static string GetProjName(string fullFilePath)
+        {
+            return Path.GetFileNameWithoutExtension(fullFilePath);
+        }
+
+        public static string GetProjName(VampDocManager.Document document)
+        {
+            return GetProjName(document.FullFilePath);
         }
     }
 }

@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.BuilderSetting.CppSettings.Settings;
+using VampirioCode.Command;
 using VampirioCode.Command.GnuGppWSL;
 using VampirioCode.Command.GnuGppWSL.Result;
+using VampirioCode.Environment;
 using VampirioCode.UI;
 using VampirioCode.Utils;
 
@@ -67,10 +69,21 @@ namespace VampirioCode.Builder.Custom
 
             if (result.IsOk)
             {
+                //XConsole.Clear();
+                //GnuGppWSL gnuGppWSL = new GnuGppWSL();
+                //runResult = await gnuGppWSL.RunAsync(result.OutputFilename);
+
                 XConsole.Clear();
                 GnuGppWSL gnuGppWSL = new GnuGppWSL();
-                runResult = await gnuGppWSL.RunAsync(result.OutputFilename);
-                //return runResult;
+
+                RunCmd runCmd = new RunCmd();
+                runCmd.AddVariable(Variables.ProjDir, ProjectDir);
+
+                if (Setting.LibraryDirs.Count > 0)
+                    runCmd.LibraryPaths = Setting.LibraryDirs;
+
+                runCmd.Filename = result.OutputFilename;
+                runResult = await gnuGppWSL.RunAsync(runCmd);
             }
 
             runResult = new RunResult();
@@ -96,29 +109,35 @@ namespace VampirioCode.Builder.Custom
 
             // delete all content of '\temp_build\proj_name\' 
             //FileUtils.DeleteFilesAndDirs(projDirPath);
-
+            //XConsole.Alert(originalFullFilePath);
+            //XConsole.Alert(originalBaseDir);
+            
+            //FileUtils.GetFilesAt
+            
             // write all code to '\temp_build\proj_name\proj.cpp' main program file
             File.WriteAllText(ProgramFile, code);
 
 
             // [ COMPILATION PROCESS ]
-            List<string> sourceFiles = new string[] { ProgramFile }.ToList();
+            //List<string> sourceFiles = new string[] { ProgramFile }.ToList();
+            List<string> sourceFiles = new string[] { CmdUtils.ToUnixRelativePath(ProgramFile) }.ToList();
+
 
             // Build Process
             GnuGppWSL gnuGppWSL = new GnuGppWSL();
 
             BuildCmd cmd = new BuildCmd();
             //BuildHelper.AddBasicVars(this);
-            cmd.AddVariable("${projDir}",   ProjectDir);
-            cmd.Sources =                   sourceFiles;
-            cmd.OutputFilename =            OutputFilename;
-            //cmd.OutputObjsDir =             objsDir;
-            cmd.PreprocessorDefinitions =   VariableAction.ToString(Setting.PreprocessorMacros, "=");
-            cmd.Includes =                  Setting.IncludeDirs;
-            cmd.LibraryPaths =              Setting.LibraryDirs;
-            cmd.LibraryFiles =              Setting.LibraryFiles;
+            cmd.AddVariable(Variables.ProjDir,  ProjectDir);
+            cmd.Sources =                       sourceFiles;
+            cmd.OutputFilename =                CmdUtils.ToUnixRelativePath(OutputFilename);
+            //cmd.OutputObjsDir =                 objsDir;
+            cmd.PreprocessorDefinitions =       VariableAction.ToString(Setting.PreprocessorMacros, "=");
+            cmd.Includes =                      Setting.IncludeDirs;
+            cmd.LibraryPaths =                  Setting.LibraryDirs;
+            cmd.LibraryFiles =                  Setting.LibraryFiles;
 
-            cmd.StandardVersion =           Setting.StandardVersion;
+            cmd.StandardVersion =               Setting.StandardVersion;
             
             if (Setting.InstallPackage != "")
             {
@@ -134,8 +153,11 @@ namespace VampirioCode.Builder.Custom
             if (!copied) XConsole.Alert("error");
 
             //var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, Setting.IncludeDirs, Setting.LibraryDirs, Setting.LibraryFiles);
+            //var result = await gnuGppWSL.BuildAsync(cmd);
+            //result.OutputFilename = OutputFilename;
             var result = await gnuGppWSL.BuildAsync(cmd);
-            result.OutputFilename = OutputFilename;
+            result.OutputFilename = CmdUtils.ToUnixRelativePath(OutputFilename);
+
 
             return result;
         }

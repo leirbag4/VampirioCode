@@ -33,7 +33,7 @@ namespace VampirioCode.Builder.Custom
             {
                 try
                 {
-                    ZipFile.ExtractToDirectory(packagePath + ".zip", outputPath);
+                    ZipFile.ExtractToDirectory(packagePath + ".vpkg", outputPath);
                     Console.WriteLine("Package '" + packagePath + "' extracted done.");
                 }
                 catch (Exception e)

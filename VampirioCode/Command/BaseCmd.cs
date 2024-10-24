@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VampirioCode.Environment;
 using VampirioCode.IO;
 using VampirioCode.UI;
 
@@ -214,14 +215,32 @@ namespace VampirioCode.Command
                 variables.Add(varName, varValue);
 
         }
-        public string ReplaceVars(string path)
+        public string ReplaceVars(string path, OperatingSystemType os = OperatingSystemType.Windows)
         {
-            foreach (var currVar in variables)
+            if (os == OperatingSystemType.Windows)
             {
-                path = path.Replace(currVar.Key, currVar.Value);
-                path = path.Replace("\\\\", "\\");
+                foreach (var currVar in variables)
+                {
+                    path = path.Replace(currVar.Key, currVar.Value);
+                    path = path.Replace("\\\\", "\\");
+                }
+                return path;
             }
-            return path;
+            else if ((os == OperatingSystemType.Linux) || (os == OperatingSystemType.MacOS))
+            {
+                foreach (var currVar in variables)
+                {
+                    path = path.Replace(currVar.Key, currVar.Value);
+                    
+                    if(currVar.Key == Variables.ProjDir)
+                        path = CmdUtils.ToUnixRelativePath(path);
+
+                    //path = path.Replace("\\\\", "\\");
+                }
+                return path;
+            }
+
+            return ""; // never reaches here
         }
 
         protected string _quotes(string str)

@@ -43,6 +43,7 @@ namespace VampirioCode
             DarkTitleBarHelper.UseImmersiveDarkMode(Handle, true);
 
             FilesStructInit();
+            DocumentTypeInfo.Initialize();
             Config.Initialize();
             MsgBox.Setup(this);
             XConsole.Setup(footer);
@@ -201,7 +202,7 @@ namespace VampirioCode
         private async void Build()
         {
             XConsole.Clear();
-            string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+            //string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
 
             if (CurrDocument.DocType == DocumentType.OTHER)
             {
@@ -211,14 +212,14 @@ namespace VampirioCode
             {
                 if (CurrDocument.CustomBuild)
                 {
-                    Builder.Custom.CustomBuilder builder = CustomBuilders.GetBuilder(projName, CurrDocument.BuilderType);
-                    builder.Setup(projName, CurrDocument.Text);
+                    Builder.Custom.CustomBuilder builder = CustomBuilders.GetBuilder(CurrDocument.FullFilePath, CurrDocument.BuilderType);
+                    builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     await builder.Build();
                 }
                 else
                 {
                     Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
-                    builder.Setup(projName, CurrDocument.Text);
+                    builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     await builder.Build();
                 }
             }
@@ -226,8 +227,13 @@ namespace VampirioCode
 
         private async void BuildAndRun()
         {
-            //var result = await dotnet.NewAsync("console", @"C:\dotnet_test\projects\Patasucia3", "");
+            //FileUtils.CopyDirectoryAdvAsync("C:\\test2\\magia", "C:\\test2\\pastel", new string[] { ".cpp", ".bmp", ".dll" }, new string[] { "main.cpp" });
+            //List<string> arr = await FileUtils.GetFilesAdvAsync("C:\\test2\\magia", new string[] { ".h", ".cpp" }, new string[] { "main.cpp" });
+            //XConsole.PrintArr(arr.ToArray());
 
+
+            //var result = await dotnet.NewAsync("console", @"C:\dotnet_test\projects\Patasucia3", "");
+            //return;
             //var result = await dotnet.NewListAsyc();
             //XConsole.Println(result.ToString());
 
@@ -237,8 +243,15 @@ namespace VampirioCode
             //XConsole.Clear();
             //var result = await dotnet.RunAsync(@"C:\dotnet_test\projects\Capitan", new string[] { "malo", "--chipote" });
 
+            if (!BuilderUtils.CanCompile(CurrDocument.DocType))
+            {
+                XConsole.Clear();
+                XConsole.PrintWarning($"This file '{CurrDocument.DocType}' can't be compiled.");
+                return;
+            }
+
             XConsole.Clear();
-            string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+            //string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
 
             if (CurrDocument.DocType == DocumentType.OTHER)
             {
@@ -253,15 +266,15 @@ namespace VampirioCode
                     //await builder.Build();
 
                     //XConsole.Alert("is: " + CurrDocument.BuilderType);
-                    Builder.Custom.CustomBuilder builder = CustomBuilders.GetBuilder(projName, CurrDocument.BuilderType);
-                    builder.Setup(projName, CurrDocument.Text);
+                    Builder.Custom.CustomBuilder builder = CustomBuilders.GetBuilder(CurrDocument.FullFilePath, CurrDocument.BuilderType);
+                    builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     await builder.BuildAndRun();
 
                 }
                 else
                 {
                     Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
-                    builder.Setup(projName, CurrDocument.Text);
+                    builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     await builder.BuildAndRun();
                 }
             }
@@ -324,7 +337,7 @@ namespace VampirioCode
 
         private void OnSetupBuildPressed(object sender, EventArgs e)
         {
-            string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+            //string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
 
             if (CurrDocument.CustomBuild)
             {
@@ -336,12 +349,14 @@ namespace VampirioCode
 
                 //CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
                 var builderSettings = binfo.BuilderSetting;
-                builderSettings.Open(projName, CurrDocument.BuilderType);
+                builderSettings.Open(CurrDocument.FullFilePath, CurrDocument.BuilderType);
             }
             else // SimpleBuild
             {
                 // Convert a Simple project like:   BuilderType.SimpleMsvcCpp to
                 //              The equivalent ->   BuilderType.CustomMsvcCpp
+                //XConsole.Alert("b: " + CurrDocument.BuilderType);
+                //XConsole.Alert("is equiv: " + BuilderUtils.GetEquivalent(CurrDocument.BuilderType));
                 BuilderUtils.ConvertSimpleToCustomBuild(CurrDocument);
 
             }
@@ -382,15 +397,15 @@ namespace VampirioCode
                 }
                 else
                 {
-                    string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+                    //string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
 
                     Builder.Builder builder;
 
                     if (CurrDocument.CustomBuild)
-                        builder = CustomBuilders.GetBuilder(CurrDocument.FileName, CurrDocument.BuilderType);
+                        builder = CustomBuilders.GetBuilder(CurrDocument.FullFilePath, CurrDocument.BuilderType);
                     else
                         builder = Builders.GetBuilder(CurrDocument.BuilderType);
-                    builder.Setup(projName, CurrDocument.Text);
+                    builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     builder.Prepare();
 
                     if (builder.OutputFilename != "")

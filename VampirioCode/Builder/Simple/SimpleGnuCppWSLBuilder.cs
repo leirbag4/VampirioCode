@@ -5,6 +5,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using VampirioCode.Command;
 using VampirioCode.Command.GnuGppWSL;
 using VampirioCode.Command.GnuGppWSL.Result;
 using VampirioCode.UI;
@@ -83,12 +84,12 @@ namespace VampirioCode.Builder.Simple
 
 
             // [ COMPILATION PROCESS ]
-            List<string> sourceFiles = new string[] { GnuGppWSL.ToRelativePath(ProgramFile) }.ToList();
+            List<string> sourceFiles = new string[] { CmdUtils.ToUnixRelativePath(ProgramFile) }.ToList();
 
 
             GnuGppWSL msvc = new GnuGppWSL();
-            var result = await msvc.BuildAsync(sourceFiles, GnuGppWSL.ToRelativePath(OutputFilename));
-            result.OutputFilename = GnuGppWSL.ToRelativePath(OutputFilename);
+            var result = await msvc.BuildAsync(sourceFiles, CmdUtils.ToUnixRelativePath(OutputFilename));
+            result.OutputFilename = CmdUtils.ToUnixRelativePath(OutputFilename);
 
             return result;
         }

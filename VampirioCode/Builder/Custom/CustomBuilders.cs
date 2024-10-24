@@ -21,26 +21,26 @@ namespace VampirioCode.Builder.Custom
             builders = new Dictionary<string, CustomBuilder>();
         }
 
-        public static void Remove(string projectName)
+        public static void Remove(string fullProjFilePath)
         {
-            if (builders.ContainsKey(projectName))
-                builders.Remove(projectName);
+            if (builders.ContainsKey(fullProjFilePath))
+                builders.Remove(fullProjFilePath);
         }
 
-        public static CustomBuilder GetBuilder(string projectName, BuilderType builderType)
+        public static CustomBuilder GetBuilder(string fullProjFilePath, BuilderType builderType)
         {
-            if(builders.ContainsKey(projectName))
-                return builders[projectName];
+            if(builders.ContainsKey(fullProjFilePath))
+                return builders[fullProjFilePath];
 
 
             if (builderType == BuilderType.CustomMsvcCpp)
             { 
                 CustomMsvcCppBuilder builder = new CustomMsvcCppBuilder();
-                builder.Setup(projectName, "");
+                builder.Setup(fullProjFilePath, "");
 
                 if (builder.Exists())
                 {
-                    builders.Add(projectName, builder);
+                    builders.Add(fullProjFilePath, builder);
                     //XConsole.Alert("exist");
                     builder.Load();
                     return builder;
@@ -55,11 +55,11 @@ namespace VampirioCode.Builder.Custom
             else if (builderType == BuilderType.CustomGnuGppWSLCpp)
             {
                 CustomGnuCppWSLBuilder builder = new CustomGnuCppWSLBuilder();
-                builder.Setup(projectName, "");
+                builder.Setup(fullProjFilePath, "");
 
                 if (builder.Exists())
                 {
-                    builders.Add(projectName, builder);
+                    builders.Add(fullProjFilePath, builder);
                     //XConsole.Alert("exist");
                     builder.Load();
                     return builder;
@@ -79,9 +79,9 @@ namespace VampirioCode.Builder.Custom
 
         public static CustomMsvcCppBuilder Create_CPP_MSVC_BASIC(Document document, VampirioEditor editor, BuilderTemplateInfo builderTemplateInfo)
         {
-            string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
+            //string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
             CustomMsvcCppBuilder builder = new CustomMsvcCppBuilder();
-            builder.Setup(projName, document.Text);
+            builder.Setup(document.FullFilePath, document.Text);
             
             
             MsvcCppBSetting setting = builder.Setting;
@@ -119,9 +119,9 @@ namespace VampirioCode.Builder.Custom
 
         public static CustomMsvcCppBuilder Create_CPP_MSVC_SDL2(Document document, VampirioEditor editor, BuilderTemplateInfo builderTemplateInfo)
         {
-            string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
+            //string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
             CustomMsvcCppBuilder builder = new CustomMsvcCppBuilder();
-            builder.Setup(projName, document.Text);
+            builder.Setup(document.FullFilePath, document.Text);
             
             
             MsvcCppBSetting setting = builder.Setting;
@@ -171,9 +171,9 @@ namespace VampirioCode.Builder.Custom
 
         public static CustomGnuCppWSLBuilder Create_CPP_GNU_GPP_WSL_BASIC(Document document, VampirioEditor editor, BuilderTemplateInfo builderTemplateInfo)
         {
-            string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
+            //string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
             CustomGnuCppWSLBuilder builder = new CustomGnuCppWSLBuilder();
-            builder.Setup(projName, document.Text);
+            builder.Setup(document.FullFilePath, document.Text);
             
             
             GnuCppBSetting setting = builder.Setting;

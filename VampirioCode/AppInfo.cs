@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace VampirioCode
 {
+
     public class AppInfo
     {
         // Current version of the application in the form of '1.0.0'
@@ -17,6 +18,7 @@ namespace VampirioCode
         // Temporary files path directory. 'E.g: C\Programs\AppDir\temp_files'
         public static string TemporaryFilesPath { get { return AppDomain.CurrentDomain.BaseDirectory + "temp_files\\"; } }
         public static string TemporaryBuildPath { get { return AppDomain.CurrentDomain.BaseDirectory + "temp_build\\"; } }
+        
         public static string PackagesPath { get { return AppDomain.CurrentDomain.BaseDirectory + "packages\\"; } }
 
     }

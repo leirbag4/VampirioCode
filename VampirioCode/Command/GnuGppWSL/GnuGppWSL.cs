@@ -28,7 +28,7 @@ namespace VampirioCode.Command.GnuGppWSL
         }
 
         /// <summary>
-        /// Run the compiled executable '.exe'
+        /// Run the compiled executable
         /// </summary>
         /// <param name="filename">The executable file to run</param>
         /// <returns></returns>
@@ -41,14 +41,16 @@ namespace VampirioCode.Command.GnuGppWSL
             return result;
         }
 
-        // This fixes an issue with WSL where you can't use absolute paths
-        // [DOESN'T WORK]:  wsl -d Ubuntu-test g++ "C:\tests\capitan\untitled 1.cpp"
-        // [DOESN'T WORK]:  wsl -d Ubuntu-test g++ "C:/tests/capitan/untitled 1.cpp"
-        // [WORKS OK]:      wsl -d Ubuntu-test g++ "../capitan/untitled 1.cpp"
-        public static string ToRelativePath(string absoluteFilePath)
+        /// <summary>
+        /// Run the compiled executable by using the cmd as parameter
+        /// </summary>
+        /// <param name="cmd">The run command</param>
+        /// <returns></returns>
+        public async Task<RunResult> RunAsync(RunCmd cmd)
         {
-            return ("./" + Path.GetRelativePath(AppInfo.BasePath, absoluteFilePath)).Replace("\\", "/");
+            var result = await cmd.RunAsync();
+            CheckCmd(cmd);
+            return result;
         }
-
     }
 }

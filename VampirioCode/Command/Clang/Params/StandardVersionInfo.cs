@@ -8,14 +8,14 @@ namespace VampirioCode.Command.Clang.Params
 {
     public class StandardVersionInfo
     {
-        public StandardVersion ExceptionHandlingModel { get; set; }
+        public StandardVersion StandardVersion { get; set; }
         public string Name { get; set; }
         public string Param { get; set; }
 
-        private static StandardVersionInfo _Create(StandardVersion except, string name, string param)
+        private static StandardVersionInfo _Create(StandardVersion std, string name, string param)
         {
             StandardVersionInfo eh = new StandardVersionInfo();
-            eh.ExceptionHandlingModel = except;
+            eh.StandardVersion = std;
             eh.Name = name;
             eh.Param = param;
             return eh;

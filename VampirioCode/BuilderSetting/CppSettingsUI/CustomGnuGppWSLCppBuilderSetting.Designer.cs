@@ -1,6 +1,6 @@
 ﻿namespace VampirioCode.BuilderSetting
 {
-    partial class CustomMsvcCppBuilderSetting
+    partial class CustomGnuGppWSLCppBuilderSetting
     {
         /// <summary>
         /// Required designer variable.
@@ -34,19 +34,12 @@
             okButton = new VampirioCode.UI.Controls.ButtonAdv();
             cancelButton = new VampirioCode.UI.Controls.ButtonAdv();
             macrosList = new ItemList();
-            labelAdv1 = new VampirioCode.UI.Controls.LabelAdv();
-            exceptHandlModeCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
             findPackageInput = new UI.FindPackageInput();
             labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
             postCopyDirsList = new ItemList();
             postCopyFilesList = new ItemList();
             standardVersionCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
             labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
-            outputTypeCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
-            labelAdv4 = new VampirioCode.UI.Controls.LabelAdv();
-            autoIncludeSourcesCKBox = new CheckBox();
-            sourceFilesList = new ItemList();
-            sourceFilesIncludeMode = new VampirioCode.UI.Controls.ComboBoxAdv();
             SuspendLayout();
             // 
             // includeDirsList
@@ -95,7 +88,7 @@
             okButton.FocusColor = Color.FromArgb(24, 81, 115);
             okButton.FocusEnabled = false;
             okButton.ForeColor = Color.Silver;
-            okButton.Location = new Point(706, 616);
+            okButton.Location = new Point(706, 565);
             okButton.Name = "okButton";
             okButton.PaintImageOnSelected = true;
             okButton.processEnterKey = true;
@@ -124,7 +117,7 @@
             cancelButton.FocusColor = Color.FromArgb(24, 81, 115);
             cancelButton.FocusEnabled = false;
             cancelButton.ForeColor = Color.Silver;
-            cancelButton.Location = new Point(818, 616);
+            cancelButton.Location = new Point(818, 565);
             cancelButton.Name = "cancelButton";
             cancelButton.PaintImageOnSelected = true;
             cancelButton.processEnterKey = true;
@@ -141,47 +134,16 @@
             // 
             macrosList.BackColor = Color.FromArgb(40, 40, 40);
             macrosList.Icon = Properties.Resources.omenu_mini_select_all;
-            macrosList.Location = new Point(12, 434);
+            macrosList.Location = new Point(12, 287);
             macrosList.Name = "macrosList";
-            macrosList.Size = new Size(299, 161);
+            macrosList.Size = new Size(299, 245);
             macrosList.TabIndex = 26;
             macrosList.Title = "Preprocessor Directive Macros";
-            // 
-            // labelAdv1
-            // 
-            labelAdv1.AutoSize = true;
-            labelAdv1.BorderColor = Color.DarkGray;
-            labelAdv1.BorderSize = 1;
-            labelAdv1.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
-            labelAdv1.ForeColor = Color.Silver;
-            labelAdv1.Location = new Point(516, 350);
-            labelAdv1.ModifyClampMax = 0F;
-            labelAdv1.ModifyClampMin = 0F;
-            labelAdv1.ModifyControlName = "";
-            labelAdv1.ModifyScale = 1F;
-            labelAdv1.Name = "labelAdv1";
-            labelAdv1.Size = new Size(186, 20);
-            labelAdv1.TabIndex = 27;
-            labelAdv1.Text = "Exception Handling Model";
-            // 
-            // exceptHandlModeCBox
-            // 
-            exceptHandlModeCBox.BackColor = Color.FromArgb(52, 52, 52);
-            exceptHandlModeCBox.BorderColor = Color.FromArgb(100, 100, 100);
-            exceptHandlModeCBox.BorderSize = 2;
-            exceptHandlModeCBox.ButtonColor = SystemColors.Control;
-            exceptHandlModeCBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            exceptHandlModeCBox.ForeColor = Color.Silver;
-            exceptHandlModeCBox.FormattingEnabled = true;
-            exceptHandlModeCBox.Location = new Point(516, 382);
-            exceptHandlModeCBox.Name = "exceptHandlModeCBox";
-            exceptHandlModeCBox.Size = new Size(186, 28);
-            exceptHandlModeCBox.TabIndex = 28;
             // 
             // findPackageInput
             // 
             findPackageInput.BackColor = Color.FromArgb(40, 40, 40);
-            findPackageInput.Location = new Point(753, 377);
+            findPackageInput.Location = new Point(753, 314);
             findPackageInput.Name = "findPackageInput";
             findPackageInput.SelectedPackage = "";
             findPackageInput.Size = new Size(164, 35);
@@ -194,7 +156,7 @@
             labelAdv2.BorderSize = 1;
             labelAdv2.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv2.ForeColor = Color.Silver;
-            labelAdv2.Location = new Point(753, 350);
+            labelAdv2.Location = new Point(753, 287);
             labelAdv2.ModifyClampMax = 0F;
             labelAdv2.ModifyClampMin = 0F;
             labelAdv2.ModifyControlName = "";
@@ -208,7 +170,7 @@
             // 
             postCopyDirsList.BackColor = Color.FromArgb(40, 40, 40);
             postCopyDirsList.Icon = null;
-            postCopyDirsList.Location = new Point(317, 434);
+            postCopyDirsList.Location = new Point(317, 371);
             postCopyDirsList.Name = "postCopyDirsList";
             postCopyDirsList.Size = new Size(299, 161);
             postCopyDirsList.TabIndex = 31;
@@ -218,7 +180,7 @@
             // 
             postCopyFilesList.BackColor = Color.FromArgb(40, 40, 40);
             postCopyFilesList.Icon = null;
-            postCopyFilesList.Location = new Point(625, 434);
+            postCopyFilesList.Location = new Point(625, 371);
             postCopyFilesList.Name = "postCopyFilesList";
             postCopyFilesList.Size = new Size(299, 161);
             postCopyFilesList.TabIndex = 32;
@@ -233,7 +195,7 @@
             standardVersionCBox.DropDownStyle = ComboBoxStyle.DropDownList;
             standardVersionCBox.ForeColor = Color.Silver;
             standardVersionCBox.FormattingEnabled = true;
-            standardVersionCBox.Location = new Point(339, 382);
+            standardVersionCBox.Location = new Point(339, 319);
             standardVersionCBox.Name = "standardVersionCBox";
             standardVersionCBox.Size = new Size(121, 28);
             standardVersionCBox.TabIndex = 34;
@@ -245,7 +207,7 @@
             labelAdv3.BorderSize = 1;
             labelAdv3.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv3.ForeColor = Color.Silver;
-            labelAdv3.Location = new Point(339, 350);
+            labelAdv3.Location = new Point(339, 287);
             labelAdv3.ModifyClampMax = 0F;
             labelAdv3.ModifyClampMin = 0F;
             labelAdv3.ModifyControlName = "";
@@ -255,100 +217,25 @@
             labelAdv3.TabIndex = 33;
             labelAdv3.Text = "Standard Version";
             // 
-            // outputTypeCBox
-            // 
-            outputTypeCBox.BackColor = Color.FromArgb(52, 52, 52);
-            outputTypeCBox.BorderColor = Color.FromArgb(100, 100, 100);
-            outputTypeCBox.BorderSize = 2;
-            outputTypeCBox.ButtonColor = SystemColors.Control;
-            outputTypeCBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            outputTypeCBox.ForeColor = Color.Silver;
-            outputTypeCBox.FormattingEnabled = true;
-            outputTypeCBox.Location = new Point(339, 308);
-            outputTypeCBox.Name = "outputTypeCBox";
-            outputTypeCBox.Size = new Size(121, 28);
-            outputTypeCBox.TabIndex = 36;
-            // 
-            // labelAdv4
-            // 
-            labelAdv4.AutoSize = true;
-            labelAdv4.BorderColor = Color.DarkGray;
-            labelAdv4.BorderSize = 1;
-            labelAdv4.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
-            labelAdv4.ForeColor = Color.Silver;
-            labelAdv4.Location = new Point(339, 276);
-            labelAdv4.ModifyClampMax = 0F;
-            labelAdv4.ModifyClampMin = 0F;
-            labelAdv4.ModifyControlName = "";
-            labelAdv4.ModifyScale = 1F;
-            labelAdv4.Name = "labelAdv4";
-            labelAdv4.Size = new Size(90, 20);
-            labelAdv4.TabIndex = 35;
-            labelAdv4.Text = "Output Type";
-            // 
-            // autoIncludeSourcesCKBox
-            // 
-            autoIncludeSourcesCKBox.AutoSize = true;
-            autoIncludeSourcesCKBox.FlatStyle = FlatStyle.Flat;
-            autoIncludeSourcesCKBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            autoIncludeSourcesCKBox.ForeColor = Color.Silver;
-            autoIncludeSourcesCKBox.Location = new Point(657, 293);
-            autoIncludeSourcesCKBox.Name = "autoIncludeSourcesCKBox";
-            autoIncludeSourcesCKBox.Size = new Size(117, 24);
-            autoIncludeSourcesCKBox.TabIndex = 38;
-            autoIncludeSourcesCKBox.Text = "Auto Include";
-            autoIncludeSourcesCKBox.UseVisualStyleBackColor = true;
-            // 
-            // sourceFilesList
-            // 
-            sourceFilesList.BackColor = Color.FromArgb(40, 40, 40);
-            sourceFilesList.Icon = Properties.Resources.mmenu_mini_copy_path;
-            sourceFilesList.Location = new Point(12, 276);
-            sourceFilesList.Name = "sourceFilesList";
-            sourceFilesList.Size = new Size(299, 152);
-            sourceFilesList.TabIndex = 39;
-            sourceFilesList.Title = "Source Files";
-            // 
-            // sourceFilesIncludeMode
-            // 
-            sourceFilesIncludeMode.BackColor = Color.FromArgb(52, 52, 52);
-            sourceFilesIncludeMode.BorderColor = Color.FromArgb(100, 100, 100);
-            sourceFilesIncludeMode.BorderSize = 2;
-            sourceFilesIncludeMode.ButtonColor = SystemColors.Control;
-            sourceFilesIncludeMode.DropDownStyle = ComboBoxStyle.DropDownList;
-            sourceFilesIncludeMode.ForeColor = Color.Silver;
-            sourceFilesIncludeMode.FormattingEnabled = true;
-            sourceFilesIncludeMode.Location = new Point(12, 396);
-            sourceFilesIncludeMode.Name = "sourceFilesIncludeMode";
-            sourceFilesIncludeMode.Size = new Size(120, 28);
-            sourceFilesIncludeMode.TabIndex = 40;
-            // 
-            // CustomMsvcCppBuilderSetting
+            // CustomGnuGppWSLCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(934, 658);
-            Controls.Add(sourceFilesIncludeMode);
-            Controls.Add(autoIncludeSourcesCKBox);
-            Controls.Add(sourceFilesList);
-            Controls.Add(outputTypeCBox);
-            Controls.Add(labelAdv4);
+            ClientSize = new Size(934, 607);
             Controls.Add(standardVersionCBox);
             Controls.Add(labelAdv3);
             Controls.Add(postCopyFilesList);
             Controls.Add(postCopyDirsList);
             Controls.Add(labelAdv2);
             Controls.Add(findPackageInput);
-            Controls.Add(exceptHandlModeCBox);
-            Controls.Add(labelAdv1);
             Controls.Add(macrosList);
             Controls.Add(cancelButton);
             Controls.Add(okButton);
             Controls.Add(libraryFilesList);
             Controls.Add(libraryDirsList);
             Controls.Add(includeDirsList);
-            Name = "CustomMsvcCppBuilderSetting";
-            Text = "Custom msvc settings";
+            Name = "CustomGnuGppWSLCppBuilderSetting";
+            Text = "Custom gnu g++ wsl settings";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -361,18 +248,11 @@
         private VampirioCode.UI.Controls.ButtonAdv okButton;
         private VampirioCode.UI.Controls.ButtonAdv cancelButton;
         private ItemList macrosList;
-        private VampirioCode.UI.Controls.LabelAdv labelAdv1;
-        private VampirioCode.UI.Controls.ComboBoxAdv exceptHandlModeCBox;
         private UI.FindPackageInput findPackageInput;
         private VampirioCode.UI.Controls.LabelAdv labelAdv2;
         private ItemList postCopyDirsList;
         private ItemList postCopyFilesList;
         private VampirioCode.UI.Controls.ComboBoxAdv standardVersionCBox;
         private VampirioCode.UI.Controls.LabelAdv labelAdv3;
-        private VampirioCode.UI.Controls.ComboBoxAdv outputTypeCBox;
-        private VampirioCode.UI.Controls.LabelAdv labelAdv4;
-        private CheckBox autoIncludeSourcesCKBox;
-        private ItemList sourceFilesList;
-        private VampirioCode.UI.Controls.ComboBoxAdv sourceFilesIncludeMode;
     }
 }

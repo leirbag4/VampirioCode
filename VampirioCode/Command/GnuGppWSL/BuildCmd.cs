@@ -21,16 +21,19 @@ namespace VampirioCode.Command.GnuGppWSL
 
         public async Task<BuildResult> BuildAsync()
         {
-            SetIncludes(Includes);
-            SetPreprocessor(PreprocessorDefinitions);
-            SetIfExists(Sources.ToArray());
             SetIfExists(StandardVersionInfo.Get(StandardVersion).Param);
+            SetPreprocessor(PreprocessorDefinitions); // -D
 
-            if (CanUse(LibraryPaths) || CanUse(LibraryFiles))
-            {
-                SetLibPaths(LibraryPaths);
-                SetLibFiles(LibraryFiles);
-            }
+            //if (CanUse(LibraryPaths) || CanUse(LibraryFiles))
+            //{
+            //    SetLibPaths(LibraryPaths);
+            //    SetLibFiles(LibraryFiles);
+            //}
+
+            SetIncludes(Includes);          // -I
+            SetLibPaths(LibraryPaths);      // -L
+            SetIfExists(Sources.ToArray());
+            SetLibFiles(LibraryFiles);      // -l
 
             SetIfExists("-o", OutputFilename);
 
@@ -43,7 +46,7 @@ namespace VampirioCode.Command.GnuGppWSL
             {
                 foreach (string include in includes)
                 {
-                    string inc = ReplaceVars(include);
+                    string inc = ReplaceVars(include, Environment.OperatingSystemType.Linux);
                     cmd += "-I\"" + _fixLastEscapeBar(inc) + "\" ";
                 }
             }
@@ -55,7 +58,7 @@ namespace VampirioCode.Command.GnuGppWSL
             {
                 foreach (string library in libraries)
                 {
-                    string lib = ReplaceVars(library);
+                    string lib = ReplaceVars(library, Environment.OperatingSystemType.Linux);
                     cmd += "-L\"" + _fixLastEscapeBar(lib) + "\" ";
                 }
             }
@@ -67,8 +70,9 @@ namespace VampirioCode.Command.GnuGppWSL
             {
                 foreach (string library in libraries)
                 {
-                    string lib = ReplaceVars(library);
-                    cmd += "-l\"" + _fixLastEscapeBar(lib) + "\" ";
+                    //string lib = ReplaceVars(library, Environment.OperatingSystemType.Linux);
+                    //cmd += "-l\"" + _fixLastEscapeBar(lib) + "\" ";
+                    cmd += "-l\"" + library + "\" ";
                 }
             }
         }

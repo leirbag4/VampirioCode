@@ -28,6 +28,11 @@ namespace VampirioCode.BuilderSetting
             
         }
 
+        public virtual void RefreshExtraData()
+        { 
+        
+        }
+
         protected void SetItemListSBrowsable(ItemList itemList, List<string> items)
         {
             if (items == null) return;

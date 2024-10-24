@@ -35,7 +35,7 @@ namespace VampirioCode.UI.Style
 
         private static bool IsWindows10OrGreater(int build = -1)
         {
-            return Environment.OSVersion.Version.Major >= 10 && Environment.OSVersion.Version.Build >= build;
+            return System.Environment.OSVersion.Version.Major >= 10 && System.Environment.OSVersion.Version.Build >= build;
         }
     }
 }

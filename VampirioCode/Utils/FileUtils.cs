@@ -202,6 +202,182 @@ namespace VampirioCode.Utils
             return false; // Copy failed
         }
 
+        /// <summary>
+        /// Copy a directory and its content filtering by extension
+        /// </summary>
+        /// <param name="fromPath">Like 'C:\\test2\\source'</param>
+        /// <param name="toPath">Like 'C:\\test2\\destination'</param>
+        /// <param name="includeExtensions">Like {'.cpp', '.h', '.inc'} </param>
+        /// <param name="dontIncludeRelativeFiles">Like 'main.cpp' and 'C:\\test2\\source\\main.cpp' won't be copyed</param>
+        /// <param name="recursive">Recursive mode directory by directory</param>
+        /// <returns>true if copyed done</returns>
+        public static async Task<bool> CopyDirectoryAdvAsync(string fromPath, string toPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true)
+        {
+            try
+            {
+                // Get information about the source directory
+                DirectoryInfo dir = new DirectoryInfo(fromPath);
+
+                if (!dir.Exists)
+                {
+                    throw new DirectoryNotFoundException($"Source directory does not exist: {fromPath}");
+                }
+
+                // Create the destination directory if it doesn't exist
+                Directory.CreateDirectory(toPath);
+
+                // Normalize 'dontCopyRelativeFiles' to use correct directory separator
+                if (dontIncludeRelativeFiles != null)
+                {
+                    for (int i = 0; i < dontIncludeRelativeFiles.Length; i++)
+                    {
+                        dontIncludeRelativeFiles[i] = dontIncludeRelativeFiles[i].Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+                    }
+                }
+
+                // Copy all the files from the source directory to the destination
+                FileInfo[] files = dir.GetFiles();
+                foreach (FileInfo file in files)
+                {
+                    // Skip files that are in the dontCopyRelativeFiles array
+                    string relativeFilePath = Path.GetRelativePath(fromPath, file.FullName);
+                    if (dontIncludeRelativeFiles != null && dontIncludeRelativeFiles.Contains(relativeFilePath))
+                    {
+                        continue; // Skip this file
+                    }
+
+                    // Skip files that do not match the includeExtensions array
+                    if (includeExtensions != null && !includeExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+                    {
+                        continue; // Skip this file
+                    }
+
+                    // Build the destination file path and copy the file
+                    string tempPath = Path.Combine(toPath, file.Name);
+                    await Task.Run(() => file.CopyTo(tempPath, true)); // Overwrite if exists
+                }
+
+                // If specified, copy the subdirectories and their contents recursively
+                if (recursive)
+                {
+                    DirectoryInfo[] dirs = dir.GetDirectories();
+                    foreach (DirectoryInfo subdir in dirs)
+                    {
+                        string tempPath = Path.Combine(toPath, subdir.Name);
+                        await CopyDirectoryAdvAsync(subdir.FullName, tempPath, includeExtensions, dontIncludeRelativeFiles, recursive);
+                    }
+                }
+
+                return true; // Successfully copied
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                XConsole.PrintError($"Error: {ex.Message}");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                XConsole.PrintError($"Error: Access denied. {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                XConsole.PrintError($"I/O Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                XConsole.PrintError($"An unexpected error occurred: {ex.Message}");
+            }
+
+            return false; // Copy failed
+        }
+
+        public static List<string> GetFilesAdv(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true)
+        { 
+            return GetFilesAdvAsync(fromPath, includeExtensions, dontIncludeRelativeFiles, recursive).GetAwaiter().GetResult();
+        }
+
+        public static async Task<List<string>> GetFilesAdvAsync(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true)
+        {
+            List<string> resultFiles = new List<string>();
+
+            try
+            {
+                // Get information about the source directory
+                DirectoryInfo dir = new DirectoryInfo(fromPath);
+
+                if (!dir.Exists)
+                {
+                    throw new DirectoryNotFoundException($"Source directory does not exist: {fromPath}");
+                }
+
+                // Normalize 'dontCopyRelativeFiles' to use correct directory separator
+                if (dontIncludeRelativeFiles != null)
+                {
+                    for (int i = 0; i < dontIncludeRelativeFiles.Length; i++)
+                    {
+                        dontIncludeRelativeFiles[i] = dontIncludeRelativeFiles[i].Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+                    }
+                }
+
+                // Get all the files from the current directory
+                FileInfo[] files = dir.GetFiles();
+                foreach (FileInfo file in files)
+                {
+                    // Get the relative path of the file
+                    string relativeFilePath = Path.GetRelativePath(fromPath, file.FullName);
+
+                    // Skip files listed in 'dontCopyRelativeFiles'
+                    if (dontIncludeRelativeFiles != null && dontIncludeRelativeFiles.Contains(relativeFilePath))
+                    {
+                        continue;
+                    }
+
+                    // Skip files if their extensions are not in 'includeExtensions'
+                    if (includeExtensions != null && !includeExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    // Add the relative path to the result
+                    resultFiles.Add(relativeFilePath);
+                }
+
+                // If recursive is true, process subdirectories
+                if (recursive)
+                {
+                    DirectoryInfo[] dirs = dir.GetDirectories();
+                    foreach (DirectoryInfo subdir in dirs)
+                    {
+                        // Recursively get files from subdirectories
+                        List<string> subDirFiles = await GetFilesAdvAsync(subdir.FullName, includeExtensions, dontIncludeRelativeFiles, recursive);
+
+                        // Add the relative paths of subdirectory files
+                        resultFiles.AddRange(subDirFiles.Select(subDirFile => Path.Combine(subdir.Name, subDirFile)));
+                    }
+                }
+
+                return resultFiles;
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                XConsole.PrintError($"Error: {ex.Message}");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                XConsole.PrintError($"Error: Access denied. {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                XConsole.PrintError($"I/O Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                XConsole.PrintError($"An unexpected error occurred: {ex.Message}");
+            }
+
+            return resultFiles;
+        }
+
+
         public static bool CopyFile(string fromPath, string toPath)
         {
             try

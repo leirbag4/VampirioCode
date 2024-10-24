@@ -37,6 +37,8 @@ namespace VampirioCode.BuilderSetting
         [Browsable(true)]
         public string Title { get { return titleLabel.Text; } set { titleLabel.Text = value; }  }
 
+        public bool Enable { get { return addButton.Enabled; } set { addButton.Enabled = removeButton.Enabled = list.Enabled = upButton.Enabled = downButton.Enabled = value; if (value) titleLabel.ForeColor = Color.Silver; else titleLabel.ForeColor = Color.FromArgb(80, 80, 80); } }
+
         public ObservableRangeCollection<Control> Items { get { return list.Items; } }
 
         public SItemType Type { get { return _type; } }
@@ -51,6 +53,15 @@ namespace VampirioCode.BuilderSetting
         public ItemList()
         {
             InitializeComponent();
+        }
+
+        public void Clear()
+        {
+            if (list.Items.Count > 0)
+            {
+                Items.RemoveRange(0, list.Items.Count - 1);
+                Items.Remove(list.Items[list.Items.Count - 1]);
+            }
         }
 
         public void SetupDirMode()

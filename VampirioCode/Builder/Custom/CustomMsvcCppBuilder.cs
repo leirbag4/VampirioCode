@@ -9,6 +9,7 @@ using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.BuilderSetting.CppSettings.Settings;
 using VampirioCode.Command.MSVC;
 using VampirioCode.Command.MSVC.Result;
+using VampirioCode.Environment;
 using VampirioCode.UI;
 using VampirioCode.Utils;
 
@@ -143,17 +144,17 @@ namespace VampirioCode.Builder.Custom
 
             BuildCmd cmd = new BuildCmd();
             //BuildHelper.AddBasicVars(this);
-            cmd.AddVariable("${projDir}",   ProjectDir);
-            cmd.Sources =                   sourceFiles;
-            cmd.OutputFilename =            OutputFilename;
-            //cmd.OutputObjsDir =             objsDir;
-            cmd.PreprocessorDefinitions =   VariableAction.ToString(Setting.PreprocessorMacros, "=");
-            cmd.Includes =                  Setting.IncludeDirs;
-            cmd.LibraryPaths =              Setting.LibraryDirs;
-            cmd.LibraryFiles =              Setting.LibraryFiles;
+            cmd.AddVariable(Variables.ProjDir,   ProjectDir);
+            cmd.Sources =                       sourceFiles;
+            cmd.OutputFilename =                OutputFilename;
+            //cmd.OutputObjsDir =               objsDir;
+            cmd.PreprocessorDefinitions =       VariableAction.ToString(Setting.PreprocessorMacros, "=");
+            cmd.Includes =                      Setting.IncludeDirs;
+            cmd.LibraryPaths =                  Setting.LibraryDirs;
+            cmd.LibraryFiles =                  Setting.LibraryFiles;
 
-            cmd.StandardVersion =           Setting.StandardVersion;
-            cmd.ExceptionHandlingModel =    Setting.ExceptionHanldingModel;
+            cmd.StandardVersion =               Setting.StandardVersion;
+            cmd.ExceptionHandlingModel =        Setting.ExceptionHanldingModel;
             
             if (Setting.InstallPackage != "")
             {

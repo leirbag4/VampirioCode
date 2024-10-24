@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.BuilderSetting.Actions;
+using VampirioCode.BuilderSetting.Others;
 
 namespace VampirioCode.BuilderSetting.CppSettings
 {
@@ -22,7 +23,8 @@ namespace VampirioCode.BuilderSetting.CppSettings
         public List<string> LibraryDirs { get; set; } = new List<string>();
         public List<string> LibraryFiles { get; set; } = new List<string>();
 
-        public string InstallPackage { get; set; } = "";
+        public IncludeSourcesMode IncludeSourcesMode { get; set; } = IncludeSourcesMode.Default;
+        public List<string> SourceFiles { get; set; } = new List<string>();
 
         // Methods
         /*public void CopyDirPreAdd(string from, string to, bool overwrite = true)

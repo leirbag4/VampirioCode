@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="packages\sdl2_msvc.zip" />
+    <None Remove="packages\sdl2_msvc.vpkg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,10 +59,11 @@
     <Folder Include="Command\Emscripten\Emsdk\Params\" />
     <Folder Include="Command\Nodejs\Params\" />
     <Folder Include="Command\PHP\Params\" />
+    <Folder Include="Template\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="packages\sdl2_msvc.zip">
+    <Content Include="packages\sdl2_msvc.vpkg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
