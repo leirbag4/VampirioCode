@@ -33,11 +33,23 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
     {
         public string Filter { get; set; } = "";
         public bool FullPath { get; set; } = false;
+        public string CombineRelativePath { get; set; } = "";
+
         public FileBrowseInfo(string title, bool fullPath, string filter)
         {
             _mode =     BrowseMode.File;
+            Title =     title;
             FullPath =  fullPath;
             Filter =    filter;
+        }
+
+        public FileBrowseInfo(string title, string combineRelativePath, string filter)
+        {
+            _mode =                 BrowseMode.File;
+            Title =                 title;  
+            FullPath =              true;
+            Filter =                filter;
+            CombineRelativePath =   combineRelativePath;
         }
     }
 
@@ -161,7 +173,12 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
                         DialogResult result = dialog.ShowDialog();
                         if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.FileName))
                         {
-                            if (browseInfo.FullPath)
+                            if (browseInfo.CombineRelativePath != "")
+                            {
+                                //XConsole.Alert("re laco: " + browseInfo.CombineRelativePath);
+                                Text = Path.GetRelativePath(browseInfo.CombineRelativePath, dialog.FileName);
+                            }
+                            else if (browseInfo.FullPath)
                                 Text = dialog.FileName;
                             else
                                 Text = Path.GetFileName(dialog.FileName);

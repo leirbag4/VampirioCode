@@ -22,29 +22,38 @@ namespace VampirioCode.BuilderSetting.Utils
                     comboBox.Items.Add(modeInfo.Name);
             }
 
+            if (bsetting.IncludeSourcesMode == IncludeSourcesMode.Manually)
+            {
+                foreach(string src in bsetting.SourceFiles)
+                    list.Add(new VampirioCode.UI.Controls.VerticalItemListManagement.SItemBrowsable() { Text = src });
+            }
+
             comboBox.SelectedIndexChanged += (sender, e) =>
             {
                 ComboBoxAdv option = sender as ComboBoxAdv;
                 if (option != null)
                 {
-                    var mode = IncludeSourcesModeInfo.GetByName(option.Text).Mode;
+                    IncludeSourcesMode mode = IncludeSourcesModeInfo.GetByName(option.Text).Mode;
+                    //bsetting.IncludeSourcesMode = mode;
 
                     if (mode == IncludeSourcesMode.Default)
                     {
                         list.Enable = false;
                         list.Clear();
+                        //bsetting.SourceFiles.Clear();
                     }
                     else if (mode == IncludeSourcesMode.Manually)
                     {
                         list.Enable = true;
 
-                        foreach(string src in bsetting.SourceFiles)
-                            list.Add(new VampirioCode.UI.Controls.VerticalItemListManagement.SItemBrowsable() { Text = src });
+                        //foreach(string src in bsetting.SourceFiles)
+                        //    list.Add(new VampirioCode.UI.Controls.VerticalItemListManagement.SItemBrowsable() { Text = src });
                     }
                     else if (mode == IncludeSourcesMode.Automatic)
                     {
                         list.Enable = true;
-
+                        list.Clear();
+                        //bsetting.SourceFiles.Clear();
                         //list.Add(new VampirioCode.UI.Controls.VerticalItemListManagement.SItemBrowsable() { Text = "capo" });
                         //list.Add(new VampirioCode.UI.Controls.VerticalItemListManagement.SItemBrowsable() { Text = "tester" });
                     }
@@ -53,6 +62,7 @@ namespace VampirioCode.BuilderSetting.Utils
 
                 }
             };
+
         }
 
     }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.Builder;
 using VampirioCode.Builder.Custom;
+using VampirioCode.Builder.Utils;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.BuilderSetting.Others;
 using VampirioCode.BuilderSetting.UI;
@@ -49,7 +50,7 @@ namespace VampirioCode.BuilderSetting
             libraryDirsList.SetupDirMode();
             libraryFilesList.SetupFileMode(new FileBrowseInfo("Choose .lib files", false, "DLL files (*.dll)|*.dll|LIB files (*.lib)|*.lib"));
             macrosList.SetupValuePair(0.5f, true, true);
-            sourceFilesList.SetupFileMode(new FileBrowseInfo("Choose .cpp and .h files", false, "CPP files (*.cpp)|*.cpp|H files (*.h)|*.h"));
+            sourceFilesList.SetupFileMode(new FileBrowseInfo("Choose .cpp and .h files", builder.GetOriginalBaseDir(), "C++ and Header files (*.cpp, *.h)|*.cpp;*.h|CPP files (*.cpp)|*.cpp|H files (*.h)|*.h"));
             BuilderSettingsUtils.SetupIncludeSourcesMode(sourceFilesIncludeMode, sourceFilesList, builder.Setting, OnSourcesModeChanged);
 
             postCopyDirsList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { BrowseInfo = new DirBrowseInfo() { Title = "Select a Directory" } });
@@ -107,16 +108,38 @@ namespace VampirioCode.BuilderSetting
             settings.StandardVersion =          GetStandardVersion(standardVersionCBox);
             settings.ExceptionHanldingModel =   GetExceptionHandlingMode(exceptHandlModeCBox);
 
+            settings.IncludeSourcesMode =       GetIncludeSourceFilesMode(sourceFilesIncludeMode);
+            settings.SourceFiles =              GetSourceFiles(sourceFilesList);
+
             builder.Save();
         }
 
         public override void RefreshExtraData()
         {
-            //SetupAndFillIncludeSources();
-            //XConsole.Alert("entrer");
-            //FileUtils.GetFilesAdv(builder.GetOriginalBaseDir());
-            //SetupAutoInclude(autoIncludeSourcesCKBox, autoIncludeSourcesList);
+            var settings = builder.Setting;
+
+            SetItemListSourceFiles(sourceFilesList, sourceFilesIncludeMode, settings.IncludeSourcesMode, settings.SourceFiles);
+            
         }
+
+        protected void SetItemListSourceFiles(ItemList list, ComboBoxAdv comboBox, IncludeSourcesMode mode, List<string> sourceFiles)
+        {
+            /*if (mode == IncludeSourcesMode.Default)
+            { }
+            else if (mode == IncludeSourcesMode.Manually)
+            {
+                foreach (var filePath in sourceFiles)
+                {
+                    list.Add(new SItemBrowsable() { Text = filePath });
+                }
+            }
+            else if (mode == IncludeSourcesMode.Automatic)
+            { }*/
+
+            comboBox.SelectedItem = IncludeSourcesModeInfo.Get(mode).Name;
+        }
+
+        
 
         private int OnSourcesModeChanged(IncludeSourcesMode mode)
         {
@@ -128,10 +151,12 @@ namespace VampirioCode.BuilderSetting
                 
                 var files = FileUtils.GetFilesAdv(builder.GetOriginalBaseDir(), new string[] { ".cpp", ".h" });
 
-                XConsole.Detach();
+                //XConsole.Detach();
                 foreach (var file in files)
                 {
-                    XConsole.Println(" - > " + file);
+                    string filePath = file;
+                    sourceFilesList.Add(new SItemBrowsable() { Text = filePath });
+                    //XConsole.Println(" - > " + file);
                 }
 
                 //foreach (var file in files)
@@ -167,6 +192,24 @@ namespace VampirioCode.BuilderSetting
         {
             string param = comboBox.SelectedItem.ToString();
             return ExceptionHandlingModelInfo.GetByParam(param).ExceptionHandlingModel;
+        }
+
+        private IncludeSourcesMode GetIncludeSourceFilesMode(ComboBoxAdv comboBox)
+        {
+            return IncludeSourcesModeInfo.GetByName(comboBox.SelectedItem.ToString()).Mode;
+        }
+
+        private List<string> GetSourceFiles(ItemList list)
+        {
+            List<string> sources = new List<string>();
+
+            if (builder.Setting.IncludeSourcesMode == IncludeSourcesMode.Manually)
+            {
+                foreach (var item in list.Items)
+                    sources.Add(item.Text);
+            }
+
+            return sources;
         }
 
         private void OnOkPressed(object sender, EventArgs e)

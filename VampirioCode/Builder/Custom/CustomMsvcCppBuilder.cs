@@ -144,7 +144,7 @@ namespace VampirioCode.Builder.Custom
 
             BuildCmd cmd = new BuildCmd();
             //BuildHelper.AddBasicVars(this);
-            cmd.AddVariable(Variables.ProjDir,   ProjectDir);
+            cmd.AddVariable(Variables.ProjDir,  ProjectDir);
             cmd.Sources =                       sourceFiles;
             cmd.OutputFilename =                OutputFilename;
             //cmd.OutputObjsDir =               objsDir;
