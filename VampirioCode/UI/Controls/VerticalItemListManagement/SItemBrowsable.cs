@@ -55,6 +55,9 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
 
     public class SItemBrowsable : SItem
     {
+        // Events
+        public event ValueChangedEvent ValueChanged;
+
         public BrowseInfo BrowseInfo { get; set; } = null;
 
         private TextBox editableTxtBox;
@@ -157,6 +160,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
                         if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
                         {
                             this.Text = dialog.SelectedPath;
+                            TriggerValueChangedEvent();
                         }
                     }
                 }
@@ -182,6 +186,8 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
                                 Text = dialog.FileName;
                             else
                                 Text = Path.GetFileName(dialog.FileName);
+
+                            TriggerValueChangedEvent();
                         }
                     }
                 }
@@ -198,6 +204,7 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         private void OnEditableTxtBoxTextChanged(object? sender, EventArgs e)
         {
             this.Text = editableTxtBox.Text;
+            TriggerValueChangedEvent();
         }
 
         private void OnEditableTxtBoxKeyPressed(object? sender, KeyEventArgs e)
@@ -213,6 +220,12 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
         private void OnEditableTxtBoxLeave(object? sender, EventArgs e)
         {
             EndEdition();
+        }
+
+        private void TriggerValueChangedEvent()
+        {
+            if (ValueChanged != null)
+                ValueChanged(this.Text0, this.Text);
         }
 
         private void EndEdition()

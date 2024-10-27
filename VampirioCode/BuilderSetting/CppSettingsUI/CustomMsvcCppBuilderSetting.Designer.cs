@@ -45,13 +45,13 @@
             outputTypeCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
             labelAdv4 = new VampirioCode.UI.Controls.LabelAdv();
             autoIncludeSourcesCKBox = new CheckBox();
-            sourceFilesList = new ItemList();
-            sourceFilesIncludeMode = new VampirioCode.UI.Controls.ComboBoxAdv();
+            sourceFilesList = new UI.ItemListSources();
             SuspendLayout();
             // 
             // includeDirsList
             // 
             includeDirsList.BackColor = Color.FromArgb(40, 40, 40);
+            includeDirsList.Enable = true;
             includeDirsList.Icon = null;
             includeDirsList.Location = new Point(12, 12);
             includeDirsList.Name = "includeDirsList";
@@ -62,6 +62,7 @@
             // libraryDirsList
             // 
             libraryDirsList.BackColor = Color.FromArgb(40, 40, 40);
+            libraryDirsList.Enable = true;
             libraryDirsList.Icon = Properties.Resources.mmenu_mini_folder;
             libraryDirsList.Location = new Point(317, 12);
             libraryDirsList.Name = "libraryDirsList";
@@ -72,6 +73,7 @@
             // libraryFilesList
             // 
             libraryFilesList.BackColor = Color.FromArgb(40, 40, 40);
+            libraryFilesList.Enable = true;
             libraryFilesList.Icon = Properties.Resources.mmenu_mini_copy_path;
             libraryFilesList.Location = new Point(623, 12);
             libraryFilesList.Name = "libraryFilesList";
@@ -140,6 +142,7 @@
             // macrosList
             // 
             macrosList.BackColor = Color.FromArgb(40, 40, 40);
+            macrosList.Enable = true;
             macrosList.Icon = Properties.Resources.omenu_mini_select_all;
             macrosList.Location = new Point(12, 434);
             macrosList.Name = "macrosList";
@@ -207,6 +210,7 @@
             // postCopyDirsList
             // 
             postCopyDirsList.BackColor = Color.FromArgb(40, 40, 40);
+            postCopyDirsList.Enable = true;
             postCopyDirsList.Icon = null;
             postCopyDirsList.Location = new Point(317, 434);
             postCopyDirsList.Name = "postCopyDirsList";
@@ -217,6 +221,7 @@
             // postCopyFilesList
             // 
             postCopyFilesList.BackColor = Color.FromArgb(40, 40, 40);
+            postCopyFilesList.Enable = true;
             postCopyFilesList.Icon = null;
             postCopyFilesList.Location = new Point(625, 434);
             postCopyFilesList.Name = "postCopyFilesList";
@@ -302,35 +307,21 @@
             // sourceFilesList
             // 
             sourceFilesList.BackColor = Color.FromArgb(40, 40, 40);
+            sourceFilesList.Enable = true;
             sourceFilesList.Icon = Properties.Resources.mmenu_mini_copy_path;
             sourceFilesList.Location = new Point(12, 276);
             sourceFilesList.Name = "sourceFilesList";
             sourceFilesList.Size = new Size(299, 152);
-            sourceFilesList.TabIndex = 39;
+            sourceFilesList.TabIndex = 41;
             sourceFilesList.Title = "Source Files";
-            // 
-            // sourceFilesIncludeMode
-            // 
-            sourceFilesIncludeMode.BackColor = Color.FromArgb(52, 52, 52);
-            sourceFilesIncludeMode.BorderColor = Color.FromArgb(100, 100, 100);
-            sourceFilesIncludeMode.BorderSize = 2;
-            sourceFilesIncludeMode.ButtonColor = SystemColors.Control;
-            sourceFilesIncludeMode.DropDownStyle = ComboBoxStyle.DropDownList;
-            sourceFilesIncludeMode.ForeColor = Color.Silver;
-            sourceFilesIncludeMode.FormattingEnabled = true;
-            sourceFilesIncludeMode.Location = new Point(12, 396);
-            sourceFilesIncludeMode.Name = "sourceFilesIncludeMode";
-            sourceFilesIncludeMode.Size = new Size(120, 28);
-            sourceFilesIncludeMode.TabIndex = 40;
             // 
             // CustomMsvcCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(934, 658);
-            Controls.Add(sourceFilesIncludeMode);
-            Controls.Add(autoIncludeSourcesCKBox);
             Controls.Add(sourceFilesList);
+            Controls.Add(autoIncludeSourcesCKBox);
             Controls.Add(outputTypeCBox);
             Controls.Add(labelAdv4);
             Controls.Add(standardVersionCBox);
@@ -372,7 +363,6 @@
         private VampirioCode.UI.Controls.ComboBoxAdv outputTypeCBox;
         private VampirioCode.UI.Controls.LabelAdv labelAdv4;
         private CheckBox autoIncludeSourcesCKBox;
-        private ItemList sourceFilesList;
-        private VampirioCode.UI.Controls.ComboBoxAdv sourceFilesIncludeMode;
+        private UI.ItemListSources sourceFilesList;
     }
 }

@@ -41,6 +41,10 @@ namespace VampirioCode.BuilderSetting
 
         public ObservableRangeCollection<Control> Items { get { return list.Items; } }
 
+        // Events
+        public event ValueChangedEvent ValueChanged;
+        public event ItemModifiedEvent ItemModified;
+
         public SItemType Type { get { return _type; } }
         
         private BrowseMode _mode;
@@ -100,17 +104,38 @@ namespace VampirioCode.BuilderSetting
         public void Add(SItemBrowsable item)
         {
             item.BrowseInfo = _browseInfo;
+
+            // Events
+            item.ValueChanged -= OnValueChanged;
+            item.ValueChanged += OnValueChanged;
+
             list.Items.Add(item);
         }
 
         public void Add(SItemValuePairEditable item)
         {
+            // Events
+            item.LeftValueChanged += OnValueChanged;
+            item.RightValueChanged += OnValueChanged;
+
             list.Items.Add(item);
         }
 
         public void Add(SItemValuePairBrowsable item)
         {
+            // Events
+            item.LeftValueChanged += OnValueChanged;
+            item.RightValueChanged += OnValueChanged;
+
             list.Items.Add(item);
+        }
+
+        private void OnValueChanged(VampirioCode.UI.Controls.VerticalItemListManagement.Components.SItemText itext, string text)
+        {
+            if (ValueChanged != null)
+                ValueChanged(itext, text);
+
+            TriggerItemModifiedEvent();
         }
 
         private void OnAddPressed(object sender, EventArgs e)
@@ -120,6 +145,10 @@ namespace VampirioCode.BuilderSetting
                 SItemBrowsable item = new SItemBrowsable();
                 item.BrowseInfo = _browseInfo;
                 item.Text = "-";
+
+                // Events
+                item.ValueChanged += OnValueChanged;
+
                 list.Items.Add(item);
             }
             else if (Type == SItemType.ValuePairEditable)
@@ -129,6 +158,11 @@ namespace VampirioCode.BuilderSetting
                 item.RightValue = "-";
                 item.LeftEditable = _valuePairInfo.leftEditable;
                 item.RightEditable = _valuePairInfo.rightEditable;
+                
+                // Events
+                item.LeftValueChanged += OnValueChanged;
+                item.RightValueChanged += OnValueChanged;
+
                 list.Items.Add(item);
             }
             else if (Type == SItemType.ValuePairEditable)
@@ -138,6 +172,11 @@ namespace VampirioCode.BuilderSetting
                 item.RightValue = "-";
                 item.LeftEditable = _valuePairInfo.leftEditable;
                 item.RightEditable = _valuePairInfo.rightEditable;
+                
+                // Events
+                item.LeftValueChanged += OnValueChanged;
+                item.RightValueChanged += OnValueChanged;
+
                 list.Items.Add(item);
             }
             else if (Type == SItemType.ValuePairBrowsable)
@@ -155,26 +194,47 @@ namespace VampirioCode.BuilderSetting
                     item.RightBrowseInfo =  _valuePairBrowseInfo.RightBrowseInfo;
                 }
 
+                // Events
+                item.LeftValueChanged += OnValueChanged;
+                item.RightValueChanged += OnValueChanged;
+
                 list.Items.Add(item);
             }
+
+            TriggerItemModifiedEvent();
         }
 
         private void OnRemovePressed(object sender, EventArgs e)
         {
             if (list.SelectedIndex != -1)
+            {
                 list.Items.RemoveAt(list.SelectedIndex);
+                TriggerItemModifiedEvent();
+            }
         }
 
         private void OnUpPressed(object sender, EventArgs e)
         {
             if (list.SelectedIndex != -1)
+            {
                 list.MoveItemUp(list.SelectedIndex);
+                TriggerItemModifiedEvent();
+            }
         }
 
         private void OnDownPressed(object sender, EventArgs e)
         {
             if (list.SelectedIndex != -1)
+            {
                 list.MoveItemDown(list.SelectedIndex);
+                TriggerItemModifiedEvent();
+            }
+        }
+
+        private void TriggerItemModifiedEvent()
+        {
+            if (ItemModified != null)
+                ItemModified();
         }
     }
 }

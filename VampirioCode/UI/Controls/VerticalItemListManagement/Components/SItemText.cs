@@ -52,11 +52,27 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement.Components
             set { _truncatedText = value; /*if (value) { _stringFormat.FormatFlags |= StringFormatFlags.NoWrap;  }*/ }
         }
 
+        public string Text { get { return _text; } 
+            set 
+            {
+                bool changed = false;
+
+                if(_text != _oldText)
+                    changed = true;
+
+                _text = value;
+
+                if (changed && (ValueChanged != null))
+                    ValueChanged(this, _text);
+            } }
+
         public RectangleF rect;
 
 
         public SItemTextStateMode StateMode { get; set; } = SItemTextStateMode.InheritFromParent;
 
+        private string _text = "";
+        private string _oldText = "";
         private StringFormat _stringFormat;
         private ContentAlignment _textAlign = ContentAlignment.MiddleCenter;
         private bool _visible = true;
@@ -71,10 +87,11 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement.Components
         public delegate void DoubleClickEvent(SItemText sender);
 
         public event DoubleClickEvent DoubleClick;
+        public event ValueChangedEvent ValueChanged;
 
 
         public Point Offsets;//0, 0 by default
-        public String Text = "";
+        //public String Text = "";
         public Font Font =          new Font("Verdana", 9f);
         public Color UpColor =      Color.FromArgb(172, 172, 172);
         public Color OverColor =    Color.FromArgb(65, 105, 225);

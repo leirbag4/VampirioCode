@@ -13,6 +13,10 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
 {
     public class SItem : LItem
     {
+        public delegate void AnyTextChangedEvent(string text);
+
+        public event AnyTextChangedEvent AnyTextChanged = null;
+
         public override String Text
         {
             set { Text0.Text = value; }

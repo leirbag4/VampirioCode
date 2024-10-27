@@ -13,7 +13,7 @@ namespace VampirioCode.BuilderSetting.Utils
     public class BuilderSettingsUtils
     {
 
-        public static void SetupIncludeSourcesMode(ComboBoxAdv comboBox, ItemList list, CppBSettingBase bsetting, Func<IncludeSourcesMode, int> retFunc)
+        /*public static void SetupIncludeSourcesMode(ComboBoxAdv comboBox, ItemList list, CppBSettingBase bsetting, Func<IncludeSourcesMode, int> retFunc)
         {
             foreach (IncludeSourcesMode mode in Enum.GetValues(typeof(IncludeSourcesMode)))
             {
@@ -63,7 +63,7 @@ namespace VampirioCode.BuilderSetting.Utils
                 }
             };
 
-        }
+        }*/
 
     }
 }

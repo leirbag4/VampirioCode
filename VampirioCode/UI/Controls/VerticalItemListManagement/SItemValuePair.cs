@@ -11,9 +11,12 @@ namespace VampirioCode.UI.Controls.VerticalItemListManagement
 {
     public class SItemValuePair : SItem
     {
+        // Events
+        public event ValueChangedEvent LeftValueChanged;
+        public event ValueChangedEvent RightValueChanged;
 
-        public string LeftValue { get { return Text0.Text; } set { Text0.Text = value; } }
-        public string RightValue { get { return Text1.Text; } set { Text1.Text = value; } }
+        public string LeftValue { get { return Text0.Text; } set { Text0.Text = value; if (LeftValueChanged != null) LeftValueChanged(Text0, Text0.Text); } }
+        public string RightValue { get { return Text1.Text; } set { Text1.Text = value; if (RightValueChanged != null) RightValueChanged(Text1, Text1.Text); } }
 
         [Localizable(true)]
         [Category("Extra Properties")]
