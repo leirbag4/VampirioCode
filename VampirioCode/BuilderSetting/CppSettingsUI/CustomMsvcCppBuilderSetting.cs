@@ -89,14 +89,10 @@ namespace VampirioCode.BuilderSetting
             SetFindPackage(findPackageInput,                    settings.InstallPackage);
             SetItemListValuePairBrowsable(postCopyDirsList,     settings.CopyDirsPost);
             SetItemListValuePairBrowsable(postCopyFilesList,    settings.CopyFilesPost);
+            SetSourceFiles(sourceFilesList,                     settings);
 
             SetStandardVersion(standardVersionCBox,             settings.StandardVersion);
             SetExceptionHandlingMode(exceptHandlModeCBox,       settings.ExceptionHanldingModel);
-
-            //RefreshExtraData();
-
-            //SetSourceList(settings.IncludeSourcesMode);
-            sourceFilesList.LoadAndSetMode(settings);
         }
 
         private void OnSaveData()
@@ -110,15 +106,11 @@ namespace VampirioCode.BuilderSetting
             settings.InstallPackage =           GetFindPackage(findPackageInput);
             settings.CopyDirsPost =             GetItemListValuePairBrowsable(postCopyDirsList);
             settings.CopyFilesPost =            GetItemListValuePairBrowsable(postCopyFilesList);
+            settings.IncludeSourcesMode =       GetIncludeSourceFilesMode(sourceFilesList);
+            settings.SourceFiles =              GetSourceFiles(sourceFilesList, settings);
 
             settings.StandardVersion =          GetStandardVersion(standardVersionCBox);
             settings.ExceptionHanldingModel =   GetExceptionHandlingMode(exceptHandlModeCBox);
-
-            //settings.IncludeSourcesMode =       GetIncludeSourceFilesMode(sourceFilesIncludeMode);
-            //settings.SourceFiles =              GetSourceFiles(sourceFilesList, settings.IncludeSourcesMode);
-
-            settings.IncludeSourcesMode =       GetIncludeSourceFilesMode(sourceFilesList);//ilistSources.GetMode();
-            settings.SourceFiles =              GetSourceFiles(sourceFilesList, settings);//ilistSources.GetListSources(settings);
 
             builder.Save();
         }

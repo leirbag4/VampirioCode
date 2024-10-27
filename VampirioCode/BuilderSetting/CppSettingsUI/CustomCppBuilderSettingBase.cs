@@ -21,5 +21,10 @@ namespace VampirioCode.BuilderSetting.CppSettingsUI
         {
             return ilist.GetSources(bsetting);
         }
+
+        protected void SetSourceFiles(ItemListSources ilist, CppBSettingBase bsetting)
+        {
+            ilist.LoadAndSetMode(bsetting);
+        }
     }
 }
