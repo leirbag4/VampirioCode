@@ -290,12 +290,12 @@ namespace VampirioCode.Utils
             return false; // Copy failed
         }
 
-        public static List<string> GetFilesAdv(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true)
+        public static List<string> GetFilesAdv(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true, bool fullPath = false)
         { 
-            return GetFilesAdvAsync(fromPath, includeExtensions, dontIncludeRelativeFiles, recursive).GetAwaiter().GetResult();
+            return GetFilesAdvAsync(fromPath, includeExtensions, dontIncludeRelativeFiles, recursive, fullPath).GetAwaiter().GetResult();
         }
 
-        public static async Task<List<string>> GetFilesAdvAsync(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true)
+        public static async Task<List<string>> GetFilesAdvAsync(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true, bool fullPath = false)
         {
             List<string> resultFiles = new List<string>();
 
@@ -324,6 +324,7 @@ namespace VampirioCode.Utils
                 {
                     // Get the relative path of the file
                     string relativeFilePath = Path.GetRelativePath(fromPath, file.FullName);
+                    string fullFilePath = file.FullName;
 
                     // Skip files listed in 'dontCopyRelativeFiles'
                     if (dontIncludeRelativeFiles != null && dontIncludeRelativeFiles.Contains(relativeFilePath))
@@ -337,8 +338,15 @@ namespace VampirioCode.Utils
                         continue;
                     }
 
-                    // Add the relative path to the result
-                    resultFiles.Add(relativeFilePath);
+                    if (fullPath)
+                    {
+                        resultFiles.Add(fullFilePath);
+                    }
+                    else
+                    {
+                        // Add the relative path to the result
+                        resultFiles.Add(relativeFilePath);
+                    }
                 }
 
                 // If recursive is true, process subdirectories
@@ -348,7 +356,7 @@ namespace VampirioCode.Utils
                     foreach (DirectoryInfo subdir in dirs)
                     {
                         // Recursively get files from subdirectories
-                        List<string> subDirFiles = await GetFilesAdvAsync(subdir.FullName, includeExtensions, dontIncludeRelativeFiles, recursive);
+                        List<string> subDirFiles = await GetFilesAdvAsync(subdir.FullName, includeExtensions, dontIncludeRelativeFiles, recursive, fullPath);
 
                         // Add the relative paths of subdirectory files
                         resultFiles.AddRange(subDirFiles.Select(subDirFile => Path.Combine(subdir.Name, subDirFile)));
@@ -447,6 +455,38 @@ namespace VampirioCode.Utils
             }
 
             return false; // Copy failed
+        }
+
+        public static async Task CopyFileAsync2(string sourceFile, string destinationFile, CancellationToken cancellationToken = default)
+        {
+            var fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
+            var bufferSize = 4096;
+
+            using (var sourceStream =
+                  new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, fileOptions))
+
+            using (var destinationStream =
+                  new FileStream(destinationFile, FileMode.CreateNew, FileAccess.Write, FileShare.None, bufferSize, fileOptions))
+
+                await sourceStream.CopyToAsync(destinationStream, bufferSize, cancellationToken)
+                                  .ConfigureAwait(false);
+        }
+
+        public static async Task CopyFileWithDirsAsync(string sourceFilePath, string destinationFilePath)
+        {
+            // check if directory exists. If not, creates one
+            string destinationDirectory = Path.GetDirectoryName(destinationFilePath);
+            if (!Directory.Exists(destinationDirectory))
+            {
+                Directory.CreateDirectory(destinationDirectory);
+            }
+
+            // Open files in async mode to read and write
+            using (FileStream sourceStream = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+            using (FileStream destinationStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
+            {
+                await sourceStream.CopyToAsync(destinationStream);
+            }
         }
 
         public static bool IsDirectoryInUse(string directoryPath)

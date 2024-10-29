@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.BuilderSetting.CppSettings.Settings;
+using VampirioCode.BuilderSetting.Others;
 using VampirioCode.Command.MSVC;
+using VampirioCode.Command.MSVC.Params;
 using VampirioCode.Command.MSVC.Result;
 using VampirioCode.Environment;
 using VampirioCode.UI;
@@ -58,6 +60,9 @@ namespace VampirioCode.Builder.Custom
             //XConsole.Alert("on load: " + BuildSettingsFile);
             //PrintStackTrace();
             Setting = LoadSetting<MsvcCppBSetting>();
+
+            // Change file extension. e.g: 'proj.exe' to 'proj.dll' or 'proj.lib'
+            OutputFilename = ConvertOutputFilename(OutputFilename, Setting.OutputType);
         }
 
         /*static void PrintStackTrace()
@@ -94,10 +99,18 @@ namespace VampirioCode.Builder.Custom
 
             if (result.IsOk)
             {
-                XConsole.Clear();
-                MSVC msvc = new MSVC();
-                runResult = await msvc.RunAsync(result.OutputFilename);
-                //return runResult;
+                if (Setting.OutputType == OutputType.Executable)
+                {
+                    XConsole.Clear();
+                    MSVC msvc = new MSVC();
+                    runResult = await msvc.RunAsync(result.OutputFilename);
+                    //return runResult;
+                }
+                else
+                {
+                    XConsole.Clear();
+                    XConsole.LogInfo("The file '" + Path.GetFileName(result.OutputFilename) + "' is not an executable.");
+                }
             }
 
             runResult = new RunResult();
@@ -110,6 +123,7 @@ namespace VampirioCode.Builder.Custom
         private async Task<BuildResult> _Build()
         {
             Prepare();
+            Load();
 
             // if '\temp_build' dir does not exist, just create it for the first time
             //if (!Directory.Exists(TempDir))
@@ -132,16 +146,34 @@ namespace VampirioCode.Builder.Custom
             // delete all content of '\temp_build\proj_name\' 
             //FileUtils.DeleteFilesAndDirs(projDirPath);
 
-            // write all code to '\temp_build\proj_name\proj.cpp' main program file
-            File.WriteAllText(ProgramFile, code);
-
 
             // [ COMPILATION PROCESS ]
-            List<string> sourceFiles = new string[] { ProgramFile }.ToList();
+            List<string> sourceFiles;
 
+
+            if (Setting.IncludeSourcesMode == IncludeSourcesMode.Automatic)
+            {
+                sourceFiles = await CopySourceFilesAsync(null, new string[] { ".cpp", ".h" });
+            }
+            else if(Setting.IncludeSourcesMode == IncludeSourcesMode.Manually)
+            {
+                sourceFiles = await CopySourceFilesAsync(Setting.SourceFiles, new string[] { ".cpp", ".h" });
+            }
+            else
+            {
+                sourceFiles = new string[] { ProgramFile }.ToList();
+
+                // write all code to '\temp_build\proj_name\msvc\proj.cpp' main program file
+                File.WriteAllText(ProgramFile, code);
+            }
+
+            
+
+            //XConsole.Alert("STOP");
+            
             // Build Process
             MSVC msvc = new MSVC();
-
+            
             BuildCmd cmd = new BuildCmd();
             //BuildHelper.AddBasicVars(this);
             cmd.AddVariable(Variables.ProjDir,  ProjectDir);
@@ -153,6 +185,8 @@ namespace VampirioCode.Builder.Custom
             cmd.LibraryPaths =                  Setting.LibraryDirs;
             cmd.LibraryFiles =                  Setting.LibraryFiles;
 
+
+            cmd.OutputType =                    Setting.OutputType;
             cmd.StandardVersion =               Setting.StandardVersion;
             cmd.ExceptionHandlingModel =        Setting.ExceptionHanldingModel;
             
@@ -171,9 +205,19 @@ namespace VampirioCode.Builder.Custom
 
             //var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, Setting.IncludeDirs, Setting.LibraryDirs, Setting.LibraryFiles);
             var result = await msvc.BuildAsync(cmd);
-            result.OutputFilename = OutputFilename;
+            result.OutputFilename = cmd.OutputFilename;
 
             return result;
+        }
+
+        private string ConvertOutputFilename(string fullFileName, OutputType type)
+        {
+            if (type == OutputType.Executable)
+                return Path.ChangeExtension(fullFileName, ".exe");
+            else if (type == OutputType.Shared)
+                return Path.ChangeExtension(fullFileName, ".dll");
+            else
+                return "";
         }
 
     }

@@ -12,7 +12,6 @@ using VampirioCode.Builder.Custom;
 using VampirioCode.Builder.Utils;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.BuilderSetting.CppSettingsUI;
-using VampirioCode.BuilderSetting.Others;
 using VampirioCode.BuilderSetting.UI;
 using VampirioCode.BuilderSetting.Utils;
 using VampirioCode.Command.MSVC.Params;
@@ -59,7 +58,13 @@ namespace VampirioCode.BuilderSetting
             postCopyDirsList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { BrowseInfo = new DirBrowseInfo() { Title = "Select a Directory" } });
             postCopyFilesList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { LeftBrowseInfo = new FileBrowseInfo("Select Files", true, "DLL files (*.dll)|*.dll|LIB files (*.lib)|*.lib|All Files (*.*)|*.*"), RightBrowseInfo = new DirBrowseInfo() { Title = "Select a Directory"} });
 
-            foreach (StandardVersion std in Enum.GetValues(typeof(StandardVersion)))
+            SetupComboBoxEnums<OutputType,              OutputTypeInfo>(outputTypeCBox, "Name");
+            SetupComboBoxEnums<StandardVersion,         StandardVersionInfo>(standardVersionCBox, "Param");
+            SetupComboBoxEnums<ExceptionHandlingModel,  ExceptionHandlingModelInfo>(exceptHandlModeCBox, "Param");
+
+
+
+            /*foreach (StandardVersion std in Enum.GetValues(typeof(StandardVersion)))
             {
                 var stdInfo = StandardVersionInfo.Get(std);
                 if (stdInfo.Param != "")
@@ -71,7 +76,10 @@ namespace VampirioCode.BuilderSetting
                 var modelInfo = ExceptionHandlingModelInfo.Get(model);
                 if(modelInfo.Param != "")
                     exceptHandlModeCBox.Items.Add(modelInfo.Param);
-            }
+            }*/
+
+            
+
 
             OnLoadData();
 
@@ -91,8 +99,11 @@ namespace VampirioCode.BuilderSetting
             SetItemListValuePairBrowsable(postCopyFilesList,    settings.CopyFilesPost);
             SetSourceFiles(sourceFilesList,                     settings);
 
-            SetStandardVersion(standardVersionCBox,             settings.StandardVersion);
-            SetExceptionHandlingMode(exceptHandlModeCBox,       settings.ExceptionHanldingModel);
+            //SetStandardVersion(standardVersionCBox,             settings.StandardVersion);
+            //SetExceptionHandlingMode(exceptHandlModeCBox,       settings.ExceptionHanldingModel);
+            SetComboBoxEnum<OutputType,             OutputTypeInfo>(            outputTypeCBox,      settings.OutputType,               "Name");
+            SetComboBoxEnum<StandardVersion,        StandardVersionInfo>(       standardVersionCBox, settings.StandardVersion,          "Param");
+            SetComboBoxEnum<ExceptionHandlingModel, ExceptionHandlingModelInfo>(exceptHandlModeCBox, settings.ExceptionHanldingModel,   "Param");
         }
 
         private void OnSaveData()
@@ -109,54 +120,20 @@ namespace VampirioCode.BuilderSetting
             settings.IncludeSourcesMode =       GetIncludeSourceFilesMode(sourceFilesList);
             settings.SourceFiles =              GetSourceFiles(sourceFilesList, settings);
 
-            settings.StandardVersion =          GetStandardVersion(standardVersionCBox);
-            settings.ExceptionHanldingModel =   GetExceptionHandlingMode(exceptHandlModeCBox);
+            //settings.StandardVersion =          GetStandardVersion(standardVersionCBox);
+            //settings.ExceptionHanldingModel =   GetExceptionHandlingMode(exceptHandlModeCBox);
+
+            
+            settings.OutputType =               GetComboBoxEnum<Command.MSVC.Params.OutputType,      OutputTypeInfo>(outputTypeCBox, "GetByName");
+            settings.StandardVersion =          GetComboBoxEnum<StandardVersion,        StandardVersionInfo>(standardVersionCBox, "GetByParam");
+            settings.ExceptionHanldingModel =   GetComboBoxEnum<ExceptionHandlingModel, ExceptionHandlingModelInfo>(exceptHandlModeCBox, "GetByParam");
+
+
 
             builder.Save();
         }
 
-        /*public override void RefreshExtraData()
-        {
-            var settings = builder.Setting;
-
-            SetItemListSourceFiles(sourceFilesList, sourceFilesIncludeMode, settings.IncludeSourcesMode, settings.SourceFiles);
-            
-        }
-
-        protected void SetItemListSourceFiles(ItemList list, ComboBoxAdv comboBox, IncludeSourcesMode mode, List<string> sourceFiles)
-        {
-
-            comboBox.SelectedItem = IncludeSourcesModeInfo.Get(mode).Name;
-        }*/
-
-        
-
-        /*private int OnSourcesModeChanged(IncludeSourcesMode mode)
-        {
-            if (mode == IncludeSourcesMode.Automatic)
-            {
-                //XConsole.Alert("ori: " + builder.GetOriginalBaseDir());
-
-                XConsole.LogInfo(builder.ToString());
-                
-                var files = FileUtils.GetFilesAdv(builder.GetOriginalBaseDir(), new string[] { ".cpp", ".h" });
-
-                //XConsole.Detach();
-                foreach (var file in files)
-                {
-                    string filePath = file;
-                    sourceFilesList.Add(new SItemBrowsable() { Text = filePath });
-                    //XConsole.Println(" - > " + file);
-                }
-
-                //foreach (var file in files)
-                //    sourceFilesList.Add(new SItemBrowsable() { Text = file });
-            }
-
-            return 0;
-        }*/
-
-        private void SetStandardVersion(ComboBoxAdv comboBox, StandardVersion std)
+        /*private void SetStandardVersion(ComboBoxAdv comboBox, StandardVersion std)
         {
             string param = StandardVersionInfo.Get(std).Param;
             comboBox.SelectedItem = param;
@@ -166,13 +143,13 @@ namespace VampirioCode.BuilderSetting
         {
             string param = ExceptionHandlingModelInfo.Get(model).Param;
             comboBox.SelectedItem = param;
-        }
+        }*/
 
         // ---------------------------------------------------------------
         // ---------------------------------------------------------------
         // ---------------------------------------------------------------
 
-        private StandardVersion GetStandardVersion(ComboBoxAdv comboBox)
+        /*private StandardVersion GetStandardVersion(ComboBoxAdv comboBox)
         {
             string param = comboBox.SelectedItem.ToString();
             return StandardVersionInfo.GetByParam(param).StandardVersion;
@@ -182,7 +159,7 @@ namespace VampirioCode.BuilderSetting
         {
             string param = comboBox.SelectedItem.ToString();
             return ExceptionHandlingModelInfo.GetByParam(param).ExceptionHandlingModel;
-        }
+        }*/
 
         private void OnOkPressed(object sender, EventArgs e)
         {

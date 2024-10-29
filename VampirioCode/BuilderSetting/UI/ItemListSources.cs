@@ -135,7 +135,7 @@ namespace VampirioCode.BuilderSetting.UI
                     List.Enable = true;
                     List.Clear();
 
-                    var files = FileUtils.GetFilesAdv(originalBaseDir, new string[] { ".cpp", ".h" });
+                    var files = FileUtils.GetFilesAdv(originalBaseDir, new string[] { ".cpp"/*, ".h"*/ });
 
                     foreach (var file in files)
                     {

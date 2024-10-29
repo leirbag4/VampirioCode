@@ -162,7 +162,58 @@ namespace VampirioCode.Builder.Custom
             return true;
         }
 
+        protected async Task<List<string>> CopySourceFilesAsync(List<string> sources = null, string[] extensions = null)
+        {
+            List<string> sourceFiles = new List<string>();
+            List<string> sfiles = new List<string>();
 
+            // [ AUTOMATIC ]
+            if (sources == null)
+            {
+                sfiles = await FileUtils.GetFilesAdvAsync(originalBaseDir, extensions, null, true, false);
+            }
+            // [MANUAL]
+            else
+            {
+                sfiles = sources;
+            }
+
+            foreach (var f in sfiles)
+            {
+                string fullFilePath =       Path.Combine(originalBaseDir, f);
+                string outputFullFilePath = Path.Combine(ProjectDir, f);
+
+                string extension = Path.GetExtension(outputFullFilePath);
+
+                if (extension == ".h")
+                { }
+                else
+                    sourceFiles.Add(outputFullFilePath);
+
+                try
+                {
+                    if (outputFullFilePath == ProgramFile)
+                    {
+                        // This is the 'main' program
+                        // write all code to '\temp_build\proj_name\msvc\proj.cpp' main program file
+                        File.WriteAllText(ProgramFile, code);
+                    }
+                    else
+                    {
+                        // Copy all source files to '\temp_build\proj_name\msvc\'
+                        await FileUtils.CopyFileWithDirsAsync(fullFilePath, outputFullFilePath);
+                    }
+
+
+                }
+                catch (Exception e)
+                {
+                    XConsole.PrintError("Can't copy file from\n'" + fullFilePath + "'\nto: " + outputFullFilePath + "'");
+                }
+            }
+
+            return sourceFiles;
+        }
     }
 
         /*public T LoadSetting<T>(object customBuilder) where T : CustomBuilder

@@ -16,6 +16,7 @@ namespace VampirioCode.Command.MSVC
 {
     public class BuildCmd : BaseCmd
     {
+        public OutputType OutputType { get; set; } = OutputType.Executable;
 
         public StandardVersion StandardVersion { get; set; } = StandardVersion.StdCpp17;
 
@@ -95,6 +96,8 @@ namespace VampirioCode.Command.MSVC
 
         public async Task<BuildResult> BuildAsync()
         {
+            SetIfExists(OutputTypeInfo.Get(OutputType).Param);
+
             SetIfExists("/Fo:", _fixLastEscapeBar(OutputObjsDir), false);
             SetIfExists(StandardVersionInfo.Get(StandardVersion).Param);
             SetIfExists(ExceptionHandlingModelInfo.Get(ExceptionHandlingModel).Param);

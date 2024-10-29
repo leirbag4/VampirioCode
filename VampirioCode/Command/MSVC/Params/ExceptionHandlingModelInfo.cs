@@ -8,6 +8,7 @@ namespace VampirioCode.Command.MSVC.Params
 {
     public class ExceptionHandlingModelInfo
     {
+        // IMPORTANT: it must be called equal to its own Type, otherwise, reflection won't work
         public ExceptionHandlingModel ExceptionHandlingModel { get; set; }
         public string Name { get; set; }
         public string Param { get; set; }

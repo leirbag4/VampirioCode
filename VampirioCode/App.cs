@@ -407,6 +407,7 @@ namespace VampirioCode
                         builder = Builders.GetBuilder(CurrDocument.BuilderType);
                     builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     builder.Prepare();
+                    ((CustomBuilder)builder).Load();
 
                     if (builder.OutputFilename != "")
                     {

@@ -8,6 +8,7 @@ namespace VampirioCode.Command.MSVC.Params
 {
     public class StandardVersionInfo
     {
+        // IMPORTANT: it must be called equal to its own Type, otherwise, reflection won't work
         public StandardVersion StandardVersion { get; set; }
         public string Name { get; set; }
         public string Param { get; set; }
