@@ -10,6 +10,12 @@ namespace VampirioCode.BuilderSetting.CppSettings
 {
     public class CppBSettingBase : BuilderSettingBase
     {
+        public string CustomFileName { get; set; } = "";
+
+        // Main entry point of the program -> 'int main(...)'. This can be found later
+        // the first time you try to compile the program and then stored here for fast and easy access
+        public string MainEntryPoint { get; set; } = "";
+
         // Copyables
         //public List<CopyDirAction> CopyDirsPre { get; set; }
         public List<CopyAction> CopyDirsPost { get; set; } = new List<CopyAction>();

@@ -162,7 +162,7 @@ namespace VampirioCode.Builder.Custom
             return true;
         }
 
-        protected async Task<List<string>> CopySourceFilesAsync(List<string> sources = null, string[] extensions = null)
+        protected async Task<List<string>> CopySourceFilesAsync(List<string> sources = null, string[] extensions = null, string[] dontIncludeFiles = null)
         {
             List<string> sourceFiles = new List<string>();
             List<string> sfiles = new List<string>();
@@ -170,7 +170,7 @@ namespace VampirioCode.Builder.Custom
             // [ AUTOMATIC ]
             if (sources == null)
             {
-                sfiles = await FileUtils.GetFilesAdvAsync(originalBaseDir, extensions, null, true, false);
+                sfiles = await FileUtils.GetFilesAdvAsync(originalBaseDir, extensions, dontIncludeFiles, true, false);
             }
             // [MANUAL]
             else

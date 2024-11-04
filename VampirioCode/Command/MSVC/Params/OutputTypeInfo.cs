@@ -22,8 +22,8 @@ namespace VampirioCode.Command.MSVC.Params
                 return;
 
             _Create(OutputType.Executable,  "Executable",   "");
-            _Create(OutputType.Shared,      "Shared",       "/LD");
-            _Create(OutputType.Static,      "Static",       "/c");
+            _Create(OutputType.DynamicLib,  "Dynamic Lib",  "/LD");
+            _Create(OutputType.StaticLib,   "Static Lib",   "/c");
 
             _init = true;
         }

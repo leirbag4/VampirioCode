@@ -135,6 +135,9 @@ namespace VampirioCode.Builder.Custom
 
             CreateProjectStructure();
 
+            // Find main entry point "int main(...)"
+            //FindMainEntryPoint(Setting, BaseProjDir);
+
             // if '\temp_build\proj_name\obj' dir does not exist, just create it for the first time
             if (!Directory.Exists(objsDir))
                 Directory.CreateDirectory(objsDir);
@@ -149,17 +152,21 @@ namespace VampirioCode.Builder.Custom
 
             // [ COMPILATION PROCESS ]
             List<string> sourceFiles;
+            string[] dontInclude = null;
 
+
+            if (IsOutputLibrary())
+                dontInclude = new string[] { originalFileName };
 
             if (Setting.IncludeSourcesMode == IncludeSourcesMode.Automatic)
-            {
-                sourceFiles = await CopySourceFilesAsync(null, new string[] { ".cpp", ".h" });
+            { 
+                sourceFiles = await CopySourceFilesAsync(null, new string[] { ".cpp", ".h" }, dontInclude);
             }
             else if(Setting.IncludeSourcesMode == IncludeSourcesMode.Manually)
             {
-                sourceFiles = await CopySourceFilesAsync(Setting.SourceFiles, new string[] { ".cpp", ".h" });
+                sourceFiles = await CopySourceFilesAsync(Setting.SourceFiles, new string[] { ".cpp", ".h" }, dontInclude);
             }
-            else
+            else // Default
             {
                 sourceFiles = new string[] { ProgramFile }.ToList();
 
@@ -179,12 +186,11 @@ namespace VampirioCode.Builder.Custom
             cmd.AddVariable(Variables.ProjDir,  ProjectDir);
             cmd.Sources =                       sourceFiles;
             cmd.OutputFilename =                OutputFilename;
-            //cmd.OutputObjsDir =               objsDir;
+            cmd.OutputObjsDir =                 objsDir;
             cmd.PreprocessorDefinitions =       VariableAction.ToString(Setting.PreprocessorMacros, "=");
             cmd.Includes =                      Setting.IncludeDirs;
             cmd.LibraryPaths =                  Setting.LibraryDirs;
             cmd.LibraryFiles =                  Setting.LibraryFiles;
-
 
             cmd.OutputType =                    Setting.OutputType;
             cmd.StandardVersion =               Setting.StandardVersion;
@@ -203,21 +209,55 @@ namespace VampirioCode.Builder.Custom
             copied = await CopyFiles(Setting.CopyFilesPost, cmd);
             if (!copied) XConsole.Alert("error");
 
+            if (Setting.OutputType == OutputType.DynamicLib)
+            {
+                //XConsole.Alert("enter: " + Path.ChangeExtension(cmd.OutputFilename, ".lib"));
+                cmd.OutputLibraryDir = Path.ChangeExtension(cmd.OutputFilename, ".lib");
+            }
+
+
             //var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, Setting.IncludeDirs, Setting.LibraryDirs, Setting.LibraryFiles);
             var result = await msvc.BuildAsync(cmd);
             result.OutputFilename = cmd.OutputFilename;
 
+            // ---------------------------------
+            //          Library Build
+            // ---------------------------------
+            if (CheckResult(result) && (cmd.OutputType == OutputType.StaticLib))
+            {
+                XConsole.Alert(OutputFilename);
+                var objFiles = await GetObjFiles();
+
+                BuildLibCmd libCmd =        new BuildLibCmd();
+                libCmd.ObjectFiles =        objFiles;
+                libCmd.LibOutputFilename =  cmd.OutputFilename;
+
+                var libResult = await msvc.BuildLibAsync(libCmd);
+                libResult.LibOutputFilename =   libCmd.LibOutputFilename;
+                result.OutputFilename =         libResult.LibOutputFilename;
+            }
+
             return result;
+        }
+
+        private Task<List<string>> GetObjFiles()
+        {
+            return FileUtils.GetFilesAdvAsync(objsDir, new string[] { ".obj" }, null, true, true);
+        }
+
+        private bool IsOutputLibrary()
+        {
+            return ((Setting.OutputType == OutputType.StaticLib) || (Setting.OutputType == OutputType.DynamicLib));
         }
 
         private string ConvertOutputFilename(string fullFileName, OutputType type)
         {
             if (type == OutputType.Executable)
                 return Path.ChangeExtension(fullFileName, ".exe");
-            else if (type == OutputType.Shared)
+            else if (type == OutputType.DynamicLib)
                 return Path.ChangeExtension(fullFileName, ".dll");
-            else
-                return "";
+            else //if (type == OutputType.Static)
+                return Path.ChangeExtension(fullFileName, ".lib");
         }
 
     }

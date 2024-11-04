@@ -23,13 +23,15 @@ namespace VampirioCode.Builder
 
         protected string originalFullFilePath;  // e.g: C:\projects\code\main.cpp  or  .\vampirio\temp_files\untitled 2
         protected string originalBaseDir;       // e.g: C:\projects\code\          or  .\vampirio\temp_files\
+        protected string originalFileName;      // main.cpp                        or  untitled 2
         protected string projectName;           // main                            or  untitled 2
         protected string code = "";
 
         public void Setup(string originalFullFilePath, string code)
         {
             this.originalFullFilePath = originalFullFilePath.Trim();
-            this.projectName = BuilderUtils.GetProjName(originalFullFilePath);
+            this.originalFileName =     BuilderUtils.GetFileNameOnly(originalFullFilePath);
+            this.projectName =          BuilderUtils.GetProjName(originalFullFilePath);
             this.code = code;
 
             if (originalFullFilePath != "")
@@ -47,12 +49,14 @@ namespace VampirioCode.Builder
         public string GetProgramFile() { return ProgramFile; }
         public string GetOutputFilename() { return OutputFilename; }
 
-        protected void CheckResult(BaseResult result)
+        protected bool CheckResult(BaseResult result)
         {
             if (result.IsOk)
                 XConsole.FooterInfo("build complete");
             else //if(result.Error)
                 XConsole.FooterInfo("build with errors");
+
+            return result.IsOk;
         }
 
         protected virtual void CreateProjectStructure()

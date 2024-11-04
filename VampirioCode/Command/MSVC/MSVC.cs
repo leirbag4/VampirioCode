@@ -12,6 +12,7 @@ namespace VampirioCode.Command.MSVC
     public class MSVC : BaseCmdProgram
     {
         public static string ProgramPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe"; // 14.38.33130 [working]
+        public static string LibProgramPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe"; // 14.38.33130 [working]
 
         /// <summary>
         /// Compile the program using the src .cpp files, optional headers, libraries, etc.
@@ -75,6 +76,13 @@ namespace VampirioCode.Command.MSVC
 
 
         public async Task<BuildResult> BuildAsync(BuildCmd cmd)
+        {
+            var result = await cmd.BuildAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
+        public async Task<BuildLibresult> BuildLibAsync(BuildLibCmd cmd)
         {
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);

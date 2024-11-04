@@ -44,8 +44,9 @@
             labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
             outputTypeCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
             labelAdv4 = new VampirioCode.UI.Controls.LabelAdv();
-            autoIncludeSourcesCKBox = new CheckBox();
             sourceFilesList = new UI.ItemListSources();
+            outputNameInput = new TextBox();
+            labelAdv5 = new VampirioCode.UI.Controls.LabelAdv();
             SuspendLayout();
             // 
             // includeDirsList
@@ -291,19 +292,6 @@
             labelAdv4.TabIndex = 35;
             labelAdv4.Text = "Output Type";
             // 
-            // autoIncludeSourcesCKBox
-            // 
-            autoIncludeSourcesCKBox.AutoSize = true;
-            autoIncludeSourcesCKBox.FlatStyle = FlatStyle.Flat;
-            autoIncludeSourcesCKBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            autoIncludeSourcesCKBox.ForeColor = Color.Silver;
-            autoIncludeSourcesCKBox.Location = new Point(657, 293);
-            autoIncludeSourcesCKBox.Name = "autoIncludeSourcesCKBox";
-            autoIncludeSourcesCKBox.Size = new Size(117, 24);
-            autoIncludeSourcesCKBox.TabIndex = 38;
-            autoIncludeSourcesCKBox.Text = "Auto Include";
-            autoIncludeSourcesCKBox.UseVisualStyleBackColor = true;
-            // 
             // sourceFilesList
             // 
             sourceFilesList.BackColor = Color.FromArgb(40, 40, 40);
@@ -315,13 +303,42 @@
             sourceFilesList.TabIndex = 41;
             sourceFilesList.Title = "Source Files";
             // 
+            // outputNameInput
+            // 
+            outputNameInput.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            outputNameInput.BackColor = Color.FromArgb(60, 60, 60);
+            outputNameInput.BorderStyle = BorderStyle.FixedSingle;
+            outputNameInput.ForeColor = Color.Silver;
+            outputNameInput.Location = new Point(516, 308);
+            outputNameInput.Name = "outputNameInput";
+            outputNameInput.Size = new Size(186, 27);
+            outputNameInput.TabIndex = 42;
+            // 
+            // labelAdv5
+            // 
+            labelAdv5.AutoSize = true;
+            labelAdv5.BorderColor = Color.DarkGray;
+            labelAdv5.BorderSize = 1;
+            labelAdv5.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv5.ForeColor = Color.Silver;
+            labelAdv5.Location = new Point(516, 276);
+            labelAdv5.ModifyClampMax = 0F;
+            labelAdv5.ModifyClampMin = 0F;
+            labelAdv5.ModifyControlName = "";
+            labelAdv5.ModifyScale = 1F;
+            labelAdv5.Name = "labelAdv5";
+            labelAdv5.Size = new Size(99, 20);
+            labelAdv5.TabIndex = 43;
+            labelAdv5.Text = "Output Name";
+            // 
             // CustomMsvcCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(934, 658);
+            Controls.Add(labelAdv5);
+            Controls.Add(outputNameInput);
             Controls.Add(sourceFilesList);
-            Controls.Add(autoIncludeSourcesCKBox);
             Controls.Add(outputTypeCBox);
             Controls.Add(labelAdv4);
             Controls.Add(standardVersionCBox);
@@ -362,7 +379,8 @@
         private VampirioCode.UI.Controls.LabelAdv labelAdv3;
         private VampirioCode.UI.Controls.ComboBoxAdv outputTypeCBox;
         private VampirioCode.UI.Controls.LabelAdv labelAdv4;
-        private CheckBox autoIncludeSourcesCKBox;
         private UI.ItemListSources sourceFilesList;
+        private TextBox outputNameInput;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv5;
     }
 }

@@ -20,6 +20,7 @@ namespace VampirioCode.UI
         private static RichTextBox _outp;
         private static RichTextBox _savedOutp;
         private static FooterUI _footer;
+        private static bool _detachedAllowClear = true;
 
         public XConsole()
         {
@@ -104,8 +105,10 @@ namespace VampirioCode.UI
             _outp = _savedOutp;
         }
 
-        public static void Detach()
+        public static void Detach(bool allowClear = true)
         {
+            _detachedAllowClear = allowClear;
+
             var form = new VampirioForm();
             form.Size = new Size(800, 300);
             form.StartPosition = FormStartPosition.CenterParent;
@@ -124,6 +127,7 @@ namespace VampirioCode.UI
             form.Show();
             form.FormClosed += (object sender, FormClosedEventArgs e) => 
             {
+                _detachedAllowClear = true;
                 Pop();
             };
         }
@@ -171,6 +175,9 @@ namespace VampirioCode.UI
 
         public static void Clear()
         {
+            if (!_detachedAllowClear)
+                return;
+
             if (_outp.InvokeRequired)
             {
                 _outp.Invoke(new MethodInvoker(delegate { _outp.Text = ""; }));

@@ -11,7 +11,7 @@ namespace VampirioCode.Command.MSVC.Params
     public enum OutputType
     {
         Executable = 0,
-        Shared = 1,
-        Static = 2
+        DynamicLib = 1,
+        StaticLib = 2
     }
 }

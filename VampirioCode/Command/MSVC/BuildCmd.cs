@@ -11,12 +11,17 @@ using Microsoft.VisualBasic.ApplicationServices;
 using ScintillaNET;
 using System.Numerics;
 using System.Windows.Forms;
+using VampirioCode.UI;
 
 namespace VampirioCode.Command.MSVC
 {
     public class BuildCmd : BaseCmd
     {
+        /// <summary>
+        /// Executable, Shared Library or Static Library
+        /// </summary>
         public OutputType OutputType { get; set; } = OutputType.Executable;
+
 
         public StandardVersion StandardVersion { get; set; } = StandardVersion.StdCpp17;
 
@@ -81,6 +86,8 @@ namespace VampirioCode.Command.MSVC
         /// </summary>
         public string OutputObjsDir { get; set; } = "";
 
+        public string OutputLibraryDir { get; set; } = "";
+
         /// <summary>
         /// /D (Preprocessor Definitions)
         /// You can use this symbol together with #if or #ifdef to compile source code conditionally. The symbol definition remains in effect until it's redefined in the code, or is undefined in the code by an #undef directive.
@@ -113,6 +120,7 @@ namespace VampirioCode.Command.MSVC
             }
 
             SetIfExists("/OUT:", _fixLastEscapeBar(OutputFilename), false);
+            SetIfExists("/IMPLIB:", _fixLastEscapeBar(OutputLibraryDir), false);
 
             AutoTriggerErrors = false;
             return await CreateCommand<BuildResult>(_quotes(MSVC.ProgramPath), cmd.Trim());

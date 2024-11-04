@@ -233,5 +233,10 @@ namespace VampirioCode.Builder.Utils
         {
             return GetProjName(document.FullFilePath);
         }
+
+        public static string GetFileNameOnly(string fullFilePath)
+        {
+            return Path.GetFileName(fullFilePath);
+        }
     }
 }
