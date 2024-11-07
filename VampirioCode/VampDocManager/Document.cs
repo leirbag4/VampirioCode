@@ -12,6 +12,7 @@ using ScintillaNET;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Reflection;
 using VampirioCode.Builder;
+using VampirioCode.IO;
 
 namespace VampDocManager
 {
@@ -168,6 +169,47 @@ namespace VampDocManager
                 if (property.CanWrite)
                     property.SetValue(this, property.GetValue(newDocument));
             }
+        }
+
+        public ResultInfo Move(string newFilePath)
+        {
+            string code;
+
+            if (this.IsTemporary)
+            {
+                try
+                {
+                    code = this.Text;
+                    File.Move(this.FullFilePath, newFilePath);
+                    this.CopyFrom(Document.Load(newFilePath));
+                    this.Text = code;
+                    this.Save();
+                    return ResultInfo.CreateOk();
+                }
+                catch (Exception e)
+                {
+                    ResultInfo.CreateError("Can't save temporary file: '" + this.FullFilePath + "' to '" + newFilePath + "'", e);
+                }
+            }
+            else
+            {
+                try
+                {
+                    File.WriteAllText(newFilePath, "");
+                    code = this.Text;
+                    //File.Delete(CurrDocument.FullFilePath);
+                    this.CopyFrom(Document.Load(newFilePath));
+                    this.Text = code;
+                    this.Save();
+                    return ResultInfo.CreateOk();
+                }
+                catch (Exception e)
+                {
+                    ResultInfo.CreateError("Can't save file: '" + this.FullFilePath + "' to '" + newFilePath + "'", e);
+                }
+            }
+
+            return null;
         }
 
         private bool Read()

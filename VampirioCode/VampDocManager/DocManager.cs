@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using VampEditor;
 using VampirioCode;
 using VampirioCode.Builder.Utils;
+using VampirioCode.IO;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TabManagement;
@@ -486,7 +487,7 @@ namespace VampDocManager
 
         public bool SaveAs()
         {
-            String text;
+            
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Title =      "Save file as";
             dialog.Filter =     "All Files (*.*)|*.*|Text Files (*.txt)|*.txt";
@@ -495,7 +496,25 @@ namespace VampDocManager
             dialog.ShowDialog();
             string newFilePath = dialog.FileName;
 
+            if (newFilePath != "")
+            {
+                ResultInfo info = CurrDocument.Move(newFilePath);
 
+                if (info.IsOk)
+                {
+                    return true;
+                }
+                else //if (info.HasErrors)
+                {
+                    MsgBox.Error(info.ErrorInfo.Message, info.ErrorInfo.Exception);
+                    return true;
+                }
+            }
+            else
+                return false;
+
+            /*String text;
+             
             if (newFilePath != "")
             {
                 if (CurrDocument.IsTemporary)
@@ -535,7 +554,7 @@ namespace VampDocManager
                 }
             }
             else
-                return false;
+                return false;*/
         }
 
         public void SelectTab(DocumentTab docTab)

@@ -113,6 +113,15 @@ namespace VampirioCode.Builder.Utils
 
                         if (newBuilderType == BuilderType.CustomMsvcCpp)
                         {
+                            /*if (document.IsTemporary)
+                            {
+                                XConsole.Alert("enter: " + document.FullFilePath);
+                                document.Move(AppInfo.TemporaryCustomFilesPath + "projReloco");
+                                XConsole.Alert("enter2: " + document.FullFilePath);
+                            }
+                            else
+                                XConsole.Alert("no enter");*/
+                            
                             var builder = CustomBuilders.Create_CPP_MSVC_BASIC(document, null, null);
                             CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
                             builderSettings.Open(document.FullFilePath, document.BuilderType);
