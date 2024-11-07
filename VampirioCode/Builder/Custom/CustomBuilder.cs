@@ -170,7 +170,7 @@ namespace VampirioCode.Builder.Custom
             // [ AUTOMATIC ]
             if (sources == null)
             {
-                sfiles = await FileUtils.GetFilesAdvAsync(originalBaseDir, extensions, dontIncludeFiles, true, false);
+                sfiles = await FileUtils.GetFilesAdvAsync(originalBaseDirPath, extensions, dontIncludeFiles, true, false);
             }
             // [MANUAL]
             else
@@ -180,7 +180,7 @@ namespace VampirioCode.Builder.Custom
 
             foreach (var f in sfiles)
             {
-                string fullFilePath =       Path.Combine(originalBaseDir, f);
+                string fullFilePath =       Path.Combine(originalBaseDirPath, f);
                 string outputFullFilePath = Path.Combine(ProjectDir, f);
 
                 string extension = Path.GetExtension(outputFullFilePath);

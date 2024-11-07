@@ -409,7 +409,7 @@ namespace VampirioCode
                     builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     builder.Prepare();
 
-                    if(CurrDocument.CustomBuild)
+                    if (CurrDocument.CustomBuild)
                         ((CustomBuilder)builder).Load();
 
                     if (builder.OutputFilename != "")
@@ -933,6 +933,11 @@ namespace VampirioCode
         private void OnDebugLoggerPressed(object sender, EventArgs e)
         {
             XConsole.Detach(false);
+        }
+
+        private void OnDebugOpenAppFolder(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", AppInfo.BasePath);
         }
 
         private void FullScreenToggle()

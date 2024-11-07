@@ -21,27 +21,43 @@ namespace VampirioCode.Builder
         protected string ProgramFile { get; set; } = "";    // e.g: main.cpp  or  Program.cs
         public string OutputFilename { get; set; } = "";    // e.g: 'project.exe' or 'untitled 2.exe'
 
-        protected string originalFullFilePath;  // e.g: C:\projects\code\main.cpp  or  .\vampirio\temp_files\untitled 2
-        protected string originalBaseDir;       // e.g: C:\projects\code\          or  .\vampirio\temp_files\
+        protected string originalFullFilePath;  // e.g: C:\projects\capitan\main.cpp  or  .\vampirio\temp_files\untitled 2
+        protected string originalBaseDirPath;   // e.g: C:\projects\capitan\          or  .\vampirio\temp_files\
+        protected string originalBaseDirName;   // main.cpp                        or  untitled 2
         protected string originalFileName;      // main.cpp                        or  untitled 2
         protected string projectName;           // main                            or  untitled 2
         protected string code = "";
 
         public void Setup(string originalFullFilePath, string code)
         {
+            //XConsole.Alert("originalFullFilePath: " + originalFullFilePath);
             this.originalFullFilePath = originalFullFilePath.Trim();
             this.originalFileName =     BuilderUtils.GetFileNameOnly(originalFullFilePath);
             this.projectName =          BuilderUtils.GetProjName(originalFullFilePath);
             this.code = code;
 
+            //XConsole.Alert("originalFileName: " + originalFileName);
+            //XConsole.Alert("projectName: " + projectName);
+
             if (originalFullFilePath != "")
-                originalBaseDir = Path.GetDirectoryName(originalFullFilePath);
+            {
+                originalBaseDirPath = Path.GetDirectoryName(originalFullFilePath);
+                originalBaseDirName = Path.GetFileName(originalBaseDirPath);
+                //originalBaseDirPath += "\\";
+
+                //XConsole.Alert("O: originalBaseDirPath: " + originalBaseDirPath);
+                //XConsole.Alert("O: originalBaseDirName: " + originalBaseDirName);
+            }
             else
-                originalBaseDir = "";
+            {
+                originalBaseDirPath = "";
+                originalBaseDirName = "";
+            }
         }
 
         public string GetOriginalFullFilePath() { return originalFullFilePath; }
-        public string GetOriginalBaseDir() { return originalBaseDir; }
+        public string GetOriginalBaseDirPath() { return originalBaseDirPath; }
+        public string GetOriginalBaseDirName() { return originalBaseDirName; }
         public string GetProjectName() { return projectName; }
         public string GetTempDir() { return TempDir; }
         public string GetBaseProjDir() { return BaseProjDir; }
@@ -145,7 +161,7 @@ namespace VampirioCode.Builder
                    $"ProgramFile: {ProgramFile}\n" +
                    $"OutputFilename: {OutputFilename}\n" +
                    $"originalFullFilePath: {originalFullFilePath}\n" +
-                   $"originalBaseDir: {originalBaseDir}\n" +
+                   $"originalBaseDir: {originalBaseDirPath}\n" +
                    $"projectName: {projectName}";
         }
 

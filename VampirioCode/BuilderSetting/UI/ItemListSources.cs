@@ -49,7 +49,7 @@ namespace VampirioCode.BuilderSetting.UI
 
         public void Setup(string title, string combineRelativePath, string filter, CppBSettingBase bsetting, CustomBuilder builder)
         {
-            originalBaseDir = builder.GetOriginalBaseDir();
+            originalBaseDir = builder.GetOriginalBaseDirPath();
 
             List.SetupFileMode(new FileBrowseInfo(title, combineRelativePath, filter));
 

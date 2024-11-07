@@ -48,6 +48,10 @@ namespace VampirioCode.Builder.Custom
 
             // Custom Build Settings File
             BuildSettingsFile =     ProjectDir + ".bsettings";          // build settings file ->   \temp_build\proj_name\msvc\.bsettings
+            //BuildSettingsFile = originalBaseDir + ".bsettings";
+            //BuildSettingsFile = originalBaseDirPath + "\\v" + originalBaseDirName + "\\msvc\\" + ".bsettings";
+            //XConsole.Alert("BuildSettingsFile: " + BuildSettingsFile);
+            //XConsole.Alert("originalBaseDirPath: " + originalBaseDirPath);
         }
 
         protected override void OnSave()

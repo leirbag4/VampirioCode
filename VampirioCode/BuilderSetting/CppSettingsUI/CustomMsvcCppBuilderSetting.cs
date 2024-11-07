@@ -53,7 +53,7 @@ namespace VampirioCode.BuilderSetting
             //sourceFilesList.SetupFileMode(new FileBrowseInfo("Choose .cpp and .h files", builder.GetOriginalBaseDir(), "C++ and Header files (*.cpp, *.h)|*.cpp;*.h|CPP files (*.cpp)|*.cpp|H files (*.h)|*.h"));
             //BuilderSettingsUtils.SetupIncludeSourcesMode(sourceFilesIncludeMode, sourceFilesList, builder.Setting, OnSourcesModeChanged);
 
-            sourceFilesList.Setup("Choose .cpp and .h files", builder.GetOriginalBaseDir(), "C++ and Header files (*.cpp, *.h)|*.cpp;*.h|CPP files (*.cpp)|*.cpp|H files (*.h)|*.h", builder.Setting, builder);
+            sourceFilesList.Setup("Choose .cpp and .h files", builder.GetOriginalBaseDirPath(), "C++ and Header files (*.cpp, *.h)|*.cpp;*.h|CPP files (*.cpp)|*.cpp|H files (*.h)|*.h", builder.Setting, builder);
 
             postCopyDirsList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { BrowseInfo = new DirBrowseInfo() { Title = "Select a Directory" } });
             postCopyFilesList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { LeftBrowseInfo = new FileBrowseInfo("Select Files", true, "DLL files (*.dll)|*.dll|LIB files (*.lib)|*.lib|All Files (*.*)|*.*"), RightBrowseInfo = new DirBrowseInfo() { Title = "Select a Directory"} });
