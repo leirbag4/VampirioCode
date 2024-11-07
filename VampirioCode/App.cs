@@ -405,9 +405,12 @@ namespace VampirioCode
                         builder = CustomBuilders.GetBuilder(CurrDocument.FullFilePath, CurrDocument.BuilderType);
                     else
                         builder = Builders.GetBuilder(CurrDocument.BuilderType);
+
                     builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     builder.Prepare();
-                    ((CustomBuilder)builder).Load();
+
+                    if(CurrDocument.CustomBuild)
+                        ((CustomBuilder)builder).Load();
 
                     if (builder.OutputFilename != "")
                     {
@@ -608,6 +611,9 @@ namespace VampirioCode
         {
             if (!Directory.Exists(AppInfo.TemporaryFilesPath))
                 Directory.CreateDirectory(AppInfo.TemporaryFilesPath);
+
+            if (!Directory.Exists(AppInfo.TemporaryCustomFilesPath))
+                Directory.CreateDirectory(AppInfo.TemporaryCustomFilesPath);
         }
 
         private void OpenLastDocuments()

@@ -16,8 +16,9 @@ namespace VampirioCode
         public static string BasePath { get { return AppDomain.CurrentDomain.BaseDirectory; } }
 
         // Temporary files path directory. 'E.g: C\Programs\AppDir\temp_files'
-        public static string TemporaryFilesPath { get { return AppDomain.CurrentDomain.BaseDirectory + "temp_files\\"; } }
-        public static string TemporaryBuildPath { get { return AppDomain.CurrentDomain.BaseDirectory + "temp_build\\"; } }
+        public static string TemporaryFilesPath         { get { return AppDomain.CurrentDomain.BaseDirectory + "temp_files\\"; } }
+        public static string TemporaryCustomFilesPath   { get { return AppDomain.CurrentDomain.BaseDirectory + "temp_customs\\"; } }
+        public static string TemporaryBuildPath         { get { return AppDomain.CurrentDomain.BaseDirectory + "temp_build\\"; } }
         
         public static string PackagesPath { get { return AppDomain.CurrentDomain.BaseDirectory + "packages\\"; } }
 
