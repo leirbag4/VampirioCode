@@ -27,6 +27,7 @@ namespace VampDocManager
 
         public string FilePath { get; set; }
         public string FullFilePath { get; set; }
+        public string FullDirPath { get { return Path.GetDirectoryName(FullFilePath); } }
         public string FileName { get; set; }
         public string Extension { get; set; }
         public string Text { get; set; }
@@ -59,16 +60,26 @@ namespace VampDocManager
                 Directory.CreateDirectory(tempPath);
 
             // get next free number for temporary files. E.g: 'untitled 1' 'untitled 3' -> next will be ['untitled 2']
-            string newFilePath = AppInfo.TemporaryFilesPath + "untitled " + GetNextTemporaryNumb();// + ".txt";
+            string fileNameOnly =   "untitled " + GetNextTemporaryNumb();
+            // create a new directory for the temp file called equaly 'untitled 1\untitled 1', 'untitled 2\untitled 2'
+            string dirForFile =     fileNameOnly;
+            // path up to new directory for the file. e.g: 'c:\\programs\\vampirio\\temp_files\\untitled 1'
+            string newDirPath = AppInfo.TemporaryFilesPath + dirForFile;
+
+            // full path for new temp file like: 'c:\\programs\\vampirio\\temp_files\\untitled 1\\untitled 1'
+            string newFilePath = newDirPath + "\\" + fileNameOnly;
 
             // try to create the new file
             try
             {
+                if(!Directory.Exists(newDirPath))
+                    Directory.CreateDirectory(newDirPath);
+
                 File.WriteAllText(newFilePath, "");
             }
             catch (Exception e)
             {
-                XConsole.ErrorAlert("Can't create new temporary file at '" + newFilePath + "'");
+                XConsole.ErrorAlert("Can't create new temporary file at '" + newFilePath + "'", e);
             }
 
             Document doc = _Load(newFilePath);
@@ -83,8 +94,20 @@ namespace VampDocManager
         {
             try
             {
-                File.Delete(document.FullFilePath);
-                return true;
+                // Is inside 'temp_files' folder?
+                // In this case there is a folder for the file called equaly
+                // e.g: 'untitled 2\untitled 2'. We just need to delete the folder
+                if (document.IsTemporary)
+                {
+                    XConsole.Alert("dir to delete:\n\n" + document.FullDirPath);
+                    Directory.Delete(document.FullDirPath, true);
+                    return true;
+                }
+                else
+                {
+                    throw new Exception("Temporary files and dirs are only allowed to be deleted!");
+                }
+
             }
             catch (Exception e)
             {
@@ -130,17 +153,17 @@ namespace VampDocManager
 
         private static int GetNextTemporaryNumb()
         {
-            string[] files =    FileUtils.GetFileNamesAt(AppInfo.TemporaryFilesPath);
-            int[] numbers =     new int[files.Length];
+            string[] dirs =    FileUtils.GetDirectoryNamesAt(AppInfo.TemporaryFilesPath);//FileUtils.GetFileNamesAt(AppInfo.TemporaryFilesPath);
+            int[] numbers =     new int[dirs.Length];
             int currNumb =      0;
             int i;
 
-            if (files.Length == 0)
+            if (dirs.Length == 0)
                 return 1;
 
-            for(int a = 0; a < files.Length; a++)
+            for(int a = 0; a < dirs.Length; a++)
             {
-                numbers[a] = int.Parse(Path.GetFileNameWithoutExtension(files[a]).Split(" ")[1]);
+                numbers[a] = int.Parse(Path.GetFileNameWithoutExtension(dirs[a]).Split(" ")[1]);
             }
 
             Array.Sort(numbers);
@@ -180,7 +203,7 @@ namespace VampDocManager
                 try
                 {
                     code = this.Text;
-                    File.Move(this.FullFilePath, newFilePath);
+                    File.Move(this.FullFilePath, newFilePath, true);
                     this.CopyFrom(Document.Load(newFilePath));
                     this.Text = code;
                     this.Save();
@@ -188,7 +211,7 @@ namespace VampDocManager
                 }
                 catch (Exception e)
                 {
-                    ResultInfo.CreateError("Can't save temporary file: '" + this.FullFilePath + "' to '" + newFilePath + "'", e);
+                    return ResultInfo.CreateError("Can't save temporary file: '" + this.FullFilePath + "' to '" + newFilePath + "'", e);
                 }
             }
             else
@@ -205,11 +228,10 @@ namespace VampDocManager
                 }
                 catch (Exception e)
                 {
-                    ResultInfo.CreateError("Can't save file: '" + this.FullFilePath + "' to '" + newFilePath + "'", e);
+                    return ResultInfo.CreateError("Can't save file: '" + this.FullFilePath + "' to '" + newFilePath + "'", e);
                 }
             }
 
-            return null;
         }
 
         private bool Read()

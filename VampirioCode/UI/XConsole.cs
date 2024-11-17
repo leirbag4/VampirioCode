@@ -162,9 +162,10 @@ namespace VampirioCode.UI
             }
         }
 
-        public static void ErrorAlert(string str)
+        public static void ErrorAlert(string str, Exception e = null)
         {
-            MessageBox.Show(str, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            string errorMsg = e != null ? ("\n\n" + e.Message) : "";
+            MessageBox.Show(str + errorMsg, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         public static void Alert(string[] strArr)

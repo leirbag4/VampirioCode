@@ -9,7 +9,7 @@ namespace VampirioCode.IO
     public class ResultInfo
     {
         public string Message { get; set; }
-        public bool IsOk { get; }
+        public bool IsOk { get { return (ErrorInfo == null); } }
         public bool HasErrors { get { return (ErrorInfo != null); } }
         public ErrorInfo ErrorInfo { get; set; } = null;
 

@@ -500,11 +500,11 @@ namespace VampirioCode
 
         private Document CreateCustomDocument(DocumentType docType, BuilderType builderType)
         {
-            DocumentTab tab = docManager.NewDocument();
-            Document document = tab.Document;
-            document.DocType = docType;
-            document.BuilderType = builderType;
-            document.CustomBuild = true;
+            DocumentTab tab =       docManager.NewDocument();
+            Document document =     tab.Document;
+            document.DocType =      docType;
+            document.BuilderType =  builderType;
+            document.CustomBuild =  true;
             SelectLanguage(docType);
             SelectBuilder(docType, builderType);
 
@@ -665,7 +665,7 @@ namespace VampirioCode
                     item.ForeColor = Color.Silver;
             }
 
-            if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+                 if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
             else if (docType == DocumentType.CPP) cppToolStripMenuItem.ForeColor = Color.SlateBlue;
             else if (docType == DocumentType.JS) jsToolStripMenuItem.ForeColor = Color.SlateBlue;
             else if (docType == DocumentType.JAVA) javaToolStripMenuItem.ForeColor = Color.SlateBlue;
@@ -945,5 +945,14 @@ namespace VampirioCode
             FullScreen = !FullScreen;
         }
 
+        private void OnResetConfigFile(object sender, EventArgs e)
+        {
+            // Reset the config file
+            Config.CreateNew();
+            Config.Save();
+
+            // Do not pass through 'OnClosing(CancelEventArgs e)'
+            Application.Exit();
+        }
     }
 }

@@ -70,8 +70,9 @@
             syntaxColorChangerToolStripMenuItem = new ToolStripMenuItem();
             debugCurrDocumentToolStripMenuItem = new ToolStripMenuItem();
             loggerToolStripMenuItem = new ToolStripMenuItem();
-            toolBar = new UI.ToolBar();
             openAppFolderToolStripMenuItem = new ToolStripMenuItem();
+            toolBar = new UI.ToolBar();
+            resetConfigFileToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -404,7 +405,7 @@
             // 
             // debugToolStripMenuItem
             // 
-            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem });
+            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, resetConfigFileToolStripMenuItem });
             debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             debugToolStripMenuItem.Size = new Size(68, 24);
             debugToolStripMenuItem.Text = "Debug";
@@ -433,6 +434,14 @@
             loggerToolStripMenuItem.Text = "Logger";
             loggerToolStripMenuItem.Click += OnDebugLoggerPressed;
             // 
+            // openAppFolderToolStripMenuItem
+            // 
+            openAppFolderToolStripMenuItem.ForeColor = Color.Silver;
+            openAppFolderToolStripMenuItem.Name = "openAppFolderToolStripMenuItem";
+            openAppFolderToolStripMenuItem.Size = new Size(237, 26);
+            openAppFolderToolStripMenuItem.Text = "Open App Folder";
+            openAppFolderToolStripMenuItem.Click += OnDebugOpenAppFolder;
+            // 
             // toolBar
             // 
             toolBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -442,13 +451,13 @@
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
             // 
-            // openAppFolderToolStripMenuItem
+            // resetConfigFileToolStripMenuItem
             // 
-            openAppFolderToolStripMenuItem.ForeColor = Color.Silver;
-            openAppFolderToolStripMenuItem.Name = "openAppFolderToolStripMenuItem";
-            openAppFolderToolStripMenuItem.Size = new Size(237, 26);
-            openAppFolderToolStripMenuItem.Text = "Open App Folder";
-            openAppFolderToolStripMenuItem.Click += OnDebugOpenAppFolder;
+            resetConfigFileToolStripMenuItem.ForeColor = Color.Silver;
+            resetConfigFileToolStripMenuItem.Name = "resetConfigFileToolStripMenuItem";
+            resetConfigFileToolStripMenuItem.Size = new Size(237, 26);
+            resetConfigFileToolStripMenuItem.Text = "Reset Config File";
+            resetConfigFileToolStripMenuItem.Click += OnResetConfigFile;
             // 
             // App
             // 
@@ -518,5 +527,6 @@
         private ToolStripMenuItem basicToolStripMenuItem;
         private ToolStripMenuItem loggerToolStripMenuItem;
         private ToolStripMenuItem openAppFolderToolStripMenuItem;
+        private ToolStripMenuItem resetConfigFileToolStripMenuItem;
     }
 }

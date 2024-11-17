@@ -90,6 +90,14 @@ namespace VampirioCode.Utils
             }
         }
 
+        public static string[] GetDirectoryNamesAt(string path)
+        {
+            // Retrieves all directories at the specified path
+            return Directory.GetDirectories(path)
+                            .Select(Path.GetFileName)
+                            .ToArray();
+        }
+
         public static bool CopyDirectory(string fromPath, string toPath, bool recursive = true)
         {
             try
