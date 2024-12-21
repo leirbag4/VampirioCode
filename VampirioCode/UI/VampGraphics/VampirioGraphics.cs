@@ -204,9 +204,18 @@ namespace VampirioCode.UI.VampGraphics
             g.DrawString(str, font, new SolidBrush(color), new RectangleF(x, y, width, height), GetFormat(align));
         }
 
-        public static void GetStringSize(Graphics g, Font font, string str)
+        public static SizeF GetStringSize(Graphics g, Font font, string str)
         {
-            g.MeasureString(str, font);
+            return g.MeasureString(str, font);
+        }
+
+        public static SizeF GetStringSize(Font font, string str)
+        {
+            using (Bitmap bmp = new Bitmap(1, 1))
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                return GetStringSize(g, font, str);
+            }
         }
 
         public static StringFormat GetFormat(ContentAlignment align)

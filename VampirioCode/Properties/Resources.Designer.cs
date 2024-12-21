@@ -203,6 +203,16 @@ namespace VampirioCode.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mmenu_mini_sub {
+            get {
+                object obj = ResourceManager.GetObject("mmenu_mini_sub", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap omenu_mini_cut {
             get {
                 object obj = ResourceManager.GetObject("omenu_mini_cut", resourceCulture);

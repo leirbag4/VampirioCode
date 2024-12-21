@@ -106,7 +106,7 @@ namespace VampirioCode.UI.Controls
                 {
                     SelectAll();
                 });
-                e.Handled = false;
+                e.Handled = true;
 
                 //EVENT
                 if (EnterPressed != null)
