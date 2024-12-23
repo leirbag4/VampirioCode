@@ -1,4 +1,4 @@
-﻿#define DEBUG_GNODE
+﻿//#define DEBUG_GNODE
 
 using System;
 using System.Collections.Generic;
@@ -114,6 +114,11 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             return IsInside(mouseX, mouseY, collapseRect);
         }
 
+        public bool IsOverFullRect(int mouseX, int mouseY)
+        {
+            return IsInside(mouseX, mouseY, FullRect);
+        }
+
         private bool IsInside(int x, int y, TRect rect)
         {
             return ((x >= rect.Left) && (x <= rect.Right) && (y >= rect.Top) && (y <= rect.Bottom));
@@ -221,7 +226,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         {
             RecalcTextSize();
 
-            RecalcVisibility();    
+            RecalcVisibility();
         }
 
         public void RecalcTextSize(bool forced = false)
@@ -278,9 +283,12 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             if((fullRect.Right >= 0)  && (fullRect.X <= treeView.Width) &&
                (fullRect.Bottom >= 0) && (fullRect.Y <= treeView.Height))
             {
+                if(node.Selected)
+                    TGraphics.FillRect(g, treeView.SelectedBackColor, treeView.SelectedBorderColor, 1, fullRect.X - 3, fullRect.Y, fullRect.Width + 6, fullRect.Height);
+
                 
                 #if DEBUG_GNODE
-                TGraphics.FillRect(g, Color.FromArgb(0, 0, 200), FullRect.X, FullRect.Y, FullRect.Width, FullRect.Height);
+                TGraphics.FillRect(g, Color.FromArgb(0, 0, 200), fullRect.X, fullRect.Y, fullRect.Width, fullRect.Height);
                 //TGraphics.FillRect(g, Color.Yellow, collapseRect);
                 if(Icon1.Active)
                     TGraphics.FillRect(g, Color.Orange, icon1Rect);

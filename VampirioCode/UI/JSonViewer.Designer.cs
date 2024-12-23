@@ -55,14 +55,19 @@
             // treeViewAdv
             // 
             treeViewAdv.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            treeViewAdv.BackColor = Color.FromArgb(60, 60, 60);
+            treeViewAdv.BackColor = Color.FromArgb(31, 31, 13);
+            treeViewAdv.LinesColor = Color.FromArgb(100, 100, 100);
             treeViewAdv.Location = new Point(524, 12);
+            treeViewAdv.MarginLeft = 5;
+            treeViewAdv.MarginTop = 5;
             treeViewAdv.Name = "treeViewAdv";
             treeViewAdv.NodeHeight = 20;
             treeViewAdv.NodeIndent = 20;
             treeViewAdv.ScrollBarSize = 21;
             treeViewAdv.ScrollX = 0;
             treeViewAdv.ScrollY = 0;
+            treeViewAdv.SelectedBackColor = Color.FromArgb(68, 68, 68);
+            treeViewAdv.SelectedBorderColor = Color.FromArgb(119, 119, 119);
             treeViewAdv.Size = new Size(459, 413);
             treeViewAdv.TabIndex = 1;
             treeViewAdv.Text = "treeViewAdv1";

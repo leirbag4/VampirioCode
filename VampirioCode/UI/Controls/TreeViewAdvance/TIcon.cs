@@ -10,10 +10,10 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
     {
         //public int X { get; set; } = 0;
         //public int Y { get; set; } = 0;
-        public int Width { 		get { return _width; } 		set{ _width = 		value;} }
+        public int Width { 		get { return _width; } 		set{ _width = 		value; /*treeView.RefreshAll();*/ } }
         public int Height { 	get { return _height; } 	set{ _height = 		value;} }
-        public int LeftSpace { 	get { return _leftSpace; } 	set{ _leftSpace = 	value;} }
-        public bool Active { 	get { return _active; } 	set{ _active = 		value;} }
+        public int LeftSpace { 	get { return _leftSpace; } 	set{ _leftSpace = 	value; /*treeView.RefreshAll();*/ } }
+        public bool Active { 	get { return _active; } 	set{ _active = 		value; /*treeView.RefreshAll();*/ } }
         public TRect Rect { get; set; }
 
         // Position
@@ -26,19 +26,20 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         public float IconOffsetScale { get; set; } = 1.0f;
 
         // Private
+        private TreeViewAdv treeView = null;
         private int _width = 		14;
         private int _height = 		14;
         private int _leftSpace = 	2;
         private bool _active = 		false;
 
-        public TIcon() { }
 
-        public TIcon(int width, int height = 14, int leftSpace = 2, bool active = true) 
+        public TIcon(TreeViewAdv treeView, int width, int height = 14, int leftSpace = 2, bool active = true) 
         {
-            _width =	    width;
-            _height =		height;
-            _leftSpace =    leftSpace;
-            _active =		active;
+            this.treeView =     treeView;
+            this._width =	    width;
+            this._height =		height;
+            this._leftSpace =   leftSpace;
+            this._active =		active;
         }
 
         /*public void SetPos(int x, int y)

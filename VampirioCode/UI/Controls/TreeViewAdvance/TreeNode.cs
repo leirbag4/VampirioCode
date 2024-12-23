@@ -15,6 +15,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         public TreeNode Parent { get; private set; }
         public List<TreeNode> Children { get; private set; }
         public int Level => Parent == null ? 0 : Parent.Level + 1;
+        public bool Selected { get { return _selected; } set { _selected = value; if(_selected) treeView.TriggerSelected(this); } }
 
         //public Font Font { get { return _font; } set { _font = value; gnode.RecalcTextSize(true); /*gnode.Refresh();*/ } }
         public Font Font
@@ -47,6 +48,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         private string _text = "";
         private TText _ttext = new TText();
         private Font _font = null;
+        private bool _selected = false;
 
         public TreeNode(string text = "")
         {

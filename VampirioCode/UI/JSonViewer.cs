@@ -121,9 +121,10 @@ namespace VampirioCode.UI
 
             var rootNode = CreateNode("root");
             var rootNode2 = CreateNode("root2");
+            var rootNode3 = CreateNode("root3");
 
-            var nodeA0 = CreateNode("test A0");
-            var nodeA1 = CreateNode("test A1");
+            var nodeA0 = CreateNode("test A0 longer than anything to test");
+            var nodeA1 = CreateNode("test A1 too much longer to test where to go now, for a smaller text yes yes");
             var nodeA2 = CreateNode("test A2");
 
             var nodeB0 = CreateNode("test B0");
@@ -131,7 +132,7 @@ namespace VampirioCode.UI
             var nodeB2 = CreateNode("test B2");
             var nodeB3 = CreateNode("test B3");
 
-            var nodeC0 = CreateNode("test C0");
+            var nodeC0 = CreateNode("test C0 private void TraverseUpdate(TreeNode node, int xIndent, ref int y) private void updateNow");
             var nodeC1 = CreateNode("test C1");
             var nodeC2 = CreateNode("test C2");
             var nodeC3 = CreateNode("test C3");
@@ -170,6 +171,7 @@ namespace VampirioCode.UI
 
             treeViewAdv.AddNode(rootNode);
             treeViewAdv.AddNode(rootNode2);
+            treeViewAdv.AddNode(rootNode3);
 
             treeViewAdv.NodeHeight = 30;
             treeViewAdv.Icon1.PositionMode = PositionMode.ScaledCentered;
@@ -186,6 +188,9 @@ namespace VampirioCode.UI
 
             //treeViewAdv.AddNode(rootNode);
 
+            treeViewAdv.RefreshAll();
+
+            XConsole.Println("font name: " + treeViewAdv.Font.Name);
         }
 
         private VampirioCode.UI.Controls.TreeViewAdvance.TreeNode CreateNode(string text)
@@ -247,7 +252,7 @@ namespace VampirioCode.UI
             bool check = icon1EnableCKBox.Checked;
 
             treeViewAdv.Icon1.Active = check;
-            treeViewAdv.Invalidate();
+            treeViewAdv.RefreshAll();
         }
 
         private void OnIcon2CheckedChanged(object sender, EventArgs e)
@@ -255,7 +260,7 @@ namespace VampirioCode.UI
             bool check = icon2EnableCKBox.Checked;
 
             treeViewAdv.Icon2.Active = check;
-            treeViewAdv.Invalidate();
+            treeViewAdv.RefreshAll();
         }
     }
 }
