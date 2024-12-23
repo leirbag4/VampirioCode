@@ -94,6 +94,21 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             return collapseRect;
         }
 
+        public TRect GetIcon1Rect()
+        {
+            return icon1Rect;
+        }
+
+        public TRect GetIcon2Rect()
+        {
+            return icon2Rect;
+        }
+
+        public TRect GetFullRect()
+        {
+            return FullRect;
+        }
+
         public bool IsOverCollapse(int mouseX, int mouseY)
         {
             return IsInside(mouseX, mouseY, collapseRect);
@@ -216,6 +231,10 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
                 _prevText = Text;
 
                 SizeF size =    VampirioGraphics.GetStringSize(Font, Text);
+
+                if (Text.IndexOf("test C0") != -1)
+                    XConsole.Println("fname: " + Font.Name + " fsize: " + Font.Size);
+
                 //TextWidth =     (int)size.Width;
                 //TextHeight =    (int)size.Height;
                 textRect =      new TRect(GetIconsRightPos(), LocalY, (int)size.Width, (int)size.Height);
