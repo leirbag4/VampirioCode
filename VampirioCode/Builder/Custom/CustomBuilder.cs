@@ -12,6 +12,7 @@ using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.Command;
 using VampirioCode.BuilderSetting;
 using VampirioCode.Utils;
+using VampirioCode.Workspace;
 
 namespace VampirioCode.Builder.Custom
 {
@@ -21,6 +22,9 @@ namespace VampirioCode.Builder.Custom
 
         // custom build file -> .bsettings
         protected string BuildSettingsFile { get; set; } = "";
+
+        // custom workspace file -> .workspace
+        protected string WorkspaceFile { get; set; } = "";
 
 
         public string GetBuildSettingsFile() { return BuildSettingsFile; }
@@ -82,11 +86,39 @@ namespace VampirioCode.Builder.Custom
             return JsonSerializer.Deserialize<T>(json);
         }
 
+        protected void SaveWorkspace<T>(T workspace) where T : WorkspaceBase
+        {
+            //T workspaceTyped = (T)workspace;
+            string json = JsonSerializer.Serialize<T>(workspace);//(workspaceTyped);
+            File.WriteAllText(WorkspaceFile, json);
+        }
+
+        protected T LoadWorkspace<T>() where T : WorkspaceBase
+        {
+            string json = File.ReadAllText(WorkspaceFile);
+            return JsonSerializer.Deserialize<T>(json);
+        }
+
         protected override void CreateProjectStructure()
         {
             if (!Directory.Exists(TempDir))
                 Directory.CreateDirectory(TempDir);
+            
+            if (!Directory.Exists(BuilderTypeDir))
+                Directory.CreateDirectory(BuilderTypeDir);
 
+
+            // -----------------------------------
+            // Project Dir: empty and re-create
+            if (Directory.Exists(ProjectDir))
+                Directory.Delete(ProjectDir, true);
+            
+            Directory.CreateDirectory(ProjectDir);
+            // -----------------------------------
+
+
+
+            /*
             // [DELETE]     temporary base dir [dir]  ->    \temp_build\proj_name\something_old\
             // [DELETE]     temporary base dir [file] ->    \temp_build\proj_name\something_old_2.bin
             // [CONSERVE]   temporary project dir ->        \temp_build\proj_name\msvc\
@@ -116,8 +148,8 @@ namespace VampirioCode.Builder.Custom
                     Directory.Delete(ProjectDir, true);
                     Directory.CreateDirectory(ProjectDir);
                 }
-            }
-            
+            }*/
+
         }
 
         protected async Task<bool> CopyDirs(List<CopyAction> dirs, BaseCmd cmd)

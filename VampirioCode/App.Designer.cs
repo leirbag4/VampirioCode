@@ -71,8 +71,9 @@
             debugCurrDocumentToolStripMenuItem = new ToolStripMenuItem();
             loggerToolStripMenuItem = new ToolStripMenuItem();
             openAppFolderToolStripMenuItem = new ToolStripMenuItem();
-            toolBar = new UI.ToolBar();
             resetConfigFileToolStripMenuItem = new ToolStripMenuItem();
+            toolBar = new UI.ToolBar();
+            jsonViewerToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -405,7 +406,7 @@
             // 
             // debugToolStripMenuItem
             // 
-            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, resetConfigFileToolStripMenuItem });
+            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, jsonViewerToolStripMenuItem, resetConfigFileToolStripMenuItem });
             debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             debugToolStripMenuItem.Size = new Size(68, 24);
             debugToolStripMenuItem.Text = "Debug";
@@ -442,6 +443,14 @@
             openAppFolderToolStripMenuItem.Text = "Open App Folder";
             openAppFolderToolStripMenuItem.Click += OnDebugOpenAppFolder;
             // 
+            // resetConfigFileToolStripMenuItem
+            // 
+            resetConfigFileToolStripMenuItem.ForeColor = Color.Silver;
+            resetConfigFileToolStripMenuItem.Name = "resetConfigFileToolStripMenuItem";
+            resetConfigFileToolStripMenuItem.Size = new Size(237, 26);
+            resetConfigFileToolStripMenuItem.Text = "Reset Config File";
+            resetConfigFileToolStripMenuItem.Click += OnResetConfigFile;
+            // 
             // toolBar
             // 
             toolBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -451,13 +460,13 @@
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
             // 
-            // resetConfigFileToolStripMenuItem
+            // jsonViewerToolStripMenuItem
             // 
-            resetConfigFileToolStripMenuItem.ForeColor = Color.Silver;
-            resetConfigFileToolStripMenuItem.Name = "resetConfigFileToolStripMenuItem";
-            resetConfigFileToolStripMenuItem.Size = new Size(237, 26);
-            resetConfigFileToolStripMenuItem.Text = "Reset Config File";
-            resetConfigFileToolStripMenuItem.Click += OnResetConfigFile;
+            jsonViewerToolStripMenuItem.ForeColor = Color.Silver;
+            jsonViewerToolStripMenuItem.Name = "jsonViewerToolStripMenuItem";
+            jsonViewerToolStripMenuItem.Size = new Size(237, 26);
+            jsonViewerToolStripMenuItem.Text = "Json Viewer";
+            jsonViewerToolStripMenuItem.Click += OnJSonViewerPressed;
             // 
             // App
             // 
@@ -528,5 +537,6 @@
         private ToolStripMenuItem loggerToolStripMenuItem;
         private ToolStripMenuItem openAppFolderToolStripMenuItem;
         private ToolStripMenuItem resetConfigFileToolStripMenuItem;
+        private ToolStripMenuItem jsonViewerToolStripMenuItem;
     }
 }

@@ -14,12 +14,15 @@ using VampirioCode.Command.MSVC.Result;
 using VampirioCode.Environment;
 using VampirioCode.UI;
 using VampirioCode.Utils;
+using VampirioCode.Workspace;
+using VampirioCode.Workspace.cpp;
 
 namespace VampirioCode.Builder.Custom
 {
     public class CustomMsvcCppBuilder : CustomBuilder
     {
         public MsvcCppBSetting Setting { get; set; }
+        public CppWorkspace Workspace { get; set; }
 
         private List<string> includes =     new List<string>();
         private List<string> libPaths =     new List<string>();
@@ -33,37 +36,66 @@ namespace VampirioCode.Builder.Custom
             Name = "CustomMsvc";
             Type = BuilderType.CustomMsvcCpp;
 
-            Setting = new MsvcCppBSetting();
+            Setting =   new MsvcCppBSetting();
+            Workspace = new CppWorkspace();
+
         }
 
         public override void Prepare()
         {
-            TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
-            BaseProjDir =           TempDir + projectName + "\\";       // temporary base dir ->    \temp_build\proj_name\
-            ProjectDir =            BaseProjDir + "msvc\\";             // temporary project dir -> \temp_build\proj_name\msvc\
-            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\msvc\proj.cpp
-            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\msvc\obj\
-            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\msvc\bin\
-            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_build\proj_name\msvc\bin\proj.exe
+            //XConsole.Alert("test: " + originalBaseDirPath);
+            //TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
+            TempDir =               originalBaseDirPath + "\\" + AppInfo.VampTempDir + "\\";         // temporary directory ->   \temp_proj\_vamp\
+
+            //XConsole.Alert("TempDir: " + TempDir);
+
+            //Directory.CreateDirectory(TempDir);
+
+            BaseProjDir =           TempDir + projectName + "\\";       // temporary base dir ->    \temp_proj\_vamp\proj_name\
+            BuilderTypeDir =        BaseProjDir + "msvc\\";             // temp builder type dir -> \temp_proj\_vamp\proj_name\msvc\
+            ProjectDir =            BuilderTypeDir + "build\\";         // temporary project dir -> \temp_proj\_vamp\proj_name\msvc\build\
+            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_proj\_vamp\proj_name\msvc\build\proj.cpp
+            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\msvc\build\obj\
+            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\msvc\build\bin\
+            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_proj\_vamp\proj_name\msvc\build\bin\proj.exe
 
             // Custom Build Settings File
-            BuildSettingsFile =     ProjectDir + ".bsettings";          // build settings file ->   \temp_build\proj_name\msvc\.bsettings
+            WorkspaceFile =         TempDir +        AppInfo.WorkspaceFileName;      // build workspace file ->  \temp_proj\_vamp\.workspace
+            BuildSettingsFile =     BuilderTypeDir + AppInfo.BSettingsFileName;      // build settings file ->   \temp_proj\_vamp\proj_name\msvc\.bsettings
+            //BuildSettingsFile =     ProjectDir + ".bsettings";          // build settings file ->     \temp_build\proj_name\msvc\.bsettings
             //BuildSettingsFile = originalBaseDir + ".bsettings";
             //BuildSettingsFile = originalBaseDirPath + "\\v" + originalBaseDirName + "\\msvc\\" + ".bsettings";
+            
+            
+            //XConsole.Alert("TempDir: " + TempDir);
             //XConsole.Alert("BuildSettingsFile: " + BuildSettingsFile);
+            
+            
             //XConsole.Alert("originalBaseDirPath: " + originalBaseDirPath);
+
         }
 
         protected override void OnSave()
         {
+            // Settings '.bsetting'
             SaveSetting<MsvcCppBSetting>(Setting);
+
+            // Workspace
+            Workspace.MainFile =                Path.GetRelativePath(originalBaseDirPath, originalFullFilePath);
+            //Workspace.MsvcProject =             new WorkspaceProject();
+            //Workspace.MsvcProject.MainFile =    Workspace.MainFile;//Path.GetRelativePath(BaseProjDir, ProgramFile);
+            //Workspace.MsvcProject.BuilderType = Type;
+            Workspace.DefaultBuilderType =      BuilderType.CustomMsvcCpp;
+
+            SaveWorkspace<CppWorkspace>(Workspace);
         }
 
         protected override void OnLoad()
         {
             //XConsole.Alert("on load: " + BuildSettingsFile);
             //PrintStackTrace();
-            Setting = LoadSetting<MsvcCppBSetting>();
+            Setting =   LoadSetting<MsvcCppBSetting>();
+            Workspace = LoadWorkspace<CppWorkspace>();
 
             // Change file extension. e.g: 'proj.exe' to 'proj.dll' or 'proj.lib'
             OutputFilename = ConvertOutputFilename(OutputFilename, Setting.OutputType);

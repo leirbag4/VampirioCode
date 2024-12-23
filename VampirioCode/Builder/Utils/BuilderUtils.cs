@@ -7,6 +7,7 @@ using VampDocManager;
 using VampirioCode.Builder.Custom;
 using VampirioCode.BuilderSetting;
 using VampirioCode.UI;
+using VampirioCode.Workspace;
 
 namespace VampirioCode.Builder.Utils
 {
@@ -36,10 +37,9 @@ namespace VampirioCode.Builder.Utils
 
             if (currDocument.CustomBuild)
             {
-                //string projName = Path.GetFileNameWithoutExtension(currDocument.FullFilePath);
-                CustomBuilder customBuilder = CustomBuilders.GetBuilder(currDocument.FullFilePath, currDocument.BuilderType);
+                /*CustomBuilder customBuilder = CustomBuilders.GetBuilder(currDocument.FullFilePath, currDocument.BuilderType);
                 customBuilder.Prepare();
-                customBuilder.DeleteBuild();
+                customBuilder.DeleteBuild();*/
             }
             else
             {
@@ -231,6 +231,101 @@ namespace VampirioCode.Builder.Utils
                 default:
                     return true;
             }
+        }
+
+        // return empty "" if didn't have or "_vamp" with the full path
+        // e.g: "c:\projects\01\_vamp\"
+        public static string GetTempDirPath(string anyFileFullPath)
+        {
+            // Get the directory from the full file path (excluding the file name)
+            string directory = Path.GetDirectoryName(anyFileFullPath);
+
+            // Iterate through directories going up until "_vamp" is found or we reach the root
+            while (!string.IsNullOrEmpty(directory))
+            {
+                // Combine the current directory path with "_vamp"
+                string vampDirectory = Path.Combine(directory, "_vamp");
+
+                // Check if the "_vamp" directory exists
+                if (Directory.Exists(vampDirectory))
+                {
+                    return vampDirectory; // Return the path if "_vamp" is found
+                }
+
+                // Move one level up in the directory tree
+                directory = Directory.GetParent(directory)?.FullName;
+            }
+
+            // If "_vamp" is not found, return an empty string
+            return "";
+        }
+
+        public static string GetWorkspaceFullFilePath(string filePath)
+        {
+            // e.g: "c:\projects\01\_vamp\"
+            string tempPath = GetTempDirPath(filePath);
+
+            if (tempPath != "")
+            {
+                string workspaceFilePath = tempPath + "\\.workspace";
+
+                
+                if (File.Exists(workspaceFilePath))
+                    return workspaceFilePath;
+                else
+                    return "";
+            }
+            else
+                return "";
+        }
+
+        public static WorkspaceInfo GetWorkspaceInfo(string filePath)
+        {
+
+            // e.g: "c:\projects\01\_vamp\"
+            string tempPath = GetTempDirPath(filePath);
+
+            if (tempPath != "")
+            {
+                // c:\projects\01\_vamp\.workspace
+                string workspaceFilePath = tempPath + "\\" + AppInfo.WorkspaceFileName;
+
+                // c:\projects\01\_vamp\.workspace],            [c:\projects\01\]
+                if (File.Exists(workspaceFilePath))
+                    return new WorkspaceInfo(filePath, workspaceFilePath, new DirectoryInfo(tempPath).Parent.FullName);
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
+        public static DocumentSettings GetDocSettings(string fullFilePath)
+        {
+            DocumentSettings settings = new DocumentSettings();
+            WorkspaceInfo workspaceInfo = GetWorkspaceInfo(fullFilePath);
+
+            if (workspaceInfo != null)
+            {
+                WorkspaceBase workspace =           workspaceInfo.GetWorkspaceBase();
+                //WorkspaceProject workspaceProject = workspace.DEfa//workspace.GetFirstOrDefaultWorkspaceProject();
+
+                settings.DocType =      Document.GetDocType(fullFilePath);
+                settings.Custom =       true;
+                settings.BuilderType =  workspace.DefaultBuilderType;//workspaceProject.BuilderType;
+
+                //return settings;
+            }
+            else
+            {
+                //return null;
+
+                settings.DocType=       Document.GetDocType(fullFilePath);
+                settings.Custom =       false;
+                settings.BuilderType =  Builders.GetDefaultTypeFor(settings.DocType);
+            }
+
+            return settings;
         }
 
         public static string GetProjName(string fullFilePath)

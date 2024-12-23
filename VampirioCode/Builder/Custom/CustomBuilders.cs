@@ -48,8 +48,7 @@ namespace VampirioCode.Builder.Custom
                 }
                 else
                 {
-                    XConsole.Alert("Doesn't exist!!!");
-
+                    throw new Exception("Custom builder doesn't exist!");
                 }
             }
             else if (builderType == BuilderType.CustomGnuGppWSLCpp)
@@ -67,8 +66,7 @@ namespace VampirioCode.Builder.Custom
                 }
                 else
                 {
-                    XConsole.Alert("Doesn't exist!!!");
-
+                    throw new Exception("Custom builder doesn't exist!");
                 }
             }
 

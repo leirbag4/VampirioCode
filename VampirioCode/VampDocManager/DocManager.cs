@@ -330,6 +330,16 @@ namespace VampDocManager
 
         public Document OpenDocument(string path, DocumentSettings settings = null)
         {
+            // check if document already exists and load it instead of open a new repeated one
+            Document selectedDoc = SelectDocument(path);
+
+            if (selectedDoc != null)
+            {
+                XConsole.PrintWarning("[selected:] " + selectedDoc.FullFilePath);
+                tabPanel.Refresh();
+                return selectedDoc;
+            }
+
             DocumentTab docTab = null;
             Document doc = Document.Load(path);
             
@@ -345,7 +355,31 @@ namespace VampDocManager
                         doc.DocType =       settings.DocType;
                         doc.BuilderType =   settings.BuilderType;
                         doc.CustomBuild =   settings.Custom;
+
+                        XConsole.PrintWarning("[part A:] " + doc.FullFilePath);
+                        XConsole.PrintWarning("DocType: " + doc.DocType + ", BuildType: " + doc.BuilderType + ", Custom: " + doc.CustomBuild);
+                        XConsole.Println("");
                     }
+                }
+                else
+                {
+                    XConsole.PrintError("[check settings]");
+                    settings = BuilderUtils.GetDocSettings(doc.FullFilePath);
+
+                    XConsole.PrintWarning(settings.ToString());
+
+                    if (settings.Custom)
+                    { 
+                        doc.DocType =       settings.DocType;
+                        doc.BuilderType =   settings.BuilderType;
+                        doc.CustomBuild =   settings.Custom;
+                        XConsole.PrintWarning("[part B:] " + doc.FullFilePath);
+                        XConsole.PrintWarning("DocType: " + doc.DocType + ", BuildType: " + doc.BuilderType + ", Custom: " + doc.CustomBuild);
+                        XConsole.Println("");
+                    }
+                    else
+                        XConsole.PrintWarning("[part C:] " + doc.FullFilePath);
+
                 }
 
                 docTab = CreateDocument(doc);
@@ -354,6 +388,24 @@ namespace VampDocManager
             }
 
             return doc;
+        }
+
+        public void SelectDocument(Document document)
+        {
+            SelectDocument(document.FullFilePath);
+        }
+
+        public Document SelectDocument(string path)
+        {
+            int index = DocToIndex(path);
+
+            if (index != -1)
+            {
+                SelectTabAt(index);
+                return CurrDocument;
+            }
+            else
+                return null;
         }
 
         private void OnContextItemPressed(VampEditor.EditorEventType eventType, Document document)
@@ -496,12 +548,18 @@ namespace VampDocManager
             dialog.ShowDialog();
             string newFilePath = dialog.FileName;
 
+            Document prevDoc = new Document();
+            prevDoc.CopyFrom(CurrDocument);
+
             if (newFilePath != "")
             {
                 ResultInfo info = CurrDocument.Move(newFilePath);
 
                 if (info.IsOk)
                 {
+                    if(prevDoc.FullFilePath != newFilePath)
+                        Document.Delete(prevDoc);
+                    
                     return true;
                 }
                 else //if (info.HasErrors)
@@ -572,6 +630,17 @@ namespace VampDocManager
         public int DocToIndex(Document document)
         {
             return Documents.ToList().IndexOf(document);
+        }
+
+        public int DocToIndex(string path)
+        {
+            for (int a = 0; a < Documents.Length; a++)
+            {
+                if (Documents[a].FullFilePath == path)
+                    return a;
+            }
+
+            return -1;
         }
 
         private void OnCloseTabPressed(object sender, EventArgs e)

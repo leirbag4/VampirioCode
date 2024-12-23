@@ -18,5 +18,9 @@ namespace VampDocManager
 
         public bool Custom { get; set; } = false;
 
+        public override string ToString()
+        {
+            return "DocumentType: " + DocType + ", BuilderType: " + BuilderType + ", Custom: " + Custom;
+        }
     }
 }

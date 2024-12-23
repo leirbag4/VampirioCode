@@ -129,17 +129,10 @@ namespace VampDocManager
                 doc.Extension =     Path.GetExtension(doc.FileName).ToLower();
                 doc.Read();
 
-                     if (doc.Extension == ".cs")    doc.DocType = DocumentType.CSHARP;
-                else if (doc.Extension == ".html")  doc.DocType = DocumentType.HTML;
-                else if (doc.Extension == ".js")    doc.DocType = DocumentType.JS;
-                else if (doc.Extension == ".cpp")   doc.DocType = DocumentType.CPP;
-                else if (doc.Extension == ".c")     doc.DocType = DocumentType.C;
-                else if (doc.Extension == ".h")     doc.DocType = DocumentType.H;
-                else if (doc.Extension == ".inc")   doc.DocType = DocumentType.INC;
-                else if (doc.Extension == ".php")   doc.DocType = DocumentType.PHP;
-                else if (doc.Extension == ".txt")   doc.DocType = DocumentType.TXT;
-                else if (doc.Extension == ".java")  doc.DocType = DocumentType.JAVA;
-                else                                doc.DocType = DocumentType.OTHER;
+                // Get the DocumentType for the extension
+                // E.g: extention =  '.cpp'              or      '.h' with dot
+                //      returns      DocumentType.CPP    or      DocumentType.H
+                doc.DocType =       ExtensionToDocType(doc.Extension);
 
                 doc.BuilderType = Builders.GetDefaultTypeFor(doc.DocType);
             }
@@ -149,6 +142,28 @@ namespace VampDocManager
             }
 
             return doc;
+        }
+
+        // extention =  '.cpp'              or      '.h' with dot
+        // returns      DocumentType.CPP    or      DocumentType.H
+        public static DocumentType ExtensionToDocType(string extension)
+        { 
+                 if (extension == ".cs")    return DocumentType.CSHARP;
+            else if (extension == ".html")  return DocumentType.HTML;
+            else if (extension == ".js")    return DocumentType.JS;
+            else if (extension == ".cpp")   return DocumentType.CPP;
+            else if (extension == ".c")     return DocumentType.C;
+            else if (extension == ".h")     return DocumentType.H;
+            else if (extension == ".inc")   return DocumentType.INC;
+            else if (extension == ".php")   return DocumentType.PHP;
+            else if (extension == ".txt")   return DocumentType.TXT;
+            else if (extension == ".java")  return DocumentType.JAVA;
+            else                            return DocumentType.OTHER;
+        }
+
+        public static DocumentType GetDocType(string fullFilePath)
+        { 
+            return ExtensionToDocType(Path.GetExtension(fullFilePath).ToLower());
         }
 
         private static int GetNextTemporaryNumb()

@@ -28,6 +28,7 @@ namespace VampDocManager
             _Create(DocumentType.JS,    "Javascript",   "JS",       "Javascript File",  "js");
             _Create(DocumentType.C,     "C",            "c",        "C File",           "c");
             _Create(DocumentType.PHP,   "PHP",          "Php",      "PHP File",         "php");
+            _Create(DocumentType.CPP,   "C++",          "c++",      "C++ File",         "cpp");
             _Create(DocumentType.H,     "H",            "h",        "Header File",      "h");
             _Create(DocumentType.INC,   "INC",          "inc",      "Include File",     "inc");
             _Create(DocumentType.TXT,   "TXT",          "txt",      "Txt File",         "txt");

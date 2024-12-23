@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace VampirioCode.Builder
@@ -16,6 +17,7 @@ namespace VampirioCode.Builder
     //              SimpleMsvcCpp = 0x00000002 to
     //              CustomMsvcCpp = 0x00020000 by shifting 
     //
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BuilderType
     {
         None =              0x00000000,

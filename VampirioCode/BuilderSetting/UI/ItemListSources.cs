@@ -140,6 +140,10 @@ namespace VampirioCode.BuilderSetting.UI
                     foreach (var file in files)
                     {
                         string filePath = file;
+
+                        if (file.IndexOf(AppInfo.VampTempDir) == 0)
+                            continue;
+
                         List.Add(new SItemBrowsable() { Text = filePath });
                     }
                 }

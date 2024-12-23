@@ -17,6 +17,8 @@ using VampirioCode.Tests;
 using VampirioCode.UI;
 using VampirioCode.UI.Style;
 using VampirioCode.Utils;
+using VampirioCode.Workspace;
+using VampirioCode.Workspace.cpp;
 
 namespace VampirioCode
 {
@@ -94,6 +96,8 @@ namespace VampirioCode
 
             //BuilderSetting.CustomMsvcCppBuilderSetting bsetting = new BuilderSetting.CustomMsvcCppBuilderSetting();
             //bsetting.ShowDialog();
+            //new ScrollTester().ShowDialog();
+            OnJSonViewerPressed(null, EventArgs.Empty);
 
             base.OnLoad(e);
         }
@@ -243,10 +247,66 @@ namespace VampirioCode
             //XConsole.Clear();
             //var result = await dotnet.RunAsync(@"C:\dotnet_test\projects\Capitan", new string[] { "malo", "--chipote" });
 
+
+            //string workspacePath = BuilderUtils.GetTempDirPath(CurrDocument.FullFilePath);
+            //XConsole.Println("workspacePath: " + workspacePath);
+
+
+            //string workspaceFilePath = BuilderUtils.GetWorkspaceFullFilePath(CurrDocument.FullFilePath);
+            //XConsole.Println("workspaceFilePath: " + workspaceFilePath);
+
+            Document returnToDoc = null;
+
+            WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
+            XConsole.Println("info: " + workspaceInfo.ToString());
+
+
+            WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+            XConsole.Println("wb: " + workspace.ToString());
+
+            if (workspaceInfo.IsMainFile(workspace))
+            {
+                // do nothing
+                XConsole.PrintWarning("is main file");
+            }
+            else
+            {
+                if (workspace.Language == DocumentType.CPP)
+                {
+                    CppWorkspace cppWorkspace = workspaceInfo.GetWorkspace<CppWorkspace>();
+
+                    // Can be '.h', '.cpp' so we must check if it's allowed
+                    if (cppWorkspace.IsTypeAllowed(CurrDocument.DocType))
+                    {
+                        XConsole.PrintWarning("type is allowed");
+                        string mainFileFullPath = workspaceInfo.GetMainFile(workspace);
+                        XConsole.PrintWarning("mainFileFullPath: " + mainFileFullPath);
+
+                        returnToDoc = CurrDocument;
+
+                        XConsole.PrintError("i: " + docManager.DocToIndex(mainFileFullPath));
+                        Document openedDocument = docManager.OpenDocument(mainFileFullPath);
+                    }
+
+                    XConsole.Println("cppws: " + cppWorkspace.ToString());
+                    XConsole.Println("main: " + cppWorkspace.MainFile);
+                }
+            }
+
+
+
+
             if (!BuilderUtils.CanCompile(CurrDocument.DocType))
             {
                 XConsole.Clear();
                 XConsole.PrintWarning($"This file '{CurrDocument.DocType}' can't be compiled.");
+
+                if (returnToDoc != null)
+                {
+                    docManager.SelectDocument(returnToDoc);
+                    docManager.Refresh();
+                }
+
                 return;
             }
 
@@ -261,15 +321,9 @@ namespace VampirioCode
             {
                 if (CurrDocument.CustomBuild)
                 {
-                    //Builder.Builder builder = Builders.GetBuilder(CurrDocument.BuilderType);
-                    //builder.Setup(projName, CurrDocument.Text);
-                    //await builder.Build();
-
-                    //XConsole.Alert("is: " + CurrDocument.BuilderType);
                     Builder.Custom.CustomBuilder builder = CustomBuilders.GetBuilder(CurrDocument.FullFilePath, CurrDocument.BuilderType);
                     builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     await builder.BuildAndRun();
-
                 }
                 else
                 {
@@ -277,6 +331,12 @@ namespace VampirioCode
                     builder.Setup(CurrDocument.FullFilePath, CurrDocument.Text);
                     await builder.BuildAndRun();
                 }
+            }
+
+            if (returnToDoc != null)
+            {
+                docManager.SelectDocument(returnToDoc);
+                docManager.Refresh();
             }
         }
 
@@ -353,6 +413,35 @@ namespace VampirioCode
             }
             else // SimpleBuild
             {
+                WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
+
+                // Workspace exists, so there is a 'Custom Project' (.bettings) created before
+                // and all of its structure
+                if (workspaceInfo != null)
+                {
+                    WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+                    XConsole.Println("info: " + workspaceInfo.ToString());
+                    XConsole.Println("wb: " + workspace.ToString());
+
+                    if (!workspaceInfo.IsMainFile(workspace))
+                    {
+                        // do nothing
+                        XConsole.PrintWarning("isn't main file");
+                        var result = MsgBox.Show("Already created project", "There's a project already created inside directory:\n\n'" + workspaceInfo.RootDirFullPath + "'\n\nYou can't create another one.\nDo you want to open the main project file?", DialogButtons.YesNoCancel, DialogIcon.Question);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            string mainFileFullPath = workspaceInfo.GetMainFile(workspace);
+                            docManager.OpenDocument(mainFileFullPath);
+                            docManager.Refresh();
+                            OnSetupBuildPressed(null, EventArgs.Empty);
+                        }
+
+                        return;
+                    }
+                }
+
+
                 // Convert a Simple project like:   BuilderType.SimpleMsvcCpp to
                 //              The equivalent ->   BuilderType.CustomMsvcCpp
                 //XConsole.Alert("b: " + CurrDocument.BuilderType);
@@ -475,12 +564,19 @@ namespace VampirioCode
 
         private void Save()
         {
-            docManager.Save();
+            bool wasTemporary = CurrDocument.IsTemporary;
+            bool saved = docManager.Save();
+
+            if (saved && wasTemporary)
+                SelectLanguageAndBuilder(CurrDocument);
         }
 
         private void SaveAs()
         {
-            docManager.SaveAs();
+            bool saved = docManager.SaveAs();
+
+            if (saved)
+                SelectLanguageAndBuilder(CurrDocument);
         }
 
         private void CloseDoc()
@@ -500,11 +596,11 @@ namespace VampirioCode
 
         private Document CreateCustomDocument(DocumentType docType, BuilderType builderType)
         {
-            DocumentTab tab =       docManager.NewDocument();
-            Document document =     tab.Document;
-            document.DocType =      docType;
-            document.BuilderType =  builderType;
-            document.CustomBuild =  true;
+            DocumentTab tab = docManager.NewDocument();
+            Document document = tab.Document;
+            document.DocType = docType;
+            document.BuilderType = builderType;
+            document.CustomBuild = true;
             SelectLanguage(docType);
             SelectBuilder(docType, builderType);
 
@@ -611,9 +707,6 @@ namespace VampirioCode
         {
             if (!Directory.Exists(AppInfo.TemporaryFilesPath))
                 Directory.CreateDirectory(AppInfo.TemporaryFilesPath);
-
-            if (!Directory.Exists(AppInfo.TemporaryCustomFilesPath))
-                Directory.CreateDirectory(AppInfo.TemporaryCustomFilesPath);
         }
 
         private void OpenLastDocuments()
@@ -655,6 +748,12 @@ namespace VampirioCode
             }
         }
 
+        private void SelectLanguageAndBuilder(Document document)
+        {
+            SelectLanguage(document.DocType);
+            SelectBuilder(document.DocType, document.BuilderType);
+        }
+
         private void SelectLanguage(DocumentType docType)
         {
             ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, htmlToolStripMenuItem, cmakeToolStripMenuItem };
@@ -665,7 +764,7 @@ namespace VampirioCode
                     item.ForeColor = Color.Silver;
             }
 
-                 if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
+            if (docType == DocumentType.CSHARP) csharpToolStripMenuItem.ForeColor = Color.SlateBlue;
             else if (docType == DocumentType.CPP) cppToolStripMenuItem.ForeColor = Color.SlateBlue;
             else if (docType == DocumentType.JS) jsToolStripMenuItem.ForeColor = Color.SlateBlue;
             else if (docType == DocumentType.JAVA) javaToolStripMenuItem.ForeColor = Color.SlateBlue;
@@ -928,6 +1027,18 @@ namespace VampirioCode
             XConsole.Println(CurrDocument.FullFilePath);
             XConsole.Println(CurrDocument.FileName);
             XConsole.Println($"CustomBuild: {CurrDocument.CustomBuild}, BuildType: {CurrDocument.BuilderType}");
+
+            Builder.Builder builder;
+
+            if (CurrDocument.CustomBuild)
+                builder = CustomBuilders.GetBuilder(CurrDocument.FullFilePath, CurrDocument.BuilderType);
+            else
+                builder = Builders.GetBuilder(CurrDocument.BuilderType);
+
+            builder.Prepare();
+
+            XConsole.Println("----------- custom builder -----------");
+            XConsole.Println("projDir: " + builder.GetProjectDir());
         }
 
         private void OnDebugLoggerPressed(object sender, EventArgs e)
@@ -945,6 +1056,12 @@ namespace VampirioCode
             FullScreen = !FullScreen;
         }
 
+        private void OnJSonViewerPressed(object sender, EventArgs e)
+        {
+            string json = "{\"posX\":577,\"posY\":98,\"width\":820,\"height\":750,\"maximized\":false,\"splitter_distance\":464,\"version\":\"0.6.2\",\"last_open_documents\":[{\"FullFilePath\":\"C:\\\\Users\\\\gabri\\\\source\\\\repos\\\\VampirioCode\\\\VampirioCode\\\\bin\\\\Debug\\\\net8.0-windows\\\\temp_files\\\\untitled 3\\\\untitled 3\",\"IsTemporary\":true,\"DocumentSettings\":{\"DocType\":\"OTHER\",\"BuilderType\":\"None\",\"Custom\":false}},{\"FullFilePath\":\"C:\\\\Users\\\\gabri\\\\source\\\\repos\\\\VampirioCode\\\\VampirioCode\\\\bin\\\\Debug\\\\net8.0-windows\\\\temp_files\\\\untitled 4\\\\untitled 4\",\"IsTemporary\":true,\"DocumentSettings\":{\"DocType\":\"CPP\",\"BuilderType\":\"CustomMsvcCpp\",\"Custom\":true}}],\"last_selected_tab_index\":1}";
+            JSonViewer.ShowJson(json);
+        }
+
         private void OnResetConfigFile(object sender, EventArgs e)
         {
             // Reset the config file
@@ -954,5 +1071,6 @@ namespace VampirioCode
             // Do not pass through 'OnClosing(CancelEventArgs e)'
             Application.Exit();
         }
+
     }
 }
