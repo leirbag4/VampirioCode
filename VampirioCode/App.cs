@@ -1059,7 +1059,7 @@ namespace VampirioCode
         private void OnJSonViewerPressed(object sender, EventArgs e)
         {
             string json = "{\"posX\":577,\"posY\":98,\"width\":820,\"height\":750,\"maximized\":false,\"splitter_distance\":464,\"version\":\"0.6.2\",\"last_open_documents\":[{\"FullFilePath\":\"C:\\\\Users\\\\gabri\\\\source\\\\repos\\\\VampirioCode\\\\VampirioCode\\\\bin\\\\Debug\\\\net8.0-windows\\\\temp_files\\\\untitled 3\\\\untitled 3\",\"IsTemporary\":true,\"DocumentSettings\":{\"DocType\":\"OTHER\",\"BuilderType\":\"None\",\"Custom\":false}},{\"FullFilePath\":\"C:\\\\Users\\\\gabri\\\\source\\\\repos\\\\VampirioCode\\\\VampirioCode\\\\bin\\\\Debug\\\\net8.0-windows\\\\temp_files\\\\untitled 4\\\\untitled 4\",\"IsTemporary\":true,\"DocumentSettings\":{\"DocType\":\"CPP\",\"BuilderType\":\"CustomMsvcCpp\",\"Custom\":true}}],\"last_selected_tab_index\":1}";
-            JSonViewer.ShowJson(json);
+            TreeViewTester.ShowJson(json);
         }
 
         private void OnResetConfigFile(object sender, EventArgs e)

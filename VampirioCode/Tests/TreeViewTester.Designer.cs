@@ -1,6 +1,6 @@
-﻿namespace VampirioCode.UI
+﻿namespace VampirioCode.Tests
 {
-    partial class JSonViewer
+    partial class TreeViewTester
     {
         /// <summary>
         /// Required designer variable.
@@ -29,28 +29,28 @@
         private void InitializeComponent()
         {
             treeView = new TreeView();
-            treeViewAdv = new Controls.TreeViewAdv();
-            consoleOutp = new XConsole();
-            labelAdv1 = new Controls.LabelAdv();
-            nodeHeightInput = new Controls.IntTextBox();
-            NodeIndentInput = new Controls.IntTextBox();
-            labelAdv2 = new Controls.LabelAdv();
-            fontSizeInput = new Controls.IntTextBox();
-            labelAdv3 = new Controls.LabelAdv();
+            treeViewAdv = new VampirioCode.UI.Controls.TreeViewAdv();
+            consoleOutp = new VampirioCode.UI.XConsole();
+            labelAdv1 = new VampirioCode.UI.Controls.LabelAdv();
+            nodeHeightInput = new VampirioCode.UI.Controls.IntTextBox();
+            NodeIndentInput = new VampirioCode.UI.Controls.IntTextBox();
+            labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
+            fontSizeInput = new VampirioCode.UI.Controls.IntTextBox();
+            labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
             icon1EnableCKBox = new CheckBox();
             icon2EnableCKBox = new CheckBox();
-            buttonAdv1 = new Controls.ButtonAdv();
-            buttonAdv2 = new Controls.ButtonAdv();
-            buttonAdv3 = new Controls.ButtonAdv();
-            buttonAdv4 = new Controls.ButtonAdv();
-            buttonAdv5 = new Controls.ButtonAdv();
-            delete_classic = new Controls.ButtonAdv();
-            collapse_classic = new Controls.ButtonAdv();
-            expand_classic = new Controls.ButtonAdv();
-            insert_classic = new Controls.ButtonAdv();
-            expand_tree_classic = new Controls.ButtonAdv();
-            buttonAdv6 = new Controls.ButtonAdv();
-            buttonAdv7 = new Controls.ButtonAdv();
+            buttonAdv1 = new VampirioCode.UI.Controls.ButtonAdv();
+            buttonAdv2 = new VampirioCode.UI.Controls.ButtonAdv();
+            buttonAdv3 = new VampirioCode.UI.Controls.ButtonAdv();
+            buttonAdv4 = new VampirioCode.UI.Controls.ButtonAdv();
+            buttonAdv5 = new VampirioCode.UI.Controls.ButtonAdv();
+            delete_classic = new VampirioCode.UI.Controls.ButtonAdv();
+            collapse_classic = new VampirioCode.UI.Controls.ButtonAdv();
+            expand_classic = new VampirioCode.UI.Controls.ButtonAdv();
+            insert_classic = new VampirioCode.UI.Controls.ButtonAdv();
+            expand_tree_classic = new VampirioCode.UI.Controls.ButtonAdv();
+            buttonAdv6 = new VampirioCode.UI.Controls.ButtonAdv();
+            buttonAdv7 = new VampirioCode.UI.Controls.ButtonAdv();
             SuspendLayout();
             // 
             // treeView
@@ -584,27 +584,27 @@
         #endregion
 
         private TreeView treeView;
-        private Controls.TreeViewAdv treeViewAdv;
-        private XConsole consoleOutp;
-        private Controls.LabelAdv labelAdv1;
-        private Controls.IntTextBox nodeHeightInput;
-        private Controls.IntTextBox NodeIndentInput;
-        private Controls.LabelAdv labelAdv2;
-        private Controls.IntTextBox fontSizeInput;
-        private Controls.LabelAdv labelAdv3;
+        private UI.Controls.TreeViewAdv treeViewAdv;
+        private VampirioCode.UI.XConsole consoleOutp;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv1;
+        private VampirioCode.UI.Controls.IntTextBox nodeHeightInput;
+        private VampirioCode.UI.Controls.IntTextBox NodeIndentInput;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv2;
+        private VampirioCode.UI.Controls.IntTextBox fontSizeInput;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv3;
         private CheckBox icon1EnableCKBox;
         private CheckBox icon2EnableCKBox;
-        private Controls.ButtonAdv buttonAdv1;
-        private Controls.ButtonAdv buttonAdv2;
-        private Controls.ButtonAdv buttonAdv3;
-        private Controls.ButtonAdv buttonAdv4;
-        private Controls.ButtonAdv buttonAdv5;
-        private Controls.ButtonAdv delete_classic;
-        private Controls.ButtonAdv collapse_classic;
-        private Controls.ButtonAdv expand_classic;
-        private Controls.ButtonAdv insert_classic;
-        private Controls.ButtonAdv expand_tree_classic;
-        private Controls.ButtonAdv buttonAdv6;
-        private Controls.ButtonAdv buttonAdv7;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv1;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv2;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv3;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv4;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv5;
+        private VampirioCode.UI.Controls.ButtonAdv delete_classic;
+        private VampirioCode.UI.Controls.ButtonAdv collapse_classic;
+        private VampirioCode.UI.Controls.ButtonAdv expand_classic;
+        private VampirioCode.UI.Controls.ButtonAdv insert_classic;
+        private VampirioCode.UI.Controls.ButtonAdv expand_tree_classic;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv6;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv7;
     }
 }

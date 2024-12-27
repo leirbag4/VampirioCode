@@ -12,18 +12,19 @@ using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TreeViewAdvance;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace VampirioCode.UI
+
+namespace VampirioCode.Tests
 {
-    public partial class JSonViewer : Form
+    public partial class TreeViewTester : Form
     {
-        public JSonViewer()
+        public TreeViewTester()
         {
             InitializeComponent();
         }
 
-        public static JSonViewer ShowJson(string json)
+        public static TreeViewTester ShowJson(string json)
         {
-            JSonViewer viewer = new JSonViewer();
+            TreeViewTester viewer = new TreeViewTester();
             viewer._showJson(json);
             //viewer.Show();
 
@@ -190,7 +191,7 @@ namespace VampirioCode.UI
 
             treeViewAdv.RefreshAll();
 
-            XConsole.Println("font name: " + treeViewAdv.Font.Name);
+            VampirioCode.UI.XConsole.Println("font name: " + treeViewAdv.Font.Name);
         }
 
         private VampirioCode.UI.Controls.TreeViewAdvance.TreeNode CreateNode(string text)
@@ -265,14 +266,14 @@ namespace VampirioCode.UI
 
         private void OnInsertNodePressed(object sender, EventArgs e)
         {
-            DialogResult result = InputMsgBox.Show(this, "New Node", "Node Name", "Create a new Node.\nSelect a name");
+            DialogResult result = VampirioCode.UI.InputMsgBox.Show(this, "New Node", "Node Name", "Create a new Node.\nSelect a name");
 
             if (result == DialogResult.OK)
             {
-                string nodeName = InputMsgBox.InputText;
+                string nodeName = VampirioCode.UI.InputMsgBox.InputText;
 
-                XConsole.Println("node name: " + nodeName);
-                XConsole.Println("sel: " + treeViewAdv.CurrSelectedNode);
+                VampirioCode.UI.XConsole.Println("node name: " + nodeName);
+                VampirioCode.UI.XConsole.Println("sel: " + treeViewAdv.CurrSelectedNode);
 
                 // Top root empty
                 if (treeViewAdv.CurrSelectedNode == null)
@@ -321,26 +322,26 @@ namespace VampirioCode.UI
         private void OnClassicPressed(object sender, EventArgs e)
         {
             string name = (sender as ButtonAdv).Name;
-            XConsole.PrintWarning("n: " + name);
+            VampirioCode.UI.XConsole.PrintWarning("n: " + name);
 
             var node = treeView.SelectedNode;
             //node.Text = "cambio";
 
             if (name == "insert_classic")
             {
-                var result = InputMsgBox.Show(this, "New Node", "Node Name", "New Node Name?");
+                var result = VampirioCode.UI.InputMsgBox.Show(this, "New Node", "Node Name", "New Node Name?");
 
                 if (result == DialogResult.OK)
                 {
                     // No root node
                     if (node == null)
                     {
-                        treeView.Nodes.Add(InputMsgBox.InputText);
+                        treeView.Nodes.Add(VampirioCode.UI.InputMsgBox.InputText);
                     }
                     // No parent
                     else //else if(newNode.Parent != null)
                     {
-                        node.Nodes.Add(InputMsgBox.InputText);
+                        node.Nodes.Add(VampirioCode.UI.InputMsgBox.InputText);
                     }
                 }
             }
