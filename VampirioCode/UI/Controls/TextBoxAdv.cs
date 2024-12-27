@@ -232,6 +232,8 @@ namespace VampirioCode.UI.Controls
                     });
                 }
 
+                e.Handled = true;
+
                 //EVENT
                 if (EnterPressed != null)
                     EnterPressed(this, new KeyPressedEventArgs(prevTxt != Text, SelectionLength != 0));

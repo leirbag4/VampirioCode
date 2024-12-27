@@ -20,9 +20,9 @@ namespace VampirioCode.UI.Controls
             get { return _font; }
             set
             {
-                if (value == null) 
+                if (value == null)
                     throw new ArgumentNullException(nameof(value));
-                
+
                 _font = value;
                 _nodeHeight = (int)VampirioGraphics.GetStringSize(_font, "A").Height;
                 RecalcNodeTextsSize();
@@ -35,6 +35,20 @@ namespace VampirioCode.UI.Controls
         public event SelectedNodeEvent SelectedNode = null;
 
         // Properties
+        public TreeNode CurrSelectedNode { get
+            {
+                var nodes = GetAllNodes();
+
+                foreach(var node in nodes)
+                {
+                    if (node.Selected)
+                        return node;
+                }
+
+                return null;
+            } 
+        }
+
         private Font _font = new Font("Arial", 12);
 
         public TIcon CollapseIcon { get { return _collapseIcon; } }
@@ -63,7 +77,7 @@ namespace VampirioCode.UI.Controls
         private int _nodeHeight = 20;
         private int _nodeIndent = 20;
 
-        private int _marginLeft =  5;
+        private int _marginLeft = 5;
         private int _marginTop = 5;
 
         private TIcon _collapseIcon;
@@ -75,6 +89,11 @@ namespace VampirioCode.UI.Controls
 
         private List<TLine> _lines;
         private int fullNodeWidth = 0;
+        private int fullNodeHeight = 0;
+
+        private TreeNode _editingNode = null;
+
+        private System.Windows.Forms.Timer editItemTimer;
 
         public int ScrollX { get { return horizontalScrollBar.Value; } set { horizontalScrollBar.Value = value; } }
         public int ScrollY { get { return verticalScrollBar.Value; } set { verticalScrollBar.Value = value; } }
@@ -88,6 +107,7 @@ namespace VampirioCode.UI.Controls
         private Dictionary<int, Bitmap> _iconBitmaps;
 
         private const int HorizontalLineWidth = 10;
+        private const int EditingStartTimer = 1000;
 
         public TreeViewAdv()
         {
@@ -98,11 +118,11 @@ namespace VampirioCode.UI.Controls
             //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             // ------------- Icons ---------------
-            _iconBitmaps =  new Dictionary<int, Bitmap>();
+            _iconBitmaps = new Dictionary<int, Bitmap>();
             _collapseIcon = new TIcon(this, 12, 12, 0, true);
-            _icon0 =        new TIcon(this, 14, 14, 5, false);
-            _icon1 =        new TIcon(this, 14, 14, 5, false);
-            TextSpace =     5;
+            _icon0 = new TIcon(this, 14, 14, 5, false);
+            _icon1 = new TIcon(this, 14, 14, 5, false);
+            TextSpace = 5;
 
             // ------------- Lines ---------------
             _lines = new List<TLine>();
@@ -117,14 +137,14 @@ namespace VampirioCode.UI.Controls
             horizontalScrollBar = new ScrollBarAdv();
             horizontalScrollBar.Orientation = ScrollBarAdvance.ScrollBarOrientation.Horizontal;
 
-            horizontalScrollBar.Scroll +=   OnHorizontalScroll;
-            verticalScrollBar.Scroll +=     OnVerticalScroll;
+            horizontalScrollBar.Scroll += OnHorizontalScroll;
+            verticalScrollBar.Scroll += OnVerticalScroll;
 
             RecalcScrollbars();
 
             // ------------- Styles --------------
-            NormalCollapseStyle =   new CollapseStyle(Color.FromArgb(133, 133, 133), Color.FromArgb(60, 60, 60), Color.FromArgb(60, 60, 60));
-            OverCollapseStyle =     new CollapseStyle(Color.FromArgb(160, 160, 160), Color.FromArgb(60, 60, 60), Color.FromArgb(60, 60, 60));
+            NormalCollapseStyle = new CollapseStyle(Color.FromArgb(133, 133, 133), Color.FromArgb(60, 60, 60), Color.FromArgb(60, 60, 60));
+            OverCollapseStyle = new CollapseStyle(Color.FromArgb(160, 160, 160), Color.FromArgb(60, 60, 60), Color.FromArgb(60, 60, 60));
 
             this.Controls.Add(verticalScrollBar);
             this.Controls.Add(horizontalScrollBar);
@@ -132,6 +152,10 @@ namespace VampirioCode.UI.Controls
             // ------------ Logic -----------------
             _rootNodes = new List<TreeNode>();
 
+            // ------------------------------------
+            editItemTimer = new System.Windows.Forms.Timer();
+            editItemTimer.Interval = EditingStartTimer;
+            editItemTimer.Tick += OnEditItemTimer;
         }
 
         private void OnHorizontalScroll(int newValue, int oldValue)
@@ -148,7 +172,7 @@ namespace VampirioCode.UI.Controls
         public void AddNode(TreeNode node)
         {
             if (node == null)
-                throw new ArgumentNullException(nameof(node), "Node can't be null.");
+                return;
 
             if (node.Parent != null)
                 throw new InvalidOperationException("Root nodes can only be added to a TreeView.");
@@ -158,6 +182,24 @@ namespace VampirioCode.UI.Controls
             _rootNodes.Add(node);
         }
 
+        public void RemoveNode(TreeNode node)
+        {
+            if (node == null)
+                return;
+
+            // It's at root level
+            if (node.Parent == null)
+            {
+                _rootNodes.Remove(node);
+            }
+            // It has a parent
+            else
+            {
+                node.Parent.Remove(node);
+            }
+            //TraverseRemoveNode(node, this);
+        }
+
         public List<TreeNode> GetRootNodes()
         {
             return _rootNodes;
@@ -165,7 +207,7 @@ namespace VampirioCode.UI.Controls
 
         public void AddIconImage(int key, Bitmap image)
         {
-            if(!_iconBitmaps.ContainsKey(key))
+            if (!_iconBitmaps.ContainsKey(key))
                 _iconBitmaps.Add(key, image);
         }
 
@@ -198,8 +240,8 @@ namespace VampirioCode.UI.Controls
         public List<TreeNode> GetAllNodes()
         {
             List<TreeNode> nodes = new List<TreeNode>();
-            
-            foreach(var node in _rootNodes)
+
+            foreach (var node in _rootNodes)
                 TraverseGetAllNodes(node, ref nodes);
 
             return nodes;
@@ -245,6 +287,12 @@ namespace VampirioCode.UI.Controls
             }
         }
 
+        public void StopEditingNode()
+        {
+            _editingNode.TItem.StopEditing(this);
+            _editingNode = null;
+        }
+
         private void RecalcScrollbars()
         { 
             verticalScrollBar.Width =       ScrollBarSize;
@@ -279,7 +327,20 @@ namespace VampirioCode.UI.Controls
             _mouseY = e.Y;
             _mouseDown = true;
 
-            XConsole.Println("c: " + e.Clicks);
+            if (_editingNode != null)
+            {
+                StopEditingNode();
+                //return;
+            }
+
+            if (_possibleEditingNode != null)
+            {
+                editItemTimer.Stop();
+                _possibleEditingNode = null;
+                XConsole.PrintWarning("poss");
+            }
+
+            //XConsole.Println("c: " + e.Clicks);
             if(e.Clicks == 2)
                 MouseDoubleClickUpdate(_mouseX, _mouseY);
             else
@@ -336,6 +397,7 @@ namespace VampirioCode.UI.Controls
             Invalidate();
         }
 
+
         private void TraverseMouseUpdate(TreeNode node, int mouseX, int mouseY, bool click)
         {
             if (node.gnode.IsOverCollapse(mouseX, mouseY))
@@ -356,10 +418,16 @@ namespace VampirioCode.UI.Controls
             {
                 node.gnode.SetOverState(false);
 
-                if (node.gnode.IsOverFullRect(mouseX, mouseY) && click)
+                if (node.gnode.IsOverText(mouseX, mouseY) && click && node.Selected)
+                {
+                    XConsole.Println("over [Text]");
+
+                    TriggerEditNode(node);
+                }
+                else if (node.gnode.IsOverFullRect(mouseX, mouseY) && click)
                 {
                     SelectAllNodes(false);
-                    XConsole.Println("yes");
+                    XConsole.Println("over [full rect]");
                     node.Selected = true;
                 }
             }
@@ -380,8 +448,6 @@ namespace VampirioCode.UI.Controls
                 TraverseMouseUpdate(rootNode, mouseX, mouseY, click);
             }
         }
-
-        
 
         private void MouseDoubleClickUpdate(int mouseX, int mouseY)
         {
@@ -412,8 +478,50 @@ namespace VampirioCode.UI.Controls
                 SelectedNode(node);
         }
 
+        private TreeNode _possibleEditingNode = null;
+
+        private void TriggerEditNode(TreeNode node)
+        {
+            if (_editingNode != null)
+                return;
+
+            if (_possibleEditingNode != null)
+            {
+                /*if (node != _possibleEditingNode)
+                {
+                    _possibleEditingNode = null;
+                    editItemTimer.Stop();
+                    return;
+                }*/
+
+                _possibleEditingNode = null;
+                return;
+            }
+
+            _possibleEditingNode = node;
+
+            editItemTimer.Start();
+
+            //node.TItem.StartEditing(this, node);
+        }
+
+        private void OnEditItemTimer(object sender, EventArgs e)
+        {
+            if (_possibleEditingNode != null)
+            {
+                _editingNode = _possibleEditingNode;
+                _possibleEditingNode = null;
+                //_editingNode = node;
+
+                XConsole.Println("ticker oka");
+                _editingNode.TItem.StartEditing(this, _editingNode);
+                editItemTimer.Stop();
+            }
+        }
+
         private void RecalcScrollBarValues()
         {
+            // Horizontal Scrollbar
             if (fullNodeWidth < this.Width)
             {
                 horizontalScrollBar.Maximum =       100;
@@ -425,6 +533,20 @@ namespace VampirioCode.UI.Controls
                 horizontalScrollBar.Maximum =       fullNodeWidth;
                 horizontalScrollBar.LargeChange =   this.Width;
                 horizontalScrollBar.Enabled =       true;
+            }
+
+            // Vertical Scrollbar
+            if (fullNodeHeight < this.Height)
+            {
+                verticalScrollBar.Maximum =       100;
+                verticalScrollBar.LargeChange =   101;
+                verticalScrollBar.Enabled =       false;
+            }
+            else
+            {
+                verticalScrollBar.Maximum =       fullNodeHeight;
+                verticalScrollBar.LargeChange =   this.Height;
+                verticalScrollBar.Enabled =       true;
             }
         }
 
@@ -448,6 +570,33 @@ namespace VampirioCode.UI.Controls
 
         }
 
+        public void ExpandAllFrom(TreeNode node)
+        { 
+            node.IsExpanded = true;
+
+            foreach (var n in node.Children)
+            {
+                ExpandAllFrom(n);
+            }
+        }
+
+        public void CollapseAllFrom(TreeNode node) 
+        {
+            node.IsExpanded = false;
+
+            foreach (var n in node.Children)
+            {
+                CollapseAllFrom(n);
+            }
+        }
+
+        private void OnEditTimerTick(object? sender, EventArgs e)
+        {
+
+            XConsole.Println("tick2");
+
+        }
+
         private void PaintLines(Graphics g)
         {
             foreach (TLine line in _lines)
@@ -459,10 +608,17 @@ namespace VampirioCode.UI.Controls
             // Update gnode position and its members
             node.gnode.SetPos(xIndent - HScroll, y - VScroll);
 
-            int currNodeWidth = node.gnode.GetFullRect().Right + verticalScrollBar.Width + 15;
+            TRect rect = node.gnode.GetFullRect();
+
+            int currNodeWidth = rect.Right + verticalScrollBar.Width + 15 + HScroll;
+            int currNodeHeight = rect.Bottom + verticalScrollBar.Width + 15 + VScroll;
 
             if (currNodeWidth > fullNodeWidth)
                  fullNodeWidth = currNodeWidth;
+
+            if (currNodeHeight > fullNodeHeight)
+                fullNodeHeight = currNodeHeight;
+
 
             // Calculate Horizontal Line [----]
             //if (node.Parent != null)
@@ -524,6 +680,7 @@ namespace VampirioCode.UI.Controls
             TreeNode prevChild = null;
 
             fullNodeWidth = 0;
+            fullNodeHeight = 0;
 
             foreach (var rootNode in _rootNodes)
             {
@@ -549,6 +706,9 @@ namespace VampirioCode.UI.Controls
                 // Traverse Update
                 TraverseUpdate(rootNode, MarginLeft, ref y);
             }
+
+            //XConsole.Println("fullNodeHeight: " + fullNodeHeight);
+
 
         }
 

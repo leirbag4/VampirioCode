@@ -11,11 +11,12 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
 
     public class TreeNode
     {
-        public string Text { get { return _ttext.Text; } set { _text = value; _ttext.Text = value; OnTextChanged(value, _ttext); } }
+        public string Text { get { return _titem.Text; } set { _text = value; _titem.Text = value; OnTextChanged(value, _titem); } }
         public TreeNode Parent { get; private set; }
         public List<TreeNode> Children { get; private set; }
         public int Level => Parent == null ? 0 : Parent.Level + 1;
         public bool Selected { get { return _selected; } set { _selected = value; if(_selected) treeView.TriggerSelected(this); } }
+        public TItem TItem { get { return _titem; } }
 
         //public Font Font { get { return _font; } set { _font = value; gnode.RecalcTextSize(true); /*gnode.Refresh();*/ } }
         public Font Font
@@ -46,7 +47,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
 
         private TreeViewAdv treeView;
         private string _text = "";
-        private TText _ttext = new TText();
+        private TItem _titem = new TItem();
         private Font _font = null;
         private bool _selected = false;
 
@@ -56,7 +57,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             Children = new List<TreeNode>();
 
             // Graphic Node
-            gnode = new GNode(this, _ttext);
+            gnode = new GNode(this, _titem);
 
             Text = text;
         }
@@ -72,6 +73,14 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             Children.Add(child);
         }
 
+        public void Remove(TreeNode child)
+        {
+            if (child == null)
+                throw new ArgumentNullException(nameof(child), "child node can't be null.");
+
+            Children.Remove(child);
+        }
+
         public void SetTreeView(TreeViewAdv treeView)
         {
             this.treeView = treeView;
@@ -81,11 +90,23 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         public void Expand()
         { 
             this.IsExpanded = true;
+            RefreshTreeView();
         }
 
         public void Collapse()
         {
             this.IsExpanded = false;
+            RefreshTreeView();
+        }
+
+        public void ExpandAll()
+        {
+            treeView.ExpandAllFrom(this);
+        }
+
+        public void CollapseAll()
+        { 
+            treeView.CollapseAllFrom(this);
         }
 
         public void ToggleCollapse()
@@ -151,9 +172,15 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         }
 
         // events
-        private void OnTextChanged(string text, TText ttext)
+        private void OnTextChanged(string text, TItem titem)
         {
-            gnode.OnTextChanged(text, ttext);
+            gnode.OnTextChanged(text, titem);
+        }
+
+        private void RefreshTreeView()
+        {
+            if (treeView != null)
+                treeView.RefreshAll();
         }
 
         // paint

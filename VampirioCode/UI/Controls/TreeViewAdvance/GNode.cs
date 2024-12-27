@@ -53,12 +53,12 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         private TIcon[] icons;
         private TRect[] iconRects;
         private int _iconsRightPos = 0;
-        private TText _ttext;
+        private TItem _titem;
 
-        public GNode(TreeNode treeNode, TText ttext)
+        public GNode(TreeNode treeNode, TItem titem)
         {
             node =          treeNode;
-            _ttext =        ttext;
+            _titem =        titem;
             textRect =      new TRect(0, 0, 0, 0);
             collapseRect =  new TRect(0, 0, 0, 0);
             icon1Rect =     new TRect(0, 0, 0, 0);
@@ -104,6 +104,11 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             return icon2Rect;
         }
 
+        public TRect GetTextRect()
+        { 
+            return textRect;
+        }
+
         public TRect GetFullRect()
         {
             return FullRect;
@@ -112,6 +117,11 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         public bool IsOverCollapse(int mouseX, int mouseY)
         {
             return IsInside(mouseX, mouseY, collapseRect);
+        }
+
+        public bool IsOverText(int mouseX, int mouseY)
+        {
+            return IsInside(mouseX, mouseY, textRect);
         }
 
         public bool IsOverFullRect(int mouseX, int mouseY)
@@ -198,6 +208,9 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             textRect.X = GetIconsRightPos() + treeView.TextSpace;
             textRect.Y = LocalY + (FullRect.Height >> 1) - (textRect.Height >> 1);
 
+            if (node.TItem.IsEditing)
+                node.TItem.SetPos(textRect.Left, textRect.Top);
+
             RecalcVisibility();
         }
 
@@ -222,7 +235,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         }
 
         // events
-        public void OnTextChanged(string text, TText ttext)
+        public void OnTextChanged(string text, TItem titem)
         {
             RecalcTextSize();
 

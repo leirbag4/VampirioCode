@@ -262,5 +262,107 @@ namespace VampirioCode.UI
             treeViewAdv.Icon2.Active = check;
             treeViewAdv.RefreshAll();
         }
+
+        private void OnInsertNodePressed(object sender, EventArgs e)
+        {
+            DialogResult result = InputMsgBox.Show(this, "New Node", "Node Name", "Create a new Node.\nSelect a name");
+
+            if (result == DialogResult.OK)
+            {
+                string nodeName = InputMsgBox.InputText;
+
+                XConsole.Println("node name: " + nodeName);
+                XConsole.Println("sel: " + treeViewAdv.CurrSelectedNode);
+
+                // Top root empty
+                if (treeViewAdv.CurrSelectedNode == null)
+                {
+                    treeViewAdv.AddNode(CreateNode(nodeName));
+                }
+                else
+                {
+                    treeViewAdv.CurrSelectedNode.Add(CreateNode(nodeName));
+                }
+            }
+        }
+
+        private void OnDeleteNodePressed(object sender, EventArgs e)
+        {
+            var node = treeViewAdv.CurrSelectedNode;
+
+            treeViewAdv.RemoveNode(node);
+        }
+
+        private void OnRefreshPressed(object sender, EventArgs e)
+        {
+            treeViewAdv.RefreshAll();
+        }
+
+        private void OnExpandPressed(object sender, EventArgs e)
+        {
+            treeViewAdv.CurrSelectedNode.Expand();
+        }
+
+        private void OnCollapsePressed(object sender, EventArgs e)
+        {
+            treeViewAdv.CurrSelectedNode.Collapse();
+        }
+
+        private void OnExpandTreePressed(object sender, EventArgs e)
+        {
+            treeViewAdv.CurrSelectedNode.ExpandAll();
+        }
+
+        private void OnCollapseTreePressed(object sender, EventArgs e)
+        {
+            treeViewAdv.CurrSelectedNode.CollapseAll();
+        }
+
+        private void OnClassicPressed(object sender, EventArgs e)
+        {
+            string name = (sender as ButtonAdv).Name;
+            XConsole.PrintWarning("n: " + name);
+
+            var node = treeView.SelectedNode;
+            //node.Text = "cambio";
+
+            if (name == "insert_classic")
+            {
+                var result = InputMsgBox.Show(this, "New Node", "Node Name", "New Node Name?");
+
+                if (result == DialogResult.OK)
+                {
+                    // No root node
+                    if (node == null)
+                    {
+                        treeView.Nodes.Add(InputMsgBox.InputText);
+                    }
+                    // No parent
+                    else //else if(newNode.Parent != null)
+                    {
+                        node.Nodes.Add(InputMsgBox.InputText);
+                    }
+                }
+            }
+            else if (name == "delete_classic")
+            {
+                treeView.Nodes.Remove(node);
+            }
+            else if (name == "expand_classic")
+            {
+                node.Expand();
+            }
+            else if (name == "collapse_classic")
+            {
+
+            }
+            else if (name == "expand_tree_classic")
+            {
+                node.ExpandAll();
+            }
+
+        }
+
+        
     }
 }
