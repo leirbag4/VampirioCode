@@ -114,6 +114,16 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             return FullRect;
         }
 
+        public Font GetFont()
+        {
+            return Font;
+        }
+
+        public String GetText() 
+        {
+            return Text;
+        }
+
         public bool IsOverCollapse(int mouseX, int mouseY)
         {
             return IsInside(mouseX, mouseY, collapseRect);
@@ -312,9 +322,9 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
 
                 Font font = Font;
 
-
-
-                VampirioGraphics.DrawString(g, font, Text, Color.Silver, textRect.X, textRect.Y);// + (FullRect.Height >> 1) - (textRect.Height >> 1));
+                //_titem.Paint(g, font, textRect, Text);
+                node.OnTextPaint(g, font, textRect, Text);
+                //VampirioGraphics.DrawString(g, font, Text, Color.Silver, textRect.X, textRect.Y);// + (FullRect.Height >> 1) - (textRect.Height >> 1));
 
                 int key = -1;
 

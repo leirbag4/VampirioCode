@@ -8,6 +8,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
 {
     using System;
     using System.Collections.Generic;
+    using VampirioCode.UI.VampGraphics;
 
     public class TreeNode
     {
@@ -62,7 +63,14 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             Text = text;
         }
 
-        public void Add(TreeNode child)
+        public TreeNode Add(string text)
+        {
+            TreeNode node = new TreeNode(text);
+            Add(node);
+            return node;
+        }
+
+        public TreeNode Add(TreeNode child)
         {
             if (child == null)
                 throw new ArgumentNullException(nameof(child), "child node can't be null.");
@@ -71,6 +79,8 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             if(treeView != null)
                 child.SetTreeView(treeView);
             Children.Add(child);
+
+            return child;
         }
 
         public void Remove(TreeNode child)
@@ -186,7 +196,16 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         // paint
         public void Paint(Graphics g)
         {
+            //TRect rect =    gnode.GetTextRect();
+            //Font font =     gnode.GetFont();
+            //String text =   Text;
+            
             gnode.Paint(g);
+        }
+
+        public virtual void OnTextPaint(Graphics g, Font font, TRect rect, string text)
+        {
+            VampirioGraphics.DrawString(g, font, Text, Color.Silver, rect.X, rect.Y);
         }
 
         public override string ToString()

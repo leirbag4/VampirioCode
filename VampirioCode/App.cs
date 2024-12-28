@@ -19,6 +19,7 @@ using VampirioCode.UI.Style;
 using VampirioCode.Utils;
 using VampirioCode.Workspace;
 using VampirioCode.Workspace.cpp;
+using static ScintillaNET.Style;
 
 namespace VampirioCode
 {
@@ -1056,10 +1057,76 @@ namespace VampirioCode
             FullScreen = !FullScreen;
         }
 
+        private static string globalJSON = @"{
+  ""root"": {
+    ""test A0"": {
+      ""test A1"": null,
+      ""test A2"": null
+    },
+    ""test B0"": {
+      ""test B1"": {
+        ""test D0 capo"": null
+      },
+      ""test B2"": null,
+      ""test B3"": null
+    }
+  },
+  ""root2"": {
+    ""test C0"": ""null"",
+    ""test C1"": ""null"",
+    ""test C2"": ""null"",
+    ""test C3"": {
+      ""test F0"": null
+    },
+    ""number"":34
+  }
+}";
+
+        private static string globalJSON2 = @"{
+  ""root"": {
+    ""test A0"": {
+      ""test A1"": null,
+      ""test A2"": false,
+      ""name"" : ""this is a testing device for every time you open this, ok?""
+    },
+    ""names"": [""Juan"", ""Ana"", ""Luis""],
+    ""products"": [
+      { ""id"": 1, ""name"": ""Laptop"", ""price"": 1200 },
+      { ""id"": 2, ""name"": ""Mouse"", ""price"": 20 },
+      { ""id"": 3, ""name"": ""Keyobard"", ""price"": 25.45 }
+    ],
+    ""test B0"": {
+      ""test B1"": {
+        ""test D0 capo"": true,
+        ""long string"" : ""ultra long string to test the code, the device and all any kind of bug""
+      },
+      ""test B2"": null,
+      ""test B3"": null
+    }
+  },
+  ""root2"": {
+    ""test C0"": null,
+    ""test C1"": null,
+    ""test C2"": null,
+    ""test C3"": {
+      ""test F0"": null
+    },
+    ""number"":34
+  }
+}
+";
+
         private void OnJSonViewerPressed(object sender, EventArgs e)
         {
-            string json = "{\"posX\":577,\"posY\":98,\"width\":820,\"height\":750,\"maximized\":false,\"splitter_distance\":464,\"version\":\"0.6.2\",\"last_open_documents\":[{\"FullFilePath\":\"C:\\\\Users\\\\gabri\\\\source\\\\repos\\\\VampirioCode\\\\VampirioCode\\\\bin\\\\Debug\\\\net8.0-windows\\\\temp_files\\\\untitled 3\\\\untitled 3\",\"IsTemporary\":true,\"DocumentSettings\":{\"DocType\":\"OTHER\",\"BuilderType\":\"None\",\"Custom\":false}},{\"FullFilePath\":\"C:\\\\Users\\\\gabri\\\\source\\\\repos\\\\VampirioCode\\\\VampirioCode\\\\bin\\\\Debug\\\\net8.0-windows\\\\temp_files\\\\untitled 4\\\\untitled 4\",\"IsTemporary\":true,\"DocumentSettings\":{\"DocType\":\"CPP\",\"BuilderType\":\"CustomMsvcCpp\",\"Custom\":true}}],\"last_selected_tab_index\":1}";
-            TreeViewTester.ShowJson(json);
+            //TreeViewTester.ShowJson(json);
+            JSonViewer.ShowJson(globalJSON2);
+        }
+
+
+
+        private void OnTreeViewTester(object sender, EventArgs e)
+        {
+            TreeViewTester.ShowJson(globalJSON2);
         }
 
         private void OnResetConfigFile(object sender, EventArgs e)
@@ -1072,5 +1139,6 @@ namespace VampirioCode
             Application.Exit();
         }
 
+        
     }
 }

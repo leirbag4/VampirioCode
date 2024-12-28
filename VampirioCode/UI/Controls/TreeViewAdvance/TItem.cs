@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VampirioCode.UI.VampGraphics;
 
 namespace VampirioCode.UI.Controls.TreeViewAdvance
 {
@@ -20,7 +21,13 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         { 
         }
 
-        public void StartEditing(TreeViewAdv treeView, TreeNode node)
+        public void SetPos(int x, int y)
+        {
+            textBox.Left = x;
+            textBox.Top = y + 1;
+        }
+
+        public virtual void StartEditing(TreeViewAdv treeView, TreeNode node)
         { 
             TRect rect = node.gnode.GetTextRect();
 
@@ -44,24 +51,23 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             _editing = true;
         }
 
-        public void SetPos(int x, int y)
+        protected virtual void OnEnterPressed(object sender, Events.KeyPressedEventArgs e)
         {
-            textBox.Left = x;
-            textBox.Top = y + 1;
-        }
-
-        private void OnEnterPressed(object sender, Events.KeyPressedEventArgs e)
-        {
-            XConsole.Println("enter");
+            //XConsole.Println("enter");
             treeView.StopEditingNode();
         }
 
-        public void StopEditing(TreeViewAdv treeView)
+        public virtual void StopEditing(TreeViewAdv treeView)
         {
             node.Text = textBox.Text;
             treeView.Controls.Remove(textBox);
 
             _editing = false;
         }
+
+        /*public virtual void Paint(Graphics g, Font font, TRect rect, string text)
+        {
+            VampirioGraphics.DrawString(g, font, text, Color.Silver, rect.X, rect.Y);
+        }*/
     }
 }

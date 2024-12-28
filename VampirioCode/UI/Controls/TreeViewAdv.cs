@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -49,7 +50,7 @@ namespace VampirioCode.UI.Controls
             } 
         }
 
-        private Font _font = new Font("Arial", 12);
+        private Font _font = new Font("Verdana", 10);
 
         public TIcon CollapseIcon { get { return _collapseIcon; } }
         public TIcon Icon1 { get { return _icon0; } }
@@ -167,7 +168,6 @@ namespace VampirioCode.UI.Controls
         {
             Invalidate();
         }
-
 
         public void AddNode(TreeNode node)
         {
@@ -457,8 +457,8 @@ namespace VampirioCode.UI.Controls
             {
                 if (node.gnode.IsOverFullRect(mouseX, mouseY))
                 {
-                    SelectAllNodes(false);
-                    node.Selected = true;
+                    //SelectAllNodes(false);
+                    //node.Selected = true;
                     node.ToggleCollapse();
                 }
             }
@@ -516,6 +516,72 @@ namespace VampirioCode.UI.Controls
                 XConsole.Println("ticker oka");
                 _editingNode.TItem.StartEditing(this, _editingNode);
                 editItemTimer.Stop();
+            }
+        }
+
+        public void PopulateFromJson(string json)
+        {
+            var jsonObject = JsonNode.Parse(json) as JsonObject;
+            if (jsonObject == null)
+                throw new ArgumentException("Invalid JSON format: Root element must be an object.");
+
+            foreach (var property in jsonObject)
+            {
+                var rootNode = new JsonTreeNode(property.Key);
+                AddNode(rootNode);
+                AddJsonToTreeNode(rootNode, property.Value);
+            }
+        }
+
+        private void AddJsonToTreeNode(JsonTreeNode parentNode, JsonNode? node)
+        {
+            if (node is JsonObject obj)
+            {
+                foreach (var property in obj)
+                {
+                    JsonTreeNode childNode = new JsonTreeNode(property.Key);
+                    parentNode.Add(childNode);
+                    
+                    AddJsonToTreeNode(childNode, property.Value);
+                }
+            }
+            else if (node is JsonArray array)
+            {
+                int index = 0;
+                foreach (var item in array)
+                {
+                    JsonTreeNode childNode = new JsonTreeNode($"[{index++}]");
+                    parentNode.Add(childNode);
+                    //var childNode = parentNode.Add($"[{index++}]");
+                    AddJsonToTreeNode(childNode, item);
+                }
+            }
+            else if (node is JsonValue value)
+            {
+                if (value.TryGetValue(out string? stringValue))
+                {
+                    parentNode.Text += $": \"{stringValue}\""; // It's a string
+                }
+                else if (value.TryGetValue(out int intValue))
+                {
+                    parentNode.Text += $": {intValue}"; // It's an integer number
+                }
+                else if (value.TryGetValue(out double doubleValue))
+                {
+                    parentNode.Text += $": {doubleValue}"; // It's a decimal number
+                }
+                else if (value.TryGetValue(out bool boolValue))
+                {
+                    parentNode.Text += $": {boolValue}"; // It's a boolean
+                }
+                else
+                {
+                    parentNode.Text += ": unknown value"; // Unknown value
+                }
+            }
+            else
+            {
+                parentNode.Text += ": null"; // It's a null
             }
         }
 

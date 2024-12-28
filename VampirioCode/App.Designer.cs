@@ -71,9 +71,10 @@
             debugCurrDocumentToolStripMenuItem = new ToolStripMenuItem();
             loggerToolStripMenuItem = new ToolStripMenuItem();
             openAppFolderToolStripMenuItem = new ToolStripMenuItem();
+            jsonViewerToolStripMenuItem = new ToolStripMenuItem();
+            jsonTesterToolStripMenuItem = new ToolStripMenuItem();
             resetConfigFileToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
-            jsonViewerToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -406,7 +407,7 @@
             // 
             // debugToolStripMenuItem
             // 
-            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, jsonViewerToolStripMenuItem, resetConfigFileToolStripMenuItem });
+            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, jsonViewerToolStripMenuItem, jsonTesterToolStripMenuItem, resetConfigFileToolStripMenuItem });
             debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             debugToolStripMenuItem.Size = new Size(68, 24);
             debugToolStripMenuItem.Text = "Debug";
@@ -443,6 +444,22 @@
             openAppFolderToolStripMenuItem.Text = "Open App Folder";
             openAppFolderToolStripMenuItem.Click += OnDebugOpenAppFolder;
             // 
+            // jsonViewerToolStripMenuItem
+            // 
+            jsonViewerToolStripMenuItem.ForeColor = Color.Silver;
+            jsonViewerToolStripMenuItem.Name = "jsonViewerToolStripMenuItem";
+            jsonViewerToolStripMenuItem.Size = new Size(237, 26);
+            jsonViewerToolStripMenuItem.Text = "Json Viewer";
+            jsonViewerToolStripMenuItem.Click += OnJSonViewerPressed;
+            // 
+            // jsonTesterToolStripMenuItem
+            // 
+            jsonTesterToolStripMenuItem.ForeColor = Color.Silver;
+            jsonTesterToolStripMenuItem.Name = "jsonTesterToolStripMenuItem";
+            jsonTesterToolStripMenuItem.Size = new Size(237, 26);
+            jsonTesterToolStripMenuItem.Text = "Tree View Tester";
+            jsonTesterToolStripMenuItem.Click += OnTreeViewTester;
+            // 
             // resetConfigFileToolStripMenuItem
             // 
             resetConfigFileToolStripMenuItem.ForeColor = Color.Silver;
@@ -459,14 +476,6 @@
             toolBar.Name = "toolBar";
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
-            // 
-            // jsonViewerToolStripMenuItem
-            // 
-            jsonViewerToolStripMenuItem.ForeColor = Color.Silver;
-            jsonViewerToolStripMenuItem.Name = "jsonViewerToolStripMenuItem";
-            jsonViewerToolStripMenuItem.Size = new Size(237, 26);
-            jsonViewerToolStripMenuItem.Text = "Json Viewer";
-            jsonViewerToolStripMenuItem.Click += OnJSonViewerPressed;
             // 
             // App
             // 
@@ -538,5 +547,6 @@
         private ToolStripMenuItem openAppFolderToolStripMenuItem;
         private ToolStripMenuItem resetConfigFileToolStripMenuItem;
         private ToolStripMenuItem jsonViewerToolStripMenuItem;
+        private ToolStripMenuItem jsonTesterToolStripMenuItem;
     }
 }

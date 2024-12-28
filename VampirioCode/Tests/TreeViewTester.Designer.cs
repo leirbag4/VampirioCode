@@ -29,28 +29,28 @@
         private void InitializeComponent()
         {
             treeView = new TreeView();
-            treeViewAdv = new VampirioCode.UI.Controls.TreeViewAdv();
-            consoleOutp = new VampirioCode.UI.XConsole();
-            labelAdv1 = new VampirioCode.UI.Controls.LabelAdv();
-            nodeHeightInput = new VampirioCode.UI.Controls.IntTextBox();
-            NodeIndentInput = new VampirioCode.UI.Controls.IntTextBox();
-            labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
-            fontSizeInput = new VampirioCode.UI.Controls.IntTextBox();
-            labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
+            treeViewAdv = new UI.Controls.TreeViewAdv();
+            consoleOutp = new UI.XConsole();
+            labelAdv1 = new UI.Controls.LabelAdv();
+            nodeHeightInput = new UI.Controls.IntTextBox();
+            NodeIndentInput = new UI.Controls.IntTextBox();
+            labelAdv2 = new UI.Controls.LabelAdv();
+            fontSizeInput = new UI.Controls.IntTextBox();
+            labelAdv3 = new UI.Controls.LabelAdv();
             icon1EnableCKBox = new CheckBox();
             icon2EnableCKBox = new CheckBox();
-            buttonAdv1 = new VampirioCode.UI.Controls.ButtonAdv();
-            buttonAdv2 = new VampirioCode.UI.Controls.ButtonAdv();
-            buttonAdv3 = new VampirioCode.UI.Controls.ButtonAdv();
-            buttonAdv4 = new VampirioCode.UI.Controls.ButtonAdv();
-            buttonAdv5 = new VampirioCode.UI.Controls.ButtonAdv();
-            delete_classic = new VampirioCode.UI.Controls.ButtonAdv();
-            collapse_classic = new VampirioCode.UI.Controls.ButtonAdv();
-            expand_classic = new VampirioCode.UI.Controls.ButtonAdv();
-            insert_classic = new VampirioCode.UI.Controls.ButtonAdv();
-            expand_tree_classic = new VampirioCode.UI.Controls.ButtonAdv();
-            buttonAdv6 = new VampirioCode.UI.Controls.ButtonAdv();
-            buttonAdv7 = new VampirioCode.UI.Controls.ButtonAdv();
+            buttonAdv1 = new UI.Controls.ButtonAdv();
+            buttonAdv2 = new UI.Controls.ButtonAdv();
+            buttonAdv3 = new UI.Controls.ButtonAdv();
+            buttonAdv4 = new UI.Controls.ButtonAdv();
+            buttonAdv5 = new UI.Controls.ButtonAdv();
+            delete_classic = new UI.Controls.ButtonAdv();
+            collapse_classic = new UI.Controls.ButtonAdv();
+            expand_classic = new UI.Controls.ButtonAdv();
+            insert_classic = new UI.Controls.ButtonAdv();
+            expand_tree_classic = new UI.Controls.ButtonAdv();
+            buttonAdv6 = new UI.Controls.ButtonAdv();
+            buttonAdv7 = new UI.Controls.ButtonAdv();
             SuspendLayout();
             // 
             // treeView
@@ -96,6 +96,7 @@
             // 
             // labelAdv1
             // 
+            labelAdv1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelAdv1.AutoSize = true;
             labelAdv1.BorderColor = Color.DarkGray;
             labelAdv1.BorderSize = 1;
@@ -114,6 +115,7 @@
             // nodeHeightInput
             // 
             nodeHeightInput.AllowEmptyInput = false;
+            nodeHeightInput.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             nodeHeightInput.BackColor = Color.FromArgb(80, 80, 80);
             nodeHeightInput.BorderStyle = BorderStyle.FixedSingle;
             nodeHeightInput.ForeColor = Color.Silver;
@@ -127,6 +129,7 @@
             // NodeIndentInput
             // 
             NodeIndentInput.AllowEmptyInput = false;
+            NodeIndentInput.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             NodeIndentInput.BackColor = Color.FromArgb(80, 80, 80);
             NodeIndentInput.BorderStyle = BorderStyle.FixedSingle;
             NodeIndentInput.ForeColor = Color.Silver;
@@ -139,6 +142,7 @@
             // 
             // labelAdv2
             // 
+            labelAdv2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelAdv2.AutoSize = true;
             labelAdv2.BorderColor = Color.DarkGray;
             labelAdv2.BorderSize = 1;
@@ -157,6 +161,7 @@
             // fontSizeInput
             // 
             fontSizeInput.AllowEmptyInput = false;
+            fontSizeInput.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             fontSizeInput.BackColor = Color.FromArgb(80, 80, 80);
             fontSizeInput.BorderStyle = BorderStyle.FixedSingle;
             fontSizeInput.ForeColor = Color.Silver;
@@ -169,6 +174,7 @@
             // 
             // labelAdv3
             // 
+            labelAdv3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelAdv3.AutoSize = true;
             labelAdv3.BorderColor = Color.DarkGray;
             labelAdv3.BorderSize = 1;
@@ -186,6 +192,7 @@
             // 
             // icon1EnableCKBox
             // 
+            icon1EnableCKBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             icon1EnableCKBox.AutoSize = true;
             icon1EnableCKBox.FlatStyle = FlatStyle.Flat;
             icon1EnableCKBox.ForeColor = Color.Silver;
@@ -199,6 +206,7 @@
             // 
             // icon2EnableCKBox
             // 
+            icon2EnableCKBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             icon2EnableCKBox.AutoSize = true;
             icon2EnableCKBox.FlatStyle = FlatStyle.Flat;
             icon2EnableCKBox.ForeColor = Color.Silver;
@@ -212,6 +220,7 @@
             // 
             // buttonAdv1
             // 
+            buttonAdv1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonAdv1.BackColor = Color.SlateBlue;
             buttonAdv1.BorderColor = Color.FromArgb(70, 70, 70);
             buttonAdv1.BorderSize = 1;
@@ -240,6 +249,7 @@
             // 
             // buttonAdv2
             // 
+            buttonAdv2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonAdv2.BackColor = Color.FromArgb(20, 20, 20);
             buttonAdv2.BorderColor = Color.FromArgb(70, 70, 70);
             buttonAdv2.BorderSize = 1;
@@ -268,6 +278,7 @@
             // 
             // buttonAdv3
             // 
+            buttonAdv3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonAdv3.BackColor = Color.FromArgb(20, 20, 20);
             buttonAdv3.BorderColor = Color.FromArgb(70, 70, 70);
             buttonAdv3.BorderSize = 1;
@@ -296,6 +307,7 @@
             // 
             // buttonAdv4
             // 
+            buttonAdv4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonAdv4.BackColor = Color.FromArgb(20, 20, 20);
             buttonAdv4.BorderColor = Color.FromArgb(70, 70, 70);
             buttonAdv4.BorderSize = 1;
@@ -324,6 +336,7 @@
             // 
             // buttonAdv5
             // 
+            buttonAdv5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonAdv5.BackColor = Color.IndianRed;
             buttonAdv5.BorderColor = Color.FromArgb(70, 70, 70);
             buttonAdv5.BorderSize = 1;
@@ -352,6 +365,7 @@
             // 
             // delete_classic
             // 
+            delete_classic.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             delete_classic.BackColor = Color.IndianRed;
             delete_classic.BorderColor = Color.FromArgb(70, 70, 70);
             delete_classic.BorderSize = 1;
@@ -380,6 +394,7 @@
             // 
             // collapse_classic
             // 
+            collapse_classic.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             collapse_classic.BackColor = Color.FromArgb(20, 20, 20);
             collapse_classic.BorderColor = Color.FromArgb(70, 70, 70);
             collapse_classic.BorderSize = 1;
@@ -408,6 +423,7 @@
             // 
             // expand_classic
             // 
+            expand_classic.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             expand_classic.BackColor = Color.FromArgb(20, 20, 20);
             expand_classic.BorderColor = Color.FromArgb(70, 70, 70);
             expand_classic.BorderSize = 1;
@@ -436,6 +452,7 @@
             // 
             // insert_classic
             // 
+            insert_classic.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             insert_classic.BackColor = Color.SlateBlue;
             insert_classic.BorderColor = Color.FromArgb(70, 70, 70);
             insert_classic.BorderSize = 1;
@@ -464,6 +481,7 @@
             // 
             // expand_tree_classic
             // 
+            expand_tree_classic.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             expand_tree_classic.BackColor = Color.FromArgb(20, 20, 20);
             expand_tree_classic.BorderColor = Color.FromArgb(70, 70, 70);
             expand_tree_classic.BorderSize = 1;
@@ -492,6 +510,7 @@
             // 
             // buttonAdv6
             // 
+            buttonAdv6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonAdv6.BackColor = Color.FromArgb(20, 20, 20);
             buttonAdv6.BorderColor = Color.FromArgb(70, 70, 70);
             buttonAdv6.BorderSize = 1;
@@ -520,6 +539,7 @@
             // 
             // buttonAdv7
             // 
+            buttonAdv7.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonAdv7.BackColor = Color.FromArgb(20, 20, 20);
             buttonAdv7.BorderColor = Color.FromArgb(70, 70, 70);
             buttonAdv7.BorderSize = 1;
@@ -546,7 +566,7 @@
             buttonAdv7.UseVisualStyleBackColor = false;
             buttonAdv7.Click += OnCollapseTreePressed;
             // 
-            // JSonViewer
+            // TreeViewTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -575,7 +595,7 @@
             Controls.Add(consoleOutp);
             Controls.Add(treeViewAdv);
             Controls.Add(treeView);
-            Name = "JSonViewer";
+            Name = "TreeViewTester";
             Text = "JSon Viewer";
             ResumeLayout(false);
             PerformLayout();

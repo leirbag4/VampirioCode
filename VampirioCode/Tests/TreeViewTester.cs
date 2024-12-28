@@ -34,7 +34,7 @@ namespace VampirioCode.Tests
 
         private void _showJson(string json)
         {
-            json = @"{
+            /*json = @"{
   ""root"": {
     ""test A0"": {
       ""test A1"": null,
@@ -56,7 +56,7 @@ namespace VampirioCode.Tests
       ""test F0"": null
     }
   }
-}";
+}";*/
 
             // clear tree view
             treeView.Nodes.Clear();
