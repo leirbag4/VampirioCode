@@ -22,6 +22,19 @@ namespace VampirioCode.UI
             InitializeComponent();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            input.Text = @"{
+""employees"":[
+  {""firstName"":""John"", ""lastName"":""Doe""},
+  {""firstName"":""Anna"", ""lastName"":""Smith""},
+  {""firstName"":""Peter"", ""lastName"":""Jones""}
+]
+}";
+        }
+
         public static JSonViewer ShowJson(string json)
         {
             JSonViewer viewer = new JSonViewer();
@@ -72,7 +85,7 @@ namespace VampirioCode.UI
 
             //PopulateTreeView(jsonNode, rootNode);
 
-            
+
 
             JsonTreeNode jsonTreeNode = new JsonTreeNode() { Text = "info : true" };
             JsonTreeNode jsonTreeNode2 = new JsonTreeNode() { Text = "value : 123" };
@@ -152,6 +165,12 @@ namespace VampirioCode.UI
                     treeNode.Add(node);
                 }
             }
+        }
+
+        private void OnConvertPressed(object sender, EventArgs e)
+        {
+            treeViewAdv.ClearNodes();
+            _showJson(input.Text);
         }
     }
 }

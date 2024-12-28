@@ -200,6 +200,11 @@ namespace VampirioCode.UI.Controls
             //TraverseRemoveNode(node, this);
         }
 
+        public void ClearNodes()
+        {
+            _rootNodes.Clear();
+        }
+
         public List<TreeNode> GetRootNodes()
         {
             return _rootNodes;
@@ -521,7 +526,18 @@ namespace VampirioCode.UI.Controls
 
         public void PopulateFromJson(string json)
         {
-            var jsonObject = JsonNode.Parse(json) as JsonObject;
+            JsonObject jsonObject = null;
+
+            try
+            {
+                jsonObject = JsonNode.Parse(json) as JsonObject;
+            }
+            catch(Exception ex) 
+            {
+                XConsole.PrintError("Can't parse JSON");
+                return;
+            }
+
             if (jsonObject == null)
                 throw new ArgumentException("Invalid JSON format: Root element must be an object.");
 

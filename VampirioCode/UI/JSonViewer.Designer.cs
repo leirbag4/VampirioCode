@@ -30,8 +30,8 @@
         {
             treeViewAdv = new Controls.TreeViewAdv();
             consoleOutp = new XConsole();
-            textBoxAdv1 = new Controls.TextBoxAdv();
             convertButton = new Controls.ButtonAdv();
+            input = new RichTextBox();
             SuspendLayout();
             // 
             // treeViewAdv
@@ -64,25 +64,6 @@
             consoleOutp.Size = new Size(816, 114);
             consoleOutp.TabIndex = 3;
             // 
-            // textBoxAdv1
-            // 
-            textBoxAdv1.AllowBackspace = true;
-            textBoxAdv1.AllowTextEdition = true;
-            textBoxAdv1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            textBoxAdv1.AutoEdition = false;
-            textBoxAdv1.AutoSelect = false;
-            textBoxAdv1.BackColor = Color.FromArgb(30, 30, 30);
-            textBoxAdv1.BorderStyle = BorderStyle.FixedSingle;
-            textBoxAdv1.ExcludeCharacters = null;
-            textBoxAdv1.ForeColor = Color.Silver;
-            textBoxAdv1.IncludeOnlyCharacters = null;
-            textBoxAdv1.LeftLeadingCharacter = '\0';
-            textBoxAdv1.Location = new Point(12, 7);
-            textBoxAdv1.Multiline = true;
-            textBoxAdv1.Name = "textBoxAdv1";
-            textBoxAdv1.Size = new Size(244, 329);
-            textBoxAdv1.TabIndex = 4;
-            // 
             // convertButton
             // 
             convertButton.BackColor = Color.FromArgb(20, 20, 20);
@@ -109,27 +90,38 @@
             convertButton.TabIndex = 15;
             convertButton.Text = "convert";
             convertButton.UseVisualStyleBackColor = false;
+            convertButton.Click += OnConvertPressed;
+            // 
+            // input
+            // 
+            input.BackColor = Color.FromArgb(30, 30, 30);
+            input.BorderStyle = BorderStyle.None;
+            input.ForeColor = Color.Silver;
+            input.Location = new Point(12, 7);
+            input.Name = "input";
+            input.Size = new Size(247, 329);
+            input.TabIndex = 16;
+            input.Text = "";
             // 
             // JSonViewer
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(840, 509);
+            Controls.Add(input);
             Controls.Add(convertButton);
-            Controls.Add(textBoxAdv1);
             Controls.Add(consoleOutp);
             Controls.Add(treeViewAdv);
             Name = "JSonViewer";
             Text = "JSonViewer";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private Controls.TreeViewAdv treeViewAdv;
         private XConsole consoleOutp;
-        private Controls.TextBoxAdv textBoxAdv1;
         private Controls.ButtonAdv convertButton;
+        private RichTextBox input;
     }
 }
