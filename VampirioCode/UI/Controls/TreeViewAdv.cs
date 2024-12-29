@@ -17,8 +17,10 @@ namespace VampirioCode.UI.Controls
     public class TreeViewAdv : Control
     {
         // Events
-        public event SelectedNodeEvent SelectedNode = null;
-        public event TextChangedEvent TextChanged = null;
+        public event SelectedNodeEvent  SelectedNode =  null;
+        public event TextChangedEvent   TextChanged =   null;
+        public event NodeAddedEvent     NodeAdded =     null;
+        public event NodeRemovedEvent   NodeRemoved =   null;
 
         public override Font Font
         {
@@ -41,14 +43,14 @@ namespace VampirioCode.UI.Controls
             {
                 var nodes = GetAllNodes();
 
-                foreach(var node in nodes)
+                foreach (var node in nodes)
                 {
                     if (node.Selected)
                         return node;
                 }
 
                 return null;
-            } 
+            }
         }
 
         private Font _font = new Font("Verdana", 10);
@@ -183,6 +185,8 @@ namespace VampirioCode.UI.Controls
             TraverseSetTreeView(node, this);//node.SetTreeView(this);
 
             _rootNodes.Add(node);
+
+            TriggerNodeAdded(node);
         }
 
         public void RemoveNode(TreeNode node)
@@ -201,6 +205,8 @@ namespace VampirioCode.UI.Controls
                 node.Parent.Remove(node);
             }
             //TraverseRemoveNode(node, this);
+
+            TriggerNodeRemoved(node);
         }
 
         public void ClearNodes()
@@ -329,16 +335,16 @@ namespace VampirioCode.UI.Controls
         }
 
         private void RecalcScrollbars()
-        { 
-            verticalScrollBar.Width =       ScrollBarSize;
-            verticalScrollBar.Height =      this.Height - _scrollBarSize;
-            verticalScrollBar.Location =    new Point(this.Width - verticalScrollBar.Width, 0);
-            verticalScrollBar.Anchor =      AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+        {
+            verticalScrollBar.Width = ScrollBarSize;
+            verticalScrollBar.Height = this.Height - _scrollBarSize;
+            verticalScrollBar.Location = new Point(this.Width - verticalScrollBar.Width, 0);
+            verticalScrollBar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
 
-            horizontalScrollBar.Height =    ScrollBarSize;
-            horizontalScrollBar.Width =     this.Width - _scrollBarSize;
-            horizontalScrollBar.Location =  new Point(0, this.Height - horizontalScrollBar.Height);
-            horizontalScrollBar.Anchor =    AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            horizontalScrollBar.Height = ScrollBarSize;
+            horizontalScrollBar.Width = this.Width - _scrollBarSize;
+            horizontalScrollBar.Location = new Point(0, this.Height - horizontalScrollBar.Height);
+            horizontalScrollBar.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
         }
 
         private void TraverseSetTreeView(TreeNode node, TreeViewAdv treeView)
@@ -376,11 +382,11 @@ namespace VampirioCode.UI.Controls
             }
 
             //XConsole.Println("c: " + e.Clicks);
-            if(e.Clicks == 2)
+            if (e.Clicks == 2)
                 MouseDoubleClickUpdate(_mouseX, _mouseY);
             else
                 MouseUpdate(_mouseX, _mouseY, _mouseDown);
-            
+
             Invalidate();
         }
 
@@ -391,7 +397,7 @@ namespace VampirioCode.UI.Controls
             _mouseX = e.X;
             _mouseY = e.Y;
             _mouseDown = false;
-            
+
             Invalidate();
         }
 
@@ -421,12 +427,12 @@ namespace VampirioCode.UI.Controls
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-            
+
             int val = 10;
 
             if (e.Delta > 0)
                 val = -10;
-            
+
             verticalScrollBar.Value += val;
 
             Invalidate();
@@ -526,7 +532,7 @@ namespace VampirioCode.UI.Controls
         {
             RecalcNodeTextsSize();
             UpdateNodes();
-            
+
             RecalcScrollBarValues();
         }
 
@@ -545,6 +551,18 @@ namespace VampirioCode.UI.Controls
 
             if (TextChanged != null)
                 TextChanged(node);
+        }
+
+        public void TriggerNodeAdded(TreeNode node)
+        {
+            if (NodeAdded != null)
+                NodeAdded(node);
+        }
+
+        public void TriggerNodeRemoved(TreeNode node)
+        {
+            if (NodeRemoved != null)
+                NodeRemoved(node);
         }
 
         private void TriggerEditNode(TreeNode node)

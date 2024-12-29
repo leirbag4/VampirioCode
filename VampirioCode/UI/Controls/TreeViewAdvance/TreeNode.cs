@@ -80,6 +80,10 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
                 child.SetTreeView(treeView);
             Children.Add(child);
 
+            // event
+            if(treeView != null)
+                treeView.TriggerNodeAdded(child);
+
             return child;
         }
 
@@ -89,6 +93,10 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
                 throw new ArgumentNullException(nameof(child), "child node can't be null.");
 
             Children.Remove(child);
+
+            // event
+            if (treeView != null)
+                treeView.TriggerNodeRemoved(child);
         }
 
         public void SetTreeView(TreeViewAdv treeView)
