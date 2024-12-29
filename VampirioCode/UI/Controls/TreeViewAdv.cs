@@ -16,6 +16,10 @@ namespace VampirioCode.UI.Controls
 {
     public class TreeViewAdv : Control
     {
+        // Events
+        public event SelectedNodeEvent SelectedNode = null;
+        public event TextChangedEvent TextChanged = null;
+
         public override Font Font
         {
             get { return _font; }
@@ -31,9 +35,6 @@ namespace VampirioCode.UI.Controls
                 Invalidate();
             }
         }
-
-        // Events
-        public event SelectedNodeEvent SelectedNode = null;
 
         // Properties
         public TreeNode CurrSelectedNode { get
@@ -93,6 +94,8 @@ namespace VampirioCode.UI.Controls
         private int fullNodeHeight = 0;
 
         private TreeNode _editingNode = null;
+        private TreeNode _possibleEditingNode = null;
+
 
         private System.Windows.Forms.Timer editItemTimer;
 
@@ -533,7 +536,16 @@ namespace VampirioCode.UI.Controls
                 SelectedNode(node);
         }
 
-        private TreeNode _possibleEditingNode = null;
+        public void TriggerTextChanged(TreeNode node, string text, TRect textRect)
+        {
+            //RecalcNodeTextsSize();
+            UpdateNodes();
+
+            RecalcScrollBarValues();
+
+            if (TextChanged != null)
+                TextChanged(node);
+        }
 
         private void TriggerEditNode(TreeNode node)
         {

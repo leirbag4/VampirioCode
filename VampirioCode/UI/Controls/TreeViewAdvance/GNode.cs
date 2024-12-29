@@ -221,7 +221,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             if (node.TItem.IsEditing)
                 node.TItem.SetPos(textRect.Left, textRect.Top);
 
-            RecalcVisibility();
+            //RecalcVisibility();
         }
 
         private int GetIconsRightPos()
@@ -239,17 +239,17 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
             return _iconsRightPos;
         }
 
-        private void RecalcVisibility()
+        /*private void RecalcVisibility()
         {
             //XConsole.Println("lx: " + LocalX + " ly: " + LocalY);
-        }
+        }*/
 
         // events
         public void OnTextChanged(string text, TItem titem)
         {
             RecalcTextSize();
 
-            RecalcVisibility();
+            //RecalcVisibility();
         }
 
         public void RecalcTextSize(bool forced = false)
@@ -260,13 +260,13 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
 
                 SizeF size =    VampirioGraphics.GetStringSize(Font, Text);
 
-                if (Text.IndexOf("test C0") != -1)
-                    XConsole.Println("fname: " + Font.Name + " fsize: " + Font.Size);
-
                 //TextWidth =     (int)size.Width;
                 //TextHeight =    (int)size.Height;
                 textRect =      new TRect(GetIconsRightPos(), LocalY, (int)size.Width, (int)size.Height);
                 //XConsole.Println("Text w: " + TextWidth + ", h: " + TextHeight);
+
+                if(treeView != null)
+                    treeView.TriggerTextChanged(node, _prevText, textRect);
             }
         }
 
