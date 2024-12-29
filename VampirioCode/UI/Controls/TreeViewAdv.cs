@@ -255,14 +255,41 @@ namespace VampirioCode.UI.Controls
         public List<TreeNode> GetAllExpandedNodes()
         {
             List<TreeNode> nodes = GetAllNodes();
+            List<TreeNode> retNodes = new List<TreeNode>();
 
             foreach (var node in nodes)
             {
                 if (node.IsExpanded)
-                    nodes.Add(node);
+                    retNodes.Add(node);
             }
 
             return nodes;
+        }
+
+        private void TraverseGetAllVisibleNodes(TreeNode node, ref List<TreeNode> list)
+        {
+            if (node.gnode.IsInsideScreen())
+                list.Add(node);
+
+            if (node.IsExpanded)
+            {
+                foreach (var child in node.Children)
+                {
+                    TraverseGetAllVisibleNodes(child, ref list);
+                }
+            }
+        }
+
+        public List<TreeNode> GetAllVisibleNodes()
+        {
+            List<TreeNode> list = new List<TreeNode>();
+
+            foreach (var rootNode in _rootNodes)
+            {
+                TraverseGetAllVisibleNodes(rootNode, ref list);
+            }
+
+            return list;
         }
 
         public void SelectAllNodes(bool select)
@@ -456,7 +483,20 @@ namespace VampirioCode.UI.Controls
 
         private void MouseDoubleClickUpdate(int mouseX, int mouseY)
         {
-            List<TreeNode> nodes = GetAllNodes();
+            //List<TreeNode> nodes = GetAllNodes();
+            //List<TreeNode> nodes = GetAllExpandedNodes();
+            List<TreeNode> nodes = GetAllVisibleNodes();
+
+            /*XConsole.Println("------------------");
+            int a = 0;
+            foreach (var node in nodes)
+            {
+                XConsole.Print((++a) + " : " + node.Text + " -> ");
+                XConsole.Println("( " + node.gnode.LocalX + ", " + node.gnode.LocalY + ", " + node.gnode.Width + ", " + node.gnode.Height + " )");
+            }
+
+            XConsole.PrintError("mouseX: " + mouseX + ", mouseY: " + mouseY);
+            */
 
             foreach (var node in nodes)
             {
@@ -464,9 +504,19 @@ namespace VampirioCode.UI.Controls
                 {
                     //SelectAllNodes(false);
                     //node.Selected = true;
+                    //node.ToggleCollapse();
+
+                    //XConsole.PrintWarning("over: " + node.Text);
                     node.ToggleCollapse();
+                    UpdateNodes();
+                    TriggerClickedNode(node, node.IsExpanded);
+
+                    //XConsole.Println("=====================");
+                    return;
                 }
             }
+
+            //XConsole.Println("+++++++++++++++++++++");
         }
 
         private void TriggerClickedNode(TreeNode node, bool expanded)

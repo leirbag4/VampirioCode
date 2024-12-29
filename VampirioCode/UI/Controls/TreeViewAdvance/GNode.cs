@@ -20,8 +20,8 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         public int GlobalY { get { return _y; } set { _y = value; } }
         //public int TextWidth { get; set; }
         //public int TextHeight { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int Width { get { return FullRect.Width; } }
+        public int Height { get { return FullRect.Height; } }
         public int collapseIconKey { get; set; } = -1;
         public int icon1Key { get; set; } = -1;
         public int icon2Key { get; set; } = -1;
@@ -296,6 +296,14 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
 
                 TGraphics.DrawImage(g, bmp, rect.X + (icon.Width >> 1) - (w >> 1), rect.Y + (FullRect.Height >> 1) - (h >> 1), w, h);
             }
+        }
+
+        public bool IsInsideScreen()
+        {
+            TRect fullRect = FullRect;
+
+            return (((fullRect.Right >= 0) && (fullRect.X <= treeView.Width) &&
+                   (fullRect.Bottom >= 0) && (fullRect.Y <= treeView.Height)));
         }
 
         // paint
