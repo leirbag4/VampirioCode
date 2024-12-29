@@ -112,7 +112,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
 
             // event
             if (treeView != null)
-                treeView.TriggerNodeExpanded(this);
+                treeView.TriggerNodeExpanded(this, true);
         }
 
         public void Collapse()
@@ -122,7 +122,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
 
             // event
             if(treeView != null)
-                treeView.TriggerNodeCollapsed(this);
+                treeView.TriggerNodeCollapsed(this, true);
         }
 
         private void TraverseExpandAll(TreeNode node)

@@ -34,6 +34,7 @@ namespace VampirioCode.UI.Controls
 
                 _font = value;
                 _nodeHeight = (int)VampirioGraphics.GetStringSize(_font, "A").Height;
+
                 RecalcNodeTextsSize();
 
                 Invalidate();
@@ -169,6 +170,7 @@ namespace VampirioCode.UI.Controls
 
         private void OnHorizontalScroll(int newValue, int oldValue)
         {
+            UpdateNodes(); // fixed bug for [|]
             Invalidate();
         }
 
@@ -583,15 +585,27 @@ namespace VampirioCode.UI.Controls
                 NodeRemoved(node);
         }
 
-        public void TriggerNodeExpanded(TreeNode node)
+        public void TriggerNodeExpanded(TreeNode node, bool repaint = false)
         {
             if (NodeExpanded != null)
                 NodeExpanded(node);
+
+            if (repaint)
+            {
+                UpdateNodes();
+                Invalidate();
+            }
         }
-        public void TriggerNodeCollapsed(TreeNode node)
+        public void TriggerNodeCollapsed(TreeNode node, bool repaint = false)
         {
             if (NodeCollapsed != null)
                 NodeCollapsed(node);
+
+            if (repaint)
+            {
+                UpdateNodes();
+                Invalidate();
+            }
         }
 
         private void TriggerEditNode(TreeNode node)
@@ -818,7 +832,7 @@ namespace VampirioCode.UI.Controls
                 line.Paint(g, _linesPenColor);
         }
 
-        private void TraverseUpdate(TreeNode node, int xIndent, ref int y)
+        private void TraverseUpdateNodes(TreeNode node, int xIndent, ref int y)
         {
             // Update gnode position and its members
             node.gnode.SetPos(xIndent - HScroll, y - VScroll);
@@ -882,7 +896,7 @@ namespace VampirioCode.UI.Controls
 
                     prevChild = child;
 
-                    TraverseUpdate(child, xIndent + NodeIndent, ref y);
+                    TraverseUpdateNodes(child, xIndent + NodeIndent, ref y);
                 }
             }
         }
@@ -919,7 +933,7 @@ namespace VampirioCode.UI.Controls
                 prevChild = child;
 
                 // Traverse Update
-                TraverseUpdate(rootNode, MarginLeft, ref y);
+                TraverseUpdateNodes(rootNode, MarginLeft, ref y);
             }
 
             //XConsole.Println("fullNodeHeight: " + fullNodeHeight);
@@ -963,8 +977,8 @@ namespace VampirioCode.UI.Controls
             VampirioGraphics.FillRect(g, BackColor, 0, 0, Width, Height);
 
             UpdateNodes();
-            PaintNodes(g);
             PaintLines(g);
+            PaintNodes(g);
         }
     }
 }
