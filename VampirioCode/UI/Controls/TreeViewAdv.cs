@@ -17,10 +17,12 @@ namespace VampirioCode.UI.Controls
     public class TreeViewAdv : Control
     {
         // Events
-        public event SelectedNodeEvent  SelectedNode =  null;
-        public event TextChangedEvent   TextChanged =   null;
-        public event NodeAddedEvent     NodeAdded =     null;
-        public event NodeRemovedEvent   NodeRemoved =   null;
+        public event SelectedNodeEvent SelectedNode = null;
+        public event NodeTextChangedEvent NodeTextChanged = null;
+        public event NodeAddedEvent NodeAdded = null;
+        public event NodeRemovedEvent NodeRemoved = null;
+        public event NodeExpandedEvent NodeExpanded = null;
+        public event NodeCollapsedEvent NodeCollapsed = null;
 
         public override Font Font
         {
@@ -69,6 +71,7 @@ namespace VampirioCode.UI.Controls
         public int MarginTop { get { return _marginTop; } set { _marginTop = value; RefreshAll(); } }
         public Color SelectedBackColor { get; set; } = Color.FromArgb(68, 68, 68);
         public Color SelectedBorderColor { get; set; } = Color.FromArgb(119, 119, 119);
+        public bool AllowTextEdition { get; set; } = true;
 
         private ScrollBarAdv verticalScrollBar;
         private ScrollBarAdv horizontalScrollBar;
@@ -206,7 +209,7 @@ namespace VampirioCode.UI.Controls
             }
             //TraverseRemoveNode(node, this);
 
-            TriggerNodeRemoved(node);
+            //TriggerNodeRemoved(node);
         }
 
         public void ClearNodes()
@@ -462,8 +465,8 @@ namespace VampirioCode.UI.Controls
                 if (node.gnode.IsOverText(mouseX, mouseY) && click && node.Selected)
                 {
                     XConsole.Println("over [Text]");
-
-                    TriggerEditNode(node);
+                    if (AllowTextEdition)
+                        TriggerEditNode(node);
                 }
                 else if (node.gnode.IsOverFullRect(mouseX, mouseY) && click)
                 {
@@ -528,6 +531,17 @@ namespace VampirioCode.UI.Controls
             //XConsole.Println("+++++++++++++++++++++");
         }
 
+        public void RefreshScrollBars(bool repaint = false)
+        {
+            RecalcNodeTextsSize();
+            UpdateNodes();
+
+            RecalcScrollBarValues();
+
+            if (repaint)
+                Invalidate();
+        }
+
         private void TriggerClickedNode(TreeNode node, bool expanded)
         {
             RecalcNodeTextsSize();
@@ -549,20 +563,35 @@ namespace VampirioCode.UI.Controls
 
             RecalcScrollBarValues();
 
-            if (TextChanged != null)
-                TextChanged(node);
+            if (NodeTextChanged != null)
+                NodeTextChanged(node);
         }
 
         public void TriggerNodeAdded(TreeNode node)
         {
+            RefreshScrollBars(true);
+
             if (NodeAdded != null)
                 NodeAdded(node);
         }
 
         public void TriggerNodeRemoved(TreeNode node)
         {
+            RefreshScrollBars(true);
+
             if (NodeRemoved != null)
                 NodeRemoved(node);
+        }
+
+        public void TriggerNodeExpanded(TreeNode node)
+        {
+            if (NodeExpanded != null)
+                NodeExpanded(node);
+        }
+        public void TriggerNodeCollapsed(TreeNode node)
+        {
+            if (NodeCollapsed != null)
+                NodeCollapsed(node);
         }
 
         private void TriggerEditNode(TreeNode node)
@@ -612,7 +641,7 @@ namespace VampirioCode.UI.Controls
             {
                 jsonObject = JsonNode.Parse(json) as JsonObject;
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 XConsole.PrintError("Can't parse JSON");
                 return;
@@ -637,7 +666,7 @@ namespace VampirioCode.UI.Controls
                 {
                     JsonTreeNode childNode = new JsonTreeNode(property.Key);
                     parentNode.Add(childNode);
-                    
+
                     AddJsonToTreeNode(childNode, property.Value);
                 }
             }
@@ -686,29 +715,29 @@ namespace VampirioCode.UI.Controls
             // Horizontal Scrollbar
             if (fullNodeWidth < this.Width)
             {
-                horizontalScrollBar.Maximum =       100;
-                horizontalScrollBar.LargeChange =   101;
-                horizontalScrollBar.Enabled =       false;
+                horizontalScrollBar.Maximum = 100;
+                horizontalScrollBar.LargeChange = 101;
+                horizontalScrollBar.Enabled = false;
             }
             else
             {
-                horizontalScrollBar.Maximum =       fullNodeWidth;
-                horizontalScrollBar.LargeChange =   this.Width;
-                horizontalScrollBar.Enabled =       true;
+                horizontalScrollBar.Maximum = fullNodeWidth;
+                horizontalScrollBar.LargeChange = this.Width;
+                horizontalScrollBar.Enabled = true;
             }
 
             // Vertical Scrollbar
             if (fullNodeHeight < this.Height)
             {
-                verticalScrollBar.Maximum =       100;
-                verticalScrollBar.LargeChange =   101;
-                verticalScrollBar.Enabled =       false;
+                verticalScrollBar.Maximum = 100;
+                verticalScrollBar.LargeChange = 101;
+                verticalScrollBar.Enabled = false;
             }
             else
             {
-                verticalScrollBar.Maximum =       fullNodeHeight;
-                verticalScrollBar.LargeChange =   this.Height;
-                verticalScrollBar.Enabled =       true;
+                verticalScrollBar.Maximum = fullNodeHeight;
+                verticalScrollBar.LargeChange = this.Height;
+                verticalScrollBar.Enabled = true;
             }
         }
 
@@ -733,8 +762,9 @@ namespace VampirioCode.UI.Controls
         }
 
         public void ExpandAllFrom(TreeNode node)
-        { 
+        {
             node.IsExpanded = true;
+            TriggerNodeExpanded(node);
 
             foreach (var n in node.Children)
             {
@@ -742,14 +772,37 @@ namespace VampirioCode.UI.Controls
             }
         }
 
-        public void CollapseAllFrom(TreeNode node) 
+        public void CollapseAllFrom(TreeNode node)
         {
             node.IsExpanded = false;
+            TriggerNodeCollapsed(node);
 
             foreach (var n in node.Children)
             {
                 CollapseAllFrom(n);
             }
+        }
+
+        public void ExpandAll()
+        {
+            foreach(var root in _rootNodes)
+            {
+                root.IsExpanded = true;
+                ExpandAllFrom(root);
+            }
+
+            RefreshScrollBars(true);
+        }
+
+        public void CollapseAll()
+        {
+            foreach (var root in _rootNodes)
+            {
+                root.IsExpanded = false;
+                CollapseAllFrom(root);
+            }
+
+            RefreshScrollBars(true);
         }
 
         private void OnEditTimerTick(object? sender, EventArgs e)

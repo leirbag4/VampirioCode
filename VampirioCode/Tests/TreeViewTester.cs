@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TreeViewAdvance;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -191,7 +192,44 @@ namespace VampirioCode.Tests
 
             treeViewAdv.RefreshAll();
 
+            treeViewAdv.SelectedNode += SelectedNode;
+            treeViewAdv.NodeTextChanged += NodeTextChanged;
+            treeViewAdv.NodeAdded += OnNodeAdded;
+            treeViewAdv.NodeRemoved += NodeRemoved;
+            treeViewAdv.NodeExpanded += NodeExpanded;
+            treeViewAdv.NodeCollapsed += NodeCollapsed;
+
             VampirioCode.UI.XConsole.Println("font name: " + treeViewAdv.Font.Name);
+        }
+
+        private void NodeTextChanged(UI.Controls.TreeViewAdvance.TreeNode node)
+        {
+            XConsole.PrintWarning("node_text_changed: " + node.Text);
+        }
+
+        private void SelectedNode(UI.Controls.TreeViewAdvance.TreeNode node)
+        {
+            XConsole.PrintWarning("selected_node: " + node.Text);
+        }
+
+        private void NodeCollapsed(UI.Controls.TreeViewAdvance.TreeNode node)
+        {
+            XConsole.PrintWarning("node_collapsed: " + node.Text);
+        }
+
+        private void NodeExpanded(UI.Controls.TreeViewAdvance.TreeNode node)
+        {
+            XConsole.PrintWarning("node_expanded: " + node.Text);
+        }
+
+        private void NodeRemoved(UI.Controls.TreeViewAdvance.TreeNode node)
+        {
+            XConsole.PrintWarning("node_removed: " + node.Text);
+        }
+
+        private void OnNodeAdded(UI.Controls.TreeViewAdvance.TreeNode node)
+        {
+            XConsole.PrintWarning("node_added: " + node.Text);
         }
 
         private VampirioCode.UI.Controls.TreeViewAdvance.TreeNode CreateNode(string text)
@@ -317,6 +355,16 @@ namespace VampirioCode.Tests
         private void OnCollapseTreePressed(object sender, EventArgs e)
         {
             treeViewAdv.CurrSelectedNode.CollapseAll();
+        }
+
+        private void OnExpandAllNodes(object sender, EventArgs e)
+        {
+            treeViewAdv.ExpandAll();
+        }
+
+        private void OnCollapseAllNodes(object sender, EventArgs e)
+        {
+            treeViewAdv.CollapseAll();
         }
 
         private void OnClassicPressed(object sender, EventArgs e)

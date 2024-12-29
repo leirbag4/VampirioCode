@@ -109,22 +109,64 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
         { 
             this.IsExpanded = true;
             RefreshTreeView();
+
+            // event
+            if (treeView != null)
+                treeView.TriggerNodeExpanded(this);
         }
 
         public void Collapse()
         {
             this.IsExpanded = false;
             RefreshTreeView();
+
+            // event
+            if(treeView != null)
+                treeView.TriggerNodeCollapsed(this);
+        }
+
+        private void TraverseExpandAll(TreeNode node)
+        {
+            node.IsExpanded = true;
+
+            if(treeView != null)
+                treeView.TriggerNodeExpanded(node);
+
+            foreach (var child in node.Children)
+            {
+                TraverseExpandAll(child);
+            }
         }
 
         public void ExpandAll()
         {
-            treeView.ExpandAllFrom(this);
+            TraverseExpandAll(this);
+
+            // event
+            if (treeView != null)
+                treeView.RefreshScrollBars(true);
+        }
+
+        private void TraverseCollapseAll(TreeNode node)
+        {
+            node.IsExpanded = false;
+
+            if (treeView != null)
+                treeView.TriggerNodeCollapsed(node);
+
+            foreach (var child in node.Children)
+            {
+                TraverseCollapseAll(child);
+            }
         }
 
         public void CollapseAll()
-        { 
-            treeView.CollapseAllFrom(this);
+        {
+            TraverseCollapseAll(this);
+
+            // event
+            if (treeView != null)
+                treeView.RefreshScrollBars(true);
         }
 
         public void ToggleCollapse()

@@ -265,7 +265,7 @@ namespace VampirioCode.UI.Controls.TreeViewAdvance
                 textRect =      new TRect(GetIconsRightPos(), LocalY, (int)size.Width, (int)size.Height);
                 //XConsole.Println("Text w: " + TextWidth + ", h: " + TextHeight);
 
-                if(treeView != null)
+                if((treeView != null) && (forced != true))
                     treeView.TriggerTextChanged(node, _prevText, textRect);
             }
         }

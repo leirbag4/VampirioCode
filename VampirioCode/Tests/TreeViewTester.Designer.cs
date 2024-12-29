@@ -51,6 +51,8 @@
             expand_tree_classic = new UI.Controls.ButtonAdv();
             buttonAdv6 = new UI.Controls.ButtonAdv();
             buttonAdv7 = new UI.Controls.ButtonAdv();
+            buttonAdv8 = new UI.Controls.ButtonAdv();
+            buttonAdv9 = new UI.Controls.ButtonAdv();
             SuspendLayout();
             // 
             // treeView
@@ -66,6 +68,7 @@
             // 
             // treeViewAdv
             // 
+            treeViewAdv.AllowTextEdition = true;
             treeViewAdv.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             treeViewAdv.BackColor = Color.FromArgb(31, 31, 13);
             treeViewAdv.LinesColor = Color.FromArgb(100, 100, 100);
@@ -566,12 +569,72 @@
             buttonAdv7.UseVisualStyleBackColor = false;
             buttonAdv7.Click += OnCollapseTreePressed;
             // 
+            // buttonAdv8
+            // 
+            buttonAdv8.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv8.BackColor = Color.FromArgb(20, 20, 20);
+            buttonAdv8.BorderColor = Color.FromArgb(70, 70, 70);
+            buttonAdv8.BorderSize = 1;
+            buttonAdv8.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv8.expandImage = false;
+            buttonAdv8.extraText = "";
+            buttonAdv8.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv8.extraTextColor = Color.Black;
+            buttonAdv8.extraTextFont = null;
+            buttonAdv8.extraTextOffset = new Point(0, 0);
+            buttonAdv8.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv8.FocusEnabled = false;
+            buttonAdv8.ForeColor = Color.Silver;
+            buttonAdv8.Location = new Point(780, 448);
+            buttonAdv8.Name = "buttonAdv8";
+            buttonAdv8.PaintImageOnSelected = true;
+            buttonAdv8.processEnterKey = true;
+            buttonAdv8.resizeImage = new Point(0, 0);
+            buttonAdv8.Selected = false;
+            buttonAdv8.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv8.Size = new Size(119, 41);
+            buttonAdv8.TabIndex = 24;
+            buttonAdv8.Text = "expand all nodes";
+            buttonAdv8.UseVisualStyleBackColor = false;
+            buttonAdv8.Click += OnExpandAllNodes;
+            // 
+            // buttonAdv9
+            // 
+            buttonAdv9.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv9.BackColor = Color.FromArgb(20, 20, 20);
+            buttonAdv9.BorderColor = Color.FromArgb(70, 70, 70);
+            buttonAdv9.BorderSize = 1;
+            buttonAdv9.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv9.expandImage = false;
+            buttonAdv9.extraText = "";
+            buttonAdv9.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv9.extraTextColor = Color.Black;
+            buttonAdv9.extraTextFont = null;
+            buttonAdv9.extraTextOffset = new Point(0, 0);
+            buttonAdv9.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv9.FocusEnabled = false;
+            buttonAdv9.ForeColor = Color.Silver;
+            buttonAdv9.Location = new Point(780, 492);
+            buttonAdv9.Name = "buttonAdv9";
+            buttonAdv9.PaintImageOnSelected = true;
+            buttonAdv9.processEnterKey = true;
+            buttonAdv9.resizeImage = new Point(0, 0);
+            buttonAdv9.Selected = false;
+            buttonAdv9.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv9.Size = new Size(119, 41);
+            buttonAdv9.TabIndex = 25;
+            buttonAdv9.Text = "collapse all nodes";
+            buttonAdv9.UseVisualStyleBackColor = false;
+            buttonAdv9.Click += OnCollapseAllNodes;
+            // 
             // TreeViewTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             ClientSize = new Size(995, 586);
+            Controls.Add(buttonAdv9);
+            Controls.Add(buttonAdv8);
             Controls.Add(buttonAdv7);
             Controls.Add(buttonAdv6);
             Controls.Add(expand_tree_classic);
@@ -626,5 +689,7 @@
         private VampirioCode.UI.Controls.ButtonAdv expand_tree_classic;
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv6;
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv7;
+        private UI.Controls.ButtonAdv buttonAdv8;
+        private UI.Controls.ButtonAdv buttonAdv9;
     }
 }
