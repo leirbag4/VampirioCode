@@ -14,6 +14,7 @@ namespace VampirioCode
 
         // Current directory root path of the application at the same level of its executable. 'E.g: C:\Programs\AppDir\'
         public static string BasePath { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+        public static string ConfigFileName { get { return "config.cfg"; } }
 
         // Temporary files path directory. 'E.g: C\Programs\AppDir\temp_files'
         public static string TemporaryFilesPath         { get { return AppDomain.CurrentDomain.BaseDirectory + "temp_files\\"; } }

@@ -259,43 +259,51 @@ namespace VampirioCode
 
             Document returnToDoc = null;
 
+
+            // -------------------------------------------
+            // ------ Has workspace? (custom build) ------
+            // -------------------------------------------
             WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
-            XConsole.Println("info: " + workspaceInfo.ToString());
 
-
-            WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
-            XConsole.Println("wb: " + workspace.ToString());
-
-            if (workspaceInfo.IsMainFile(workspace))
+            if (workspaceInfo != null)
             {
-                // do nothing
-                XConsole.PrintWarning("is main file");
-            }
-            else
-            {
-                if (workspace.Language == DocumentType.CPP)
+                XConsole.Println("info: " + workspaceInfo.ToString());
+
+
+                WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+                XConsole.Println("wb: " + workspace.ToString());
+
+                if (workspaceInfo.IsMainFile(workspace))
                 {
-                    CppWorkspace cppWorkspace = workspaceInfo.GetWorkspace<CppWorkspace>();
-
-                    // Can be '.h', '.cpp' so we must check if it's allowed
-                    if (cppWorkspace.IsTypeAllowed(CurrDocument.DocType))
+                    // do nothing
+                    XConsole.PrintWarning("is main file");
+                }
+                else
+                {
+                    if (workspace.Language == DocumentType.CPP)
                     {
-                        XConsole.PrintWarning("type is allowed");
-                        string mainFileFullPath = workspaceInfo.GetMainFile(workspace);
-                        XConsole.PrintWarning("mainFileFullPath: " + mainFileFullPath);
+                        CppWorkspace cppWorkspace = workspaceInfo.GetWorkspace<CppWorkspace>();
 
-                        returnToDoc = CurrDocument;
+                        // Can be '.h', '.cpp' so we must check if it's allowed
+                        if (cppWorkspace.IsTypeAllowed(CurrDocument.DocType))
+                        {
+                            XConsole.PrintWarning("type is allowed");
+                            string mainFileFullPath = workspaceInfo.GetMainFile(workspace);
+                            XConsole.PrintWarning("mainFileFullPath: " + mainFileFullPath);
 
-                        XConsole.PrintError("i: " + docManager.DocToIndex(mainFileFullPath));
-                        Document openedDocument = docManager.OpenDocument(mainFileFullPath);
+                            returnToDoc = CurrDocument;
+
+                            XConsole.PrintError("i: " + docManager.DocToIndex(mainFileFullPath));
+                            Document openedDocument = docManager.OpenDocument(mainFileFullPath);
+                        }
+
+                        XConsole.Println("cppws: " + cppWorkspace.ToString());
+                        XConsole.Println("main: " + cppWorkspace.MainFile);
                     }
-
-                    XConsole.Println("cppws: " + cppWorkspace.ToString());
-                    XConsole.Println("main: " + cppWorkspace.MainFile);
                 }
             }
-
-
+            // -------------------------------------------
+            // -------------------------------------------
 
 
             if (!BuilderUtils.CanCompile(CurrDocument.DocType))
@@ -371,6 +379,18 @@ namespace VampirioCode
             }
 
             NewCustomBuild(binfo);
+        }
+
+        private void OnBasicCodePressed(object sender, EventArgs e)
+        {
+            string templateCode = (string)((ToolStripMenuItem)sender).Tag;
+
+            if (templateCode == "cpp_basic_main")
+            {
+                //XConsole.Println("basic main");
+                DocumentTab docTab = docManager.NewDocument();
+                docTab.Editor.Text = CodeDB.GetCode(BuilderTemplate.CppMsvcBasic);
+            }
         }
 
         private void OnConfigPressed(object sender, EventArgs e)
@@ -466,6 +486,114 @@ namespace VampirioCode
             else // SimpleBuild
             {
                 MsgBox.Show("Already a Simple Build", "This build is already a 'Simple Build' so it's not needed to go back.\n\nIt's not a 'Custom Build'");
+            }
+        }
+
+        public class FileAdv
+        {
+            public string FileNameOnly { get; set; }
+            public string OriginalFullDir { get; private set; }
+            public string NewFullDir { get; private set; }
+            public string OriginalFullFile { get; private set; }
+            public string NewFullFile { get; private set; }
+
+            public FileAdv(string originalFullDir, string fileNameOnly)
+            {
+                this.FileNameOnly = fileNameOnly;
+                this.OriginalFullDir = originalFullDir;
+                this.OriginalFullFile = originalFullDir + "\\" + fileNameOnly;
+            }
+
+            public void SetNewFullDir(string newFullDir)
+            {
+                NewFullDir = newFullDir;
+                NewFullFile = newFullDir + "\\" + FileNameOnly;
+            }
+
+            public override string ToString()
+            {
+                return $"[FileNameOnly:      {FileNameOnly}, \nOriginalFullDir:      {OriginalFullDir}, \nNewFullDir:            {NewFullDir}, \nOriginalFullFile:      {OriginalFullFile}, \nNewFullFilePath:     {NewFullFile}]\n";
+            }
+        }
+
+        private void OnMoveBuildPressed(object sender, EventArgs e)
+        {
+            WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
+
+            if (workspaceInfo != null)
+            {
+                string fromPath = workspaceInfo.RootDirFullPath;
+
+                XConsole.Println("info: " + workspaceInfo.ToString());
+
+
+                WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+                XConsole.Println("wb: " + workspace.ToString());
+
+                List<string> allFiles = FileUtils.GetFilesAdv(fromPath, null, null, true, false);
+                List<FileAdv> allFilesAdv = new List<FileAdv>();
+
+                foreach (var file in allFiles)
+                {
+                    allFilesAdv.Add(new FileAdv(fromPath, file));
+                    XConsole.PrintWarning(file);
+                }
+
+                XConsole.Println("-------------------------------");
+
+
+                string newFullDir = "C:\\test2\\news\\la copia";
+
+                foreach (var fileAdv in allFilesAdv)
+                {
+                    fileAdv.SetNewFullDir(newFullDir);
+
+                    XConsole.Println(fileAdv.ToString());
+                }
+
+                XConsole.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                foreach (var doc in docManager.Documents)
+                {
+                    foreach (var fileAdv in allFilesAdv)
+                    {
+                        if (doc.FullFilePath == fileAdv.OriginalFullFile)
+                            XConsole.PrintError("-> " + doc.FullFilePath + " [update]");
+                    }
+
+                    //XConsole.PrintError("-> " + doc.FullFilePath);
+                }
+
+                XConsole.Println("-------------------------------");
+
+
+                /*FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+                {
+                    folderBrowserDialog.Description = "Select a folder";
+                    folderBrowserDialog.ShowNewFolderButton = true; // Permite crear nuevos directorios
+                    //folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop; // Carpeta inicial
+
+                    if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string fromPath = workspaceInfo.RootDirFullPath;
+                        string toPath = folderBrowserDialog.SelectedPath;
+
+                        XConsole.Println("copy from: " + fromPath);
+                        XConsole.Print("to: " + toPath);
+
+                        FileUtils.CopyDirectory(fromPath, toPath);
+                    }
+                }*/
+
+
+                //workspaceInfo.RootDirFullPath
+
+                /*if (workspaceInfo.IsMainFile(workspace))
+                {
+                    // do nothing
+                    XConsole.PrintWarning("is main file");
+                }*/
+
             }
         }
 
@@ -1058,76 +1186,18 @@ namespace VampirioCode
             FullScreen = !FullScreen;
         }
 
-        private static string globalJSON = @"{
-  ""root"": {
-    ""test A0"": {
-      ""test A1"": null,
-      ""test A2"": null
-    },
-    ""test B0"": {
-      ""test B1"": {
-        ""test D0 capo"": null
-      },
-      ""test B2"": null,
-      ""test B3"": null
-    }
-  },
-  ""root2"": {
-    ""test C0"": ""null"",
-    ""test C1"": ""null"",
-    ""test C2"": ""null"",
-    ""test C3"": {
-      ""test F0"": null
-    },
-    ""number"":34
-  }
-}";
-
-        private static string globalJSON2 = @"{
-  ""root"": {
-    ""test A0"": {
-      ""test A1"": null,
-      ""test A2"": false,
-      ""name"" : ""this is a testing device for every time you open this, ok?""
-    },
-    ""names"": [""Juan"", ""Ana"", ""Luis""],
-    ""products"": [
-      { ""id"": 1, ""name"": ""Laptop"", ""price"": 1200 },
-      { ""id"": 2, ""name"": ""Mouse"", ""price"": 20 },
-      { ""id"": 3, ""name"": ""Keyobard"", ""price"": 25.45 }
-    ],
-    ""test B0"": {
-      ""test B1"": {
-        ""test D0 capo"": true,
-        ""long string"" : ""ultra long string to test the code, the device and all any kind of bug""
-      },
-      ""test B2"": null,
-      ""test B3"": null
-    }
-  },
-  ""root2"": {
-    ""test C0"": null,
-    ""test C1"": null,
-    ""test C2"": null,
-    ""test C3"": {
-      ""test F0"": null
-    },
-    ""number"":34
-  }
-}
-";
-
         private void OnJSonViewerPressed(object sender, EventArgs e)
         {
             //TreeViewTester.ShowJson(json);
-            JSonViewer.ShowJson(globalJSON2);
+            //JSonViewer.ShowJson();
+            JSonViewer.Open();
         }
 
 
 
         private void OnTreeViewTester(object sender, EventArgs e)
         {
-            TreeViewTester.ShowJson(globalJSON2);
+            TreeViewTester.ShowJson("");
         }
 
         private void OnResetConfigFile(object sender, EventArgs e)
@@ -1140,6 +1210,23 @@ namespace VampirioCode
             Application.Exit();
         }
 
-        
+        private void OnWorkspaceDebugPressed(object sender, EventArgs e)
+        {
+            WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
+
+            if (workspaceInfo != null)
+            {
+                string fromPath = workspaceInfo.RootDirFullPath;
+                string json = File.ReadAllText(workspaceInfo.WorkspaceFullFilePath);
+                JSonViewer.ShowJson(json);
+                //XConsole.Println("info: " + workspaceInfo.ToString());
+            }
+        }
+
+        private void OnConfigFileDebugPressed(object sender, EventArgs e)
+        {
+            string json = File.ReadAllText(AppInfo.ConfigFileName);
+            JSonViewer.ShowJson(json);
+        }
     }
 }

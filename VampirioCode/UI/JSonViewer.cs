@@ -18,6 +18,8 @@ namespace VampirioCode.UI
 {
     public partial class JSonViewer : VampirioForm
     {
+        private static List<JSonViewer> viewers = new List<JSonViewer>();
+
         public JSonViewer()
         {
             InitializeComponent();
@@ -64,67 +66,37 @@ namespace VampirioCode.UI
         public static JSonViewer ShowJson(string json)
         {
             JSonViewer viewer = new JSonViewer();
-            viewer._showJson(json);
-            //viewer.Show();
+            viewer._showJson(json, true);
+            
 
-            viewer.ShowDialog();
+            viewer.Show();
             return viewer;
         }
 
-        private void _showJson(string json)
+        public static JSonViewer Open()
         {
-            /*json = @"{
-  ""root"": {
-    ""test A0"": {
-      ""test A1"": null,
-      ""test A2"": null
-    },
-    ""test B0"": {
-      ""test B1"": {
-        ""test D0 capo"": null
-      },
-      ""test B2"": null,
-      ""test B3"": null
-    }
-  },
-  ""root2"": {
-    ""test C0"": ""null"",
-    ""test C1"": ""null"",
-    ""test C2"": ""null"",
-    ""test C3"": {
-      ""test F0"": null
-    }
-  }
-}"
-            ;*/
+            JSonViewer viewer = new JSonViewer();
+            viewer.Show();
+            return viewer;
+        }
 
+        public static void CloseAll()
+        {
+            foreach(var viewer in viewers)
+                viewer.Close();
+
+            viewers.Clear();
+        }
+
+        private void _showJson(string json, bool copyToInput = false)
+        {
             treeViewAdv.FillFromJson(json);
 
-            return;
-
-            JsonNode jsonNode = JsonNode.Parse(json);
-            //treeViewAdv.Nodes.Clear();
-            //System.Windows.Forms.TreeNode rootNode = new System.Windows.Forms.TreeNode("JSON Root");
-            TreeNode rootNode = new TreeNode("root");
-            //treeViewAdv.Nodes.Add(rootNode);
-            treeViewAdv.AddNode(rootNode);
-
-            //PopulateTreeView(jsonNode, rootNode);
-
-
-
-            JsonTreeNode jsonTreeNode = new JsonTreeNode() { Text = "info : true" };
-            JsonTreeNode jsonTreeNode2 = new JsonTreeNode() { Text = "value : 123" };
-            JsonTreeNode jsonTreeNode3 = new JsonTreeNode() { Text = "data : \"config\"" };
-            JsonTreeNode jsonTreeNode4 = new JsonTreeNode() { Text = "bin : null" };
-
-            treeViewAdv.AddNode(jsonTreeNode);
-            treeViewAdv.AddNode(jsonTreeNode2);
-            treeViewAdv.AddNode(jsonTreeNode3);
-            treeViewAdv.AddNode(jsonTreeNode4);
-
-            //treeView.ExpandAll();
-
+            if (copyToInput)
+            {
+                input.Text = json;
+                Beautify();
+            }
         }
 
         private void PopulateTreeView(JsonNode jsonNode, TreeNode treeNode)
@@ -193,6 +165,19 @@ namespace VampirioCode.UI
             }
         }
 
+        private void Beautify()
+        {
+            string jsonInput = input.Text;
+
+            var jsonElement = JsonSerializer.Deserialize<JsonElement>(jsonInput);
+            string formattedJson = JsonSerializer.Serialize(jsonElement, new JsonSerializerOptions
+            {
+                WriteIndented = true // Opción para indentar
+            });
+
+            input.Text = formattedJson;
+        }
+
         private void OnConvertPressed(object sender, EventArgs e)
         {
             if (input.Text.Trim() == "")
@@ -204,15 +189,7 @@ namespace VampirioCode.UI
 
         private void OnBeautifyPressed(object sender, EventArgs e)
         {
-            string jsonInput = input.Text;
-
-            var jsonElement = JsonSerializer.Deserialize<JsonElement>(jsonInput);
-            string formattedJson = JsonSerializer.Serialize(jsonElement, new JsonSerializerOptions
-            {
-                WriteIndented = true // Opción para indentar
-            });
-
-            input.Text = formattedJson;
+            Beautify();
         }
 
         private void OnTreeViewToJsonPressed(object sender, EventArgs e)

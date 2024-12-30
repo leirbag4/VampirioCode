@@ -62,11 +62,46 @@ namespace VampirioCode.Tests
   }
 }";*/
 
-            // clear tree view
-            treeView.Nodes.Clear();
+            string globalJSON2 = @"{
+  ""root"": {
+    ""test A0"": {
+      ""test A1"": null,
+      ""test A2"": false,
+      ""name"" : ""this is a testing device for every time you open this, ok?""
+    },
+    ""names"": [""Juan"", ""Ana"", ""Luis""],
+    ""products"": [
+      { ""id"": 1, ""name"": ""Laptop"", ""price"": 1200 },
+      { ""id"": 2, ""name"": ""Mouse"", ""price"": 20 },
+      { ""id"": 3, ""name"": ""Keyobard"", ""price"": 25.45 }
+    ],
+    ""test B0"": {
+      ""test B1"": {
+        ""test D0 capo"": true,
+        ""long string"" : ""ultra long string to test the code, the device and all any kind of bug""
+      },
+      ""test B2"": null,
+      ""test B3"": null
+    }
+  },
+  ""root2"": {
+    ""test C0"": null,
+    ""test C1"": null,
+    ""test C2"": null,
+    ""test C3"": {
+      ""test F0"": null
+    },
+    ""number"":34
+  }
+}
+";
+
+        // clear tree view
+        treeView.Nodes.Clear();
 
             // create the nodes
-            JsonNode jsonNode = JsonNode.Parse(json);
+            //JsonNode jsonNode = JsonNode.Parse(json);
+            JsonNode jsonNode = JsonNode.Parse(globalJSON2);
             treeView.Nodes.Clear();
             System.Windows.Forms.TreeNode rootNode = new System.Windows.Forms.TreeNode("JSON Root");
             treeView.Nodes.Add(rootNode);

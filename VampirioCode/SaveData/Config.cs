@@ -31,7 +31,7 @@ namespace VampirioCode.SaveData
         public static int LastSelectedTabIndex {            get { return config.last_selected_tab_index; }  set { config.last_selected_tab_index = value; } }
         
         private static Config config = null;
-        private const string FILENAME = "config.cfg";
+        //private const string FILENAME = "config.cfg";
 
         public int posX { get; set; } = -1;
         public int posY { get; set; } = -1;
@@ -56,7 +56,7 @@ namespace VampirioCode.SaveData
                 {
                     Version = ver;
                     Save();
-                    XConsole.Println("* New App version found. File '" + FILENAME + "' updated");
+                    XConsole.Println("* New App version found. File '" + AppInfo.ConfigFileName + "' updated");
                 }
             }
             catch (Exception e)
@@ -87,13 +87,13 @@ namespace VampirioCode.SaveData
 
         public static void Load()
         {
-            string json =   File.ReadAllText(FILENAME);
+            string json =   File.ReadAllText(AppInfo.ConfigFileName);
             config =        JsonSerializer.Deserialize<Config>(json);
         }
         public static void Save()
         {
             string json = JsonSerializer.Serialize(config);
-            File.WriteAllText(FILENAME, json);
+            File.WriteAllText(AppInfo.ConfigFileName, json);
         }
 
     }

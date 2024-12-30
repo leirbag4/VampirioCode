@@ -40,6 +40,9 @@
             cToolStripMenuItem = new ToolStripMenuItem();
             sDL2ToolStripMenuItem = new ToolStripMenuItem();
             basicToolStripMenuItem = new ToolStripMenuItem();
+            basicCodeToolStripMenuItem = new ToolStripMenuItem();
+            cToolStripMenuItem1 = new ToolStripMenuItem();
+            basicMaincppToolStripMenuItem = new ToolStripMenuItem();
             openToolStripMenuItem = new ToolStripMenuItem();
             saveToolStripMenuItem = new ToolStripMenuItem();
             saveAsToolStripMenuItem = new ToolStripMenuItem();
@@ -64,6 +67,7 @@
             builderSettingsToolStripMenuItem = new ToolStripMenuItem();
             setupBuildToolStripMenuItem = new ToolStripMenuItem();
             clearBuildSettingsToolStripMenuItem = new ToolStripMenuItem();
+            moveBuildToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             debugToolStripMenuItem = new ToolStripMenuItem();
@@ -75,6 +79,8 @@
             jsonTesterToolStripMenuItem = new ToolStripMenuItem();
             resetConfigFileToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
+            cONFIGFILEDebugToolStripMenuItem = new ToolStripMenuItem();
+            wORKSPACEDebugToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -143,7 +149,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newToolStripMenuItem, newProjectToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, closeToolStripMenuItem, closeAllToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newToolStripMenuItem, newProjectToolStripMenuItem, basicCodeToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, saveAsToolStripMenuItem, closeToolStripMenuItem, closeAllToolStripMenuItem, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(46, 24);
             fileToolStripMenuItem.Text = "File";
@@ -152,7 +158,7 @@
             // 
             newToolStripMenuItem.ForeColor = Color.Silver;
             newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new Size(160, 26);
+            newToolStripMenuItem.Size = new Size(165, 26);
             newToolStripMenuItem.Tag = "new";
             newToolStripMenuItem.Text = "New";
             newToolStripMenuItem.Click += OnFilePressed;
@@ -162,7 +168,7 @@
             newProjectToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cToolStripMenuItem });
             newProjectToolStripMenuItem.ForeColor = Color.Silver;
             newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            newProjectToolStripMenuItem.Size = new Size(160, 26);
+            newProjectToolStripMenuItem.Size = new Size(165, 26);
             newProjectToolStripMenuItem.Text = "New Build";
             // 
             // cToolStripMenuItem
@@ -191,11 +197,36 @@
             basicToolStripMenuItem.Text = "Basic";
             basicToolStripMenuItem.Click += OnCustomBuildPressed;
             // 
+            // basicCodeToolStripMenuItem
+            // 
+            basicCodeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cToolStripMenuItem1 });
+            basicCodeToolStripMenuItem.ForeColor = Color.Silver;
+            basicCodeToolStripMenuItem.Name = "basicCodeToolStripMenuItem";
+            basicCodeToolStripMenuItem.Size = new Size(165, 26);
+            basicCodeToolStripMenuItem.Text = "Basic Code";
+            // 
+            // cToolStripMenuItem1
+            // 
+            cToolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { basicMaincppToolStripMenuItem });
+            cToolStripMenuItem1.ForeColor = Color.Silver;
+            cToolStripMenuItem1.Name = "cToolStripMenuItem1";
+            cToolStripMenuItem1.Size = new Size(121, 26);
+            cToolStripMenuItem1.Text = "C++";
+            // 
+            // basicMaincppToolStripMenuItem
+            // 
+            basicMaincppToolStripMenuItem.ForeColor = Color.Silver;
+            basicMaincppToolStripMenuItem.Name = "basicMaincppToolStripMenuItem";
+            basicMaincppToolStripMenuItem.Size = new Size(191, 26);
+            basicMaincppToolStripMenuItem.Tag = "cpp_basic_main";
+            basicMaincppToolStripMenuItem.Text = "Basic main.cpp";
+            basicMaincppToolStripMenuItem.Click += OnBasicCodePressed;
+            // 
             // openToolStripMenuItem
             // 
             openToolStripMenuItem.ForeColor = Color.Silver;
             openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(160, 26);
+            openToolStripMenuItem.Size = new Size(165, 26);
             openToolStripMenuItem.Tag = "open";
             openToolStripMenuItem.Text = "Open";
             openToolStripMenuItem.Click += OnFilePressed;
@@ -204,7 +235,7 @@
             // 
             saveToolStripMenuItem.ForeColor = Color.Silver;
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(160, 26);
+            saveToolStripMenuItem.Size = new Size(165, 26);
             saveToolStripMenuItem.Tag = "save";
             saveToolStripMenuItem.Text = "Save";
             saveToolStripMenuItem.Click += OnFilePressed;
@@ -213,7 +244,7 @@
             // 
             saveAsToolStripMenuItem.ForeColor = Color.Silver;
             saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            saveAsToolStripMenuItem.Size = new Size(160, 26);
+            saveAsToolStripMenuItem.Size = new Size(165, 26);
             saveAsToolStripMenuItem.Tag = "save_as";
             saveAsToolStripMenuItem.Text = "Save As...";
             saveAsToolStripMenuItem.Click += OnFilePressed;
@@ -222,7 +253,7 @@
             // 
             closeToolStripMenuItem.ForeColor = Color.Silver;
             closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            closeToolStripMenuItem.Size = new Size(160, 26);
+            closeToolStripMenuItem.Size = new Size(165, 26);
             closeToolStripMenuItem.Tag = "close";
             closeToolStripMenuItem.Text = "Close";
             closeToolStripMenuItem.Click += OnFilePressed;
@@ -231,7 +262,7 @@
             // 
             closeAllToolStripMenuItem.ForeColor = Color.Silver;
             closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            closeAllToolStripMenuItem.Size = new Size(160, 26);
+            closeAllToolStripMenuItem.Size = new Size(165, 26);
             closeAllToolStripMenuItem.Tag = "close_all";
             closeAllToolStripMenuItem.Text = "Close All";
             closeAllToolStripMenuItem.Click += OnFilePressed;
@@ -240,7 +271,7 @@
             // 
             exitToolStripMenuItem.ForeColor = Color.Silver;
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(160, 26);
+            exitToolStripMenuItem.Size = new Size(165, 26);
             exitToolStripMenuItem.Tag = "exit";
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += OnFilePressed;
@@ -368,7 +399,7 @@
             // 
             // builderSettingsToolStripMenuItem
             // 
-            builderSettingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setupBuildToolStripMenuItem, clearBuildSettingsToolStripMenuItem });
+            builderSettingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setupBuildToolStripMenuItem, clearBuildSettingsToolStripMenuItem, moveBuildToolStripMenuItem });
             builderSettingsToolStripMenuItem.Name = "builderSettingsToolStripMenuItem";
             builderSettingsToolStripMenuItem.Size = new Size(67, 24);
             builderSettingsToolStripMenuItem.Text = "Config";
@@ -378,7 +409,7 @@
             // 
             setupBuildToolStripMenuItem.ForeColor = Color.Silver;
             setupBuildToolStripMenuItem.Name = "setupBuildToolStripMenuItem";
-            setupBuildToolStripMenuItem.Size = new Size(215, 26);
+            setupBuildToolStripMenuItem.Size = new Size(224, 26);
             setupBuildToolStripMenuItem.Text = "Setup Build";
             setupBuildToolStripMenuItem.Click += OnSetupBuildPressed;
             // 
@@ -386,9 +417,17 @@
             // 
             clearBuildSettingsToolStripMenuItem.ForeColor = Color.Silver;
             clearBuildSettingsToolStripMenuItem.Name = "clearBuildSettingsToolStripMenuItem";
-            clearBuildSettingsToolStripMenuItem.Size = new Size(215, 26);
+            clearBuildSettingsToolStripMenuItem.Size = new Size(224, 26);
             clearBuildSettingsToolStripMenuItem.Text = "Clear Build Setting";
             clearBuildSettingsToolStripMenuItem.Click += OnClearBuildSettingPressed;
+            // 
+            // moveBuildToolStripMenuItem
+            // 
+            moveBuildToolStripMenuItem.ForeColor = Color.Silver;
+            moveBuildToolStripMenuItem.Name = "moveBuildToolStripMenuItem";
+            moveBuildToolStripMenuItem.Size = new Size(224, 26);
+            moveBuildToolStripMenuItem.Text = "Move Build";
+            moveBuildToolStripMenuItem.Click += OnMoveBuildPressed;
             // 
             // helpToolStripMenuItem
             // 
@@ -407,7 +446,7 @@
             // 
             // debugToolStripMenuItem
             // 
-            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, jsonViewerToolStripMenuItem, jsonTesterToolStripMenuItem, resetConfigFileToolStripMenuItem });
+            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, jsonViewerToolStripMenuItem, jsonTesterToolStripMenuItem, wORKSPACEDebugToolStripMenuItem, cONFIGFILEDebugToolStripMenuItem, resetConfigFileToolStripMenuItem });
             debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             debugToolStripMenuItem.Size = new Size(68, 24);
             debugToolStripMenuItem.Text = "Debug";
@@ -476,6 +515,22 @@
             toolBar.Name = "toolBar";
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
+            // 
+            // cONFIGFILEDebugToolStripMenuItem
+            // 
+            cONFIGFILEDebugToolStripMenuItem.ForeColor = Color.Silver;
+            cONFIGFILEDebugToolStripMenuItem.Name = "cONFIGFILEDebugToolStripMenuItem";
+            cONFIGFILEDebugToolStripMenuItem.Size = new Size(237, 26);
+            cONFIGFILEDebugToolStripMenuItem.Text = "CONFIG FILE debug";
+            cONFIGFILEDebugToolStripMenuItem.Click += OnConfigFileDebugPressed;
+            // 
+            // wORKSPACEDebugToolStripMenuItem
+            // 
+            wORKSPACEDebugToolStripMenuItem.ForeColor = Color.Silver;
+            wORKSPACEDebugToolStripMenuItem.Name = "wORKSPACEDebugToolStripMenuItem";
+            wORKSPACEDebugToolStripMenuItem.Size = new Size(237, 26);
+            wORKSPACEDebugToolStripMenuItem.Text = "WORKSPACE debug";
+            wORKSPACEDebugToolStripMenuItem.Click += OnWorkspaceDebugPressed;
             // 
             // App
             // 
@@ -548,5 +603,11 @@
         private ToolStripMenuItem resetConfigFileToolStripMenuItem;
         private ToolStripMenuItem jsonViewerToolStripMenuItem;
         private ToolStripMenuItem jsonTesterToolStripMenuItem;
+        private ToolStripMenuItem basicCodeToolStripMenuItem;
+        private ToolStripMenuItem cToolStripMenuItem1;
+        private ToolStripMenuItem basicMaincppToolStripMenuItem;
+        private ToolStripMenuItem moveBuildToolStripMenuItem;
+        private ToolStripMenuItem wORKSPACEDebugToolStripMenuItem;
+        private ToolStripMenuItem cONFIGFILEDebugToolStripMenuItem;
     }
 }
