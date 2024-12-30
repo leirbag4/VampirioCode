@@ -73,7 +73,7 @@ namespace VampirioCode.UI
 }"
             ;*/
 
-            treeViewAdv.PopulateFromJson(json);
+            treeViewAdv.FillFromJson(json);
 
             return;
 

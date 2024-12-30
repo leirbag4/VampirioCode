@@ -171,90 +171,6 @@ namespace VampirioCode.UI.Controls
             editItemTimer.Tick += OnEditItemTimer;
         }
 
-
-
-
-
-
-
-        public List<TreeNode> RootNodes { get; set; } = new List<TreeNode>();
-
-
-        public string ToJson()
-        {
-            var result = new Dictionary<string, object>();
-
-            foreach (var rootNode in _rootNodes)
-            {
-                result[rootNode.Text.Split(':')[0].Trim()] = ParseNode(rootNode);
-            }
-
-            return JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
-        }
-
-        private object ParseNode(TreeNode node)
-        {
-            if (node.Children.Count == 0)
-            {
-                // Nodo hoja, obtener el valor
-                var match = Regex.Match(node.Text, @":\s*(.+)$");
-                return match.Success ? ParseValue(match.Groups[1].Value.Trim()) : null;
-            }
-
-            // Nodo con hijos
-            var isArray = IsArrayNode(node.Children);
-            if (isArray)
-            {
-                var array = new List<object>();
-                foreach (var child in node.Children)
-                {
-                    array.Add(ParseNode(child));
-                }
-                return array;
-            }
-            else
-            {
-                var obj = new Dictionary<string, object>();
-                foreach (var child in node.Children)
-                {
-                    var key = child.Text.Split(':')[0].Trim();
-                    obj[key] = ParseNode(child);
-                }
-                return obj;
-            }
-        }
-
-        private bool IsArrayNode(List<TreeNode> children)
-        {
-            // Detectar si todos los hijos tienen formato de índice [0], [1], [2], etc.
-            foreach (var child in children)
-            {
-                if (!Regex.IsMatch(child.Text, @"^\[\d+\]"))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private object ParseValue(string value)
-        {
-            // Intentar convertir el valor a un tipo nativo de C#
-            if (value == "null") return null;
-            if (value == "true") return true;
-            if (value == "false") return false;
-            if (int.TryParse(value, out int intValue)) return intValue;
-            if (double.TryParse(value, out double doubleValue)) return doubleValue;
-
-            // Devolver como string si no se puede convertir
-            return value.Trim('"');
-        }
-
-
-
-
-
-
         private void OnHorizontalScroll(int newValue, int oldValue)
         {
             UpdateNodes(); // fixed bug for [|]
@@ -829,7 +745,12 @@ namespace VampirioCode.UI.Controls
             Invalidate();
         }
 
-        public void PopulateFromJson(string json)
+
+
+        // ---------------------------------------------
+        // --------------- FILL JSON -------------------
+        // ---------------------------------------------
+        public void FillFromJson(string json)
         {
             JsonObject jsonObject = null;
 
@@ -905,6 +826,82 @@ namespace VampirioCode.UI.Controls
                 parentNode.Text += ": null"; // It's a null
             }
         }
+
+
+        // ---------------------------------------------
+        // --------------- GET JSON --------------------
+        // ---------------------------------------------
+        public string ToJson()
+        {
+            var result = new Dictionary<string, object>();
+
+            foreach (var rootNode in _rootNodes)
+            {
+                result[rootNode.Text.Split(':')[0].Trim()] = ParseNode(rootNode);
+            }
+
+            return JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
+        }
+
+        private object ParseNode(TreeNode node)
+        {
+            if (node.Children.Count == 0)
+            {
+                // Leaf node, get the value
+                var match = Regex.Match(node.Text, @":\s*(.+)$");
+                return match.Success ? ParseValue(match.Groups[1].Value.Trim()) : null;
+            }
+
+            // Node with children
+            var isArray = IsArrayNode(node.Children);
+            if (isArray)
+            {
+                var array = new List<object>();
+                foreach (var child in node.Children)
+                {
+                    array.Add(ParseNode(child));
+                }
+                return array;
+            }
+            else
+            {
+                var obj = new Dictionary<string, object>();
+                foreach (var child in node.Children)
+                {
+                    var key = child.Text.Split(':')[0].Trim();
+                    obj[key] = ParseNode(child);
+                }
+                return obj;
+            }
+        }
+
+        private bool IsArrayNode(List<TreeNode> children)
+        {
+            // Detect if all children are in the format of index [0], [1], [2], etc.
+            foreach (var child in children)
+            {
+                if (!Regex.IsMatch(child.Text, @"^\[\d+\]"))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private object ParseValue(string value)
+        {
+            // Attempt to convert the value to a native C# type
+            if (value == "null") return null;
+            if (value == "true") return true;
+            if (value == "false") return false;
+            if (int.TryParse(value, out int intValue)) return intValue;
+            if (double.TryParse(value, out double doubleValue)) return doubleValue;
+
+            // Return as a string if it cannot be converted
+            return value.Trim('"');
+        }
+        // ---------------------------------------------
+
 
         private void RecalcScrollBarValues()
         {
