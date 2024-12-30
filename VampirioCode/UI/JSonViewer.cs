@@ -186,5 +186,10 @@ namespace VampirioCode.UI
 
             input.Text = formattedJson;
         }
+
+        private void OnTreeViewToJsonPressed(object sender, EventArgs e)
+        {
+            input.Text = treeViewAdv.ToJson();
+        }
     }
 }
