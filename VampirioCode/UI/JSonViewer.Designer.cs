@@ -34,6 +34,7 @@
             input = new RichTextBox();
             buttonAdv1 = new Controls.ButtonAdv();
             buttonAdv2 = new Controls.ButtonAdv();
+            buttonAdv3 = new Controls.ButtonAdv();
             SuspendLayout();
             // 
             // treeViewAdv
@@ -90,9 +91,9 @@
             convertButton.resizeImage = new Point(0, 0);
             convertButton.Selected = false;
             convertButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            convertButton.Size = new Size(244, 35);
+            convertButton.Size = new Size(116, 35);
             convertButton.TabIndex = 15;
-            convertButton.Text = "convert";
+            convertButton.Text = "convert ->";
             convertButton.UseVisualStyleBackColor = false;
             convertButton.Click += OnConvertPressed;
             // 
@@ -153,7 +154,7 @@
             buttonAdv2.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv2.FocusEnabled = false;
             buttonAdv2.ForeColor = Color.Silver;
-            buttonAdv2.Location = new Point(134, 361);
+            buttonAdv2.Location = new Point(134, 324);
             buttonAdv2.Name = "buttonAdv2";
             buttonAdv2.PaintImageOnSelected = true;
             buttonAdv2.processEnterKey = true;
@@ -162,15 +163,45 @@
             buttonAdv2.SelectedColor = Color.FromArgb(0, 122, 204);
             buttonAdv2.Size = new Size(122, 35);
             buttonAdv2.TabIndex = 18;
-            buttonAdv2.Text = "<--";
+            buttonAdv2.Text = "<- deconvert";
             buttonAdv2.UseVisualStyleBackColor = false;
             buttonAdv2.Click += OnTreeViewToJsonPressed;
+            // 
+            // buttonAdv3
+            // 
+            buttonAdv3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv3.BackColor = Color.FromArgb(20, 20, 20);
+            buttonAdv3.BorderColor = Color.FromArgb(70, 70, 70);
+            buttonAdv3.BorderSize = 1;
+            buttonAdv3.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv3.expandImage = false;
+            buttonAdv3.extraText = "";
+            buttonAdv3.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv3.extraTextColor = Color.Black;
+            buttonAdv3.extraTextFont = null;
+            buttonAdv3.extraTextOffset = new Point(0, 0);
+            buttonAdv3.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv3.FocusEnabled = false;
+            buttonAdv3.ForeColor = Color.Silver;
+            buttonAdv3.Location = new Point(134, 361);
+            buttonAdv3.Name = "buttonAdv3";
+            buttonAdv3.PaintImageOnSelected = true;
+            buttonAdv3.processEnterKey = true;
+            buttonAdv3.resizeImage = new Point(0, 0);
+            buttonAdv3.Selected = false;
+            buttonAdv3.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv3.Size = new Size(122, 35);
+            buttonAdv3.TabIndex = 19;
+            buttonAdv3.Text = "expand all";
+            buttonAdv3.UseVisualStyleBackColor = false;
+            buttonAdv3.Click += OnExpandAllPressed;
             // 
             // JSonViewer
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(840, 528);
+            Controls.Add(buttonAdv3);
             Controls.Add(buttonAdv2);
             Controls.Add(buttonAdv1);
             Controls.Add(input);
@@ -191,5 +222,6 @@
         private RichTextBox input;
         private Controls.ButtonAdv buttonAdv1;
         private Controls.ButtonAdv buttonAdv2;
+        private Controls.ButtonAdv buttonAdv3;
     }
 }

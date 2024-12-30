@@ -27,13 +27,13 @@ namespace VampirioCode.UI
         {
             base.OnLoad(e);
 
-            input.Text = @"{
+            /*input.Text = @"{
 ""employees"":[
   {""firstName"":""John"", ""lastName"":""Doe""},
   {""firstName"":""Anna"", ""lastName"":""Smith""},
   {""firstName"":""Peter"", ""lastName"":""Jones""}
 ]
-}";
+}";*/
         }
 
         public static JSonViewer ShowJson(string json)
@@ -170,6 +170,9 @@ namespace VampirioCode.UI
 
         private void OnConvertPressed(object sender, EventArgs e)
         {
+            if (input.Text.Trim() == "")
+                return;
+            
             treeViewAdv.ClearNodes();
             _showJson(input.Text);
         }
@@ -190,6 +193,11 @@ namespace VampirioCode.UI
         private void OnTreeViewToJsonPressed(object sender, EventArgs e)
         {
             input.Text = treeViewAdv.ToJson();
+        }
+
+        private void OnExpandAllPressed(object sender, EventArgs e)
+        {
+            treeViewAdv.ExpandAll();
         }
     }
 }
