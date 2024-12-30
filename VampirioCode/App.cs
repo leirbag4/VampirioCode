@@ -98,7 +98,7 @@ namespace VampirioCode
             //BuilderSetting.CustomMsvcCppBuilderSetting bsetting = new BuilderSetting.CustomMsvcCppBuilderSetting();
             //bsetting.ShowDialog();
             //new ScrollTester().ShowDialog();
-            OnJSonViewerPressed(null, EventArgs.Empty);
+            //OnJSonViewerPressed(null, EventArgs.Empty);
             //OnTreeViewTester(null, EventArgs.Empty);
 
             base.OnLoad(e);

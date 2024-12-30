@@ -27,6 +27,11 @@ namespace VampirioCode.UI
         {
             base.OnLoad(e);
 
+            this.AllowDrop = true;
+
+            this.DragEnter += OnDragEnter;
+            this.DragDrop += OnDragAndDrop;
+
             /*input.Text = @"{
 ""employees"":[
   {""firstName"":""John"", ""lastName"":""Doe""},
@@ -34,6 +39,26 @@ namespace VampirioCode.UI
   {""firstName"":""Peter"", ""lastName"":""Jones""}
 ]
 }";*/
+        }
+
+        private void OnDragEnter(object? sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+        }
+
+        private void OnDragAndDrop(object? sender, DragEventArgs e)
+        {
+            XConsole.Println("drop");
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 0)
+            {
+                string json = File.ReadAllText(files[0]);
+                input.Text = json;
+                OnBeautifyPressed(null, EventArgs.Empty);
+                treeViewAdv.FillFromJson(json);
+            }
         }
 
         public static JSonViewer ShowJson(string json)

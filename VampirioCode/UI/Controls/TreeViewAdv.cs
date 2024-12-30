@@ -754,6 +754,8 @@ namespace VampirioCode.UI.Controls
         {
             JsonObject jsonObject = null;
 
+            ClearNodes();
+
             try
             {
                 jsonObject = JsonNode.Parse(json) as JsonObject;
