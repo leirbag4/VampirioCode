@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -171,6 +172,19 @@ namespace VampirioCode.UI
         {
             treeViewAdv.ClearNodes();
             _showJson(input.Text);
+        }
+
+        private void OnBeautifyPressed(object sender, EventArgs e)
+        {
+            string jsonInput = input.Text;
+
+            var jsonElement = JsonSerializer.Deserialize<JsonElement>(jsonInput);
+            string formattedJson = JsonSerializer.Serialize(jsonElement, new JsonSerializerOptions
+            {
+                WriteIndented = true // Opción para indentar
+            });
+
+            input.Text = formattedJson;
         }
     }
 }

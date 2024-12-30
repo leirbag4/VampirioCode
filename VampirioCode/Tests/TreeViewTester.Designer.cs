@@ -53,6 +53,14 @@
             buttonAdv7 = new UI.Controls.ButtonAdv();
             buttonAdv8 = new UI.Controls.ButtonAdv();
             buttonAdv9 = new UI.Controls.ButtonAdv();
+            pathInput = new UI.Controls.TextBoxAdv();
+            buttonAdv10 = new UI.Controls.ButtonAdv();
+            labelAdv4 = new UI.Controls.LabelAdv();
+            buttonAdv11 = new UI.Controls.ButtonAdv();
+            labelAdv5 = new UI.Controls.LabelAdv();
+            storedInput = new UI.Controls.TextBoxAdv();
+            buttonAdv12 = new UI.Controls.ButtonAdv();
+            buttonAdv13 = new UI.Controls.ButtonAdv();
             SuspendLayout();
             // 
             // treeView
@@ -63,7 +71,7 @@
             treeView.ForeColor = Color.White;
             treeView.Location = new Point(6, 12);
             treeView.Name = "treeView";
-            treeView.Size = new Size(510, 356);
+            treeView.Size = new Size(510, 337);
             treeView.TabIndex = 0;
             // 
             // treeViewAdv
@@ -83,7 +91,7 @@
             treeViewAdv.ScrollY = 0;
             treeViewAdv.SelectedBackColor = Color.FromArgb(68, 68, 68);
             treeViewAdv.SelectedBorderColor = Color.FromArgb(119, 119, 119);
-            treeViewAdv.Size = new Size(459, 356);
+            treeViewAdv.Size = new Size(459, 337);
             treeViewAdv.TabIndex = 1;
             treeViewAdv.Text = "treeViewAdv1";
             treeViewAdv.TextSpace = 5;
@@ -92,9 +100,9 @@
             // 
             consoleOutp.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             consoleOutp.BackColor = Color.FromArgb(40, 40, 40);
-            consoleOutp.Location = new Point(6, 431);
+            consoleOutp.Location = new Point(6, 410);
             consoleOutp.Name = "consoleOutp";
-            consoleOutp.Size = new Size(510, 153);
+            consoleOutp.Size = new Size(510, 190);
             consoleOutp.TabIndex = 2;
             // 
             // labelAdv1
@@ -105,7 +113,7 @@
             labelAdv1.BorderSize = 1;
             labelAdv1.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv1.ForeColor = Color.Silver;
-            labelAdv1.Location = new Point(534, 469);
+            labelAdv1.Location = new Point(524, 485);
             labelAdv1.ModifyClampMax = 0F;
             labelAdv1.ModifyClampMin = 0F;
             labelAdv1.ModifyControlName = "";
@@ -122,7 +130,7 @@
             nodeHeightInput.BackColor = Color.FromArgb(80, 80, 80);
             nodeHeightInput.BorderStyle = BorderStyle.FixedSingle;
             nodeHeightInput.ForeColor = Color.Silver;
-            nodeHeightInput.Location = new Point(534, 492);
+            nodeHeightInput.Location = new Point(524, 508);
             nodeHeightInput.Name = "nodeHeightInput";
             nodeHeightInput.NumberMask = "";
             nodeHeightInput.Size = new Size(95, 27);
@@ -136,7 +144,7 @@
             NodeIndentInput.BackColor = Color.FromArgb(80, 80, 80);
             NodeIndentInput.BorderStyle = BorderStyle.FixedSingle;
             NodeIndentInput.ForeColor = Color.Silver;
-            NodeIndentInput.Location = new Point(666, 492);
+            NodeIndentInput.Location = new Point(625, 508);
             NodeIndentInput.Name = "NodeIndentInput";
             NodeIndentInput.NumberMask = "";
             NodeIndentInput.Size = new Size(95, 27);
@@ -151,7 +159,7 @@
             labelAdv2.BorderSize = 1;
             labelAdv2.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv2.ForeColor = Color.Silver;
-            labelAdv2.Location = new Point(666, 469);
+            labelAdv2.Location = new Point(625, 485);
             labelAdv2.ModifyClampMax = 0F;
             labelAdv2.ModifyClampMin = 0F;
             labelAdv2.ModifyControlName = "";
@@ -168,7 +176,7 @@
             fontSizeInput.BackColor = Color.FromArgb(80, 80, 80);
             fontSizeInput.BorderStyle = BorderStyle.FixedSingle;
             fontSizeInput.ForeColor = Color.Silver;
-            fontSizeInput.Location = new Point(534, 545);
+            fontSizeInput.Location = new Point(524, 561);
             fontSizeInput.Name = "fontSizeInput";
             fontSizeInput.NumberMask = "";
             fontSizeInput.Size = new Size(95, 27);
@@ -183,7 +191,7 @@
             labelAdv3.BorderSize = 1;
             labelAdv3.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv3.ForeColor = Color.Silver;
-            labelAdv3.Location = new Point(534, 522);
+            labelAdv3.Location = new Point(524, 538);
             labelAdv3.ModifyClampMax = 0F;
             labelAdv3.ModifyClampMin = 0F;
             labelAdv3.ModifyControlName = "";
@@ -199,7 +207,7 @@
             icon1EnableCKBox.AutoSize = true;
             icon1EnableCKBox.FlatStyle = FlatStyle.Flat;
             icon1EnableCKBox.ForeColor = Color.Silver;
-            icon1EnableCKBox.Location = new Point(666, 545);
+            icon1EnableCKBox.Location = new Point(628, 561);
             icon1EnableCKBox.Name = "icon1EnableCKBox";
             icon1EnableCKBox.Size = new Size(112, 24);
             icon1EnableCKBox.TabIndex = 10;
@@ -213,7 +221,7 @@
             icon2EnableCKBox.AutoSize = true;
             icon2EnableCKBox.FlatStyle = FlatStyle.Flat;
             icon2EnableCKBox.ForeColor = Color.Silver;
-            icon2EnableCKBox.Location = new Point(797, 545);
+            icon2EnableCKBox.Location = new Point(759, 561);
             icon2EnableCKBox.Name = "icon2EnableCKBox";
             icon2EnableCKBox.Size = new Size(112, 24);
             icon2EnableCKBox.TabIndex = 11;
@@ -237,7 +245,7 @@
             buttonAdv1.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv1.FocusEnabled = false;
             buttonAdv1.ForeColor = Color.White;
-            buttonAdv1.Location = new Point(522, 374);
+            buttonAdv1.Location = new Point(522, 355);
             buttonAdv1.Name = "buttonAdv1";
             buttonAdv1.PaintImageOnSelected = true;
             buttonAdv1.processEnterKey = true;
@@ -266,7 +274,7 @@
             buttonAdv2.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv2.FocusEnabled = false;
             buttonAdv2.ForeColor = Color.Silver;
-            buttonAdv2.Location = new Point(915, 545);
+            buttonAdv2.Location = new Point(915, 561);
             buttonAdv2.Name = "buttonAdv2";
             buttonAdv2.PaintImageOnSelected = true;
             buttonAdv2.processEnterKey = true;
@@ -295,14 +303,14 @@
             buttonAdv3.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv3.FocusEnabled = false;
             buttonAdv3.ForeColor = Color.Silver;
-            buttonAdv3.Location = new Point(723, 374);
+            buttonAdv3.Location = new Point(723, 355);
             buttonAdv3.Name = "buttonAdv3";
             buttonAdv3.PaintImageOnSelected = true;
             buttonAdv3.processEnterKey = true;
             buttonAdv3.resizeImage = new Point(0, 0);
             buttonAdv3.Selected = false;
             buttonAdv3.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv3.Size = new Size(85, 29);
+            buttonAdv3.Size = new Size(119, 29);
             buttonAdv3.TabIndex = 14;
             buttonAdv3.Text = "expand";
             buttonAdv3.UseVisualStyleBackColor = false;
@@ -324,14 +332,14 @@
             buttonAdv4.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv4.FocusEnabled = false;
             buttonAdv4.ForeColor = Color.Silver;
-            buttonAdv4.Location = new Point(824, 374);
+            buttonAdv4.Location = new Point(848, 355);
             buttonAdv4.Name = "buttonAdv4";
             buttonAdv4.PaintImageOnSelected = true;
             buttonAdv4.processEnterKey = true;
             buttonAdv4.resizeImage = new Point(0, 0);
             buttonAdv4.Selected = false;
             buttonAdv4.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv4.Size = new Size(85, 29);
+            buttonAdv4.Size = new Size(119, 29);
             buttonAdv4.TabIndex = 15;
             buttonAdv4.Text = "collapse";
             buttonAdv4.UseVisualStyleBackColor = false;
@@ -353,7 +361,7 @@
             buttonAdv5.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv5.FocusEnabled = false;
             buttonAdv5.ForeColor = Color.White;
-            buttonAdv5.Location = new Point(623, 374);
+            buttonAdv5.Location = new Point(623, 355);
             buttonAdv5.Name = "buttonAdv5";
             buttonAdv5.PaintImageOnSelected = true;
             buttonAdv5.processEnterKey = true;
@@ -382,7 +390,7 @@
             delete_classic.FocusColor = Color.FromArgb(24, 81, 115);
             delete_classic.FocusEnabled = false;
             delete_classic.ForeColor = Color.White;
-            delete_classic.Location = new Point(106, 374);
+            delete_classic.Location = new Point(106, 355);
             delete_classic.Name = "delete_classic";
             delete_classic.PaintImageOnSelected = true;
             delete_classic.processEnterKey = true;
@@ -411,7 +419,7 @@
             collapse_classic.FocusColor = Color.FromArgb(24, 81, 115);
             collapse_classic.FocusEnabled = false;
             collapse_classic.ForeColor = Color.Silver;
-            collapse_classic.Location = new Point(301, 374);
+            collapse_classic.Location = new Point(301, 355);
             collapse_classic.Name = "collapse_classic";
             collapse_classic.PaintImageOnSelected = true;
             collapse_classic.processEnterKey = true;
@@ -440,7 +448,7 @@
             expand_classic.FocusColor = Color.FromArgb(24, 81, 115);
             expand_classic.FocusEnabled = false;
             expand_classic.ForeColor = Color.Silver;
-            expand_classic.Location = new Point(207, 374);
+            expand_classic.Location = new Point(207, 355);
             expand_classic.Name = "expand_classic";
             expand_classic.PaintImageOnSelected = true;
             expand_classic.processEnterKey = true;
@@ -469,7 +477,7 @@
             insert_classic.FocusColor = Color.FromArgb(24, 81, 115);
             insert_classic.FocusEnabled = false;
             insert_classic.ForeColor = Color.White;
-            insert_classic.Location = new Point(5, 374);
+            insert_classic.Location = new Point(5, 355);
             insert_classic.Name = "insert_classic";
             insert_classic.PaintImageOnSelected = true;
             insert_classic.processEnterKey = true;
@@ -498,7 +506,7 @@
             expand_tree_classic.FocusColor = Color.FromArgb(24, 81, 115);
             expand_tree_classic.FocusEnabled = false;
             expand_tree_classic.ForeColor = Color.Silver;
-            expand_tree_classic.Location = new Point(397, 374);
+            expand_tree_classic.Location = new Point(397, 355);
             expand_tree_classic.Name = "expand_tree_classic";
             expand_tree_classic.PaintImageOnSelected = true;
             expand_tree_classic.processEnterKey = true;
@@ -527,7 +535,7 @@
             buttonAdv6.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv6.FocusEnabled = false;
             buttonAdv6.ForeColor = Color.Silver;
-            buttonAdv6.Location = new Point(723, 409);
+            buttonAdv6.Location = new Point(723, 390);
             buttonAdv6.Name = "buttonAdv6";
             buttonAdv6.PaintImageOnSelected = true;
             buttonAdv6.processEnterKey = true;
@@ -556,7 +564,7 @@
             buttonAdv7.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv7.FocusEnabled = false;
             buttonAdv7.ForeColor = Color.Silver;
-            buttonAdv7.Location = new Point(848, 409);
+            buttonAdv7.Location = new Point(848, 390);
             buttonAdv7.Name = "buttonAdv7";
             buttonAdv7.PaintImageOnSelected = true;
             buttonAdv7.processEnterKey = true;
@@ -585,7 +593,7 @@
             buttonAdv8.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv8.FocusEnabled = false;
             buttonAdv8.ForeColor = Color.Silver;
-            buttonAdv8.Location = new Point(780, 448);
+            buttonAdv8.Location = new Point(723, 425);
             buttonAdv8.Name = "buttonAdv8";
             buttonAdv8.PaintImageOnSelected = true;
             buttonAdv8.processEnterKey = true;
@@ -614,7 +622,7 @@
             buttonAdv9.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv9.FocusEnabled = false;
             buttonAdv9.ForeColor = Color.Silver;
-            buttonAdv9.Location = new Point(780, 492);
+            buttonAdv9.Location = new Point(848, 425);
             buttonAdv9.Name = "buttonAdv9";
             buttonAdv9.PaintImageOnSelected = true;
             buttonAdv9.processEnterKey = true;
@@ -627,12 +635,207 @@
             buttonAdv9.UseVisualStyleBackColor = false;
             buttonAdv9.Click += OnCollapseAllNodes;
             // 
+            // pathInput
+            // 
+            pathInput.AllowBackspace = true;
+            pathInput.AllowTextEdition = true;
+            pathInput.AutoEdition = false;
+            pathInput.AutoSelect = false;
+            pathInput.BackColor = Color.FromArgb(80, 80, 80);
+            pathInput.BorderStyle = BorderStyle.FixedSingle;
+            pathInput.ExcludeCharacters = null;
+            pathInput.ForeColor = Color.Silver;
+            pathInput.IncludeOnlyCharacters = null;
+            pathInput.LeftLeadingCharacter = '\0';
+            pathInput.Location = new Point(524, 439);
+            pathInput.Name = "pathInput";
+            pathInput.Size = new Size(118, 27);
+            pathInput.TabIndex = 26;
+            pathInput.Text = "/root/test B0/test B1/";
+            // 
+            // buttonAdv10
+            // 
+            buttonAdv10.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv10.BackColor = Color.FromArgb(20, 20, 20);
+            buttonAdv10.BorderColor = Color.FromArgb(70, 70, 70);
+            buttonAdv10.BorderSize = 1;
+            buttonAdv10.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv10.expandImage = false;
+            buttonAdv10.extraText = "";
+            buttonAdv10.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv10.extraTextColor = Color.Black;
+            buttonAdv10.extraTextFont = null;
+            buttonAdv10.extraTextOffset = new Point(0, 0);
+            buttonAdv10.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv10.FocusEnabled = false;
+            buttonAdv10.ForeColor = Color.Silver;
+            buttonAdv10.Location = new Point(685, 437);
+            buttonAdv10.Name = "buttonAdv10";
+            buttonAdv10.PaintImageOnSelected = true;
+            buttonAdv10.processEnterKey = true;
+            buttonAdv10.resizeImage = new Point(0, 0);
+            buttonAdv10.Selected = false;
+            buttonAdv10.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv10.Size = new Size(32, 29);
+            buttonAdv10.TabIndex = 27;
+            buttonAdv10.Text = "+";
+            buttonAdv10.UseVisualStyleBackColor = false;
+            buttonAdv10.Click += OnExpandPathPressed;
+            // 
+            // labelAdv4
+            // 
+            labelAdv4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            labelAdv4.AutoSize = true;
+            labelAdv4.BorderColor = Color.DarkGray;
+            labelAdv4.BorderSize = 1;
+            labelAdv4.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv4.ForeColor = Color.Silver;
+            labelAdv4.Location = new Point(524, 416);
+            labelAdv4.ModifyClampMax = 0F;
+            labelAdv4.ModifyClampMin = 0F;
+            labelAdv4.ModifyControlName = "";
+            labelAdv4.ModifyScale = 1F;
+            labelAdv4.Name = "labelAdv4";
+            labelAdv4.Size = new Size(159, 20);
+            labelAdv4.TabIndex = 28;
+            labelAdv4.Text = "Path collapse / expand";
+            // 
+            // buttonAdv11
+            // 
+            buttonAdv11.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv11.BackColor = Color.FromArgb(20, 20, 20);
+            buttonAdv11.BorderColor = Color.FromArgb(70, 70, 70);
+            buttonAdv11.BorderSize = 1;
+            buttonAdv11.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv11.expandImage = false;
+            buttonAdv11.extraText = "";
+            buttonAdv11.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv11.extraTextColor = Color.Black;
+            buttonAdv11.extraTextFont = null;
+            buttonAdv11.extraTextOffset = new Point(0, 0);
+            buttonAdv11.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv11.FocusEnabled = false;
+            buttonAdv11.ForeColor = Color.Silver;
+            buttonAdv11.Location = new Point(651, 437);
+            buttonAdv11.Name = "buttonAdv11";
+            buttonAdv11.PaintImageOnSelected = true;
+            buttonAdv11.processEnterKey = true;
+            buttonAdv11.resizeImage = new Point(0, 0);
+            buttonAdv11.Selected = false;
+            buttonAdv11.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv11.Size = new Size(32, 29);
+            buttonAdv11.TabIndex = 29;
+            buttonAdv11.Text = "-";
+            buttonAdv11.UseVisualStyleBackColor = false;
+            buttonAdv11.Click += OnCollapsePathPressed;
+            // 
+            // labelAdv5
+            // 
+            labelAdv5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            labelAdv5.AutoSize = true;
+            labelAdv5.BorderColor = Color.DarkGray;
+            labelAdv5.BorderSize = 1;
+            labelAdv5.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv5.ForeColor = Color.Silver;
+            labelAdv5.Location = new Point(726, 485);
+            labelAdv5.ModifyClampMax = 0F;
+            labelAdv5.ModifyClampMin = 0F;
+            labelAdv5.ModifyControlName = "";
+            labelAdv5.ModifyScale = 1F;
+            labelAdv5.Name = "labelAdv5";
+            labelAdv5.Size = new Size(94, 20);
+            labelAdv5.TabIndex = 31;
+            labelAdv5.Text = "Stored Node";
+            // 
+            // storedInput
+            // 
+            storedInput.AllowBackspace = true;
+            storedInput.AllowTextEdition = true;
+            storedInput.AutoEdition = false;
+            storedInput.AutoSelect = false;
+            storedInput.BackColor = Color.FromArgb(80, 80, 80);
+            storedInput.BorderStyle = BorderStyle.FixedSingle;
+            storedInput.ExcludeCharacters = null;
+            storedInput.ForeColor = Color.Silver;
+            storedInput.IncludeOnlyCharacters = null;
+            storedInput.LeftLeadingCharacter = '\0';
+            storedInput.Location = new Point(726, 508);
+            storedInput.Name = "storedInput";
+            storedInput.Size = new Size(118, 27);
+            storedInput.TabIndex = 30;
+            // 
+            // buttonAdv12
+            // 
+            buttonAdv12.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv12.BackColor = Color.FromArgb(35, 35, 35);
+            buttonAdv12.BorderColor = Color.FromArgb(70, 70, 70);
+            buttonAdv12.BorderSize = 1;
+            buttonAdv12.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv12.expandImage = false;
+            buttonAdv12.extraText = "";
+            buttonAdv12.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv12.extraTextColor = Color.Black;
+            buttonAdv12.extraTextFont = null;
+            buttonAdv12.extraTextOffset = new Point(0, 0);
+            buttonAdv12.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv12.FocusEnabled = false;
+            buttonAdv12.ForeColor = Color.Silver;
+            buttonAdv12.Location = new Point(850, 485);
+            buttonAdv12.Name = "buttonAdv12";
+            buttonAdv12.PaintImageOnSelected = true;
+            buttonAdv12.processEnterKey = true;
+            buttonAdv12.resizeImage = new Point(0, 0);
+            buttonAdv12.Selected = false;
+            buttonAdv12.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv12.Size = new Size(119, 29);
+            buttonAdv12.TabIndex = 32;
+            buttonAdv12.Text = "store";
+            buttonAdv12.UseVisualStyleBackColor = false;
+            buttonAdv12.Click += OnStoreNodePressed;
+            // 
+            // buttonAdv13
+            // 
+            buttonAdv13.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv13.BackColor = Color.FromArgb(35, 35, 35);
+            buttonAdv13.BorderColor = Color.FromArgb(70, 70, 70);
+            buttonAdv13.BorderSize = 1;
+            buttonAdv13.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv13.expandImage = false;
+            buttonAdv13.extraText = "";
+            buttonAdv13.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv13.extraTextColor = Color.Black;
+            buttonAdv13.extraTextFont = null;
+            buttonAdv13.extraTextOffset = new Point(0, 0);
+            buttonAdv13.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv13.FocusEnabled = false;
+            buttonAdv13.ForeColor = Color.Silver;
+            buttonAdv13.Location = new Point(850, 520);
+            buttonAdv13.Name = "buttonAdv13";
+            buttonAdv13.PaintImageOnSelected = true;
+            buttonAdv13.processEnterKey = true;
+            buttonAdv13.resizeImage = new Point(0, 0);
+            buttonAdv13.Selected = false;
+            buttonAdv13.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv13.Size = new Size(119, 29);
+            buttonAdv13.TabIndex = 33;
+            buttonAdv13.Text = "restore";
+            buttonAdv13.UseVisualStyleBackColor = false;
+            buttonAdv13.Click += OnRestoreNodePressed;
+            // 
             // TreeViewTester
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
-            ClientSize = new Size(995, 586);
+            ClientSize = new Size(995, 602);
+            Controls.Add(buttonAdv13);
+            Controls.Add(buttonAdv12);
+            Controls.Add(labelAdv5);
+            Controls.Add(storedInput);
+            Controls.Add(buttonAdv11);
+            Controls.Add(labelAdv4);
+            Controls.Add(buttonAdv10);
+            Controls.Add(pathInput);
             Controls.Add(buttonAdv9);
             Controls.Add(buttonAdv8);
             Controls.Add(buttonAdv7);
@@ -691,5 +894,13 @@
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv7;
         private UI.Controls.ButtonAdv buttonAdv8;
         private UI.Controls.ButtonAdv buttonAdv9;
+        private UI.Controls.TextBoxAdv pathInput;
+        private UI.Controls.ButtonAdv buttonAdv10;
+        private UI.Controls.LabelAdv labelAdv4;
+        private UI.Controls.ButtonAdv buttonAdv11;
+        private UI.Controls.LabelAdv labelAdv5;
+        private UI.Controls.TextBoxAdv storedInput;
+        private UI.Controls.ButtonAdv buttonAdv12;
+        private UI.Controls.ButtonAdv buttonAdv13;
     }
 }

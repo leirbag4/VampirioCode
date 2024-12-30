@@ -18,6 +18,9 @@ namespace VampirioCode.Tests
 {
     public partial class TreeViewTester : Form
     {
+        private UI.Controls.TreeViewAdvance.TreeNode storedNode = null;
+
+
         public TreeViewTester()
         {
             InitializeComponent();
@@ -367,6 +370,27 @@ namespace VampirioCode.Tests
             treeViewAdv.CollapseAll();
         }
 
+        private void OnExpandPathPressed(object sender, EventArgs e)
+        {
+            treeViewAdv.ExpandPath(pathInput.Text, true);
+        }
+
+        private void OnCollapsePathPressed(object sender, EventArgs e)
+        {
+            treeViewAdv.CollapsePath(pathInput.Text);
+        }
+
+        private void OnStoreNodePressed(object sender, EventArgs e)
+        {
+            storedNode = treeViewAdv.CurrSelectedNode;
+            storedInput.Text = storedNode.Text;
+        }
+
+        private void OnRestoreNodePressed(object sender, EventArgs e)
+        {
+            treeViewAdv.SelectNode(storedNode);
+        }
+
         private void OnClassicPressed(object sender, EventArgs e)
         {
             string name = (sender as ButtonAdv).Name;
@@ -412,6 +436,6 @@ namespace VampirioCode.Tests
 
         }
 
-        
+
     }
 }

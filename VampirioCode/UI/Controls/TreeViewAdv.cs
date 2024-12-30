@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -647,6 +648,101 @@ namespace VampirioCode.UI.Controls
             }
         }
 
+        private void TraverseExpandCollapse(TreeNode node, bool expanded, bool selected, ref string[] arr, ref int index)
+        {
+            node.IsExpanded = expanded;
+            XConsole.Println("-> " + node.Text + " i: " + index);
+
+            if ((index == (arr.Length - 1)) && selected)
+                node.Selected = selected;
+
+            index++;
+
+            if (index >= arr.Length)
+                return;
+
+            foreach (var child in node.Children)
+            {
+                if (child.Text == arr[index])
+                {
+                    TraverseExpandCollapse(child, expanded, selected, ref arr, ref index);
+                    return;
+                }
+            }
+        }
+
+        public void ExpandPath(string path, bool selected = false)
+        {
+            path = path.TrimStart('/');
+            path = path.TrimEnd('/');
+
+            int index = 0;
+            string[] arr = path.Split('/');
+
+            if (selected)
+                SelectAllNodes(false);
+
+            foreach (var root in _rootNodes)
+            {
+                if (index >= arr.Length)
+                    return;
+
+                if (root.Text == arr[index])
+                {
+                    TraverseExpandCollapse(root, true, selected, ref arr, ref index);
+                    UpdateNodes();
+                    RecalcScrollBarValues();
+                    Invalidate();
+                    return;
+                }
+            }
+        }
+
+        public void CollapsePath(string path) 
+        {
+            path = path.TrimStart('/');
+            path = path.TrimEnd('/');
+
+            int index = 0;
+            string[] arr = path.Split('/');
+
+            foreach (var root in _rootNodes)
+            {
+                if (index >= arr.Length)
+                    return;
+
+                if (root.Text == arr[index])
+                {
+                    TraverseExpandCollapse(root, false, false, ref arr, ref index);
+                    UpdateNodes();
+                    RecalcScrollBarValues();
+                    Invalidate();
+                    return;
+                }
+            }
+        }
+
+        public void SelectPath(string path)
+        {
+            ExpandPath(path, true);
+        }
+
+        public void SelectNode(TreeNode node)
+        {
+            SelectAllNodes(false);
+            node.Selected = true;
+
+            while (node.Parent != null)
+            {
+                node = node.Parent;
+                node.IsExpanded = true;
+            }
+
+            UpdateNodes();
+            RecalcScrollBarValues();
+            Invalidate();
+        }
+
         public void PopulateFromJson(string json)
         {
             JsonObject jsonObject = null;
@@ -944,7 +1040,16 @@ namespace VampirioCode.UI.Controls
         public void RefreshAll()
         {
             RecalcNodeTextsSize();
+            UpdateNodes();
             Invalidate();
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+
+            if((horizontalScrollBar != null) && (verticalScrollBar != null))
+            RecalcScrollBarValues();
         }
 
         private void TraverseNodesPaint(Graphics g, TreeNode node)

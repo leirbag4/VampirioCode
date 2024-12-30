@@ -32,10 +32,12 @@
             consoleOutp = new XConsole();
             convertButton = new Controls.ButtonAdv();
             input = new RichTextBox();
+            buttonAdv1 = new Controls.ButtonAdv();
             SuspendLayout();
             // 
             // treeViewAdv
             // 
+            treeViewAdv.AllowTextEdition = true;
             treeViewAdv.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             treeViewAdv.BackColor = Color.FromArgb(31, 31, 13);
             treeViewAdv.LinesColor = Color.FromArgb(100, 100, 100);
@@ -50,7 +52,7 @@
             treeViewAdv.ScrollY = 0;
             treeViewAdv.SelectedBackColor = Color.FromArgb(68, 68, 68);
             treeViewAdv.SelectedBorderColor = Color.FromArgb(119, 119, 119);
-            treeViewAdv.Size = new Size(570, 370);
+            treeViewAdv.Size = new Size(570, 389);
             treeViewAdv.TabIndex = 2;
             treeViewAdv.Text = "treeViewAdv1";
             treeViewAdv.TextSpace = 5;
@@ -59,13 +61,14 @@
             // 
             consoleOutp.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             consoleOutp.BackColor = Color.FromArgb(40, 40, 40);
-            consoleOutp.Location = new Point(12, 383);
+            consoleOutp.Location = new Point(12, 402);
             consoleOutp.Name = "consoleOutp";
             consoleOutp.Size = new Size(816, 114);
             consoleOutp.TabIndex = 3;
             // 
             // convertButton
             // 
+            convertButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             convertButton.BackColor = Color.FromArgb(20, 20, 20);
             convertButton.BorderColor = Color.FromArgb(70, 70, 70);
             convertButton.BorderSize = 1;
@@ -79,7 +82,7 @@
             convertButton.FocusColor = Color.FromArgb(24, 81, 115);
             convertButton.FocusEnabled = false;
             convertButton.ForeColor = Color.Silver;
-            convertButton.Location = new Point(12, 342);
+            convertButton.Location = new Point(12, 324);
             convertButton.Name = "convertButton";
             convertButton.PaintImageOnSelected = true;
             convertButton.processEnterKey = true;
@@ -94,24 +97,56 @@
             // 
             // input
             // 
+            input.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             input.BackColor = Color.FromArgb(30, 30, 30);
             input.BorderStyle = BorderStyle.None;
             input.ForeColor = Color.Silver;
             input.Location = new Point(12, 7);
             input.Name = "input";
-            input.Size = new Size(247, 329);
+            input.Size = new Size(247, 313);
             input.TabIndex = 16;
             input.Text = "";
+            // 
+            // buttonAdv1
+            // 
+            buttonAdv1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv1.BackColor = Color.FromArgb(20, 20, 20);
+            buttonAdv1.BorderColor = Color.FromArgb(70, 70, 70);
+            buttonAdv1.BorderSize = 1;
+            buttonAdv1.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv1.expandImage = false;
+            buttonAdv1.extraText = "";
+            buttonAdv1.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv1.extraTextColor = Color.Black;
+            buttonAdv1.extraTextFont = null;
+            buttonAdv1.extraTextOffset = new Point(0, 0);
+            buttonAdv1.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv1.FocusEnabled = false;
+            buttonAdv1.ForeColor = Color.Silver;
+            buttonAdv1.Location = new Point(12, 361);
+            buttonAdv1.Name = "buttonAdv1";
+            buttonAdv1.PaintImageOnSelected = true;
+            buttonAdv1.processEnterKey = true;
+            buttonAdv1.resizeImage = new Point(0, 0);
+            buttonAdv1.Selected = false;
+            buttonAdv1.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv1.Size = new Size(244, 35);
+            buttonAdv1.TabIndex = 17;
+            buttonAdv1.Text = "beautify";
+            buttonAdv1.UseVisualStyleBackColor = false;
+            buttonAdv1.Click += OnBeautifyPressed;
             // 
             // JSonViewer
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(840, 509);
+            ClientSize = new Size(840, 528);
+            Controls.Add(buttonAdv1);
             Controls.Add(input);
             Controls.Add(convertButton);
             Controls.Add(consoleOutp);
             Controls.Add(treeViewAdv);
+            FormBorderStyle = FormBorderStyle.SizableToolWindow;
             Name = "JSonViewer";
             Text = "JSonViewer";
             ResumeLayout(false);
@@ -123,5 +158,6 @@
         private XConsole consoleOutp;
         private Controls.ButtonAdv convertButton;
         private RichTextBox input;
+        private Controls.ButtonAdv buttonAdv1;
     }
 }
