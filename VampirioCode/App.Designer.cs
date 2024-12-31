@@ -77,10 +77,12 @@
             openAppFolderToolStripMenuItem = new ToolStripMenuItem();
             jsonViewerToolStripMenuItem = new ToolStripMenuItem();
             jsonTesterToolStripMenuItem = new ToolStripMenuItem();
+            wORKSPACEDebugToolStripMenuItem = new ToolStripMenuItem();
+            cONFIGFILEDebugToolStripMenuItem = new ToolStripMenuItem();
             resetConfigFileToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
-            cONFIGFILEDebugToolStripMenuItem = new ToolStripMenuItem();
-            wORKSPACEDebugToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripSeparator();
+            renameToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -278,7 +280,7 @@
             // 
             // editToolStripMenuItem
             // 
-            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, redoToolStripMenuItem, cutToolStripMenuItem, copyToolStripMenuItem, pasteToolStripMenuItem });
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, redoToolStripMenuItem, cutToolStripMenuItem, copyToolStripMenuItem, pasteToolStripMenuItem, toolStripMenuItem1, renameToolStripMenuItem });
             editToolStripMenuItem.Name = "editToolStripMenuItem";
             editToolStripMenuItem.Size = new Size(49, 24);
             editToolStripMenuItem.Text = "Edit";
@@ -287,7 +289,7 @@
             // 
             undoToolStripMenuItem.ForeColor = Color.Silver;
             undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            undoToolStripMenuItem.Size = new Size(128, 26);
+            undoToolStripMenuItem.Size = new Size(224, 26);
             undoToolStripMenuItem.Tag = "undo";
             undoToolStripMenuItem.Text = "Undo";
             undoToolStripMenuItem.Click += OnEditPressed;
@@ -296,7 +298,7 @@
             // 
             redoToolStripMenuItem.ForeColor = Color.Silver;
             redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            redoToolStripMenuItem.Size = new Size(128, 26);
+            redoToolStripMenuItem.Size = new Size(224, 26);
             redoToolStripMenuItem.Tag = "redo";
             redoToolStripMenuItem.Text = "Redo";
             redoToolStripMenuItem.Click += OnEditPressed;
@@ -305,7 +307,7 @@
             // 
             cutToolStripMenuItem.ForeColor = Color.Silver;
             cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            cutToolStripMenuItem.Size = new Size(128, 26);
+            cutToolStripMenuItem.Size = new Size(224, 26);
             cutToolStripMenuItem.Tag = "cut";
             cutToolStripMenuItem.Text = "Cut";
             cutToolStripMenuItem.Click += OnEditPressed;
@@ -314,7 +316,7 @@
             // 
             copyToolStripMenuItem.ForeColor = Color.Silver;
             copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            copyToolStripMenuItem.Size = new Size(128, 26);
+            copyToolStripMenuItem.Size = new Size(224, 26);
             copyToolStripMenuItem.Tag = "copy";
             copyToolStripMenuItem.Text = "Copy";
             copyToolStripMenuItem.Click += OnEditPressed;
@@ -323,7 +325,7 @@
             // 
             pasteToolStripMenuItem.ForeColor = Color.Silver;
             pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            pasteToolStripMenuItem.Size = new Size(128, 26);
+            pasteToolStripMenuItem.Size = new Size(224, 26);
             pasteToolStripMenuItem.Tag = "paste";
             pasteToolStripMenuItem.Text = "Paste";
             pasteToolStripMenuItem.Click += OnEditPressed;
@@ -440,7 +442,7 @@
             // 
             aboutToolStripMenuItem.ForeColor = Color.Silver;
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(133, 26);
+            aboutToolStripMenuItem.Size = new Size(224, 26);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += OnAboutPressed;
             // 
@@ -499,6 +501,22 @@
             jsonTesterToolStripMenuItem.Text = "Tree View Tester";
             jsonTesterToolStripMenuItem.Click += OnTreeViewTester;
             // 
+            // wORKSPACEDebugToolStripMenuItem
+            // 
+            wORKSPACEDebugToolStripMenuItem.ForeColor = Color.Silver;
+            wORKSPACEDebugToolStripMenuItem.Name = "wORKSPACEDebugToolStripMenuItem";
+            wORKSPACEDebugToolStripMenuItem.Size = new Size(237, 26);
+            wORKSPACEDebugToolStripMenuItem.Text = "WORKSPACE debug";
+            wORKSPACEDebugToolStripMenuItem.Click += OnWorkspaceDebugPressed;
+            // 
+            // cONFIGFILEDebugToolStripMenuItem
+            // 
+            cONFIGFILEDebugToolStripMenuItem.ForeColor = Color.Silver;
+            cONFIGFILEDebugToolStripMenuItem.Name = "cONFIGFILEDebugToolStripMenuItem";
+            cONFIGFILEDebugToolStripMenuItem.Size = new Size(237, 26);
+            cONFIGFILEDebugToolStripMenuItem.Text = "CONFIG FILE debug";
+            cONFIGFILEDebugToolStripMenuItem.Click += OnConfigFileDebugPressed;
+            // 
             // resetConfigFileToolStripMenuItem
             // 
             resetConfigFileToolStripMenuItem.ForeColor = Color.Silver;
@@ -516,21 +534,19 @@
             toolBar.Size = new Size(792, 32);
             toolBar.TabIndex = 5;
             // 
-            // cONFIGFILEDebugToolStripMenuItem
+            // toolStripMenuItem1
             // 
-            cONFIGFILEDebugToolStripMenuItem.ForeColor = Color.Silver;
-            cONFIGFILEDebugToolStripMenuItem.Name = "cONFIGFILEDebugToolStripMenuItem";
-            cONFIGFILEDebugToolStripMenuItem.Size = new Size(237, 26);
-            cONFIGFILEDebugToolStripMenuItem.Text = "CONFIG FILE debug";
-            cONFIGFILEDebugToolStripMenuItem.Click += OnConfigFileDebugPressed;
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(221, 6);
             // 
-            // wORKSPACEDebugToolStripMenuItem
+            // renameToolStripMenuItem
             // 
-            wORKSPACEDebugToolStripMenuItem.ForeColor = Color.Silver;
-            wORKSPACEDebugToolStripMenuItem.Name = "wORKSPACEDebugToolStripMenuItem";
-            wORKSPACEDebugToolStripMenuItem.Size = new Size(237, 26);
-            wORKSPACEDebugToolStripMenuItem.Text = "WORKSPACE debug";
-            wORKSPACEDebugToolStripMenuItem.Click += OnWorkspaceDebugPressed;
+            renameToolStripMenuItem.ForeColor = Color.Silver;
+            renameToolStripMenuItem.Name = "renameToolStripMenuItem";
+            renameToolStripMenuItem.Size = new Size(224, 26);
+            renameToolStripMenuItem.Tag = "rename";
+            renameToolStripMenuItem.Text = "Rename";
+            renameToolStripMenuItem.Click += OnEditPressed;
             // 
             // App
             // 
@@ -609,5 +625,7 @@
         private ToolStripMenuItem moveBuildToolStripMenuItem;
         private ToolStripMenuItem wORKSPACEDebugToolStripMenuItem;
         private ToolStripMenuItem cONFIGFILEDebugToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripMenuItem renameToolStripMenuItem;
     }
 }

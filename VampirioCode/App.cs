@@ -597,7 +597,14 @@ namespace VampirioCode
                         if (doc.FullFilePath == fileAdv.OriginalFullFile)
                         {
                             XConsole.PrintError("-> " + doc.FullFilePath + " [update]");
+                            
+                            doc.IsTemporary = false;
+                            
+                            if(doc.Modified)
+                                doc.Save();
+
                             doc.Move(fileAdv.NewFullFile);
+                            
                             //doc.CustomBuild = true;
                             //doc.DocType = DocumentType.CPP;
                             //doc.BuilderType = BuilderType.CustomMsvcCpp;
@@ -624,7 +631,33 @@ namespace VampirioCode
 
         private void OnEditPressed(object sender, EventArgs e)
         {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            string name = item.Tag.ToString();
 
+            if (name == "undo")
+            {
+
+            }
+            else if (name == "redo")
+            {
+
+            }
+            else if (name == "cut")
+            { 
+            
+            }
+            else if (name == "copy")
+            {
+
+            }
+            else if (name == "paste")
+            {
+
+            }
+            else if (name == "rename")
+            {
+                Rename(CurrDocument);
+            }
         }
 
         private void OnEditorContextItemPressed(EditorEventType eventType, Document document)
@@ -747,6 +780,37 @@ namespace VampirioCode
         private void Exit()
         {
             this.Close();
+        }
+
+        private void Rename(Document document)
+        {
+            var dialogResult = InputMsgBox.Show(this, "Rename file", "New File Name", "Please select a new name for the current file.");
+
+            if (dialogResult != DialogResult.OK)
+                return;
+
+            string newFileName = InputMsgBox.InputText;
+
+            var result = document.Rename(newFileName, true);
+
+            if (result.HasErrors)
+            {
+                MsgBox.Error(this, result.ErrorInfo.Message);
+                return;
+            }
+
+            WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(document.FullFilePath);
+
+            if (workspaceInfo != null)
+            {
+                XConsole.Println("info: " + workspaceInfo.ToString());
+
+                WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+            }
+
+
+            SetTitle(CurrDocument);
+            SaveConfig();
         }
 
         private Document CreateCustomDocument(DocumentType docType, BuilderType builderType)

@@ -13,6 +13,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Reflection;
 using VampirioCode.Builder;
 using VampirioCode.IO;
+using VampirioCode.Builder.Utils;
+using VampirioCode.Workspace;
+using VampirioCode.Workspace.cpp;
 
 namespace VampDocManager
 {
@@ -243,6 +246,7 @@ namespace VampDocManager
 
                     File.WriteAllText(newFilePath, "");
                     code = this.Text;
+                    File.Delete(FullFilePath);
                     //Config.ReplaceLastOpenDocsPath(this.FullFilePath, newFilePath);
                     //File.Delete(CurrDocument.FullFilePath);
                     this.CopyFrom(Document.Load(newFilePath));
@@ -257,6 +261,59 @@ namespace VampDocManager
                 }
             }
 
+        }
+
+        // 'newFileName' = is like 'tester.cpp' and not full path
+        public ResultInfo Rename(string newFileName, bool updateMainDirName = false)
+        {
+            string newFullFile = Path.Combine(FullDirPath, newFileName);
+
+            if (newFullFile.Trim() == FullFilePath.Trim())
+            {
+                return ResultInfo.CreateError("Can't rename the file to its own name");
+            }
+
+            WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(FullFilePath);
+
+            if (workspaceInfo != null)
+            {
+                XConsole.Println("info: " + workspaceInfo.ToString());
+
+                string mainFullDirPath = workspaceInfo.MainDirFullPath;
+
+                WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+                XConsole.Println("wb: " + workspace.ToString());
+
+                XConsole.PrintWarning("RENAME FROM: " + FullFilePath);
+                XConsole.PrintWarning("RENAME TO:   " + newFullFile);
+
+                if (workspaceInfo.IsMainFile(workspace))
+                {
+                    XConsole.PrintError("IS MAIN FILE: " + FullFilePath);
+                    workspaceInfo.ReplaceMainFile(newFileName);
+                }
+
+                if (updateMainDirName)
+                {
+                    string parentDirectory =    Path.GetDirectoryName(mainFullDirPath);
+                    string newMainDirFullPath = Path.Combine(parentDirectory, Path.GetFileNameWithoutExtension(newFileName));
+
+                    XConsole.Println("RENAME from: " + mainFullDirPath);
+                    XConsole.Println("RENAME to:   " + newMainDirFullPath);
+                    Directory.Move(mainFullDirPath, newMainDirFullPath);
+
+
+                    //XConsole.Alert("IS: " + newMainDirFullPath);
+                }
+            }
+            else
+            {
+                XConsole.Println("Has not a workspace. Just rename.");
+            }
+
+            Move(newFullFile);
+
+            return ResultInfo.CreateOk();
         }
 
         private bool Read()
