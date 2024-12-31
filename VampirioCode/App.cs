@@ -520,6 +520,7 @@ namespace VampirioCode
         {
             string newFullDir = "";
 
+
             WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
 
             if (workspaceInfo != null)
@@ -531,7 +532,16 @@ namespace VampirioCode
                     folderBrowserDialog.ShowNewFolderButton = true;
 
                     if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    {
                         newFullDir = folderBrowserDialog.SelectedPath;
+
+                        if (Directory.Exists(Path.Combine(newFullDir, AppInfo.VampTempDir)))
+                        {
+                            MsgBox.Show(this, "Already contains custom build", "There's another custom build project inside this folder.\n\nThis directory can't be used. Select another one.", DialogButtons.OK, DialogIcon.Warning);
+                            return;
+                        }
+
+                    }
                     else
                         return;
                 }
@@ -603,19 +613,13 @@ namespace VampirioCode
 
                 XConsole.Println("-------------------------------");
 
+                SetTitle(CurrDocument);
+                SaveConfig();
 
-                /**/
-
-
-                //workspaceInfo.RootDirFullPath
-
-                /*if (workspaceInfo.IsMainFile(workspace))
-                {
-                    // do nothing
-                    XConsole.PrintWarning("is main file");
-                }*/
-
+                MsgBox.Show(this, "Done!", "Custom build project moved done to:\n\n'" + newFullDir + "'");
             }
+            else
+                MsgBox.Show(this, "This is not a custom build project");
         }
 
         private void OnEditPressed(object sender, EventArgs e)
@@ -1052,7 +1056,13 @@ namespace VampirioCode
         //
         protected override void OnClosing(CancelEventArgs e)
         {
+            SaveConfig(e);
 
+            base.OnClosing(e);
+        }
+
+        private void SaveConfig(CancelEventArgs e = null)
+        {
             Document[] docs = docManager.Documents;
             SavedDocument[] lastOpenDocs = new SavedDocument[docs.Length];
             List<Document> docsToSave = new List<Document>();
@@ -1104,7 +1114,9 @@ namespace VampirioCode
                 { }
                 else if ((option == OptionResult.OptionC) || (option == OptionResult.None)) // Cancel
                 {
-                    e.Cancel = true;
+                    if (e != null)
+                        e.Cancel = true;
+
                     return;
                 }
             }
@@ -1144,8 +1156,6 @@ namespace VampirioCode
 
             // TODO: close all pending process but needs to view revied later
             //CmdRun.KillAllProcess_TODO_FIX();
-
-            base.OnClosing(e);
         }
 
         private void OnStartPressed()

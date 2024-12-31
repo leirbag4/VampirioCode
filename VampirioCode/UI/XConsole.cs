@@ -48,8 +48,21 @@ namespace VampirioCode.UI
             tabPanel.Add(consoleItem);
             tabPanel.Add(errorsItem);
 
+            Push();
             // set output
             SetOutput(outp);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            ParentForm.FormClosing += OnParentFormClosing;
+        }
+
+        private void OnParentFormClosing(object? sender, FormClosingEventArgs e)
+        {
+            Pop();
         }
 
         private void SetupTabSkin()
@@ -326,5 +339,6 @@ namespace VampirioCode.UI
         {
             Clear();
         }
+
     }
 }
