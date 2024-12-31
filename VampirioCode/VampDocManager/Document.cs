@@ -209,6 +209,8 @@ namespace VampDocManager
             }
         }
 
+
+
         public ResultInfo Move(string newFilePath)
         {
             string code;
@@ -217,9 +219,13 @@ namespace VampDocManager
             {
                 try
                 {
+                    var copyStruct = new DocumentCopyStruct(this);
+
                     code = this.Text;
                     File.Move(this.FullFilePath, newFilePath, true);
+                    //Config.ReplaceLastOpenDocsPath(this.FullFilePath, newFilePath);
                     this.CopyFrom(Document.Load(newFilePath));
+                    copyStruct.CopyTo(this);
                     this.Text = code;
                     this.Save();
                     return ResultInfo.CreateOk();
@@ -233,10 +239,14 @@ namespace VampDocManager
             {
                 try
                 {
+                    var copyStruct = new DocumentCopyStruct(this);
+
                     File.WriteAllText(newFilePath, "");
                     code = this.Text;
+                    //Config.ReplaceLastOpenDocsPath(this.FullFilePath, newFilePath);
                     //File.Delete(CurrDocument.FullFilePath);
                     this.CopyFrom(Document.Load(newFilePath));
+                    copyStruct.CopyTo(this);
                     this.Text = code;
                     this.Save();
                     return ResultInfo.CreateOk();

@@ -518,10 +518,24 @@ namespace VampirioCode
 
         private void OnMoveBuildPressed(object sender, EventArgs e)
         {
+            string newFullDir = "";
+
             WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
 
             if (workspaceInfo != null)
             {
+
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+                {
+                    folderBrowserDialog.Description = "Select a new project build folder";
+                    folderBrowserDialog.ShowNewFolderButton = true;
+
+                    if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                        newFullDir = folderBrowserDialog.SelectedPath;
+                    else
+                        return;
+                }
+
                 string fromPath = workspaceInfo.RootDirFullPath;
 
                 XConsole.Println("info: " + workspaceInfo.ToString());
@@ -542,7 +556,7 @@ namespace VampirioCode
                 XConsole.Println("-------------------------------");
 
 
-                string newFullDir = "C:\\test2\\news\\la copia";
+                //string newFullDir = "C:\\test2\\news\\la copia";
 
                 foreach (var fileAdv in allFilesAdv)
                 {
@@ -553,37 +567,44 @@ namespace VampirioCode
 
                 XConsole.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
+                //string toPath = folderBrowserDialog.SelectedPath;
+
+                //
+                // Copy all files from original path to the new path
+                //
+                XConsole.Println("copy from: " + fromPath);
+                XConsole.Print("to: " + newFullDir);
+
+                FileUtils.MoveDirectoryContents(fromPath, newFullDir);
+                // -------------------------------------------------
+
+                XConsole.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
                 foreach (var doc in docManager.Documents)
                 {
                     foreach (var fileAdv in allFilesAdv)
                     {
                         if (doc.FullFilePath == fileAdv.OriginalFullFile)
+                        {
                             XConsole.PrintError("-> " + doc.FullFilePath + " [update]");
+                            doc.Move(fileAdv.NewFullFile);
+                            //doc.CustomBuild = true;
+                            //doc.DocType = DocumentType.CPP;
+                            //doc.BuilderType = BuilderType.CustomMsvcCpp;
+                            //Config.LastOpenDocuments
+                            //ReplaceConfigLastOpenDoc(fileAdv.OriginalFullFile, fileAdv.NewFullFile);
+                        }
                     }
 
                     //XConsole.PrintError("-> " + doc.FullFilePath);
                 }
 
+                //Config.Save();
+
                 XConsole.Println("-------------------------------");
 
 
-                /*FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-                {
-                    folderBrowserDialog.Description = "Select a folder";
-                    folderBrowserDialog.ShowNewFolderButton = true; // Permite crear nuevos directorios
-                    //folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop; // Carpeta inicial
-
-                    if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        string fromPath = workspaceInfo.RootDirFullPath;
-                        string toPath = folderBrowserDialog.SelectedPath;
-
-                        XConsole.Println("copy from: " + fromPath);
-                        XConsole.Print("to: " + toPath);
-
-                        FileUtils.CopyDirectory(fromPath, toPath);
-                    }
-                }*/
+                /**/
 
 
                 //workspaceInfo.RootDirFullPath

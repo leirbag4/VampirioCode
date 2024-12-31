@@ -78,6 +78,18 @@ namespace VampirioCode.SaveData
             }
         }
 
+        /*public static void ReplaceLastOpenDocsPath(string oldFilePath, string newFilePath)
+        {
+            foreach (var lastDoc in LastOpenDocuments)
+            {
+                if (lastDoc.FullFilePath.Trim() == oldFilePath.Trim())
+                {
+                    lastDoc.FullFilePath = newFilePath.Trim();
+                    return;
+                }
+            }
+        }*/
+
         public static void CreateNew()
         {
             config = new Config();

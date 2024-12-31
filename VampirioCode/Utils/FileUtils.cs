@@ -98,7 +98,12 @@ namespace VampirioCode.Utils
                             .ToArray();
         }
 
-        public static bool CopyDirectory(string fromPath, string toPath, bool recursive = true)
+        public static bool MoveDirectoryContents(string fromPath, string toPath)
+        {
+            return CopyDirectoryContents(fromPath, toPath, true, true);
+        }
+
+        public static bool CopyDirectoryContents(string fromPath, string toPath, bool recursive = true, bool deleteSource = false)
         {
             try
             {
@@ -128,8 +133,14 @@ namespace VampirioCode.Utils
                     foreach (DirectoryInfo subdir in dirs)
                     {
                         string tempPath = Path.Combine(toPath, subdir.Name);
-                        CopyDirectory(subdir.FullName, tempPath, recursive);
+                        CopyDirectoryContents(subdir.FullName, tempPath, recursive);
                     }
+                }
+
+                // If deleteSource is true, delete the contents of the source directory
+                if (deleteSource)
+                {
+                    DeleteDirectoryContents(fromPath);
                 }
 
                 return true; // Successfully copied
@@ -152,6 +163,28 @@ namespace VampirioCode.Utils
             }
 
             return false; // Copy failed
+        }
+
+        public static void DeleteDirectoryContents(string directoryPath)
+        {
+            try
+            {
+                // Delete all files in the directory
+                foreach (var file in Directory.GetFiles(directoryPath))
+                {
+                    File.Delete(file);
+                }
+
+                // Delete all subdirectories in the directory
+                foreach (var subdirectory in Directory.GetDirectories(directoryPath))
+                {
+                    Directory.Delete(subdirectory, true); // Delete recursively
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while deleting contents: {ex.Message}");
+            }
         }
 
         public static async Task<bool> CopyDirectoryAsync(string fromPath, string toPath, bool recursive = true)
