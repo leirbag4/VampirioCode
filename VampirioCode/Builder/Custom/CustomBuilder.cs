@@ -203,6 +203,10 @@ namespace VampirioCode.Builder.Custom
             if (sources == null)
             {
                 sfiles = await FileUtils.GetFilesAdvAsync(originalBaseDirPath, extensions, dontIncludeFiles, true, false);
+
+                // Do not include nothing from "_vamp\" dir
+                sfiles.RemoveAll(file => file.StartsWith(AppInfo.VampTempDir));
+
             }
             // [MANUAL]
             else
