@@ -15,6 +15,7 @@ using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TabManagement;
 using VampirioCode.UI.Style;
 using VampirioCode.Utils;
+using VampirioCode.Workspace;
 
 namespace VampDocManager
 {
@@ -559,7 +560,15 @@ namespace VampDocManager
                 {
                     if(prevDoc.FullFilePath != newFilePath)
                         Document.Delete(prevDoc);
-                    
+
+                    WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(newFilePath);
+                    if (workspaceInfo != null)
+                    {
+                        XConsole.Println(workspaceInfo.ToString());
+                    }
+                    else
+                        XConsole.PrintError("no workspace");
+
                     return true;
                 }
                 else //if (info.HasErrors)

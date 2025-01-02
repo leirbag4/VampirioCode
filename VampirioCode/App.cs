@@ -946,17 +946,24 @@ namespace VampirioCode
 
         private void OpenLastDocuments()
         {
+            bool updated = false;
             SavedDocument[] docs = Config.LastOpenDocuments;
 
             foreach (SavedDocument doc in docs)
             {
                 if (!File.Exists(doc.FullFilePath))
+                {
                     XConsole.PrintWarning("Can't find file at '" + doc.FullFilePath + "'. It will not be loaded.");
+                    updated = true;
+                }
                 else
                     docManager.OpenDocument(doc.FullFilePath, doc.DocumentSettings);
             }
 
             CleanUpTempFiles();
+
+            if (updated)
+                SaveConfig();
         }
 
         // Check which temporary files are not used at '\temp_files' folder.
