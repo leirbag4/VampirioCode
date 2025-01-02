@@ -384,23 +384,39 @@ namespace VampirioCode
         private void OnBasicCodePressed(object sender, EventArgs e)
         {
             string templateCode = (string)((ToolStripMenuItem)sender).Tag;
+            
+            DocumentTab docTab = docManager.NewDocument();
 
             if (templateCode == "cpp_basic_main")
             {
-                //XConsole.Println("basic main");
-                DocumentTab docTab = docManager.NewDocument();
-                docTab.Editor.Text = CodeDB.GetCode(BuilderTemplate.CppMsvcBasic);
+                docTab.Document.DocType =       DocumentType.CPP;
+                docTab.Document.BuilderType =   BuilderType.SimpleMsvcCpp;
+                docTab.Editor.Text =            CodeDB.GetCode(BuilderTemplate.CppMsvcBasic);
             }
+            else if (templateCode == "csharp_basic_main")
+            {
+                docTab.Document.DocType =       DocumentType.CSHARP;
+                docTab.Document.BuilderType =   BuilderType.SimpleCSharp;
+                docTab.Editor.Text =            CodeDB.GetCode(BuilderTemplate.CSharpDotnetBasic);
+            }
+                
+                SelectLanguage(docTab.Document.DocType);
+                SelectBuilder(docTab.Document.DocType, docTab.Document.BuilderType);
         }
 
-        private void OnConfigPressed(object sender, EventArgs e)
+        private void OnProjectPressed(object sender, EventArgs e)
         {
             bool customBuild = CurrDocument.CustomBuild;
+
+            setupBuildToolStripMenuItem.Enabled = false;
+            clearBuildSettingsToolStripMenuItem.Enabled = false;
+            moveBuildToolStripMenuItem.Enabled = false;
 
             if (CurrDocument.CustomBuild)
             {
                 setupBuildToolStripMenuItem.Enabled = true;
                 clearBuildSettingsToolStripMenuItem.Enabled = true;
+                moveBuildToolStripMenuItem.Enabled = true;
             }
             else // SimpleBuild
             {

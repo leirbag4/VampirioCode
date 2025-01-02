@@ -29,7 +29,7 @@ namespace VampirioCode.BuilderSetting.CppSettings
         public List<string> LibraryDirs { get; set; } = new List<string>();
         public List<string> LibraryFiles { get; set; } = new List<string>();
 
-        public IncludeSourcesMode IncludeSourcesMode { get; set; } = IncludeSourcesMode.Default;
+        public IncludeSourcesMode IncludeSourcesMode { get; set; } = IncludeSourcesMode.Automatic;
         public List<string> SourceFiles { get; set; } = new List<string>();
 
         // Methods

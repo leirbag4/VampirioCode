@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.Builder.Custom;
+using VampirioCode.Builder.Utils;
 using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.BuilderSetting.Others;
 using VampirioCode.Properties;
@@ -135,7 +136,28 @@ namespace VampirioCode.BuilderSetting.UI
                     List.Enable = true;
                     List.Clear();
 
-                    var files = FileUtils.GetFilesAdv(originalBaseDir, new string[] { ".cpp"/*, ".h"*/ });
+                    List<string> files = FileUtils.GetFilesAdv(originalBaseDir, new string[] { ".cpp"/*, ".h"*/ });
+
+
+                    // ----------------------------------------
+                    // Find main file if not included before 
+                    string mainFile = BuilderUtils.GetMainFileByBaseDir(originalBaseDir);
+
+                    //XConsole.Println("mainFile: " + mainFile);
+
+                    bool mainFileIncluded = false;
+                    foreach (var file in files)
+                    {
+                        if (file == mainFile)
+                        {
+                            mainFileIncluded = true;
+                            break;
+                        }
+                    }
+
+                    if (!mainFileIncluded)
+                        files.Insert(0, mainFile);
+                    // ----------------------------------------
 
                     foreach (var file in files)
                     {

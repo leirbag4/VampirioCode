@@ -102,7 +102,7 @@ namespace VampDocManager
                 // e.g: 'untitled 2\untitled 2'. We just need to delete the folder
                 if (document.IsTemporary)
                 {
-                    XConsole.Alert("dir to delete:\n\n" + document.FullDirPath);
+                    //XConsole.Alert("dir to delete:\n\n" + document.FullDirPath);
                     Directory.Delete(document.FullDirPath, true);
                     return true;
                 }

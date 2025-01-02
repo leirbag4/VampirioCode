@@ -195,11 +195,13 @@ namespace VampirioCode.Builder.Custom
                 dontInclude = new string[] { originalFileName };
 
             if (Setting.IncludeSourcesMode == IncludeSourcesMode.Automatic)
-            { 
+            {
+                File.WriteAllText(ProgramFile, code);
                 sourceFiles = await CopySourceFilesAsync(null, new string[] { ".cpp", ".h" }, dontInclude);
             }
             else if(Setting.IncludeSourcesMode == IncludeSourcesMode.Manually)
             {
+                File.WriteAllText(ProgramFile, code);
                 sourceFiles = await CopySourceFilesAsync(Setting.SourceFiles, new string[] { ".cpp", ".h" }, dontInclude);
             }
             else // Default

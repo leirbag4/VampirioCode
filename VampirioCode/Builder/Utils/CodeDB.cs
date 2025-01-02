@@ -95,6 +95,21 @@ int main(int argc, char** argv[])
 }";
                 // ------------------------------------
 
+                // ------------------------------------
+                case BuilderTemplate.CSharpDotnetBasic:
+                    // ------------------------------------
+                    return @"using System;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Console.WriteLine(""test"");
+    }
+}";
+                // ------------------------------------
+
+
             }
 
             return "";

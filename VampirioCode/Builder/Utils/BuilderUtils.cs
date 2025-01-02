@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using VampDocManager;
 using VampirioCode.Builder.Custom;
@@ -298,6 +299,34 @@ namespace VampirioCode.Builder.Utils
             }
             else
                 return null;
+        }
+
+        public static string GetMainFullFileByBaseDir(string dirPath)
+        {
+            // c:\tester\proj01 + _vamp =  c:\tester\proj01\_vamp\
+            string workspaceFullFilePath = Path.Combine(dirPath, AppInfo.VampTempDir);
+            // c:\tester\proj01\_vamp\.workspace
+            workspaceFullFilePath = Path.Combine(workspaceFullFilePath, AppInfo.WorkspaceFileName);
+
+            string json = File.ReadAllText(workspaceFullFilePath);
+            var workspaceBase = JsonSerializer.Deserialize<WorkspaceBase>(json);
+
+            // c:\tester\proj01\mainFile.xxx
+            return Path.Combine(dirPath, workspaceBase.MainFile);
+        }
+
+        public static string GetMainFileByBaseDir(string dirPath)
+        {
+            // c:\tester\proj01 + _vamp =  c:\tester\proj01\_vamp\
+            string workspaceFullFilePath = Path.Combine(dirPath, AppInfo.VampTempDir);
+            // c:\tester\proj01\_vamp\.workspace
+            workspaceFullFilePath = Path.Combine(workspaceFullFilePath, AppInfo.WorkspaceFileName);
+
+            string json = File.ReadAllText(workspaceFullFilePath);
+            var workspaceBase = JsonSerializer.Deserialize<WorkspaceBase>(json);
+
+            // mainFile.xxx
+            return workspaceBase.MainFile;
         }
 
         public static DocumentSettings GetDocSettings(string fullFilePath)
