@@ -336,7 +336,7 @@ namespace VampirioCode.Utils
             return GetFilesAdvAsync(fromPath, includeExtensions, dontIncludeRelativeFiles, recursive, fullPath).GetAwaiter().GetResult();
         }
 
-        public static async Task<List<string>> GetFilesAdvAsync(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true, bool fullPath = false)
+        public static async Task<List<string>> GetFilesAdvAsync(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true, bool fullPath = false, bool includeVampDir = true)
         {
             List<string> resultFiles = new List<string>();
 
@@ -348,6 +348,12 @@ namespace VampirioCode.Utils
                 if (!dir.Exists)
                 {
                     throw new DirectoryNotFoundException($"Source directory does not exist: {fromPath}");
+                }
+
+                // Skip this directory if it's or is within a "_vamp" folder
+                if (includeVampDir && IsVampDirectory(dir))
+                {
+                    return resultFiles;
                 }
 
                 // Normalize 'dontCopyRelativeFiles' to use correct directory separator
@@ -424,6 +430,20 @@ namespace VampirioCode.Utils
             }
 
             return resultFiles;
+        }
+
+        // Helper method to determine if a directory is or is within a "_vamp" folder
+        private static bool IsVampDirectory(DirectoryInfo dir)
+        {
+            while (dir != null)
+            {
+                if (dir.Name.Equals(AppInfo.VampTempDir, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+                dir = dir.Parent;
+            }
+            return false;
         }
 
 

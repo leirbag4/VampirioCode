@@ -196,12 +196,17 @@ namespace VampirioCode.Builder.Custom
 
             if (Setting.IncludeSourcesMode == IncludeSourcesMode.Automatic)
             {
+
                 File.WriteAllText(ProgramFile, code);
                 sourceFiles = await CopySourceFilesAsync(null, new string[] { ".cpp", ".h" }, dontInclude);
+                sourceFiles.Insert(0, ProgramFile);
+
+                // Remove repeated sources
+                sourceFiles = sourceFiles.Distinct().ToList();
             }
             else if(Setting.IncludeSourcesMode == IncludeSourcesMode.Manually)
             {
-                File.WriteAllText(ProgramFile, code);
+                //File.WriteAllText(ProgramFile, code);
                 sourceFiles = await CopySourceFilesAsync(Setting.SourceFiles, new string[] { ".cpp", ".h" }, dontInclude);
             }
             else // Default

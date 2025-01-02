@@ -439,15 +439,60 @@ namespace VampirioCode
 
             if (CurrDocument.CustomBuild)
             {
-                //XConsole.Alert("CurrDocument.BuilderType: " + CurrDocument.BuilderType);
-                BuilderTemplateInfo binfo = BuilderTemplateInfo.GetFromType(CurrDocument.BuilderType);
+                WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
 
-                if (binfo == null)
-                    return;
+                // Workspace exists, so there is a 'Custom Project' (.bettings) created before
+                // and all of its structure
+                if (workspaceInfo != null)
+                {
+                    WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+                    XConsole.Println("info: " + workspaceInfo.ToString());
+                    XConsole.Println("wb: " + workspace.ToString());
 
-                //CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
-                var builderSettings = binfo.BuilderSetting;
-                builderSettings.Open(CurrDocument.FullFilePath, CurrDocument.BuilderType);
+                    if (!workspaceInfo.IsMainFile(workspace))
+                    {
+                        // do nothing
+                        XConsole.PrintWarning("isn't main file");
+                        var result = MsgBox.Show("Already created project", "There's a project already created inside directory:\n\n'" + workspaceInfo.RootDirFullPath + "'\n\nYou can't create another one.\nDo you want to open the main project file?", DialogButtons.YesNoCancel, DialogIcon.Question);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            string mainFileFullPath = workspaceInfo.GetMainFile(workspace);
+                            docManager.OpenDocument(mainFileFullPath);
+                            docManager.Refresh();
+                            OnSetupBuildPressed(null, EventArgs.Empty);
+                        }
+
+                        return;
+                    }
+                    else
+                    {
+                        //XConsole.Alert("CurrDocument.BuilderType: " + CurrDocument.BuilderType);
+                        BuilderTemplateInfo binfo = BuilderTemplateInfo.GetFromType(CurrDocument.BuilderType);
+
+                        if (binfo == null)
+                            return;
+
+                        //CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
+                        var builderSettings = binfo.BuilderSetting;
+                        builderSettings.Open(CurrDocument.FullFilePath, CurrDocument.BuilderType);
+                    }
+                }
+                else
+                {
+
+
+
+                    //XConsole.Alert("CurrDocument.BuilderType: " + CurrDocument.BuilderType);
+                    BuilderTemplateInfo binfo = BuilderTemplateInfo.GetFromType(CurrDocument.BuilderType);
+
+                    if (binfo == null)
+                        return;
+
+                    //CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
+                    var builderSettings = binfo.BuilderSetting;
+                    builderSettings.Open(CurrDocument.FullFilePath, CurrDocument.BuilderType);
+                }
             }
             else // SimpleBuild
             {
