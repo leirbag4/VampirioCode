@@ -214,7 +214,7 @@ namespace VampDocManager
 
 
 
-        public ResultInfo Move(string newFilePath)
+        public ResultInfo Move(string newFilePath, bool copySettings = false)
         {
             string code;
 
@@ -228,7 +228,8 @@ namespace VampDocManager
                     File.Move(this.FullFilePath, newFilePath, true);
                     //Config.ReplaceLastOpenDocsPath(this.FullFilePath, newFilePath);
                     this.CopyFrom(Document.Load(newFilePath));
-                    copyStruct.CopyTo(this);
+                    if (copySettings)
+                        copyStruct.CopyTo(this);
                     this.Text = code;
                     this.Save();
                     return ResultInfo.CreateOk();
@@ -250,7 +251,8 @@ namespace VampDocManager
                     //Config.ReplaceLastOpenDocsPath(this.FullFilePath, newFilePath);
                     //File.Delete(CurrDocument.FullFilePath);
                     this.CopyFrom(Document.Load(newFilePath));
-                    copyStruct.CopyTo(this);
+                    if(copySettings)
+                        copyStruct.CopyTo(this);
                     this.Text = code;
                     this.Save();
                     return ResultInfo.CreateOk();
@@ -311,7 +313,7 @@ namespace VampDocManager
                 XConsole.Println("Has not a workspace. Just rename.");
             }
 
-            Move(newFullFile);
+            Move(newFullFile, true);
 
             return ResultInfo.CreateOk();
         }

@@ -567,7 +567,10 @@ namespace VampDocManager
                         XConsole.Println(workspaceInfo.ToString());
                     }
                     else
+                    {
                         XConsole.PrintError("no workspace");
+                        //CurrDocument.CustomBuild = false;
+                    }
 
                     return true;
                 }

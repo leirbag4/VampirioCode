@@ -619,7 +619,7 @@ namespace VampirioCode
                             if(doc.Modified)
                                 doc.Save();
 
-                            doc.Move(fileAdv.NewFullFile);
+                            doc.Move(fileAdv.NewFullFile, true);
                             
                             //doc.CustomBuild = true;
                             //doc.DocType = DocumentType.CPP;
@@ -815,14 +815,14 @@ namespace VampirioCode
                 return;
             }
 
-            WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(document.FullFilePath);
+            /*WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(document.FullFilePath);
 
             if (workspaceInfo != null)
             {
                 XConsole.Println("info: " + workspaceInfo.ToString());
 
                 WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
-            }
+            }*/
 
 
             SetTitle(CurrDocument);
@@ -962,7 +962,7 @@ namespace VampirioCode
 
             CleanUpTempFiles();
 
-            if (updated)
+            if(updated)
                 SaveConfig();
         }
 
