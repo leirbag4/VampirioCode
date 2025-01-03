@@ -190,7 +190,6 @@ namespace VampirioCode.Builder.Custom
             List<string> sourceFiles;
             string[] dontInclude = null;
 
-
             if (IsOutputLibrary())
                 dontInclude = new string[] { originalFileName };
 
@@ -217,10 +216,10 @@ namespace VampirioCode.Builder.Custom
                 File.WriteAllText(ProgramFile, code);
             }
 
-            
+
 
             //XConsole.Alert("STOP");
-            
+
             // Build Process
             MSVC msvc = new MSVC();
             
@@ -243,8 +242,8 @@ namespace VampirioCode.Builder.Custom
             {
                 await ImportPackage(Setting.InstallPackage, ProjectDir);
             }
-            
-            
+
+
             bool copied;
             copied = await CopyDirs(Setting.CopyDirsPost, cmd);
             if (!copied) XConsole.Alert("error");
@@ -255,7 +254,7 @@ namespace VampirioCode.Builder.Custom
             if (Setting.OutputType == OutputType.DynamicLib)
             {
                 //XConsole.Alert("enter: " + Path.ChangeExtension(cmd.OutputFilename, ".lib"));
-                cmd.OutputLibraryDir = Path.ChangeExtension(cmd.OutputFilename, ".lib");
+                cmd.OutputLibraryDir = Path.ChangeExtension(cmd.OutputFilename, ".dll");
             }
 
 
@@ -268,14 +267,16 @@ namespace VampirioCode.Builder.Custom
             // ---------------------------------
             if (CheckResult(result) && (cmd.OutputType == OutputType.StaticLib))
             {
-                XConsole.Alert(OutputFilename);
+                //XConsole.Alert(OutputFilename);
                 var objFiles = await GetObjFiles();
+
+                //foreach(var objFile in objFiles) { XConsole.Alert("is:" + objFile); }
 
                 BuildLibCmd libCmd =        new BuildLibCmd();
                 libCmd.ObjectFiles =        objFiles;
                 libCmd.LibOutputFilename =  cmd.OutputFilename;
 
-                var libResult = await msvc.BuildLibAsync(libCmd);
+                var libResult =                 await msvc.BuildLibAsync(libCmd);
                 libResult.LibOutputFilename =   libCmd.LibOutputFilename;
                 result.OutputFilename =         libResult.LibOutputFilename;
             }
@@ -283,9 +284,9 @@ namespace VampirioCode.Builder.Custom
             return result;
         }
 
-        private Task<List<string>> GetObjFiles()
+        private async Task<List<string>> GetObjFiles()
         {
-            return FileUtils.GetFilesAdvAsync(objsDir, new string[] { ".obj" }, null, true, true);
+            return await FileUtils.GetFilesAdvAsync(objsDir, new string[] { ".obj" }, null, true, true, false);
         }
 
         private bool IsOutputLibrary()
