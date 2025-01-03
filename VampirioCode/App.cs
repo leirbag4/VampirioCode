@@ -723,6 +723,8 @@ namespace VampirioCode
 
         private void OnEditorContextItemPressed(EditorEventType eventType, Document document)
         {
+            string prevFullFilePath = "";
+
             if (eventType == VampEditor.EditorEventType.OpenFileLocation)
             {
                 Process.Start("explorer.exe", string.Format("/select,\"{0}\"", document.FullFilePath));
@@ -735,8 +737,30 @@ namespace VampirioCode
                 }
                 else
                 {
-                    //string projName = Path.GetFileNameWithoutExtension(CurrDocument.FullFilePath);
+                    WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(document.FullFilePath);
 
+                    // Workspace exists, so there is a 'Custom Project' (.bettings) created before
+                    // and all of its structure
+                    if (workspaceInfo != null)
+                    {
+                        WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+
+                        // You are not in the main file, so go to the main file to
+                        // locate the output file and then return to this file
+                        if (!workspaceInfo.IsMainFile(workspace))
+                        {
+                            prevFullFilePath = document.FullFilePath;
+                            string mainFileFullPath = workspaceInfo.GetMainFile(workspace);
+                            docManager.OpenDocument(mainFileFullPath);
+                            docManager.Refresh();
+                            //OnSetupBuildPressed(null, EventArgs.Empty);
+                        }
+                    }
+                    // ----------------------------------------------------------------------
+
+
+
+                    // Find the builder
                     Builder.Builder builder;
 
                     if (CurrDocument.CustomBuild)
@@ -759,6 +783,14 @@ namespace VampirioCode
                     }
                     else
                         MsgBox.Show(this, "Not available", "The output file for this document is not available.\nIt may be an interpreted file extension that doesn't need a compilation process. Try opening the file path instead.");
+
+
+                    // return to the initial file if it's the case
+                    if (prevFullFilePath != "")
+                    {
+                        docManager.OpenDocument(prevFullFilePath);
+                        docManager.Refresh();
+                    }
                 }
             }
         }

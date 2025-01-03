@@ -336,7 +336,7 @@ namespace VampirioCode.Utils
             return GetFilesAdvAsync(fromPath, includeExtensions, dontIncludeRelativeFiles, recursive, fullPath).GetAwaiter().GetResult();
         }
 
-        public static async Task<List<string>> GetFilesAdvAsync(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true, bool fullPath = false, bool includeVampDir = true)
+        public static async Task<List<string>> GetFilesAdvAsync(string fromPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true, bool fullPath = false, bool excludeVampDir = false)
         {
             List<string> resultFiles = new List<string>();
 
@@ -351,7 +351,7 @@ namespace VampirioCode.Utils
                 }
 
                 // Skip this directory if it's or is within a "_vamp" folder
-                if (includeVampDir && IsVampDirectory(dir))
+                if (excludeVampDir && IsVampDirectory(dir))
                 {
                     return resultFiles;
                 }
