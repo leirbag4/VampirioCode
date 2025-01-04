@@ -178,9 +178,9 @@
             titleLabel.ModifyControlName = "";
             titleLabel.ModifyScale = 1F;
             titleLabel.Name = "titleLabel";
-            titleLabel.Size = new Size(73, 20);
+            titleLabel.Size = new Size(120, 20);
             titleLabel.TabIndex = 33;
-            titleLabel.Text = "Packages";
+            titleLabel.Text = "Install Packages";
             // 
             // list
             // 

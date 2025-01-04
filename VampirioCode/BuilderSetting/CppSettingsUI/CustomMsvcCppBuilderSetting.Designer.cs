@@ -36,8 +36,6 @@
             macrosList = new ItemList();
             labelAdv1 = new VampirioCode.UI.Controls.LabelAdv();
             exceptHandlModeCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
-            findPackageInput = new UI.FindPackageInput();
-            labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
             postCopyDirsList = new ItemList();
             postCopyFilesList = new ItemList();
             standardVersionCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
@@ -183,32 +181,6 @@
             exceptHandlModeCBox.Size = new Size(186, 28);
             exceptHandlModeCBox.TabIndex = 28;
             // 
-            // findPackageInput
-            // 
-            findPackageInput.BackColor = Color.FromArgb(40, 40, 40);
-            findPackageInput.Location = new Point(753, 377);
-            findPackageInput.Name = "findPackageInput";
-            findPackageInput.SelectedPackage = "";
-            findPackageInput.Size = new Size(164, 35);
-            findPackageInput.TabIndex = 29;
-            // 
-            // labelAdv2
-            // 
-            labelAdv2.AutoSize = true;
-            labelAdv2.BorderColor = Color.DarkGray;
-            labelAdv2.BorderSize = 1;
-            labelAdv2.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
-            labelAdv2.ForeColor = Color.Silver;
-            labelAdv2.Location = new Point(753, 350);
-            labelAdv2.ModifyClampMax = 0F;
-            labelAdv2.ModifyClampMin = 0F;
-            labelAdv2.ModifyControlName = "";
-            labelAdv2.ModifyScale = 1F;
-            labelAdv2.Name = "labelAdv2";
-            labelAdv2.Size = new Size(106, 20);
-            labelAdv2.TabIndex = 30;
-            labelAdv2.Text = "Install Package";
-            // 
             // postCopyDirsList
             // 
             postCopyDirsList.BackColor = Color.FromArgb(40, 40, 40);
@@ -335,9 +307,9 @@
             // itemListPackages
             // 
             itemListPackages.BackColor = Color.FromArgb(40, 40, 40);
-            itemListPackages.Location = new Point(713, 287);
+            itemListPackages.Location = new Point(713, 276);
             itemListPackages.Name = "itemListPackages";
-            itemListPackages.Size = new Size(211, 258);
+            itemListPackages.Size = new Size(211, 152);
             itemListPackages.TabIndex = 44;
             // 
             // CustomMsvcCppBuilderSetting
@@ -355,8 +327,6 @@
             Controls.Add(labelAdv3);
             Controls.Add(postCopyFilesList);
             Controls.Add(postCopyDirsList);
-            Controls.Add(labelAdv2);
-            Controls.Add(findPackageInput);
             Controls.Add(exceptHandlModeCBox);
             Controls.Add(labelAdv1);
             Controls.Add(macrosList);
@@ -381,8 +351,6 @@
         private ItemList macrosList;
         private VampirioCode.UI.Controls.LabelAdv labelAdv1;
         private VampirioCode.UI.Controls.ComboBoxAdv exceptHandlModeCBox;
-        private UI.FindPackageInput findPackageInput;
-        private VampirioCode.UI.Controls.LabelAdv labelAdv2;
         private ItemList postCopyDirsList;
         private ItemList postCopyFilesList;
         private VampirioCode.UI.Controls.ComboBoxAdv standardVersionCBox;
