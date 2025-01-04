@@ -237,11 +237,10 @@ namespace VampirioCode.Builder.Custom
             cmd.OutputType =                    Setting.OutputType;
             cmd.StandardVersion =               Setting.StandardVersion;
             cmd.ExceptionHandlingModel =        Setting.ExceptionHanldingModel;
-            
-            if (Setting.InstallPackage != "")
-            {
-                await ImportPackage(Setting.InstallPackage, ProjectDir);
-            }
+
+            // Import Packages
+            if (Setting.InstallPackages.Count > 0)
+                await ImportPackages(Setting.InstallPackages, ProjectDir);
 
 
             bool copied;

@@ -29,6 +29,14 @@ namespace VampirioCode.Builder.Custom
 
         public string GetBuildSettingsFile() { return BuildSettingsFile; }
 
+        public async Task ImportPackages(List<string> packagePaths, string outputPath)
+        { 
+            foreach(var packagePath in packagePaths) 
+            { 
+                await ImportPackage(packagePath, outputPath);
+            }
+        }
+
         public async Task ImportPackage(string packagePath, string outputPath)
         {
             packagePath = AppInfo.BasePath + "\\packages\\" + packagePath;

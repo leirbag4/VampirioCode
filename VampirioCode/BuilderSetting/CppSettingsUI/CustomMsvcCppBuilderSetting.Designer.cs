@@ -47,6 +47,7 @@
             sourceFilesList = new UI.ItemListSources();
             outputNameInput = new TextBox();
             labelAdv5 = new VampirioCode.UI.Controls.LabelAdv();
+            itemListPackages = new UI.ItemListPackages();
             SuspendLayout();
             // 
             // includeDirsList
@@ -331,11 +332,20 @@
             labelAdv5.TabIndex = 43;
             labelAdv5.Text = "Output Name";
             // 
+            // itemListPackages
+            // 
+            itemListPackages.BackColor = Color.FromArgb(40, 40, 40);
+            itemListPackages.Location = new Point(713, 287);
+            itemListPackages.Name = "itemListPackages";
+            itemListPackages.Size = new Size(211, 258);
+            itemListPackages.TabIndex = 44;
+            // 
             // CustomMsvcCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(934, 658);
+            Controls.Add(itemListPackages);
             Controls.Add(labelAdv5);
             Controls.Add(outputNameInput);
             Controls.Add(sourceFilesList);
@@ -382,5 +392,6 @@
         private UI.ItemListSources sourceFilesList;
         private TextBox outputNameInput;
         private VampirioCode.UI.Controls.LabelAdv labelAdv5;
+        private UI.ItemListPackages itemListPackages;
     }
 }

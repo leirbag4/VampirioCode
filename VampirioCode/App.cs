@@ -384,24 +384,24 @@ namespace VampirioCode
         private void OnBasicCodePressed(object sender, EventArgs e)
         {
             string templateCode = (string)((ToolStripMenuItem)sender).Tag;
-            
+
             DocumentTab docTab = docManager.NewDocument();
 
             if (templateCode == "cpp_basic_main")
             {
-                docTab.Document.DocType =       DocumentType.CPP;
-                docTab.Document.BuilderType =   BuilderType.SimpleMsvcCpp;
-                docTab.Editor.Text =            CodeDB.GetCode(BuilderTemplate.CppMsvcBasic);
+                docTab.Document.DocType = DocumentType.CPP;
+                docTab.Document.BuilderType = BuilderType.SimpleMsvcCpp;
+                docTab.Editor.Text = CodeDB.GetCode(BuilderTemplate.CppMsvcBasic);
             }
             else if (templateCode == "csharp_basic_main")
             {
-                docTab.Document.DocType =       DocumentType.CSHARP;
-                docTab.Document.BuilderType =   BuilderType.SimpleCSharp;
-                docTab.Editor.Text =            CodeDB.GetCode(BuilderTemplate.CSharpDotnetBasic);
+                docTab.Document.DocType = DocumentType.CSHARP;
+                docTab.Document.BuilderType = BuilderType.SimpleCSharp;
+                docTab.Editor.Text = CodeDB.GetCode(BuilderTemplate.CSharpDotnetBasic);
             }
-                
-                SelectLanguage(docTab.Document.DocType);
-                SelectBuilder(docTab.Document.DocType, docTab.Document.BuilderType);
+
+            SelectLanguage(docTab.Document.DocType);
+            SelectBuilder(docTab.Document.DocType, docTab.Document.BuilderType);
         }
 
         private void OnProjectPressed(object sender, EventArgs e)
@@ -658,14 +658,14 @@ namespace VampirioCode
                         if (doc.FullFilePath == fileAdv.OriginalFullFile)
                         {
                             XConsole.PrintError("-> " + doc.FullFilePath + " [update]");
-                            
+
                             doc.IsTemporary = false;
-                            
-                            if(doc.Modified)
+
+                            if (doc.Modified)
                                 doc.Save();
 
                             doc.Move(fileAdv.NewFullFile, true);
-                            
+
                             //doc.CustomBuild = true;
                             //doc.DocType = DocumentType.CPP;
                             //doc.BuilderType = BuilderType.CustomMsvcCpp;
@@ -704,8 +704,8 @@ namespace VampirioCode
 
             }
             else if (name == "cut")
-            { 
-            
+            {
+
             }
             else if (name == "copy")
             {
@@ -1039,7 +1039,7 @@ namespace VampirioCode
 
             CleanUpTempFiles();
 
-            if(updated)
+            if (updated)
                 SaveConfig();
         }
 
@@ -1422,6 +1422,11 @@ namespace VampirioCode
         {
             string json = File.ReadAllText(AppInfo.ConfigFileName);
             JSonViewer.ShowJson(json);
+        }
+
+        private void OnSetupCompilersInterpreters(object sender, EventArgs e)
+        {
+
         }
     }
 }

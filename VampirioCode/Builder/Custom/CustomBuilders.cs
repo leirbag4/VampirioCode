@@ -152,6 +152,7 @@ namespace VampirioCode.Builder.Custom
             setting.ExceptionHanldingModel = Command.MSVC.Params.ExceptionHandlingModel.EHsc;
 
             setting.InstallPackage = "sdl2_msvc";
+            setting.InstallPackages.Add("sdl2_msvc");
 
 
             // Save build settings

@@ -128,6 +128,11 @@ namespace VampirioCode.BuilderSetting
             findPackageInp.SelectedPackage = packageName;
         }
 
+        protected void SetFindPackages(ItemListPackages itemList, List<string> packageNames)
+        {
+            itemList.SetPackages(packageNames);
+        }
+
         // ---------------------------------------------------------------
         // ---------------------------------------------------------------
         // ---------------------------------------------------------------
@@ -194,6 +199,11 @@ namespace VampirioCode.BuilderSetting
         protected string GetFindPackage(FindPackageInput findPackageInp)
         {
             return findPackageInp.SelectedPackage;
+        }
+
+        protected List<string> GetFindPackages(ItemListPackages itemListPackages)
+        {
+            return itemListPackages.GetPackages();
         }
 
     }

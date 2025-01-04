@@ -161,6 +161,12 @@ namespace VampirioCode.UI.Controls
             _items.AddRange(controls);
         }
 
+        public void AddItem(Control control) 
+        {
+            _items.Add(control);
+        }
+        
+
         public void AddItemBelow(Control control, int index = -1)
         {
             if(_items.Count == 0)

@@ -19,5 +19,7 @@ namespace VampirioCode.BuilderSetting
         public BuilderType TemplateBuilderType { get; set; } = BuilderType.None;
         public DocumentType TemplateDocumentType { get; set; } = DocumentType.OTHER;
         public string InstallPackage { get; set; } = "";
+        public List<string> InstallPackages { get; set; } = new List<string>();
+
     }
 }

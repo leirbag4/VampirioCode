@@ -95,6 +95,7 @@ namespace VampirioCode.BuilderSetting
             SetItemListSBrowsable(libraryFilesList,             settings.LibraryFiles);
             SetItemListValuePair(macrosList,                    settings.PreprocessorMacros);
             SetFindPackage(findPackageInput,                    settings.InstallPackage);
+            SetFindPackages(itemListPackages,                   settings.InstallPackages);
             SetItemListValuePairBrowsable(postCopyDirsList,     settings.CopyDirsPost);
             SetItemListValuePairBrowsable(postCopyFilesList,    settings.CopyFilesPost);
             SetSourceFiles(sourceFilesList,                     settings);
@@ -115,6 +116,7 @@ namespace VampirioCode.BuilderSetting
             settings.LibraryFiles =             GetItemListSBrowsable(libraryFilesList);
             settings.PreprocessorMacros =       GetItemListValuePair(macrosList);
             settings.InstallPackage =           GetFindPackage(findPackageInput);
+            settings.InstallPackages =          GetFindPackages(itemListPackages);
             settings.CopyDirsPost =             GetItemListValuePairBrowsable(postCopyDirsList);
             settings.CopyFilesPost =            GetItemListValuePairBrowsable(postCopyFilesList);
             settings.IncludeSourcesMode =       GetIncludeSourceFilesMode(sourceFilesList);
