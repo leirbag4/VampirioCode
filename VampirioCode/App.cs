@@ -8,6 +8,7 @@ using VampEditor;
 using VampirioCode.Builder;
 using VampirioCode.Builder.Custom;
 using VampirioCode.Builder.Utils;
+using VampirioCode.BuilderInstall;
 using VampirioCode.BuilderSetting;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.Command;
@@ -100,6 +101,8 @@ namespace VampirioCode
             //new ScrollTester().ShowDialog();
             //OnJSonViewerPressed(null, EventArgs.Empty);
             //OnTreeViewTester(null, EventArgs.Empty);
+
+            OnSetupCompilersInterpreters(null, EventArgs.Empty);
 
             base.OnLoad(e);
         }
@@ -1426,7 +1429,8 @@ namespace VampirioCode
 
         private void OnSetupCompilersInterpreters(object sender, EventArgs e)
         {
-
+            BuildToolSelector buildToolSelector = new BuildToolSelector();
+            buildToolSelector.ShowMe(this);
         }
     }
 }

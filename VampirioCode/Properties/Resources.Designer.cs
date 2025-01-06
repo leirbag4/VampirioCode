@@ -103,6 +103,26 @@ namespace VampirioCode.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap file_icon_folder {
+            get {
+                object obj = ResourceManager.GetObject("file_icon_folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap file_icon_generic {
+            get {
+                object obj = ResourceManager.GetObject("file_icon_generic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logo_mini {
             get {
                 object obj = ResourceManager.GetObject("logo_mini", resourceCulture);
@@ -116,6 +136,26 @@ namespace VampirioCode.Properties {
         internal static System.Drawing.Bitmap logo_mini_b {
             get {
                 object obj = ResourceManager.GetObject("logo_mini_b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap med_tick_off {
+            get {
+                object obj = ResourceManager.GetObject("med_tick_off", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap med_tick_on {
+            get {
+                object obj = ResourceManager.GetObject("med_tick_on", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
