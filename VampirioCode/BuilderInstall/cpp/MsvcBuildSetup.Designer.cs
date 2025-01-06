@@ -111,7 +111,7 @@
             // 
             // okButton
             // 
-            okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             okButton.BackColor = Color.FromArgb(30, 30, 30);
             okButton.BorderColor = Color.FromArgb(10, 10, 10);
             okButton.BorderSize = 1;
@@ -125,7 +125,7 @@
             okButton.FocusColor = Color.FromArgb(24, 81, 115);
             okButton.FocusEnabled = false;
             okButton.ForeColor = Color.Silver;
-            okButton.Location = new Point(14, 483);
+            okButton.Location = new Point(70, 483);
             okButton.Name = "okButton";
             okButton.PaintImageOnSelected = true;
             okButton.processEnterKey = true;
@@ -162,7 +162,7 @@
             groupBoxAdv1.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
             groupBoxAdv1.Location = new Point(14, 145);
             groupBoxAdv1.Name = "groupBoxAdv1";
-            groupBoxAdv1.Size = new Size(622, 332);
+            groupBoxAdv1.Size = new Size(656, 332);
             groupBoxAdv1.TabIndex = 27;
             groupBoxAdv1.TabStop = false;
             // 
@@ -234,9 +234,9 @@
             labelAdv11.ModifyControlName = "";
             labelAdv11.ModifyScale = 1F;
             labelAdv11.Name = "labelAdv11";
-            labelAdv11.Size = new Size(147, 17);
+            labelAdv11.Size = new Size(190, 17);
             labelAdv11.TabIndex = 30;
-            labelAdv11.Text = "Universal C Runtime ucrt";
+            labelAdv11.Text = "Universal C Runtime ucrt include";
             // 
             // labelAdv10
             // 
@@ -264,15 +264,15 @@
             labelAdv9.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv9.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv9.ForeColor = SystemColors.WindowFrame;
-            labelAdv9.Location = new Point(273, 267);
+            labelAdv9.Location = new Point(255, 267);
             labelAdv9.ModifyClampMax = 0F;
             labelAdv9.ModifyClampMin = 0F;
             labelAdv9.ModifyControlName = "";
             labelAdv9.ModifyScale = 1F;
             labelAdv9.Name = "labelAdv9";
-            labelAdv9.Size = new Size(333, 17);
+            labelAdv9.Size = new Size(386, 17);
             labelAdv9.TabIndex = 13;
-            labelAdv9.Text = "... Files (x86)\\Windows Kits\\10\\Lib\\XX.X.XXXXX.X\\ucrt\\x64";
+            labelAdv9.Text = "... Program Files (x86)\\Windows Kits\\10\\Lib\\XX.X.XXXXX.X\\ucrt\\x64";
             // 
             // labelAdv8
             // 
@@ -282,7 +282,7 @@
             labelAdv8.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv8.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv8.ForeColor = SystemColors.WindowFrame;
-            labelAdv8.Location = new Point(219, 214);
+            labelAdv8.Location = new Point(256, 214);
             labelAdv8.ModifyClampMax = 0F;
             labelAdv8.ModifyClampMin = 0F;
             labelAdv8.ModifyControlName = "";
@@ -300,15 +300,15 @@
             labelAdv7.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv7.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv7.ForeColor = SystemColors.WindowFrame;
-            labelAdv7.Location = new Point(189, 164);
+            labelAdv7.Location = new Point(170, 164);
             labelAdv7.ModifyClampMax = 0F;
             labelAdv7.ModifyClampMin = 0F;
             labelAdv7.ModifyControlName = "";
             labelAdv7.ModifyScale = 1F;
             labelAdv7.Name = "labelAdv7";
-            labelAdv7.Size = new Size(415, 17);
+            labelAdv7.Size = new Size(471, 17);
             labelAdv7.TabIndex = 11;
-            labelAdv7.Text = "... Visual Studio\\20XX\\Community\\VC\\Tools\\MSVC\\XX.XX.XXXXX\\lib\\x64";
+            labelAdv7.Text = "... Microsoft Visual Studio\\20XX\\Community\\VC\\Tools\\MSVC\\XX.XX.XXXXX\\lib\\x64";
             // 
             // labelAdv6
             // 
@@ -318,7 +318,7 @@
             labelAdv6.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv6.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv6.ForeColor = SystemColors.WindowFrame;
-            labelAdv6.Location = new Point(232, 80);
+            labelAdv6.Location = new Point(257, 80);
             labelAdv6.ModifyClampMax = 0F;
             labelAdv6.ModifyClampMin = 0F;
             labelAdv6.ModifyControlName = "";
@@ -336,7 +336,7 @@
             labelAdv5.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv5.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv5.ForeColor = SystemColors.WindowFrame;
-            labelAdv5.Location = new Point(200, 27);
+            labelAdv5.Location = new Point(225, 27);
             labelAdv5.ModifyClampMax = 0F;
             labelAdv5.ModifyClampMin = 0F;
             labelAdv5.ModifyControlName = "";
@@ -434,7 +434,7 @@
             // 
             // buttonAdv1
             // 
-            buttonAdv1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonAdv1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonAdv1.BackColor = Color.FromArgb(30, 30, 30);
             buttonAdv1.BorderColor = Color.FromArgb(10, 10, 10);
             buttonAdv1.BorderSize = 1;
@@ -448,7 +448,7 @@
             buttonAdv1.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv1.FocusEnabled = false;
             buttonAdv1.ForeColor = Color.Silver;
-            buttonAdv1.Location = new Point(242, 483);
+            buttonAdv1.Location = new Point(298, 483);
             buttonAdv1.Name = "buttonAdv1";
             buttonAdv1.PaintImageOnSelected = true;
             buttonAdv1.processEnterKey = true;
@@ -473,7 +473,7 @@
             Controls.Add(cl_exe_input);
             Controls.Add(labelAdv1);
             Name = "MsvcBuildSetup";
-            Size = new Size(650, 544);
+            Size = new Size(706, 544);
             groupBoxAdv1.ResumeLayout(false);
             groupBoxAdv1.PerformLayout();
             ResumeLayout(false);
