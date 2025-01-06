@@ -34,6 +34,11 @@
             labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
             okButton = new VampirioCode.UI.Controls.ButtonAdv();
             groupBoxAdv1 = new VampirioCode.UI.Controls.GroupBoxAdv();
+            labelAdv14 = new VampirioCode.UI.Controls.LabelAdv();
+            labelAdv13 = new VampirioCode.UI.Controls.LabelAdv();
+            labelAdv12 = new VampirioCode.UI.Controls.LabelAdv();
+            labelAdv11 = new VampirioCode.UI.Controls.LabelAdv();
+            labelAdv10 = new VampirioCode.UI.Controls.LabelAdv();
             labelAdv9 = new VampirioCode.UI.Controls.LabelAdv();
             labelAdv8 = new VampirioCode.UI.Controls.LabelAdv();
             labelAdv7 = new VampirioCode.UI.Controls.LabelAdv();
@@ -120,7 +125,7 @@
             okButton.FocusColor = Color.FromArgb(24, 81, 115);
             okButton.FocusEnabled = false;
             okButton.ForeColor = Color.Silver;
-            okButton.Location = new Point(14, 475);
+            okButton.Location = new Point(14, 483);
             okButton.Name = "okButton";
             okButton.PaintImageOnSelected = true;
             okButton.processEnterKey = true;
@@ -137,6 +142,11 @@
             // 
             groupBoxAdv1.BorderColor = Color.FromArgb(65, 65, 65);
             groupBoxAdv1.BorderSize = 1;
+            groupBoxAdv1.Controls.Add(labelAdv14);
+            groupBoxAdv1.Controls.Add(labelAdv13);
+            groupBoxAdv1.Controls.Add(labelAdv12);
+            groupBoxAdv1.Controls.Add(labelAdv11);
+            groupBoxAdv1.Controls.Add(labelAdv10);
             groupBoxAdv1.Controls.Add(labelAdv9);
             groupBoxAdv1.Controls.Add(labelAdv8);
             groupBoxAdv1.Controls.Add(labelAdv7);
@@ -152,9 +162,99 @@
             groupBoxAdv1.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
             groupBoxAdv1.Location = new Point(14, 145);
             groupBoxAdv1.Name = "groupBoxAdv1";
-            groupBoxAdv1.Size = new Size(622, 312);
+            groupBoxAdv1.Size = new Size(622, 332);
             groupBoxAdv1.TabIndex = 27;
             groupBoxAdv1.TabStop = false;
+            // 
+            // labelAdv14
+            // 
+            labelAdv14.AutoSize = true;
+            labelAdv14.BorderColor = Color.DarkGray;
+            labelAdv14.BorderSize = 1;
+            labelAdv14.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv14.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelAdv14.ForeColor = Color.Silver;
+            labelAdv14.Location = new Point(61, 267);
+            labelAdv14.ModifyClampMax = 0F;
+            labelAdv14.ModifyClampMin = 0F;
+            labelAdv14.ModifyControlName = "";
+            labelAdv14.ModifyScale = 1F;
+            labelAdv14.Name = "labelAdv14";
+            labelAdv14.Size = new Size(185, 17);
+            labelAdv14.TabIndex = 33;
+            labelAdv14.Text = "Universal C Runtime - libucrt.lib";
+            // 
+            // labelAdv13
+            // 
+            labelAdv13.AutoSize = true;
+            labelAdv13.BorderColor = Color.DarkGray;
+            labelAdv13.BorderSize = 1;
+            labelAdv13.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv13.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelAdv13.ForeColor = Color.Silver;
+            labelAdv13.Location = new Point(61, 214);
+            labelAdv13.ModifyClampMax = 0F;
+            labelAdv13.ModifyClampMin = 0F;
+            labelAdv13.ModifyControlName = "";
+            labelAdv13.ModifyScale = 1F;
+            labelAdv13.Name = "labelAdv13";
+            labelAdv13.Size = new Size(131, 17);
+            labelAdv13.TabIndex = 32;
+            labelAdv13.Text = "kernel32 - kernel32.lib";
+            // 
+            // labelAdv12
+            // 
+            labelAdv12.AutoSize = true;
+            labelAdv12.BorderColor = Color.DarkGray;
+            labelAdv12.BorderSize = 1;
+            labelAdv12.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv12.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelAdv12.ForeColor = Color.Silver;
+            labelAdv12.Location = new Point(61, 164);
+            labelAdv12.ModifyClampMax = 0F;
+            labelAdv12.ModifyClampMin = 0F;
+            labelAdv12.ModifyControlName = "";
+            labelAdv12.ModifyScale = 1F;
+            labelAdv12.Name = "labelAdv12";
+            labelAdv12.Size = new Size(97, 17);
+            labelAdv12.TabIndex = 31;
+            labelAdv12.Text = "STL - libcpmt.lib";
+            // 
+            // labelAdv11
+            // 
+            labelAdv11.AutoSize = true;
+            labelAdv11.BorderColor = Color.DarkGray;
+            labelAdv11.BorderSize = 1;
+            labelAdv11.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv11.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelAdv11.ForeColor = Color.Silver;
+            labelAdv11.Location = new Point(61, 80);
+            labelAdv11.ModifyClampMax = 0F;
+            labelAdv11.ModifyClampMin = 0F;
+            labelAdv11.ModifyControlName = "";
+            labelAdv11.ModifyScale = 1F;
+            labelAdv11.Name = "labelAdv11";
+            labelAdv11.Size = new Size(147, 17);
+            labelAdv11.TabIndex = 30;
+            labelAdv11.Text = "Universal C Runtime ucrt";
+            // 
+            // labelAdv10
+            // 
+            labelAdv10.AutoSize = true;
+            labelAdv10.BorderColor = Color.DarkGray;
+            labelAdv10.BorderSize = 1;
+            labelAdv10.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv10.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelAdv10.ForeColor = Color.Silver;
+            labelAdv10.Location = new Point(61, 27);
+            labelAdv10.ModifyClampMax = 0F;
+            labelAdv10.ModifyClampMin = 0F;
+            labelAdv10.ModifyControlName = "";
+            labelAdv10.ModifyScale = 1F;
+            labelAdv10.Name = "labelAdv10";
+            labelAdv10.Size = new Size(133, 17);
+            labelAdv10.TabIndex = 29;
+            labelAdv10.Text = "STL / Compiler include";
             // 
             // labelAdv9
             // 
@@ -164,15 +264,15 @@
             labelAdv9.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv9.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv9.ForeColor = SystemColors.WindowFrame;
-            labelAdv9.Location = new Point(81, 254);
+            labelAdv9.Location = new Point(273, 267);
             labelAdv9.ModifyClampMax = 0F;
             labelAdv9.ModifyClampMin = 0F;
             labelAdv9.ModifyControlName = "";
             labelAdv9.ModifyScale = 1F;
             labelAdv9.Name = "labelAdv9";
-            labelAdv9.Size = new Size(389, 17);
+            labelAdv9.Size = new Size(333, 17);
             labelAdv9.TabIndex = 13;
-            labelAdv9.Text = "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\XX.X.XXXXX.X\\ucrt\\x64";
+            labelAdv9.Text = "... Files (x86)\\Windows Kits\\10\\Lib\\XX.X.XXXXX.X\\ucrt\\x64";
             // 
             // labelAdv8
             // 
@@ -182,7 +282,7 @@
             labelAdv8.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv8.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv8.ForeColor = SystemColors.WindowFrame;
-            labelAdv8.Location = new Point(81, 201);
+            labelAdv8.Location = new Point(219, 214);
             labelAdv8.ModifyClampMax = 0F;
             labelAdv8.ModifyClampMin = 0F;
             labelAdv8.ModifyControlName = "";
@@ -200,15 +300,15 @@
             labelAdv7.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv7.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv7.ForeColor = SystemColors.WindowFrame;
-            labelAdv7.Location = new Point(81, 148);
+            labelAdv7.Location = new Point(189, 164);
             labelAdv7.ModifyClampMax = 0F;
             labelAdv7.ModifyClampMin = 0F;
             labelAdv7.ModifyControlName = "";
             labelAdv7.ModifyScale = 1F;
             labelAdv7.Name = "labelAdv7";
-            labelAdv7.Size = new Size(305, 17);
+            labelAdv7.Size = new Size(415, 17);
             labelAdv7.TabIndex = 11;
-            labelAdv7.Text = "...\\Community\\VC\\Tools\\MSVC\\XX.XX.XXXXX\\lib\\x64";
+            labelAdv7.Text = "... Visual Studio\\20XX\\Community\\VC\\Tools\\MSVC\\XX.XX.XXXXX\\lib\\x64";
             // 
             // labelAdv6
             // 
@@ -218,15 +318,15 @@
             labelAdv6.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv6.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv6.ForeColor = SystemColors.WindowFrame;
-            labelAdv6.Location = new Point(81, 71);
+            labelAdv6.Location = new Point(232, 80);
             labelAdv6.ModifyClampMax = 0F;
             labelAdv6.ModifyClampMin = 0F;
             labelAdv6.ModifyControlName = "";
             labelAdv6.ModifyScale = 1F;
             labelAdv6.Name = "labelAdv6";
-            labelAdv6.Size = new Size(387, 17);
+            labelAdv6.Size = new Size(384, 17);
             labelAdv6.TabIndex = 10;
-            labelAdv6.Text = "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\XX.X.XXXXX.X\\ucrt";
+            labelAdv6.Text = "... Program Files (x86)\\Windows Kits\\10\\Include\\XX.X.XXXXX.X\\ucrt";
             // 
             // labelAdv5
             // 
@@ -236,22 +336,22 @@
             labelAdv5.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv5.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv5.ForeColor = SystemColors.WindowFrame;
-            labelAdv5.Location = new Point(81, 18);
+            labelAdv5.Location = new Point(200, 27);
             labelAdv5.ModifyClampMax = 0F;
             labelAdv5.ModifyClampMin = 0F;
             labelAdv5.ModifyControlName = "";
             labelAdv5.ModifyScale = 1F;
             labelAdv5.Name = "labelAdv5";
-            labelAdv5.Size = new Size(306, 17);
+            labelAdv5.Size = new Size(416, 17);
             labelAdv5.TabIndex = 9;
-            labelAdv5.Text = "...\\Community\\VC\\Tools\\MSVC\\XX.XX.XXXXX\\include";
+            labelAdv5.Text = "... Visual Studio\\20XX\\Community\\VC\\Tools\\MSVC\\XX.XX.XXXXX\\include";
             // 
             // lib_ucrt_input
             // 
             lib_ucrt_input.BackColor = Color.FromArgb(35, 35, 35);
             lib_ucrt_input.DirPath = "";
             lib_ucrt_input.ForeColor = Color.FromArgb(120, 120, 120);
-            lib_ucrt_input.Location = new Point(61, 269);
+            lib_ucrt_input.Location = new Point(61, 282);
             lib_ucrt_input.Name = "lib_ucrt_input";
             lib_ucrt_input.Size = new Size(514, 36);
             lib_ucrt_input.TabIndex = 8;
@@ -261,7 +361,7 @@
             lib_um_input.BackColor = Color.FromArgb(35, 35, 35);
             lib_um_input.DirPath = "";
             lib_um_input.ForeColor = Color.FromArgb(120, 120, 120);
-            lib_um_input.Location = new Point(61, 215);
+            lib_um_input.Location = new Point(61, 228);
             lib_um_input.Name = "lib_um_input";
             lib_um_input.Size = new Size(514, 36);
             lib_um_input.TabIndex = 7;
@@ -274,7 +374,7 @@
             labelAdv4.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelAdv4.ForeColor = Color.Silver;
-            labelAdv4.Location = new Point(14, 125);
+            labelAdv4.Location = new Point(14, 138);
             labelAdv4.ModifyClampMax = 0F;
             labelAdv4.ModifyClampMin = 0F;
             labelAdv4.ModifyControlName = "";
@@ -289,7 +389,7 @@
             lib_input.BackColor = Color.FromArgb(35, 35, 35);
             lib_input.DirPath = "";
             lib_input.ForeColor = Color.FromArgb(120, 120, 120);
-            lib_input.Location = new Point(61, 165);
+            lib_input.Location = new Point(61, 178);
             lib_input.Name = "lib_input";
             lib_input.Size = new Size(514, 36);
             lib_input.TabIndex = 5;
@@ -299,7 +399,7 @@
             include_ucrt_input.BackColor = Color.FromArgb(35, 35, 35);
             include_ucrt_input.DirPath = "";
             include_ucrt_input.ForeColor = Color.FromArgb(120, 120, 120);
-            include_ucrt_input.Location = new Point(61, 86);
+            include_ucrt_input.Location = new Point(61, 92);
             include_ucrt_input.Name = "include_ucrt_input";
             include_ucrt_input.Size = new Size(514, 36);
             include_ucrt_input.TabIndex = 4;
@@ -327,7 +427,7 @@
             include_input.BackColor = Color.FromArgb(35, 35, 35);
             include_input.DirPath = "";
             include_input.ForeColor = Color.FromArgb(120, 120, 120);
-            include_input.Location = new Point(61, 35);
+            include_input.Location = new Point(61, 41);
             include_input.Name = "include_input";
             include_input.Size = new Size(514, 36);
             include_input.TabIndex = 0;
@@ -348,7 +448,7 @@
             buttonAdv1.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv1.FocusEnabled = false;
             buttonAdv1.ForeColor = Color.Silver;
-            buttonAdv1.Location = new Point(242, 475);
+            buttonAdv1.Location = new Point(242, 483);
             buttonAdv1.Name = "buttonAdv1";
             buttonAdv1.PaintImageOnSelected = true;
             buttonAdv1.processEnterKey = true;
@@ -373,7 +473,7 @@
             Controls.Add(cl_exe_input);
             Controls.Add(labelAdv1);
             Name = "MsvcBuildSetup";
-            Size = new Size(650, 536);
+            Size = new Size(650, 544);
             groupBoxAdv1.ResumeLayout(false);
             groupBoxAdv1.PerformLayout();
             ResumeLayout(false);
@@ -401,5 +501,10 @@
         private VampirioCode.UI.Controls.LabelAdv labelAdv9;
         private VampirioCode.UI.Controls.LabelAdv labelAdv8;
         private VampirioCode.UI.Controls.LabelAdv labelAdv7;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv14;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv13;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv12;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv11;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv10;
     }
 }

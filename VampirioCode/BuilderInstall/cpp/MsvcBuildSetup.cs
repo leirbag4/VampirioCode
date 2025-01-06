@@ -54,36 +54,46 @@ namespace VampirioCode.BuilderInstall.cpp
         {
             string programFilesX86Path;
             var buffer = new StringBuilder(1024);
+            ProcessStartInfo startInfo = null;
 
-            uint size = GetEnvironmentVariable("ProgramFiles(x86)", buffer, (uint)buffer.Capacity);
-
-            if (size > 0)
-                programFilesX86Path = "C:\\Program Files (x86)";
-            else
-                programFilesX86Path = "";
-
-
-            // Default path where 'vswhere.exe' usually is
-            string vswherePath = Path.Combine(programFilesX86Path,
-                                              "Microsoft Visual Studio", "Installer", "vswhere.exe");
-
-            XConsole.Println("vswherePath: " + vswherePath);
-
-            if (!File.Exists(vswherePath))
+            try
             {
-                XConsole.Println("Can't find 'vswhere.exe'. Check that Visual Studio is installed.");
-                return null;
+                uint size = GetEnvironmentVariable("ProgramFiles(x86)", buffer, (uint)buffer.Capacity);
+
+                if (size > 0)
+                    programFilesX86Path = "C:\\Program Files (x86)";
+                else
+                    programFilesX86Path = "";
+
+
+                // Default path where 'vswhere.exe' usually is
+                string vswherePath = Path.Combine(programFilesX86Path,
+                                                  "Microsoft Visual Studio", "Installer", "vswhere.exe");
+
+                XConsole.Println("vswherePath: " + vswherePath);
+
+                if (!File.Exists(vswherePath))
+                {
+                    XConsole.Println("Can't find 'vswhere.exe'. Check that Visual Studio is installed.");
+                    return null;
+                }
+
+                // Ejecutar vswhere.exe para obtener la ruta de instalación de Visual Studio
+                startInfo = new ProcessStartInfo
+                {
+                    FileName = vswherePath,
+                    Arguments = "-latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
             }
-
-            // Ejecutar vswhere.exe para obtener la ruta de instalación de Visual Studio
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            catch (Exception e)
             {
-                FileName = vswherePath,
-                Arguments = "-latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
+                XConsole.PrintWarning($"Error checking compiler: {e.Message}");
+                return "";
+            }
 
             try
             {
