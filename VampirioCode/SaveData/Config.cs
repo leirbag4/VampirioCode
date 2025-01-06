@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using VampirioCode.SaveData;
+using VampirioCode.SaveData.Builders;
 using VampirioCode.UI;
 
 
@@ -29,7 +30,8 @@ namespace VampirioCode.SaveData
         // The documents from the previous session that were still opened before close
         public static SavedDocument[] LastOpenDocuments {   get { return config.last_open_documents; }      set { config.last_open_documents = value; } }
         public static int LastSelectedTabIndex {            get { return config.last_selected_tab_index; }  set { config.last_selected_tab_index = value; } }
-        
+        public static BuildersSaveSettingsContainer BuildersSettings { get { return config.builders_settings; } set { config.builders_settings = value; } }
+
         private static Config config = null;
         //private const string FILENAME = "config.cfg";
 
@@ -42,6 +44,7 @@ namespace VampirioCode.SaveData
         public string version { get; set; } = "";
         public SavedDocument[] last_open_documents { get; set; }
         public int last_selected_tab_index { get; set; } = 0;
+        public BuildersSaveSettingsContainer builders_settings { get; set; }
 
         public static void Initialize()
         {
@@ -95,6 +98,7 @@ namespace VampirioCode.SaveData
             config = new Config();
             config.version =                AppInfo.Version;
             config.last_open_documents =    new SavedDocument[0];
+            config.builders_settings =      new BuildersSaveSettingsContainer();
         }
 
         public static void Load()

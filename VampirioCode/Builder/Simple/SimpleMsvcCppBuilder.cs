@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.MSVC;
 using VampirioCode.Command.MSVC.Result;
+using VampirioCode.SaveData;
 using VampirioCode.UI;
 
 namespace VampirioCode.Builder.Simple
@@ -84,7 +85,7 @@ namespace VampirioCode.Builder.Simple
             // [ COMPILATION PROCESS ]
             List<string> sourceFiles = new string[] { ProgramFile }.ToList();
 
-            List<string> includes = new string[] {
+            /*List<string> includes = new string[] {
                 @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include",
                 @"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt"
             }.ToList();
@@ -93,6 +94,17 @@ namespace VampirioCode.Builder.Simple
                 @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\lib\x64",
                 @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64",
                 @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64"
+            }.ToList();*/
+
+            List<string> includes = new string[] {
+                Config.BuildersSettings.Msvc.stl_include,
+                Config.BuildersSettings.Msvc.ucrt_include
+            }.ToList();
+
+            List<string> libPaths = new string[] {
+                Config.BuildersSettings.Msvc.stl_lib_dir,
+                Config.BuildersSettings.Msvc.um_lib_dir,
+                Config.BuildersSettings.Msvc.ucrt_lib_dir
             }.ToList();
 
             List<string> libFiles = new string[] {

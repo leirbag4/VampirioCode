@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.Builder;
 using VampirioCode.BuilderInstall.cpp;
+using VampirioCode.SaveData;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.VerticalItemListManagement;
@@ -56,7 +57,7 @@ namespace VampirioCode.BuilderInstall
             SItem item = list.SelectedItem as SItem;
             BuilderKind builderKind = (BuilderKind)item.Tag;
 
-            RemovePrevBuilder();
+            SaveAndRemovePrevBuilder();
 
             switch (builderKind)
             { 
@@ -67,10 +68,11 @@ namespace VampirioCode.BuilderInstall
 
         }
 
-        private void RemovePrevBuilder()
+        private void SaveAndRemovePrevBuilder()
         {
             if (CurrSetup != null)
             {
+                CurrSetup.SaveData();
                 CurrSetup.Parent.Controls.Remove(CurrSetup);
                 CurrSetup = null;
             }
@@ -113,6 +115,13 @@ namespace VampirioCode.BuilderInstall
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+
+            if (CurrSetup != null)
+            {
+                CurrSetup.SaveData();
+            }
+
+            Config.Save();
 
             XConsole.Pop();
         }

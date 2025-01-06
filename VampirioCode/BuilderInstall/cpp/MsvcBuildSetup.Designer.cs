@@ -44,14 +44,15 @@
             labelAdv7 = new VampirioCode.UI.Controls.LabelAdv();
             labelAdv6 = new VampirioCode.UI.Controls.LabelAdv();
             labelAdv5 = new VampirioCode.UI.Controls.LabelAdv();
-            lib_ucrt_input = new UI.DirectoryInput();
-            lib_um_input = new UI.DirectoryInput();
+            ucrt_lib_input = new UI.DirectoryInput();
+            um_kernel32_lib_input = new UI.DirectoryInput();
             labelAdv4 = new VampirioCode.UI.Controls.LabelAdv();
-            lib_input = new UI.DirectoryInput();
-            include_ucrt_input = new UI.DirectoryInput();
+            stl_lib_dir_input = new UI.DirectoryInput();
+            ucrt_include_input = new UI.DirectoryInput();
             labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
-            include_input = new UI.DirectoryInput();
+            stl_include_input = new UI.DirectoryInput();
             buttonAdv1 = new VampirioCode.UI.Controls.ButtonAdv();
+            buttonAdv2 = new VampirioCode.UI.Controls.ButtonAdv();
             groupBoxAdv1.SuspendLayout();
             SuspendLayout();
             // 
@@ -152,13 +153,13 @@
             groupBoxAdv1.Controls.Add(labelAdv7);
             groupBoxAdv1.Controls.Add(labelAdv6);
             groupBoxAdv1.Controls.Add(labelAdv5);
-            groupBoxAdv1.Controls.Add(lib_ucrt_input);
-            groupBoxAdv1.Controls.Add(lib_um_input);
+            groupBoxAdv1.Controls.Add(ucrt_lib_input);
+            groupBoxAdv1.Controls.Add(um_kernel32_lib_input);
             groupBoxAdv1.Controls.Add(labelAdv4);
-            groupBoxAdv1.Controls.Add(lib_input);
-            groupBoxAdv1.Controls.Add(include_ucrt_input);
+            groupBoxAdv1.Controls.Add(stl_lib_dir_input);
+            groupBoxAdv1.Controls.Add(ucrt_include_input);
             groupBoxAdv1.Controls.Add(labelAdv3);
-            groupBoxAdv1.Controls.Add(include_input);
+            groupBoxAdv1.Controls.Add(stl_include_input);
             groupBoxAdv1.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
             groupBoxAdv1.Location = new Point(14, 145);
             groupBoxAdv1.Name = "groupBoxAdv1";
@@ -198,9 +199,9 @@
             labelAdv13.ModifyControlName = "";
             labelAdv13.ModifyScale = 1F;
             labelAdv13.Name = "labelAdv13";
-            labelAdv13.Size = new Size(131, 17);
+            labelAdv13.Size = new Size(155, 17);
             labelAdv13.TabIndex = 32;
-            labelAdv13.Text = "kernel32 - kernel32.lib";
+            labelAdv13.Text = "UM kernel32 - kernel32.lib";
             // 
             // labelAdv12
             // 
@@ -346,25 +347,25 @@
             labelAdv5.TabIndex = 9;
             labelAdv5.Text = "... Visual Studio\\20XX\\Community\\VC\\Tools\\MSVC\\XX.XX.XXXXX\\include";
             // 
-            // lib_ucrt_input
+            // ucrt_lib_input
             // 
-            lib_ucrt_input.BackColor = Color.FromArgb(35, 35, 35);
-            lib_ucrt_input.DirPath = "";
-            lib_ucrt_input.ForeColor = Color.FromArgb(120, 120, 120);
-            lib_ucrt_input.Location = new Point(61, 282);
-            lib_ucrt_input.Name = "lib_ucrt_input";
-            lib_ucrt_input.Size = new Size(514, 36);
-            lib_ucrt_input.TabIndex = 8;
+            ucrt_lib_input.BackColor = Color.FromArgb(35, 35, 35);
+            ucrt_lib_input.DirPath = "";
+            ucrt_lib_input.ForeColor = Color.FromArgb(120, 120, 120);
+            ucrt_lib_input.Location = new Point(61, 282);
+            ucrt_lib_input.Name = "ucrt_lib_input";
+            ucrt_lib_input.Size = new Size(514, 36);
+            ucrt_lib_input.TabIndex = 8;
             // 
-            // lib_um_input
+            // um_kernel32_lib_input
             // 
-            lib_um_input.BackColor = Color.FromArgb(35, 35, 35);
-            lib_um_input.DirPath = "";
-            lib_um_input.ForeColor = Color.FromArgb(120, 120, 120);
-            lib_um_input.Location = new Point(61, 228);
-            lib_um_input.Name = "lib_um_input";
-            lib_um_input.Size = new Size(514, 36);
-            lib_um_input.TabIndex = 7;
+            um_kernel32_lib_input.BackColor = Color.FromArgb(35, 35, 35);
+            um_kernel32_lib_input.DirPath = "";
+            um_kernel32_lib_input.ForeColor = Color.FromArgb(120, 120, 120);
+            um_kernel32_lib_input.Location = new Point(61, 228);
+            um_kernel32_lib_input.Name = "um_kernel32_lib_input";
+            um_kernel32_lib_input.Size = new Size(514, 36);
+            um_kernel32_lib_input.TabIndex = 7;
             // 
             // labelAdv4
             // 
@@ -384,25 +385,25 @@
             labelAdv4.TabIndex = 6;
             labelAdv4.Text = "Library Directories";
             // 
-            // lib_input
+            // stl_lib_dir_input
             // 
-            lib_input.BackColor = Color.FromArgb(35, 35, 35);
-            lib_input.DirPath = "";
-            lib_input.ForeColor = Color.FromArgb(120, 120, 120);
-            lib_input.Location = new Point(61, 178);
-            lib_input.Name = "lib_input";
-            lib_input.Size = new Size(514, 36);
-            lib_input.TabIndex = 5;
+            stl_lib_dir_input.BackColor = Color.FromArgb(35, 35, 35);
+            stl_lib_dir_input.DirPath = "";
+            stl_lib_dir_input.ForeColor = Color.FromArgb(120, 120, 120);
+            stl_lib_dir_input.Location = new Point(61, 178);
+            stl_lib_dir_input.Name = "stl_lib_dir_input";
+            stl_lib_dir_input.Size = new Size(514, 36);
+            stl_lib_dir_input.TabIndex = 5;
             // 
-            // include_ucrt_input
+            // ucrt_include_input
             // 
-            include_ucrt_input.BackColor = Color.FromArgb(35, 35, 35);
-            include_ucrt_input.DirPath = "";
-            include_ucrt_input.ForeColor = Color.FromArgb(120, 120, 120);
-            include_ucrt_input.Location = new Point(61, 92);
-            include_ucrt_input.Name = "include_ucrt_input";
-            include_ucrt_input.Size = new Size(514, 36);
-            include_ucrt_input.TabIndex = 4;
+            ucrt_include_input.BackColor = Color.FromArgb(35, 35, 35);
+            ucrt_include_input.DirPath = "";
+            ucrt_include_input.ForeColor = Color.FromArgb(120, 120, 120);
+            ucrt_include_input.Location = new Point(61, 92);
+            ucrt_include_input.Name = "ucrt_include_input";
+            ucrt_include_input.Size = new Size(514, 36);
+            ucrt_include_input.TabIndex = 4;
             // 
             // labelAdv3
             // 
@@ -422,15 +423,15 @@
             labelAdv3.TabIndex = 3;
             labelAdv3.Text = "Includes";
             // 
-            // include_input
+            // stl_include_input
             // 
-            include_input.BackColor = Color.FromArgb(35, 35, 35);
-            include_input.DirPath = "";
-            include_input.ForeColor = Color.FromArgb(120, 120, 120);
-            include_input.Location = new Point(61, 41);
-            include_input.Name = "include_input";
-            include_input.Size = new Size(514, 36);
-            include_input.TabIndex = 0;
+            stl_include_input.BackColor = Color.FromArgb(35, 35, 35);
+            stl_include_input.DirPath = "";
+            stl_include_input.ForeColor = Color.FromArgb(120, 120, 120);
+            stl_include_input.Location = new Point(61, 41);
+            stl_include_input.Name = "stl_include_input";
+            stl_include_input.Size = new Size(514, 36);
+            stl_include_input.TabIndex = 0;
             // 
             // buttonAdv1
             // 
@@ -461,10 +462,40 @@
             buttonAdv1.UseVisualStyleBackColor = false;
             buttonAdv1.Click += OnAutoFillIncludesAndLibraries;
             // 
+            // buttonAdv2
+            // 
+            buttonAdv2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv2.BackColor = Color.FromArgb(30, 30, 30);
+            buttonAdv2.BorderColor = Color.FromArgb(10, 10, 10);
+            buttonAdv2.BorderSize = 1;
+            buttonAdv2.CStyle = VampirioCode.UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv2.expandImage = false;
+            buttonAdv2.extraText = "";
+            buttonAdv2.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv2.extraTextColor = Color.Black;
+            buttonAdv2.extraTextFont = null;
+            buttonAdv2.extraTextOffset = new Point(0, 0);
+            buttonAdv2.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv2.FocusEnabled = false;
+            buttonAdv2.ForeColor = Color.Silver;
+            buttonAdv2.Location = new Point(548, 49);
+            buttonAdv2.Name = "buttonAdv2";
+            buttonAdv2.PaintImageOnSelected = true;
+            buttonAdv2.processEnterKey = true;
+            buttonAdv2.resizeImage = new Point(0, 0);
+            buttonAdv2.Selected = false;
+            buttonAdv2.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv2.Size = new Size(122, 74);
+            buttonAdv2.TabIndex = 29;
+            buttonAdv2.Text = "Use a reference hardcoded paths";
+            buttonAdv2.UseVisualStyleBackColor = false;
+            buttonAdv2.Click += OnUseHardcodedPaths;
+            // 
             // MsvcBuildSetup
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(buttonAdv2);
             Controls.Add(buttonAdv1);
             Controls.Add(groupBoxAdv1);
             Controls.Add(okButton);
@@ -488,13 +519,13 @@
         private VampirioCode.UI.Controls.LabelAdv labelAdv2;
         private VampirioCode.UI.Controls.ButtonAdv okButton;
         private VampirioCode.UI.Controls.GroupBoxAdv groupBoxAdv1;
-        private UI.DirectoryInput include_input;
+        private UI.DirectoryInput stl_include_input;
         private VampirioCode.UI.Controls.LabelAdv labelAdv3;
-        private UI.DirectoryInput lib_um_input;
+        private UI.DirectoryInput um_kernel32_lib_input;
         private VampirioCode.UI.Controls.LabelAdv labelAdv4;
-        private UI.DirectoryInput lib_input;
-        private UI.DirectoryInput include_ucrt_input;
-        private UI.DirectoryInput lib_ucrt_input;
+        private UI.DirectoryInput stl_lib_dir_input;
+        private UI.DirectoryInput ucrt_include_input;
+        private UI.DirectoryInput ucrt_lib_input;
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv1;
         private VampirioCode.UI.Controls.LabelAdv labelAdv5;
         private VampirioCode.UI.Controls.LabelAdv labelAdv6;
@@ -506,5 +537,6 @@
         private VampirioCode.UI.Controls.LabelAdv labelAdv12;
         private VampirioCode.UI.Controls.LabelAdv labelAdv11;
         private VampirioCode.UI.Controls.LabelAdv labelAdv10;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv2;
     }
 }

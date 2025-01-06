@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using VampirioCode.UI;
 using System.IO;
 using System.Runtime.InteropServices;
+using VampirioCode.SaveData;
 
 
 namespace VampirioCode.BuilderInstall.cpp
@@ -32,6 +33,43 @@ namespace VampirioCode.BuilderInstall.cpp
 
             cl_exe_input.Setup(".exe", "cl.exe msvc file");
             lib_exe_input.Setup(".exe", "lib.exe msvc file");
+
+            LoadSaveData();
+        }
+
+        private void LoadSaveData()
+        {
+            cl_exe_input.FilePath =         Config.BuildersSettings.Msvc.cl_exe_path;
+            lib_exe_input.FilePath =        Config.BuildersSettings.Msvc.lib_exe_path;
+
+            // Includes
+            stl_include_input.DirPath =     Config.BuildersSettings.Msvc.stl_include;
+            ucrt_include_input.DirPath =    Config.BuildersSettings.Msvc.ucrt_include;
+
+            // Library Directories
+            stl_lib_dir_input.DirPath =     Config.BuildersSettings.Msvc.stl_lib_dir;
+            um_kernel32_lib_input.DirPath = Config.BuildersSettings.Msvc.um_lib_dir;
+            ucrt_lib_input.DirPath =        Config.BuildersSettings.Msvc.ucrt_lib_dir;
+        }
+
+        public override void SaveData()
+        {
+            XConsole.Println("save msvc data");
+
+            // Executable files
+            Config.BuildersSettings.Msvc.cl_exe_path = cl_exe_input.FilePath.Trim();
+            Config.BuildersSettings.Msvc.lib_exe_path = lib_exe_input.FilePath.Trim();
+
+            // Includes
+            Config.BuildersSettings.Msvc.stl_include = stl_include_input.DirPath.Trim();
+            Config.BuildersSettings.Msvc.ucrt_include = ucrt_include_input.DirPath.Trim();
+
+            // Library Directories
+            Config.BuildersSettings.Msvc.stl_lib_dir = stl_lib_dir_input.DirPath.Trim();
+            Config.BuildersSettings.Msvc.um_lib_dir = um_kernel32_lib_input.DirPath.Trim();
+            Config.BuildersSettings.Msvc.ucrt_lib_dir = ucrt_lib_input.DirPath.Trim();
+
+            Config.Save();
         }
 
         public void FindCompilersPath()
@@ -140,12 +178,12 @@ namespace VampirioCode.BuilderInstall.cpp
 
         private void FindLibUmAndUcrt()
         {
-            string libraryBase =        FindDirWithVersion("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\");
-            lib_um_input.DirPath =      Path.Combine(libraryBase, "um\\x64");
-            lib_ucrt_input.DirPath =    Path.Combine(libraryBase, "ucrt\\x64");
+            string libraryBase = FindDirWithVersion("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\");
+            um_kernel32_lib_input.DirPath = Path.Combine(libraryBase, "um\\x64");
+            ucrt_lib_input.DirPath = Path.Combine(libraryBase, "ucrt\\x64");
         }
 
-        private void FindIncludeUcrt() 
+        private void FindIncludeUcrt()
         {
 
             // 'include ucrt'
@@ -155,7 +193,7 @@ namespace VampirioCode.BuilderInstall.cpp
                 // hardcoded fixed bug
                 include = include.Replace("\\libd", "");
 
-                include_ucrt_input.DirPath = Path.Combine(include, "ucrt");
+                ucrt_include_input.DirPath = Path.Combine(include, "ucrt");
             }
         }
 
@@ -170,11 +208,11 @@ namespace VampirioCode.BuilderInstall.cpp
 
             if (index != -1)
             {
-                include_input.DirPath = Path.Combine(clPath.Substring(0, index), "include");
-                lib_input.DirPath =     Path.Combine(clPath.Substring(0, index), "lib\x64");
+                stl_include_input.DirPath = Path.Combine(clPath.Substring(0, index), "include");
+                stl_lib_dir_input.DirPath = Path.Combine(clPath.Substring(0, index), "lib\\x64");
             }
 
-            
+
         }
 
         // You can pass as argument 'C:\Program Files (x86)\Windows Kits\10\Include\' and it will return
@@ -216,6 +254,21 @@ namespace VampirioCode.BuilderInstall.cpp
         private void OnAutoFillIncludesAndLibraries(object sender, EventArgs e)
         {
             AutoFillIncludesAndLibraries();
+        }
+
+        private void OnUseHardcodedPaths(object sender, EventArgs e)
+        {
+            cl_exe_input.FilePath =         @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe";
+            lib_exe_input.FilePath =        @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe";
+
+            // Includes
+            stl_include_input.DirPath =     @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include";
+            ucrt_include_input.DirPath =    @"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt";
+
+            // Library Directories
+            stl_lib_dir_input.DirPath =     @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\lib\x64";
+            um_kernel32_lib_input.DirPath = @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64";
+            ucrt_lib_input.DirPath =        @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64";
         }
     }
 }

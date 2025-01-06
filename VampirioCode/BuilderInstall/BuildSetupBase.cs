@@ -21,5 +21,10 @@ namespace VampirioCode.BuilderInstall
         { 
         
         }
+
+        public virtual void SaveData() 
+        {
+        
+        }  
     }
 }

@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using VampirioCode.Command.MSVC.Params;
 using VampirioCode.Command.MSVC.Result;
 using VampirioCode.IO;
+using VampirioCode.SaveData;
 
 namespace VampirioCode.Command.MSVC
 {
     public class MSVC : BaseCmdProgram
     {
-        public static string ProgramPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe"; // 14.38.33130 [working]
-        public static string LibProgramPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe"; // 14.38.33130 [working]
+        public static string ProgramPath = "";      //@"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe"; // 14.38.33130 [working]
+        public static string LibProgramPath = "";   //@"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe"; // 14.38.33130 [working]
 
         /// <summary>
         /// Compile the program using the src .cpp files, optional headers, libraries, etc.
@@ -60,7 +61,9 @@ namespace VampirioCode.Command.MSVC
         /// </param>
         /// <returns></returns>
         public async Task<BuildResult> BuildAsync(List<string> sources, string outputFilename = "", string outputObjsDir = "", List<string> includes = null, List<string> libraryPaths = null, List<string> libraryFiles = null, ExceptionHandlingModel exceptionHandlingModel = ExceptionHandlingModel.EHsc)
-        { 
+        {
+            SetupProgramPaths();
+
             BuildCmd cmd =                  new BuildCmd();
             cmd.Sources =                   sources;
             cmd.OutputFilename =            outputFilename;
@@ -77,6 +80,8 @@ namespace VampirioCode.Command.MSVC
 
         public async Task<BuildResult> BuildAsync(BuildCmd cmd)
         {
+            SetupProgramPaths();
+
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
             return result;
@@ -84,6 +89,8 @@ namespace VampirioCode.Command.MSVC
 
         public async Task<BuildLibresult> BuildLibAsync(BuildLibCmd cmd)
         {
+            SetupProgramPaths();
+
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
             return result;
@@ -95,12 +102,20 @@ namespace VampirioCode.Command.MSVC
         /// <param name="filename">The executable file '.exe' to run</param>
         /// <returns></returns>
         public async Task<RunResult> RunAsync(string filename)
-        { 
+        {
+            SetupProgramPaths();
+
             RunCmd cmd =    new RunCmd();
             cmd.Filename =  filename;
             var result =    await cmd.RunAsync();
             CheckCmd(cmd);
             return result;
+        }
+
+        protected override void SetupProgramPaths()
+        {
+            ProgramPath =       Config.BuildersSettings.Msvc.cl_exe_path;
+            LibProgramPath =    Config.BuildersSettings.Msvc.lib_exe_path;
         }
 
     }

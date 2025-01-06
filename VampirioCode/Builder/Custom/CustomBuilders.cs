@@ -8,6 +8,7 @@ using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.UI;
 using VampEditor;
 using VampirioCode.BuilderSetting.CppSettings.Settings;
+using VampirioCode.SaveData;
 
 namespace VampirioCode.Builder.Custom
 {
@@ -87,13 +88,23 @@ namespace VampirioCode.Builder.Custom
             //setting.AddCopyDirPre("code", "info\\code");
 
             // Includes
-            setting.IncludeDirAdd("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include");
+            /*setting.IncludeDirAdd("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include");
             setting.IncludeDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt");
 
             // Library Directories
             setting.LibraryDirAdd("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\lib\\x64");
             setting.LibraryDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\um\\x64");
             setting.LibraryDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\ucrt\\x64");
+            */
+
+            // Includes
+            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
+            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
+
+            // Library Directories
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
 
             // Library Files
             setting.LibraryFileAdd("libcpmt.lib");
@@ -126,7 +137,7 @@ namespace VampirioCode.Builder.Custom
             //setting.AddCopyDirPre("magia\\veneno", "tester\\capitan");
             //setting.AddCopyDirPre("code", "info\\code");
 
-            // Includes
+            /*
             setting.IncludeDirAdd("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include");
             setting.IncludeDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt");
             setting.IncludeDirAdd("${projDir}\\include");
@@ -135,6 +146,18 @@ namespace VampirioCode.Builder.Custom
             setting.LibraryDirAdd("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\lib\\x64");
             setting.LibraryDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\um\\x64");
             setting.LibraryDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\ucrt\\x64");
+            setting.LibraryDirAdd("${projDir}\\lib\\x64");
+             */
+
+            // Includes
+            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
+            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
+            setting.IncludeDirAdd("${projDir}\\include");
+
+            // Library Directories
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
             setting.LibraryDirAdd("${projDir}\\lib\\x64");
 
             // Library Files

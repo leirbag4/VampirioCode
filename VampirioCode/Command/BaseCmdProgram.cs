@@ -20,5 +20,10 @@ namespace VampirioCode.Command
                 Error = true;
             }
         }
+
+        protected virtual void SetupProgramPaths()
+        { 
+        
+        }
     }
 }
