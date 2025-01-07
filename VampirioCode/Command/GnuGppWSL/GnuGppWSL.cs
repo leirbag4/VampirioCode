@@ -4,14 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.GnuGppWSL.Result;
+using VampirioCode.SaveData;
 
 namespace VampirioCode.Command.GnuGppWSL
 {
     public class GnuGppWSL : BaseCmdProgram
     {
+        // Distro name of WSL like 'Ubuntu'
+        public static string DistroName = "";
 
         public async Task<BuildResult> BuildAsync(List<string> sources, string outputFilename = "")
-        { 
+        {
+            SetupProgramPaths();
+
             BuildCmd cmd = new BuildCmd();
             cmd.Sources = sources;
             cmd.OutputFilename = outputFilename;
@@ -22,6 +27,8 @@ namespace VampirioCode.Command.GnuGppWSL
 
         public async Task<BuildResult> BuildAsync(BuildCmd cmd)
         {
+            SetupProgramPaths();
+
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
             return result;
@@ -34,6 +41,8 @@ namespace VampirioCode.Command.GnuGppWSL
         /// <returns></returns>
         public async Task<RunResult> RunAsync(string filename)
         {
+            SetupProgramPaths();
+
             RunCmd cmd = new RunCmd();
             cmd.Filename = filename;
             var result = await cmd.RunAsync();
@@ -48,9 +57,16 @@ namespace VampirioCode.Command.GnuGppWSL
         /// <returns></returns>
         public async Task<RunResult> RunAsync(RunCmd cmd)
         {
+            SetupProgramPaths();
+
             var result = await cmd.RunAsync();
             CheckCmd(cmd);
             return result;
+        }
+
+        protected override void SetupProgramPaths()
+        {
+            DistroName = Config.BuildersSettings.GnuGpp.wsl_distro_name;
         }
     }
 }

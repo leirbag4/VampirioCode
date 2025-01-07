@@ -102,7 +102,7 @@ namespace VampirioCode
             //OnJSonViewerPressed(null, EventArgs.Empty);
             //OnTreeViewTester(null, EventArgs.Empty);
 
-            OnSetupCompilersInterpreters(null, EventArgs.Empty);
+            //OnSetupCompilersInterpreters(null, EventArgs.Empty);
 
             base.OnLoad(e);
         }

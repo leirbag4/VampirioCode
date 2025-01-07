@@ -10,6 +10,7 @@ namespace VampirioCode.BuilderSetting.CppSettings.Settings
 {
     public class GnuCppBSetting : CppBSettingBase
     {
+        public OutputType OutputType { get; set; } = OutputType.Executable;
         public StandardVersion StandardVersion { get; set; } = StandardVersion.None;
     }
 }

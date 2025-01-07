@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampirioCode.Builder;
 using VampirioCode.BuilderInstall.cpp;
+using VampirioCode.BuilderInstall.csharp;
+using VampirioCode.BuilderInstall.Java;
+using VampirioCode.BuilderInstall.Javascript;
+using VampirioCode.BuilderInstall.PHP;
 using VampirioCode.SaveData;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
@@ -31,18 +35,18 @@ namespace VampirioCode.BuilderInstall
             base.OnLoad(e);
 
             CreateTitleItem("C++");
-            CreateItem("C++ MSVC", BuilderKind.CppMsvc);
-            CreateItem("C++ GNU g++", BuilderKind.CppGnuGpp);
-            CreateItem("C++ CLang", BuilderKind.CppCLang);
-            CreateItem("C++ Emscripten", BuilderKind.CppEmscripten);
+            CreateItem("C++ MSVC",          BuilderKind.CppMsvc);
+            CreateItem("C++ GNU g++",       BuilderKind.CppGnuGpp);
+            CreateItem("C++ CLang",         BuilderKind.CppCLang);
+            CreateItem("C++ Emscripten",    BuilderKind.CppEmscripten);
             CreateTitleItem("C#");
-            CreateItem("C# Dotnet", BuilderKind.CSharpDotnet);
+            CreateItem("C# Dotnet",         BuilderKind.CSharpDotnet);
             CreateTitleItem("Javascript");
-            CreateItem("JS NodeJS", BuilderKind.JavascriptNodeJs);
+            CreateItem("JS NodeJS",         BuilderKind.JavascriptNodeJs);
             CreateTitleItem("Java");
-            CreateItem("Java javac", BuilderKind.JavaJavac);
+            CreateItem("Java javac",        BuilderKind.JavaJavac);
             CreateTitleItem("PHP");
-            CreateItem("PHP Xampp", BuilderKind.PhpXampp);
+            CreateItem("PHP Xampp",         BuilderKind.PhpXampp);
 
 
             XConsole.Push();
@@ -63,6 +67,34 @@ namespace VampirioCode.BuilderInstall
             { 
                 case BuilderKind.CppMsvc:
                     SetBuilder(new MsvcBuildSetup());
+                    break;
+
+                case BuilderKind.CppGnuGpp:
+                    SetBuilder(new GnuGppBuildSetup());
+                    break;
+
+                case BuilderKind.CppCLang:
+                    SetBuilder(new CLangBuildSetup());
+                    break;
+
+                case BuilderKind.CppEmscripten:
+                    SetBuilder(new EmscriptenBuildSetup());
+                    break;
+
+                case BuilderKind.CSharpDotnet:
+                    SetBuilder(new DotnetBuildSetup());
+                    break;
+
+                case BuilderKind.JavascriptNodeJs:
+                    SetBuilder(new NodeJsBuildSetup());
+                    break;
+
+                case BuilderKind.JavaJavac:
+                    SetBuilder(new JavacBuildSetup());
+                    break;
+
+                case BuilderKind.PhpXampp:
+                    SetBuilder(new XamppBuildSetup());
                     break;
             }
 

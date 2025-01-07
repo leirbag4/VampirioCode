@@ -37,7 +37,8 @@ namespace VampirioCode.Command.GnuGppWSL
 
             SetIfExists("-o", OutputFilename);
 
-            return await CreateCommand<BuildResult>("wsl", "-d Ubuntu-test g++", cmd.ToString());
+            //return await CreateCommand<BuildResult>("wsl", "-d Ubuntu-test g++", cmd.ToString());
+            return await CreateCommand<BuildResult>("wsl", $"-d {GnuGppWSL.DistroName} g++", cmd.ToString());
         }
 
         private void SetIncludes(List<string> includes)

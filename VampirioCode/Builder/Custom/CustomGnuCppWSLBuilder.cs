@@ -9,16 +9,19 @@ using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.BuilderSetting.CppSettings.Settings;
 using VampirioCode.Command;
 using VampirioCode.Command.GnuGppWSL;
+using VampirioCode.Command.GnuGppWSL.Params;
 using VampirioCode.Command.GnuGppWSL.Result;
 using VampirioCode.Environment;
 using VampirioCode.UI;
 using VampirioCode.Utils;
+using VampirioCode.Workspace.cpp;
 
 namespace VampirioCode.Builder.Custom
 {
     public class CustomGnuCppWSLBuilder : CustomBuilder
     {
         public GnuCppBSetting Setting { get; set; }
+        public CppWorkspace Workspace { get; set; }
 
         private List<string> includes =     new List<string>();
         private List<string> libPaths =     new List<string>();
@@ -33,11 +36,12 @@ namespace VampirioCode.Builder.Custom
             Type = BuilderType.CustomGnuGppWSLCpp;
 
             Setting = new GnuCppBSetting();
+            Workspace = new CppWorkspace();
         }
 
         public override void Prepare()
         {
-            TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
+            /*TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
             BaseProjDir =           TempDir + projectName + "\\";       // temporary base dir ->    \temp_build\proj_name\
             ProjectDir =            BaseProjDir + "gnuCppWsl\\";        // temporary project dir -> \temp_build\proj_name\gnuCppWsl\
             ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\gnuCppWsl\proj.cpp
@@ -47,18 +51,44 @@ namespace VampirioCode.Builder.Custom
 
             // Custom Build Settings File
             BuildSettingsFile =     ProjectDir + ".bsettings";        // build settings file ->   \temp_build\proj_name\gnuCppWsl\.bsettings
+            */
+
+            TempDir = originalBaseDirPath + "\\" + AppInfo.VampTempDir + "\\";         // temporary directory ->   \temp_proj\_vamp\
+
+            BaseProjDir =       TempDir + projectName + "\\";       // temporary base dir ->    \temp_proj\_vamp\proj_name\
+            BuilderTypeDir =    BaseProjDir + "gnuCppWsl\\";        // temp builder type dir -> \temp_proj\_vamp\proj_name\gnuCppWsl\
+            ProjectDir =        BuilderTypeDir + "build\\";         // temporary project dir -> \temp_proj\_vamp\proj_name\gnuCppWsl\build\
+            ProgramFile =       ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_proj\_vamp\proj_name\gnuCppWsl\build\proj.cpp
+            objsDir =           ProjectDir + "obj\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\gnuCppWsl\build\obj\
+            outputDir =         ProjectDir + "bin\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\gnuCppWsl\build\bin\
+            OutputFilename =    outputDir + projectName;            // output binaries dir ->   \temp_proj\_vamp\proj_name\gnuCppWsl\build\bin\proj.exe
+
+            // Custom Build Settings File
+            WorkspaceFile = TempDir + AppInfo.WorkspaceFileName;      // build workspace file ->  \temp_proj\_vamp\.workspace
+            BuildSettingsFile = BuilderTypeDir + AppInfo.BSettingsFileName;      // build settings file ->   \temp_proj\_vamp\proj_name\gnuCppWsl\.bsettings
+
         }
 
         protected override void OnSave()
         {
             SaveSetting<GnuCppBSetting>(Setting);
+
+            // Workspace
+            Workspace.MainFile =            Path.GetRelativePath(originalBaseDirPath, originalFullFilePath);
+            Workspace.DefaultBuilderType =  BuilderType.CustomMsvcCpp;
+
+            SaveWorkspace<CppWorkspace>(Workspace);
         }
 
         protected override void OnLoad()
         {
             //XConsole.Alert("on load: " + BuildSettingsFile);
             //PrintStackTrace();
-            Setting = LoadSetting<GnuCppBSetting>();
+            Setting =   LoadSetting<GnuCppBSetting>();
+            Workspace = LoadWorkspace<CppWorkspace>();
+
+            // Change file extension. e.g: 'proj.exe' to 'proj.dll' or 'proj.lib'
+            OutputFilename = ConvertOutputFilename(OutputFilename, Setting.OutputType);
         }
 
 
@@ -96,6 +126,7 @@ namespace VampirioCode.Builder.Custom
         private async Task<BuildResult> _Build()
         {
             Prepare();
+            Load();
 
             CreateProjectStructure();
 
@@ -160,6 +191,16 @@ namespace VampirioCode.Builder.Custom
 
 
             return result;
+        }
+
+        private string ConvertOutputFilename(string fullFileName, OutputType type)
+        {
+            if (type == OutputType.Executable)
+                return fullFileName;
+            else if (type == OutputType.DynamicLib)
+                return Path.ChangeExtension(fullFileName, ".so");
+            else // if (type == OutputType.Static)
+                return Path.ChangeExtension(fullFileName, ".a");
         }
 
     }

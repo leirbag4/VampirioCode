@@ -202,7 +202,7 @@ namespace VampirioCode.Builder.Custom
             //setting.AddCopyDirPre("magia\\veneno", "tester\\capitan");
             //setting.AddCopyDirPre("code", "info\\code");
 
-            // Includes
+            /*// Includes
             setting.IncludeDirAdd("C:\\tests\\ultra_test\\include");
             setting.IncludeDirAdd("C:\\tests\\ultra_test\\other_include");
 
@@ -214,7 +214,7 @@ namespace VampirioCode.Builder.Custom
             setting.LibraryFileAdd("libcpmt.so");
             setting.LibraryFileAdd("kernel32.so");
             setting.LibraryFileAdd("libucrt.so");
-
+            */
             setting.StandardVersion = Command.GnuGppWSL.Params.StandardVersion.StdCpp17;
 
             // Save build settings
