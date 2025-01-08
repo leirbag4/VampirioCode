@@ -487,7 +487,7 @@
             buttonAdv2.SelectedColor = Color.FromArgb(0, 122, 204);
             buttonAdv2.Size = new Size(122, 74);
             buttonAdv2.TabIndex = 29;
-            buttonAdv2.Text = "Use a reference hardcoded paths";
+            buttonAdv2.Text = "Use reference hardcoded paths";
             buttonAdv2.UseVisualStyleBackColor = false;
             buttonAdv2.Click += OnUseHardcodedPaths;
             // 

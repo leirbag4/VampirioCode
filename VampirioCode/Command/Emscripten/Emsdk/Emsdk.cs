@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Emscripten.Emsdk.Result;
+using VampirioCode.SaveData;
 
 namespace VampirioCode.Command.Emscripten.Emsdk
 {
     public class Emsdk : BaseCmdProgram
     {
 
-        public static string ProgramPath = @"C:\programs_dev\emsdk\emsdk.bat";
+        //public static string ProgramPath = @"C:\programs_dev\emsdk\emsdk.bat";
+        public static string ProgramPath = "";
 
         /// <summary>
         /// Sets the specified tool or SDK as the default tool in the system environment. For simple reasons if you pass '3.1.53' or 'latest' it will change this sdk version.
@@ -20,7 +22,9 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         /// <param name="system">On Windows, you can pass the option --system to the activate command to register the environment permanently for all users.</param>
         /// <returns></returns>
         public async Task<ActivateResult> ActivateAsync(string toolOrSdk = "latest", bool permanent = false, bool system = false)
-        { 
+        {
+            SetupProgramPaths();
+
             ActivateCmd cmd =   new ActivateCmd();
             cmd.ToolOrSdk =     toolOrSdk;
             cmd.Permanent =     permanent;
@@ -37,6 +41,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         /// <returns></returns>
         public async Task<ListResult> ListAsync(bool old = false)
         {
+            SetupProgramPaths();
+
             ListCmd cmd =   new ListCmd();
             cmd.Old = old;
             var result =    await cmd.ListAsync();
@@ -51,6 +57,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         /// <returns></returns>
         public async Task<InstallResult> InstallAsync(string toolOrSdk = "latest")
         {
+            SetupProgramPaths();
+
             InstallCmd cmd =    new InstallCmd();
             cmd.ToolOrSdk =     toolOrSdk;
             var result =        await cmd.InstallAsync();
@@ -65,6 +73,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         /// <returns></returns>
         public async Task<UninstallResult> UninstallAsync(string toolOrSdk = "latest")
         {
+            SetupProgramPaths();
+
             UninstallCmd cmd =  new UninstallCmd();
             cmd.ToolOrSdk =     toolOrSdk;
             var result =        await cmd.UninstallAsync();
@@ -78,6 +88,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         /// <returns></returns>
         public async Task<UpdateResult> UpdateAsync()
         {
+            SetupProgramPaths();
+
             UpdateCmd cmd =     new UpdateCmd();
             var result =        await cmd.UpdateAsync();
             CheckCmd(cmd);
@@ -90,10 +102,17 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         /// <returns></returns>
         public async Task<HelpResult> HelpAsync()
         {
+            SetupProgramPaths();
+
             HelpCmd cmd =   new HelpCmd();
             var result =    await cmd.HelpAsync();
             CheckCmd(cmd);
             return result;
+        }
+
+        protected override void SetupProgramPaths()
+        {
+            ProgramPath = Config.BuildersSettings.Emscripten.emsdk_bat_path;
         }
     }
 }

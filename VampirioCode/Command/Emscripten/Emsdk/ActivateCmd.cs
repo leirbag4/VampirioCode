@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Emscripten.Emsdk.Result;
+using VampirioCode.SaveData;
 using VampirioCode.UI;
 
 namespace VampirioCode.Command.Emscripten.Emsdk
@@ -33,7 +34,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
             Set("--permanent", Permanent);
             Set("--system", System);
             AutoTriggerErrors = false;
-            return await CreateCommand<ActivateResult>(_quotes(Emsdk.ProgramPath), "activate", cmd.Trim());
+            //return await CreateCommand<ActivateResult>(_quotes(Emsdk.ProgramPath), "activate", cmd.Trim());
+            return await CreateCommand<ActivateResult>(_quotes(Config.BuildersSettings.Emscripten.emsdk_bat_path), "activate", cmd.Trim());
         }
 
         protected override void OnDataReceived(string data)

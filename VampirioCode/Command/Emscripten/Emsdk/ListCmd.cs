@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Emscripten.Emsdk.Result;
+using VampirioCode.SaveData;
 
 namespace VampirioCode.Command.Emscripten.Emsdk
 {
@@ -22,7 +23,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         public async Task<ListResult> ListAsync()
         {
             Set("--old", Old);
-            return await CreateCommand<ListResult>(Emsdk.ProgramPath, "list", cmd.Trim());
+            //return await CreateCommand<ListResult>(Emsdk.ProgramPath, "list", cmd.Trim());
+            return await CreateCommand<ListResult>(Config.BuildersSettings.Emscripten.emsdk_bat_path, "list", cmd.Trim());
         }
 
         protected override void OnDataReceived(string data)

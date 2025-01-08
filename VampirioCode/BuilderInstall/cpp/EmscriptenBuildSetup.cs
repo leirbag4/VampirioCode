@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampirioCode.SaveData;
 using VampirioCode.UI;
 
 namespace VampirioCode.BuilderInstall.cpp
@@ -29,13 +30,21 @@ namespace VampirioCode.BuilderInstall.cpp
 
         private void LoadSaveData()
         {
-            //cl_exe_input.FilePath =         Config.BuildersSettings.Msvc.cl_exe_path;
+            emsdk_bat_input.FilePath =  Config.BuildersSettings.Emscripten.emsdk_bat_path;
+            nodejs_exe_input.FilePath = Config.BuildersSettings.Emscripten.nodejs_exe_path;
         }
 
         public override void SaveData()
         {
             // Executable files
-            //Config.BuildersSettings.Msvc.cl_exe_path = cl_exe_input.FilePath.Trim();
+            Config.BuildersSettings.Emscripten.emsdk_bat_path =     emsdk_bat_input.FilePath;
+            Config.BuildersSettings.Emscripten.nodejs_exe_path =    nodejs_exe_input.FilePath;
+        }
+
+        private void OnUseHardcodedPaths(object sender, EventArgs e)
+        {
+            emsdk_bat_input.FilePath =  @"C:\programs_dev\emsdk\emsdk.bat";
+            nodejs_exe_input.FilePath = @"C:\programs_dev\node-v20.11.0-win-x64\node.exe";
         }
     }
 }

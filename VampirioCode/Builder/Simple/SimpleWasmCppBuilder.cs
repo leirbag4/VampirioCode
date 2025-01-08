@@ -75,7 +75,7 @@ namespace VampirioCode.Builder.Simple
             {
                 XConsole.Clear();
                 Nodejs nodejs = new Nodejs();
-                var newResult = await nodejs.RunAsync(OutputFilename);
+                var newResult = await nodejs.RunEmscriptenAsync(OutputFilename);
             }
         }
 

@@ -50,7 +50,7 @@
             okButton.FocusColor = Color.FromArgb(24, 81, 115);
             okButton.FocusEnabled = false;
             okButton.ForeColor = Color.Silver;
-            okButton.Location = new Point(825, 531);
+            okButton.Location = new Point(828, 531);
             okButton.Name = "okButton";
             okButton.PaintImageOnSelected = true;
             okButton.processEnterKey = true;
@@ -73,7 +73,7 @@
             list.Name = "list";
             list.SelectedIndex = -1;
             list.SelectionEnable = true;
-            list.Size = new Size(237, 513);
+            list.Size = new Size(207, 513);
             list.TabIndex = 26;
             // 
             // outp
@@ -84,7 +84,7 @@
             outp.ForeColor = Color.Silver;
             outp.Location = new Point(12, 531);
             outp.Name = "outp";
-            outp.Size = new Size(919, 88);
+            outp.Size = new Size(922, 88);
             outp.TabIndex = 27;
             outp.Text = "";
             // 
@@ -92,16 +92,16 @@
             // 
             buildContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             buildContainer.BackColor = Color.FromArgb(35, 35, 35);
-            buildContainer.Location = new Point(255, 12);
+            buildContainer.Location = new Point(225, 12);
             buildContainer.Name = "buildContainer";
-            buildContainer.Size = new Size(676, 513);
+            buildContainer.Size = new Size(709, 513);
             buildContainer.TabIndex = 28;
             // 
             // BuildToolSelector
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(943, 631);
+            ClientSize = new Size(946, 631);
             Controls.Add(buildContainer);
             Controls.Add(okButton);
             Controls.Add(outp);

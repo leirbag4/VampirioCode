@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Clang;
 using VampirioCode.Command.Clang.Result;
+using VampirioCode.SaveData;
 using VampirioCode.UI;
 
 namespace VampirioCode.Builder.Simple
@@ -46,7 +47,8 @@ namespace VampirioCode.Builder.Simple
 
                 List<string> libPaths = new List<string>();
 #if USE_LIBCLANG                
-                libPaths.Add(@"C:\programs_dev\clang_llvm_18_1_0\lib");
+                //libPaths.Add(@"C:\programs_dev\clang_llvm_18_1_0\lib");
+                libPaths.Add(Config.BuildersSettings.CLang.clang_lib_dir);
 #endif
                 runResult = await clang.RunAsync(result.OutputFilename, libPaths);
                 //return runResult;
@@ -89,8 +91,10 @@ namespace VampirioCode.Builder.Simple
             List<string> libFiles = new List<string>();
 
 #if USE_LIBCLANG
-            includes.Add(@"C:\programs_dev\clang_llvm_18_1_0\include");
-            libPaths.Add(@"C:\programs_dev\clang_llvm_18_1_0\lib");
+            //includes.Add(@"C:\programs_dev\clang_llvm_18_1_0\include");
+            //libPaths.Add(@"C:\programs_dev\clang_llvm_18_1_0\lib");
+            includes.Add(Config.BuildersSettings.CLang.clang_include_dir);
+            libPaths.Add(Config.BuildersSettings.CLang.clang_lib_dir);
             libFiles.Add("libclang.lib");
 #endif
 

@@ -12,6 +12,9 @@ namespace VampirioCode.BuilderInstall.UI
 {
     public partial class FileInput : UserControl
     {
+        public delegate void FilePathChangedEvent(string path);
+
+        public event FilePathChangedEvent FilePathChanged;
         public string FilePath { get { return input.Text; } set { input.Text = value; } }
 
         private string extension = "";
@@ -20,12 +23,19 @@ namespace VampirioCode.BuilderInstall.UI
         public FileInput()
         {
             InitializeComponent();
+            input.TextChanged += OnPathChanged;
         }
 
         public void Setup(string extension, string description)
         { 
             this.extension = extension;
             this.description = description;
+        }
+
+        private void OnPathChanged(object sender, EventArgs e)
+        {
+            if (FilePathChanged != null)
+                FilePathChanged(input.Text);
         }
 
         private void OnBrowsePressed(object sender, EventArgs e)

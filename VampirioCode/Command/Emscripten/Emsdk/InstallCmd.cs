@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Emscripten.Emsdk.Result;
+using VampirioCode.SaveData;
 
 namespace VampirioCode.Command.Emscripten.Emsdk
 {
@@ -17,7 +18,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         public async Task<InstallResult> InstallAsync()
         {
             Set(ToolOrSdk);
-            return await CreateCommand<InstallResult>(Emsdk.ProgramPath, "install", cmd.Trim());
+            //return await CreateCommand<InstallResult>(Emsdk.ProgramPath, "install", cmd.Trim());
+            return await CreateCommand<InstallResult>(Config.BuildersSettings.Emscripten.emsdk_bat_path, "install", cmd.Trim());
         }
 
         protected override void OnDataReceived(string data)

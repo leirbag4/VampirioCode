@@ -156,5 +156,13 @@ namespace VampirioCode.Command.Dotnet
             return result;
         }
 
+        public async Task<VersionResult> VersionAsync()
+        {
+            VersionCmd cmd = new VersionCmd();
+            var result = await cmd.VersionAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
     }
 }

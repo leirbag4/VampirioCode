@@ -103,6 +103,16 @@ namespace VampirioCode.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dotnet_med_icon {
+            get {
+                object obj = ResourceManager.GetObject("dotnet_med_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap file_icon_folder {
             get {
                 object obj = ResourceManager.GetObject("file_icon_folder", resourceCulture);
@@ -316,6 +326,16 @@ namespace VampirioCode.Properties {
         internal static System.Drawing.Bitmap reload_icon {
             get {
                 object obj = ResourceManager.GetObject("reload_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wsl_flat_logo_small {
+            get {
+                object obj = ResourceManager.GetObject("wsl_flat_logo_small", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -7,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampirioCode.Command.Dotnet;
 using VampirioCode.UI;
+using VampirioCode.Utils;
 
 namespace VampirioCode.BuilderInstall.csharp
 {
@@ -36,6 +38,19 @@ namespace VampirioCode.BuilderInstall.csharp
         {
             // Executable files
             //Config.BuildersSettings.Msvc.cl_exe_path = cl_exe_input.FilePath.Trim();
+        }
+
+        private void OnDownloadPressed(object sender, EventArgs e)
+        {
+            FileBrowserUtils.NavigateToWebPage("https://dotnet.microsoft.com/en-us/download");
+        }
+
+        private async void OnTestInstallationPressed(object sender, EventArgs e)
+        {
+            Dotnet dotnet = new Dotnet();
+            var result = await dotnet.VersionAsync();
+
+            XConsole.Println("Dotnet installed. Version: " + result.Version);
         }
     }
 }

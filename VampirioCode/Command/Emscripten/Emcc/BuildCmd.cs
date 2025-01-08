@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VampirioCode.Command.Emscripten.Emcc.Params;
 using VampirioCode.Command.Emscripten.Emcc.Result;
 using VampirioCode.Properties;
+using VampirioCode.SaveData;
 using VampirioCode.UI;
 
 namespace VampirioCode.Command.Emscripten.Emcc
@@ -86,7 +87,8 @@ namespace VampirioCode.Command.Emscripten.Emcc
             // created here if it does not exist
 
             // emsdk
-            Set(Emsdk.Emsdk.ProgramPath);
+            //Set(Emsdk.Emsdk.ProgramPath);
+            Set(Config.BuildersSettings.Emscripten.emsdk_bat_path);
             Set("activate");
             Set("latest");
 
@@ -201,7 +203,7 @@ endlocal";
                 }
                 catch (Exception e)
                 {
-                    CallError("Can't directories for emcc's helper file: " + Emcc.HelperProgramDirPath, e);
+                    CallError("Can't creat directories for emcc's helper file: " + Emcc.HelperProgramDirPath, e);
                 }
             }
 

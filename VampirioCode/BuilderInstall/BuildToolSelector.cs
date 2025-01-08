@@ -53,6 +53,8 @@ namespace VampirioCode.BuilderInstall
             XConsole.SetOutput(outp);
 
             list.SelectedItemChanged += OnSelectedItemChanged;
+
+            list.SelectedIndex = 1;
         }
 
         private void OnSelectedItemChanged(object sender)

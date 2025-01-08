@@ -13,6 +13,7 @@ using VampirioCode.BuilderSetting;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.Command;
 using VampirioCode.Command.Dotnet;
+using VampirioCode.IO;
 using VampirioCode.SaveData;
 using VampirioCode.Tests;
 using VampirioCode.UI;
@@ -47,6 +48,7 @@ namespace VampirioCode
             DarkTitleBarHelper.UseImmersiveDarkMode(Handle, true);
 
             FilesStructInit();
+            Display.Initialize();
             DocumentTypeInfo.Initialize();
             Config.Initialize();
             MsgBox.Setup(this);
@@ -102,7 +104,7 @@ namespace VampirioCode
             //OnJSonViewerPressed(null, EventArgs.Empty);
             //OnTreeViewTester(null, EventArgs.Empty);
 
-            //OnSetupCompilersInterpreters(null, EventArgs.Empty);
+            OnSetupCompilersInterpreters(null, EventArgs.Empty);
 
             base.OnLoad(e);
         }
@@ -730,7 +732,8 @@ namespace VampirioCode
 
             if (eventType == VampEditor.EditorEventType.OpenFileLocation)
             {
-                Process.Start("explorer.exe", string.Format("/select,\"{0}\"", document.FullFilePath));
+                //Process.Start("explorer.exe", string.Format("/select,\"{0}\"", document.FullFilePath));
+                FileBrowserUtils.OpenAndLocateFile(document.FullFilePath);
             }
             else if (eventType == VampEditor.EditorEventType.OpenOutputFilename)
             {
