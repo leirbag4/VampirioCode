@@ -92,7 +92,7 @@ namespace VampirioCode.BuilderInstall
                     break;
 
                 case BuilderKind.JavaJavac:
-                    SetBuilder(new JavacBuildSetup());
+                    SetBuilder(new JavacJdkBuildSetup());
                     break;
 
                 case BuilderKind.PhpXampp:

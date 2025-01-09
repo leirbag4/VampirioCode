@@ -8,6 +8,6 @@ namespace VampirioCode.SaveData.Builders.PHP
 {
     public class PhpXamppBuildSettings
     {
-        public string xampp_exe_path { get; set; } = "";
+        public string php_exe_path { get; set; } = "";
     }
 }

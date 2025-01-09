@@ -133,11 +133,20 @@
   <data name="dotnet_med_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\dotnet_med_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="emscripten_med_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\emscripten_med_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="file_icon_folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\file_icon_folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="file_icon_generic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\file_icon_generic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="java_med_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\java_med_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="llvm_med_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\llvm_med_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo_mini" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\logo_mini.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -178,6 +187,12 @@
   <data name="mmenu_mini_sub" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\mmenu_mini_sub.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="msvc_med_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\msvc_med_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nodejs_med_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\nodejs_med_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="omenu_mini_cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\omenu_mini_cut.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -201,5 +216,8 @@
   </data>
   <data name="wsl_flat_logo_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Res\wsl_flat_logo_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="xampp_med_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Res\xampp_med_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CLangBuildSetup));
             labelAdv1 = new VampirioCode.UI.Controls.LabelAdv();
             clang_exe_input = new UI.FileInput();
             groupBoxAdv1 = new VampirioCode.UI.Controls.GroupBoxAdv();
@@ -41,7 +42,15 @@
             labelAdv5 = new VampirioCode.UI.Controls.LabelAdv();
             clang_include_input = new UI.DirectoryInput();
             buttonAdv2 = new VampirioCode.UI.Controls.ButtonAdv();
+            groupBoxAdv2 = new VampirioCode.UI.Controls.GroupBoxAdv();
+            labelAdv7 = new VampirioCode.UI.Controls.LabelAdv();
+            buttonAdv1 = new VampirioCode.UI.Controls.ButtonAdv();
+            pictureBoxAdv1 = new VampirioCode.UI.Controls.PictureBoxAdv();
+            buttonAdv3 = new VampirioCode.UI.Controls.ButtonAdv();
+            labelAdv8 = new VampirioCode.UI.Controls.LabelAdv();
             groupBoxAdv1.SuspendLayout();
+            groupBoxAdv2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).BeginInit();
             SuspendLayout();
             // 
             // labelAdv1
@@ -61,6 +70,7 @@
             labelAdv1.Size = new Size(204, 20);
             labelAdv1.TabIndex = 2;
             labelAdv1.Text = "'clang++.exe' compiler path";
+            labelAdv1.Click += labelAdv1_Click;
             // 
             // clang_exe_input
             // 
@@ -87,7 +97,7 @@
             groupBoxAdv1.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
             groupBoxAdv1.Location = new Point(24, 129);
             groupBoxAdv1.Name = "groupBoxAdv1";
-            groupBoxAdv1.Size = new Size(654, 242);
+            groupBoxAdv1.Size = new Size(654, 186);
             groupBoxAdv1.TabIndex = 4;
             groupBoxAdv1.TabStop = false;
             groupBoxAdv1.Text = "groupBoxAdv1";
@@ -260,11 +270,128 @@
             buttonAdv2.UseVisualStyleBackColor = false;
             buttonAdv2.Click += OnUseHardcodedPaths;
             // 
+            // groupBoxAdv2
+            // 
+            groupBoxAdv2.BorderColor = Color.FromArgb(60, 60, 60);
+            groupBoxAdv2.BorderSize = 1;
+            groupBoxAdv2.Controls.Add(labelAdv7);
+            groupBoxAdv2.Controls.Add(buttonAdv1);
+            groupBoxAdv2.Controls.Add(pictureBoxAdv1);
+            groupBoxAdv2.Controls.Add(buttonAdv3);
+            groupBoxAdv2.Controls.Add(labelAdv8);
+            groupBoxAdv2.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
+            groupBoxAdv2.Location = new Point(24, 321);
+            groupBoxAdv2.Name = "groupBoxAdv2";
+            groupBoxAdv2.Size = new Size(654, 189);
+            groupBoxAdv2.TabIndex = 41;
+            groupBoxAdv2.TabStop = false;
+            groupBoxAdv2.Text = "groupBoxAdv2";
+            // 
+            // labelAdv7
+            // 
+            labelAdv7.BorderColor = Color.DarkGray;
+            labelAdv7.BorderSize = 1;
+            labelAdv7.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelAdv7.ForeColor = SystemColors.GradientActiveCaption;
+            labelAdv7.Location = new Point(180, 84);
+            labelAdv7.ModifyClampMax = 0F;
+            labelAdv7.ModifyClampMin = 0F;
+            labelAdv7.ModifyControlName = "";
+            labelAdv7.ModifyScale = 1F;
+            labelAdv7.Name = "labelAdv7";
+            labelAdv7.Size = new Size(295, 87);
+            labelAdv7.TabIndex = 34;
+            labelAdv7.Text = "A know working version is the 18.1.0\r\nA portable version can be downloaded here";
+            // 
+            // buttonAdv1
+            // 
+            buttonAdv1.BackColor = Color.FromArgb(30, 30, 30);
+            buttonAdv1.BorderColor = Color.FromArgb(10, 10, 10);
+            buttonAdv1.BorderSize = 1;
+            buttonAdv1.CStyle = VampirioCode.UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv1.expandImage = false;
+            buttonAdv1.extraText = "";
+            buttonAdv1.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv1.extraTextColor = Color.Black;
+            buttonAdv1.extraTextFont = null;
+            buttonAdv1.extraTextOffset = new Point(0, 0);
+            buttonAdv1.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv1.FocusEnabled = false;
+            buttonAdv1.ForeColor = Color.Silver;
+            buttonAdv1.Location = new Point(497, 108);
+            buttonAdv1.Name = "buttonAdv1";
+            buttonAdv1.PaintImageOnSelected = true;
+            buttonAdv1.processEnterKey = true;
+            buttonAdv1.resizeImage = new Point(0, 0);
+            buttonAdv1.Selected = false;
+            buttonAdv1.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv1.Size = new Size(122, 33);
+            buttonAdv1.TabIndex = 33;
+            buttonAdv1.Text = "Download";
+            buttonAdv1.UseVisualStyleBackColor = false;
+            buttonAdv1.Click += OnDownloadPressed;
+            // 
+            // pictureBoxAdv1
+            // 
+            pictureBoxAdv1.Image = Properties.Resources.llvm_med_logo;
+            pictureBoxAdv1.Location = new Point(22, 84);
+            pictureBoxAdv1.Name = "pictureBoxAdv1";
+            pictureBoxAdv1.Size = new Size(149, 87);
+            pictureBoxAdv1.TabIndex = 32;
+            pictureBoxAdv1.TabStop = false;
+            // 
+            // buttonAdv3
+            // 
+            buttonAdv3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAdv3.BackColor = Color.FromArgb(30, 30, 30);
+            buttonAdv3.BorderColor = Color.FromArgb(10, 10, 10);
+            buttonAdv3.BorderSize = 1;
+            buttonAdv3.CStyle = VampirioCode.UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv3.expandImage = false;
+            buttonAdv3.extraText = "";
+            buttonAdv3.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv3.extraTextColor = Color.Black;
+            buttonAdv3.extraTextFont = null;
+            buttonAdv3.extraTextOffset = new Point(0, 0);
+            buttonAdv3.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv3.FocusEnabled = false;
+            buttonAdv3.ForeColor = Color.Silver;
+            buttonAdv3.Location = new Point(55, 593);
+            buttonAdv3.Name = "buttonAdv3";
+            buttonAdv3.PaintImageOnSelected = true;
+            buttonAdv3.processEnterKey = true;
+            buttonAdv3.resizeImage = new Point(0, 0);
+            buttonAdv3.Selected = false;
+            buttonAdv3.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv3.Size = new Size(122, 33);
+            buttonAdv3.TabIndex = 31;
+            buttonAdv3.Text = "Download";
+            buttonAdv3.UseVisualStyleBackColor = false;
+            // 
+            // labelAdv8
+            // 
+            labelAdv8.BorderColor = Color.DarkGray;
+            labelAdv8.BorderSize = 1;
+            labelAdv8.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelAdv8.ForeColor = Color.Silver;
+            labelAdv8.Location = new Point(6, 10);
+            labelAdv8.ModifyClampMax = 0F;
+            labelAdv8.ModifyClampMin = 0F;
+            labelAdv8.ModifyControlName = "";
+            labelAdv8.ModifyScale = 1F;
+            labelAdv8.Name = "labelAdv8";
+            labelAdv8.Size = new Size(582, 71);
+            labelAdv8.TabIndex = 30;
+            labelAdv8.Text = resources.GetString("labelAdv8.Text");
+            // 
             // CLangBuildSetup
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 35, 35);
+            Controls.Add(groupBoxAdv2);
             Controls.Add(buttonAdv2);
             Controls.Add(groupBoxAdv1);
             Controls.Add(clang_exe_input);
@@ -273,6 +400,8 @@
             Size = new Size(706, 544);
             groupBoxAdv1.ResumeLayout(false);
             groupBoxAdv1.PerformLayout();
+            groupBoxAdv2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -292,5 +421,11 @@
         private VampirioCode.UI.Controls.LabelAdv labelAdv6;
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv2;
         private CheckBox auto_fill_ckbox;
+        private VampirioCode.UI.Controls.GroupBoxAdv groupBoxAdv2;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv7;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv1;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv3;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv8;
+        private VampirioCode.UI.Controls.PictureBoxAdv pictureBoxAdv1;
     }
 }

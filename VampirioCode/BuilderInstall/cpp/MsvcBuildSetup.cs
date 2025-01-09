@@ -12,6 +12,7 @@ using VampirioCode.UI;
 using System.IO;
 using System.Runtime.InteropServices;
 using VampirioCode.SaveData;
+using VampirioCode.Utils;
 
 
 namespace VampirioCode.BuilderInstall.cpp
@@ -33,23 +34,25 @@ namespace VampirioCode.BuilderInstall.cpp
 
             cl_exe_input.Setup(".exe", "cl.exe msvc file");
             lib_exe_input.Setup(".exe", "lib.exe msvc file");
+            panelContainer.AutoScroll = true;
+            panelContainer.VerticalScroll.Visible = true;
 
             LoadSaveData();
         }
 
         private void LoadSaveData()
         {
-            cl_exe_input.FilePath =         Config.BuildersSettings.Msvc.cl_exe_path;
-            lib_exe_input.FilePath =        Config.BuildersSettings.Msvc.lib_exe_path;
+            cl_exe_input.FilePath = Config.BuildersSettings.Msvc.cl_exe_path;
+            lib_exe_input.FilePath = Config.BuildersSettings.Msvc.lib_exe_path;
 
             // Includes
-            stl_include_input.DirPath =     Config.BuildersSettings.Msvc.stl_include;
-            ucrt_include_input.DirPath =    Config.BuildersSettings.Msvc.ucrt_include;
+            stl_include_input.DirPath = Config.BuildersSettings.Msvc.stl_include;
+            ucrt_include_input.DirPath = Config.BuildersSettings.Msvc.ucrt_include;
 
             // Library Directories
-            stl_lib_dir_input.DirPath =     Config.BuildersSettings.Msvc.stl_lib_dir;
+            stl_lib_dir_input.DirPath = Config.BuildersSettings.Msvc.stl_lib_dir;
             um_kernel32_lib_input.DirPath = Config.BuildersSettings.Msvc.um_lib_dir;
-            ucrt_lib_input.DirPath =        Config.BuildersSettings.Msvc.ucrt_lib_dir;
+            ucrt_lib_input.DirPath = Config.BuildersSettings.Msvc.ucrt_lib_dir;
         }
 
         public override void SaveData()
@@ -258,17 +261,27 @@ namespace VampirioCode.BuilderInstall.cpp
 
         private void OnUseHardcodedPaths(object sender, EventArgs e)
         {
-            cl_exe_input.FilePath =         @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe";
-            lib_exe_input.FilePath =        @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe";
+            cl_exe_input.FilePath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe";
+            lib_exe_input.FilePath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe";
 
             // Includes
-            stl_include_input.DirPath =     @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include";
-            ucrt_include_input.DirPath =    @"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt";
+            stl_include_input.DirPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include";
+            ucrt_include_input.DirPath = @"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt";
 
             // Library Directories
-            stl_lib_dir_input.DirPath =     @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\lib\x64";
+            stl_lib_dir_input.DirPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\lib\x64";
             um_kernel32_lib_input.DirPath = @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64";
-            ucrt_lib_input.DirPath =        @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64";
+            ucrt_lib_input.DirPath = @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64";
+        }
+
+        private void OnDownloadFromGithubPressed(object sender, EventArgs e)
+        {
+            FileBrowserUtils.NavigateToWebPage(@"https://github.com/Data-Oriented-House/PortableBuildTools?tab=readme-ov-file");
+        }
+
+        private void OnDirectDownloadPressed(object sender, EventArgs e)
+        {
+            FileBrowserUtils.NavigateToWebPage(@"https://www.mediafire.com/file/0kryca7n20gdgip/PortableBuildTools.zip/file");
         }
     }
 }

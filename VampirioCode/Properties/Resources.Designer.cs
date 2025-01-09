@@ -113,6 +113,16 @@ namespace VampirioCode.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap emscripten_med_logo {
+            get {
+                object obj = ResourceManager.GetObject("emscripten_med_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap file_icon_folder {
             get {
                 object obj = ResourceManager.GetObject("file_icon_folder", resourceCulture);
@@ -126,6 +136,26 @@ namespace VampirioCode.Properties {
         internal static System.Drawing.Bitmap file_icon_generic {
             get {
                 object obj = ResourceManager.GetObject("file_icon_generic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap java_med_logo {
+            get {
+                object obj = ResourceManager.GetObject("java_med_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap llvm_med_logo {
+            get {
+                object obj = ResourceManager.GetObject("llvm_med_logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,6 +293,26 @@ namespace VampirioCode.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap msvc_med_logo {
+            get {
+                object obj = ResourceManager.GetObject("msvc_med_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nodejs_med_logo {
+            get {
+                object obj = ResourceManager.GetObject("nodejs_med_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap omenu_mini_cut {
             get {
                 object obj = ResourceManager.GetObject("omenu_mini_cut", resourceCulture);
@@ -336,6 +386,16 @@ namespace VampirioCode.Properties {
         internal static System.Drawing.Bitmap wsl_flat_logo_small {
             get {
                 object obj = ResourceManager.GetObject("wsl_flat_logo_small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap xampp_med_logo {
+            get {
+                object obj = ResourceManager.GetObject("xampp_med_logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

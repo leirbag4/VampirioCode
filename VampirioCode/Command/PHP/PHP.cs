@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.PHP.Result;
+using VampirioCode.SaveData;
 
 namespace VampirioCode.Command.PHP
 {
     public class PHP : BaseCmdProgram
     {
         //public static string ProgramPath = @"C:\programs_dev\xampp_7.2.22\php\php.exe";
-        public static string ProgramPath = @"C:\programs_dev\php-v8.1.3_usbwebserver\php\php.exe";
+        public static string ProgramPath = "";//@"C:\programs_dev\php-v8.1.3_usbwebserver\php\php.exe";
 
         /// <summary>
         /// Run the script file '.php'
@@ -19,11 +20,18 @@ namespace VampirioCode.Command.PHP
         /// <returns></returns>
         public async Task<RunResult> RunAsync(string filename)
         {
+            SetupProgramPaths();
+
             RunCmd cmd = new RunCmd();
             cmd.Filename = filename;
             var result = await cmd.RunAsync();
             CheckCmd(cmd);
             return result;
+        }
+
+        protected override void SetupProgramPaths()
+        {
+            ProgramPath = Config.BuildersSettings.PhpXampp.php_exe_path;
         }
     }
 }

@@ -20,6 +20,8 @@ namespace VampirioCode.Command.Nodejs
         /// <returns></returns>
         public async Task<RunResult> RunAsync(string filename)
         {
+            SetupProgramPaths();
+
             RunCmd cmd = new RunCmd();
             cmd.Filename = filename;
             var result = await cmd.RunAsync();
@@ -34,6 +36,8 @@ namespace VampirioCode.Command.Nodejs
         /// <returns></returns>
         public async Task<RunEmscriptenResult> RunEmscriptenAsync(string filename)
         {
+            SetupProgramPaths();
+
             RunEmscriptenCmd cmd = new RunEmscriptenCmd();
             cmd.Filename = filename;
             var result = await cmd.RunAsync();

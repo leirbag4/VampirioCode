@@ -26,7 +26,7 @@ namespace VampirioCode.SaveData.Builders
         public NodeJsBuildSettings NodeJs { get; set; } = new NodeJsBuildSettings();
 
         // JAVA
-        public JavacBuildSettings Javac { get; set; } = new JavacBuildSettings();
+        public JavaJdkBuildSettings JavaJDK { get; set; } = new JavaJdkBuildSettings();
 
         // PHP
         public PhpXamppBuildSettings PhpXampp { get; set; } = new PhpXamppBuildSettings();

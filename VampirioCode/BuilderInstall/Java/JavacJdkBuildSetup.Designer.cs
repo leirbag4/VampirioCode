@@ -1,6 +1,6 @@
-﻿namespace VampirioCode.BuilderInstall.Javascript
+﻿namespace VampirioCode.BuilderInstall.Java
 {
-    partial class NodeJsBuildSetup
+    partial class JavacJdkBuildSetup
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
-            nodejs_exe_input = new UI.FileInput();
-            labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
             buttonAdv2 = new VampirioCode.UI.Controls.ButtonAdv();
-            groupBoxAdv1 = new VampirioCode.UI.Controls.GroupBoxAdv();
+            javac_exe_input = new UI.FileInput();
             labelAdv1 = new VampirioCode.UI.Controls.LabelAdv();
+            java_exe_input = new UI.FileInput();
+            labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
+            groupBoxAdv1 = new VampirioCode.UI.Controls.GroupBoxAdv();
+            labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
             buttonAdv1 = new VampirioCode.UI.Controls.ButtonAdv();
             pictureBoxAdv1 = new VampirioCode.UI.Controls.PictureBoxAdv();
             buttonAdv3 = new VampirioCode.UI.Controls.ButtonAdv();
@@ -41,51 +42,6 @@
             groupBoxAdv1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).BeginInit();
             SuspendLayout();
-            // 
-            // labelAdv2
-            // 
-            labelAdv2.AutoSize = true;
-            labelAdv2.BorderColor = Color.DarkGray;
-            labelAdv2.BorderSize = 1;
-            labelAdv2.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
-            labelAdv2.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            labelAdv2.ForeColor = SystemColors.WindowFrame;
-            labelAdv2.Location = new Point(243, 37);
-            labelAdv2.ModifyClampMax = 0F;
-            labelAdv2.ModifyClampMin = 0F;
-            labelAdv2.ModifyControlName = "";
-            labelAdv2.ModifyScale = 1F;
-            labelAdv2.Name = "labelAdv2";
-            labelAdv2.Size = new Size(296, 17);
-            labelAdv2.TabIndex = 36;
-            labelAdv2.Text = "C:\\programs_dev\\node-v20.11.0-win-x64\\nodejs.exe";
-            // 
-            // nodejs_exe_input
-            // 
-            nodejs_exe_input.BackColor = Color.FromArgb(35, 35, 35);
-            nodejs_exe_input.FilePath = "";
-            nodejs_exe_input.Location = new Point(25, 57);
-            nodejs_exe_input.Name = "nodejs_exe_input";
-            nodejs_exe_input.Size = new Size(514, 40);
-            nodejs_exe_input.TabIndex = 35;
-            // 
-            // labelAdv3
-            // 
-            labelAdv3.AutoSize = true;
-            labelAdv3.BorderColor = Color.DarkGray;
-            labelAdv3.BorderSize = 1;
-            labelAdv3.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
-            labelAdv3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelAdv3.ForeColor = Color.Silver;
-            labelAdv3.Location = new Point(25, 34);
-            labelAdv3.ModifyClampMax = 0F;
-            labelAdv3.ModifyClampMin = 0F;
-            labelAdv3.ModifyControlName = "";
-            labelAdv3.ModifyScale = 1F;
-            labelAdv3.Name = "labelAdv3";
-            labelAdv3.Size = new Size(195, 20);
-            labelAdv3.TabIndex = 34;
-            labelAdv3.Text = "'node.exe' interpreter path";
             // 
             // buttonAdv2
             // 
@@ -103,7 +59,7 @@
             buttonAdv2.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv2.FocusEnabled = false;
             buttonAdv2.ForeColor = Color.Silver;
-            buttonAdv2.Location = new Point(557, 23);
+            buttonAdv2.Location = new Point(541, 43);
             buttonAdv2.Name = "buttonAdv2";
             buttonAdv2.PaintImageOnSelected = true;
             buttonAdv2.processEnterKey = true;
@@ -111,44 +67,98 @@
             buttonAdv2.Selected = false;
             buttonAdv2.SelectedColor = Color.FromArgb(0, 122, 204);
             buttonAdv2.Size = new Size(122, 74);
-            buttonAdv2.TabIndex = 37;
-            buttonAdv2.Text = "Use reference hardcoded paths";
+            buttonAdv2.TabIndex = 33;
+            buttonAdv2.Text = "Use a reference hardcoded paths";
             buttonAdv2.UseVisualStyleBackColor = false;
             buttonAdv2.Click += OnUseHardcodedPaths;
             // 
-            // groupBoxAdv1
+            // javac_exe_input
             // 
-            groupBoxAdv1.BorderColor = Color.FromArgb(60, 60, 60);
-            groupBoxAdv1.BorderSize = 1;
-            groupBoxAdv1.Controls.Add(labelAdv1);
-            groupBoxAdv1.Controls.Add(buttonAdv1);
-            groupBoxAdv1.Controls.Add(pictureBoxAdv1);
-            groupBoxAdv1.Controls.Add(buttonAdv3);
-            groupBoxAdv1.Controls.Add(labelAdv8);
-            groupBoxAdv1.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
-            groupBoxAdv1.Location = new Point(39, 142);
-            groupBoxAdv1.Name = "groupBoxAdv1";
-            groupBoxAdv1.Size = new Size(628, 261);
-            groupBoxAdv1.TabIndex = 40;
-            groupBoxAdv1.TabStop = false;
-            groupBoxAdv1.Text = "groupBoxAdv1";
+            javac_exe_input.BackColor = Color.FromArgb(35, 35, 35);
+            javac_exe_input.FilePath = "";
+            javac_exe_input.Location = new Point(21, 60);
+            javac_exe_input.Name = "javac_exe_input";
+            javac_exe_input.Size = new Size(514, 40);
+            javac_exe_input.TabIndex = 32;
             // 
             // labelAdv1
             // 
+            labelAdv1.AutoSize = true;
             labelAdv1.BorderColor = Color.DarkGray;
             labelAdv1.BorderSize = 1;
             labelAdv1.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelAdv1.ForeColor = SystemColors.GradientActiveCaption;
-            labelAdv1.Location = new Point(26, 63);
+            labelAdv1.ForeColor = Color.Silver;
+            labelAdv1.Location = new Point(21, 26);
             labelAdv1.ModifyClampMax = 0F;
             labelAdv1.ModifyClampMin = 0F;
             labelAdv1.ModifyControlName = "";
             labelAdv1.ModifyScale = 1F;
             labelAdv1.Name = "labelAdv1";
-            labelAdv1.Size = new Size(545, 65);
-            labelAdv1.TabIndex = 34;
-            labelAdv1.Text = "A portable version can be download here. Just extract it and point 'node.exe' input to to the file 'node.exe' inside that folder.";
+            labelAdv1.Size = new Size(180, 20);
+            labelAdv1.TabIndex = 31;
+            labelAdv1.Text = "'javac.exe' compiler path";
+            // 
+            // java_exe_input
+            // 
+            java_exe_input.BackColor = Color.FromArgb(35, 35, 35);
+            java_exe_input.FilePath = "";
+            java_exe_input.Location = new Point(21, 140);
+            java_exe_input.Name = "java_exe_input";
+            java_exe_input.Size = new Size(514, 40);
+            java_exe_input.TabIndex = 35;
+            // 
+            // labelAdv2
+            // 
+            labelAdv2.AutoSize = true;
+            labelAdv2.BorderColor = Color.DarkGray;
+            labelAdv2.BorderSize = 1;
+            labelAdv2.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelAdv2.ForeColor = Color.Silver;
+            labelAdv2.Location = new Point(21, 106);
+            labelAdv2.ModifyClampMax = 0F;
+            labelAdv2.ModifyClampMin = 0F;
+            labelAdv2.ModifyControlName = "";
+            labelAdv2.ModifyScale = 1F;
+            labelAdv2.Name = "labelAdv2";
+            labelAdv2.Size = new Size(168, 20);
+            labelAdv2.TabIndex = 34;
+            labelAdv2.Text = "'java.exe' runtime path";
+            // 
+            // groupBoxAdv1
+            // 
+            groupBoxAdv1.BorderColor = Color.FromArgb(60, 60, 60);
+            groupBoxAdv1.BorderSize = 1;
+            groupBoxAdv1.Controls.Add(labelAdv3);
+            groupBoxAdv1.Controls.Add(buttonAdv1);
+            groupBoxAdv1.Controls.Add(pictureBoxAdv1);
+            groupBoxAdv1.Controls.Add(buttonAdv3);
+            groupBoxAdv1.Controls.Add(labelAdv8);
+            groupBoxAdv1.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
+            groupBoxAdv1.Location = new Point(21, 211);
+            groupBoxAdv1.Name = "groupBoxAdv1";
+            groupBoxAdv1.Size = new Size(628, 261);
+            groupBoxAdv1.TabIndex = 41;
+            groupBoxAdv1.TabStop = false;
+            groupBoxAdv1.Text = "groupBoxAdv1";
+            // 
+            // labelAdv3
+            // 
+            labelAdv3.BorderColor = Color.DarkGray;
+            labelAdv3.BorderSize = 1;
+            labelAdv3.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelAdv3.ForeColor = SystemColors.GradientActiveCaption;
+            labelAdv3.Location = new Point(26, 63);
+            labelAdv3.ModifyClampMax = 0F;
+            labelAdv3.ModifyClampMin = 0F;
+            labelAdv3.ModifyControlName = "";
+            labelAdv3.ModifyScale = 1F;
+            labelAdv3.Name = "labelAdv3";
+            labelAdv3.Size = new Size(545, 65);
+            labelAdv3.TabIndex = 34;
+            labelAdv3.Text = "A portable version can be download here. Just extract it and point to 'javac.exe' and 'java.exe'.       Version 22 works fine.";
             // 
             // buttonAdv1
             // 
@@ -180,7 +190,7 @@
             // 
             // pictureBoxAdv1
             // 
-            pictureBoxAdv1.Image = Properties.Resources.nodejs_med_logo;
+            pictureBoxAdv1.Image = Properties.Resources.java_med_logo;
             pictureBoxAdv1.Location = new Point(26, 131);
             pictureBoxAdv1.Name = "pictureBoxAdv1";
             pictureBoxAdv1.Size = new Size(149, 73);
@@ -203,7 +213,7 @@
             buttonAdv3.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv3.FocusEnabled = false;
             buttonAdv3.ForeColor = Color.Silver;
-            buttonAdv3.Location = new Point(55, 504);
+            buttonAdv3.Location = new Point(55, 665);
             buttonAdv3.Name = "buttonAdv3";
             buttonAdv3.PaintImageOnSelected = true;
             buttonAdv3.processEnterKey = true;
@@ -230,19 +240,20 @@
             labelAdv8.Name = "labelAdv8";
             labelAdv8.Size = new Size(582, 57);
             labelAdv8.TabIndex = 30;
-            labelAdv8.Text = "A download of 'nodejs' must be done in orther to work.";
+            labelAdv8.Text = "A download of JDK, 'javac.exe' and 'java.exe' must be done in orther to work.";
             // 
-            // NodeJsBuildSetup
+            // JavacJdkBuildSetup
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 35, 35);
             Controls.Add(groupBoxAdv1);
-            Controls.Add(buttonAdv2);
+            Controls.Add(java_exe_input);
             Controls.Add(labelAdv2);
-            Controls.Add(nodejs_exe_input);
-            Controls.Add(labelAdv3);
-            Name = "NodeJsBuildSetup";
+            Controls.Add(buttonAdv2);
+            Controls.Add(javac_exe_input);
+            Controls.Add(labelAdv1);
+            Name = "JavacJdkBuildSetup";
             Size = new Size(706, 544);
             groupBoxAdv1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).EndInit();
@@ -251,12 +262,14 @@
         }
 
         #endregion
-        private VampirioCode.UI.Controls.LabelAdv labelAdv2;
-        private UI.FileInput nodejs_exe_input;
-        private VampirioCode.UI.Controls.LabelAdv labelAdv3;
+
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv2;
-        private VampirioCode.UI.Controls.GroupBoxAdv groupBoxAdv1;
+        private UI.FileInput javac_exe_input;
         private VampirioCode.UI.Controls.LabelAdv labelAdv1;
+        private UI.FileInput java_exe_input;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv2;
+        private VampirioCode.UI.Controls.GroupBoxAdv groupBoxAdv1;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv3;
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv1;
         private VampirioCode.UI.Controls.PictureBoxAdv pictureBoxAdv1;
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv3;

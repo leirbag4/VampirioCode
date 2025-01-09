@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="labelAdv8.Text" xml:space="preserve">
+    <value>The compiler needs 'msvc' or 'visual studio build tools' installed on your computer in order to work. Download it and follow the instructions. Then download 'llvm clang' and extract it before setting 'clang++.exe'.</value>
+  </data>
 </root>
