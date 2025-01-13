@@ -53,9 +53,10 @@
             // 
             emsdk_bat_input.BackColor = Color.FromArgb(35, 35, 35);
             emsdk_bat_input.FilePath = "";
-            emsdk_bat_input.Location = new Point(20, 44);
+            emsdk_bat_input.Location = new Point(18, 33);
+            emsdk_bat_input.Margin = new Padding(3, 2, 3, 2);
             emsdk_bat_input.Name = "emsdk_bat_input";
-            emsdk_bat_input.Size = new Size(514, 40);
+            emsdk_bat_input.Size = new Size(450, 30);
             emsdk_bat_input.TabIndex = 3;
             // 
             // labelAdv1
@@ -66,13 +67,13 @@
             labelAdv1.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelAdv1.ForeColor = Color.Silver;
-            labelAdv1.Location = new Point(20, 21);
+            labelAdv1.Location = new Point(18, 16);
             labelAdv1.ModifyClampMax = 0F;
             labelAdv1.ModifyClampMin = 0F;
             labelAdv1.ModifyControlName = "";
             labelAdv1.ModifyScale = 1F;
             labelAdv1.Name = "labelAdv1";
-            labelAdv1.Size = new Size(192, 20);
+            labelAdv1.Size = new Size(153, 15);
             labelAdv1.TabIndex = 2;
             labelAdv1.Text = "'emsdk.bat' compiler path";
             // 
@@ -84,13 +85,13 @@
             labelAdv5.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv5.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv5.ForeColor = SystemColors.WindowFrame;
-            labelAdv5.Location = new Point(293, 24);
+            labelAdv5.Location = new Point(256, 18);
             labelAdv5.ModifyClampMax = 0F;
             labelAdv5.ModifyClampMin = 0F;
             labelAdv5.ModifyControlName = "";
             labelAdv5.ModifyScale = 1F;
             labelAdv5.Name = "labelAdv5";
-            labelAdv5.Size = new Size(203, 17);
+            labelAdv5.Size = new Size(170, 13);
             labelAdv5.TabIndex = 10;
             labelAdv5.Text = "C:\\programs_dev\\emsdk\\emsdk.bat";
             // 
@@ -110,14 +111,15 @@
             buttonAdv2.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv2.FocusEnabled = false;
             buttonAdv2.ForeColor = Color.Silver;
-            buttonAdv2.Location = new Point(549, 21);
+            buttonAdv2.Location = new Point(480, 16);
+            buttonAdv2.Margin = new Padding(3, 2, 3, 2);
             buttonAdv2.Name = "buttonAdv2";
             buttonAdv2.PaintImageOnSelected = true;
             buttonAdv2.processEnterKey = true;
             buttonAdv2.resizeImage = new Point(0, 0);
             buttonAdv2.Selected = false;
             buttonAdv2.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv2.Size = new Size(122, 74);
+            buttonAdv2.Size = new Size(107, 56);
             buttonAdv2.TabIndex = 30;
             buttonAdv2.Text = "Use reference hardcoded paths";
             buttonAdv2.UseVisualStyleBackColor = false;
@@ -131,13 +133,13 @@
             labelAdv2.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv2.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             labelAdv2.ForeColor = SystemColors.WindowFrame;
-            labelAdv2.Location = new Point(293, 100);
+            labelAdv2.Location = new Point(256, 75);
             labelAdv2.ModifyClampMax = 0F;
             labelAdv2.ModifyClampMin = 0F;
             labelAdv2.ModifyControlName = "";
             labelAdv2.ModifyScale = 1F;
             labelAdv2.Name = "labelAdv2";
-            labelAdv2.Size = new Size(296, 17);
+            labelAdv2.Size = new Size(249, 13);
             labelAdv2.TabIndex = 33;
             labelAdv2.Text = "C:\\programs_dev\\node-v20.11.0-win-x64\\nodejs.exe";
             // 
@@ -145,9 +147,10 @@
             // 
             nodejs_exe_input.BackColor = Color.FromArgb(35, 35, 35);
             nodejs_exe_input.FilePath = "";
-            nodejs_exe_input.Location = new Point(20, 120);
+            nodejs_exe_input.Location = new Point(18, 90);
+            nodejs_exe_input.Margin = new Padding(3, 2, 3, 2);
             nodejs_exe_input.Name = "nodejs_exe_input";
-            nodejs_exe_input.Size = new Size(514, 40);
+            nodejs_exe_input.Size = new Size(450, 30);
             nodejs_exe_input.TabIndex = 32;
             // 
             // labelAdv3
@@ -158,13 +161,13 @@
             labelAdv3.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelAdv3.ForeColor = Color.Silver;
-            labelAdv3.Location = new Point(20, 97);
+            labelAdv3.Location = new Point(18, 73);
             labelAdv3.ModifyClampMax = 0F;
             labelAdv3.ModifyClampMin = 0F;
             labelAdv3.ModifyControlName = "";
             labelAdv3.ModifyScale = 1F;
             labelAdv3.Name = "labelAdv3";
-            labelAdv3.Size = new Size(195, 20);
+            labelAdv3.Size = new Size(160, 15);
             labelAdv3.TabIndex = 31;
             labelAdv3.Text = "'node.exe' interpreter path";
             // 
@@ -181,9 +184,11 @@
             groupBoxAdv2.Controls.Add(buttonAdv3);
             groupBoxAdv2.Controls.Add(labelAdv8);
             groupBoxAdv2.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
-            groupBoxAdv2.Location = new Point(26, 178);
+            groupBoxAdv2.Location = new Point(23, 134);
+            groupBoxAdv2.Margin = new Padding(3, 2, 3, 2);
             groupBoxAdv2.Name = "groupBoxAdv2";
-            groupBoxAdv2.Size = new Size(654, 285);
+            groupBoxAdv2.Padding = new Padding(3, 2, 3, 2);
+            groupBoxAdv2.Size = new Size(572, 214);
             groupBoxAdv2.TabIndex = 42;
             groupBoxAdv2.TabStop = false;
             groupBoxAdv2.Text = "groupBoxAdv2";
@@ -203,14 +208,15 @@
             buttonAdv4.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv4.FocusEnabled = false;
             buttonAdv4.ForeColor = Color.Silver;
-            buttonAdv4.Location = new Point(466, 227);
+            buttonAdv4.Location = new Point(408, 170);
+            buttonAdv4.Margin = new Padding(3, 2, 3, 2);
             buttonAdv4.Name = "buttonAdv4";
             buttonAdv4.PaintImageOnSelected = true;
             buttonAdv4.processEnterKey = true;
             buttonAdv4.resizeImage = new Point(0, 0);
             buttonAdv4.Selected = false;
             buttonAdv4.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv4.Size = new Size(122, 33);
+            buttonAdv4.Size = new Size(107, 25);
             buttonAdv4.TabIndex = 36;
             buttonAdv4.Text = "Download";
             buttonAdv4.UseVisualStyleBackColor = false;
@@ -223,22 +229,24 @@
             labelAdv4.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelAdv4.ForeColor = SystemColors.GradientActiveCaption;
-            labelAdv4.Location = new Point(303, 173);
+            labelAdv4.Location = new Point(265, 130);
             labelAdv4.ModifyClampMax = 0F;
             labelAdv4.ModifyClampMin = 0F;
             labelAdv4.ModifyControlName = "";
             labelAdv4.ModifyScale = 1F;
             labelAdv4.Name = "labelAdv4";
-            labelAdv4.Size = new Size(295, 51);
+            labelAdv4.Size = new Size(258, 38);
             labelAdv4.TabIndex = 37;
             labelAdv4.Text = "A portable version of 'nodejs' can be downloaded here";
             // 
             // pictureBoxAdv2
             // 
             pictureBoxAdv2.Image = Properties.Resources.nodejs_med_logo;
-            pictureBoxAdv2.Location = new Point(15, 173);
+            pictureBoxAdv2.Location = new Point(13, 130);
+            pictureBoxAdv2.Margin = new Padding(3, 2, 3, 2);
             pictureBoxAdv2.Name = "pictureBoxAdv2";
-            pictureBoxAdv2.Size = new Size(149, 73);
+            pictureBoxAdv2.Size = new Size(130, 55);
+            pictureBoxAdv2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxAdv2.TabIndex = 35;
             pictureBoxAdv2.TabStop = false;
             // 
@@ -257,14 +265,15 @@
             buttonAdv1.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv1.FocusEnabled = false;
             buttonAdv1.ForeColor = Color.Silver;
-            buttonAdv1.Location = new Point(466, 135);
+            buttonAdv1.Location = new Point(408, 101);
+            buttonAdv1.Margin = new Padding(3, 2, 3, 2);
             buttonAdv1.Name = "buttonAdv1";
             buttonAdv1.PaintImageOnSelected = true;
             buttonAdv1.processEnterKey = true;
             buttonAdv1.resizeImage = new Point(0, 0);
             buttonAdv1.Selected = false;
             buttonAdv1.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv1.Size = new Size(122, 33);
+            buttonAdv1.Size = new Size(107, 25);
             buttonAdv1.TabIndex = 33;
             buttonAdv1.Text = "Download";
             buttonAdv1.UseVisualStyleBackColor = false;
@@ -277,22 +286,24 @@
             labelAdv7.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelAdv7.ForeColor = SystemColors.GradientActiveCaption;
-            labelAdv7.Location = new Point(303, 81);
+            labelAdv7.Location = new Point(265, 61);
             labelAdv7.ModifyClampMax = 0F;
             labelAdv7.ModifyClampMin = 0F;
             labelAdv7.ModifyControlName = "";
             labelAdv7.ModifyScale = 1F;
             labelAdv7.Name = "labelAdv7";
-            labelAdv7.Size = new Size(295, 51);
+            labelAdv7.Size = new Size(258, 38);
             labelAdv7.TabIndex = 34;
             labelAdv7.Text = "A portable version of emscripten 'emsdk' can be downloaded here";
             // 
             // pictureBoxAdv1
             // 
             pictureBoxAdv1.Image = Properties.Resources.emscripten_med_logo;
-            pictureBoxAdv1.Location = new Point(15, 84);
+            pictureBoxAdv1.Location = new Point(13, 63);
+            pictureBoxAdv1.Margin = new Padding(3, 2, 3, 2);
             pictureBoxAdv1.Name = "pictureBoxAdv1";
-            pictureBoxAdv1.Size = new Size(232, 64);
+            pictureBoxAdv1.Size = new Size(190, 48);
+            pictureBoxAdv1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxAdv1.TabIndex = 32;
             pictureBoxAdv1.TabStop = false;
             // 
@@ -312,14 +323,15 @@
             buttonAdv3.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv3.FocusEnabled = false;
             buttonAdv3.ForeColor = Color.Silver;
-            buttonAdv3.Location = new Point(55, 778);
+            buttonAdv3.Location = new Point(48, 584);
+            buttonAdv3.Margin = new Padding(3, 2, 3, 2);
             buttonAdv3.Name = "buttonAdv3";
             buttonAdv3.PaintImageOnSelected = true;
             buttonAdv3.processEnterKey = true;
             buttonAdv3.resizeImage = new Point(0, 0);
             buttonAdv3.Selected = false;
             buttonAdv3.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv3.Size = new Size(122, 33);
+            buttonAdv3.Size = new Size(107, 25);
             buttonAdv3.TabIndex = 31;
             buttonAdv3.Text = "Download";
             buttonAdv3.UseVisualStyleBackColor = false;
@@ -331,19 +343,19 @@
             labelAdv8.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelAdv8.ForeColor = Color.Silver;
-            labelAdv8.Location = new Point(6, 10);
+            labelAdv8.Location = new Point(5, 8);
             labelAdv8.ModifyClampMax = 0F;
             labelAdv8.ModifyClampMin = 0F;
             labelAdv8.ModifyControlName = "";
             labelAdv8.ModifyScale = 1F;
             labelAdv8.Name = "labelAdv8";
-            labelAdv8.Size = new Size(582, 71);
+            labelAdv8.Size = new Size(509, 53);
             labelAdv8.TabIndex = 30;
             labelAdv8.Text = "Emscripten and also nodejs are needed. Emscripten 'emsdk' is needed for the compilation process and 'nodejs' for the execution.";
             // 
             // EmscriptenBuildSetup
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 35, 35);
             Controls.Add(groupBoxAdv2);
@@ -355,7 +367,7 @@
             Controls.Add(emsdk_bat_input);
             Controls.Add(labelAdv1);
             Name = "EmscriptenBuildSetup";
-            Size = new Size(706, 544);
+            Size = new Size(618, 408);
             groupBoxAdv2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).EndInit();

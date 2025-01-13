@@ -45,30 +45,36 @@
             // includeDirsList
             // 
             includeDirsList.BackColor = Color.FromArgb(40, 40, 40);
-            includeDirsList.Icon = null;
-            includeDirsList.Location = new Point(12, 12);
+            includeDirsList.Enable = true;
+            includeDirsList.Icon = Properties.Resources.mmenu_mini_folder;
+            includeDirsList.Location = new Point(10, 9);
+            includeDirsList.Margin = new Padding(3, 2, 3, 2);
             includeDirsList.Name = "includeDirsList";
-            includeDirsList.Size = new Size(299, 258);
+            includeDirsList.Size = new Size(262, 194);
             includeDirsList.TabIndex = 10;
             includeDirsList.Title = "Include Dirs";
             // 
             // libraryDirsList
             // 
             libraryDirsList.BackColor = Color.FromArgb(40, 40, 40);
+            libraryDirsList.Enable = true;
             libraryDirsList.Icon = Properties.Resources.mmenu_mini_folder;
-            libraryDirsList.Location = new Point(317, 12);
+            libraryDirsList.Location = new Point(277, 9);
+            libraryDirsList.Margin = new Padding(3, 2, 3, 2);
             libraryDirsList.Name = "libraryDirsList";
-            libraryDirsList.Size = new Size(299, 258);
+            libraryDirsList.Size = new Size(262, 194);
             libraryDirsList.TabIndex = 11;
             libraryDirsList.Title = "Library Dirs";
             // 
             // libraryFilesList
             // 
             libraryFilesList.BackColor = Color.FromArgb(40, 40, 40);
+            libraryFilesList.Enable = true;
             libraryFilesList.Icon = Properties.Resources.mmenu_mini_copy_path;
-            libraryFilesList.Location = new Point(623, 12);
+            libraryFilesList.Location = new Point(545, 9);
+            libraryFilesList.Margin = new Padding(3, 2, 3, 2);
             libraryFilesList.Name = "libraryFilesList";
-            libraryFilesList.Size = new Size(299, 258);
+            libraryFilesList.Size = new Size(262, 194);
             libraryFilesList.TabIndex = 12;
             libraryFilesList.Title = "Library Files";
             // 
@@ -88,14 +94,15 @@
             okButton.FocusColor = Color.FromArgb(24, 81, 115);
             okButton.FocusEnabled = false;
             okButton.ForeColor = Color.Silver;
-            okButton.Location = new Point(706, 565);
+            okButton.Location = new Point(618, 424);
+            okButton.Margin = new Padding(3, 2, 3, 2);
             okButton.Name = "okButton";
             okButton.PaintImageOnSelected = true;
             okButton.processEnterKey = true;
             okButton.resizeImage = new Point(0, 0);
             okButton.Selected = false;
             okButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            okButton.Size = new Size(106, 30);
+            okButton.Size = new Size(93, 22);
             okButton.TabIndex = 24;
             okButton.Text = "Ok";
             okButton.UseVisualStyleBackColor = false;
@@ -117,14 +124,15 @@
             cancelButton.FocusColor = Color.FromArgb(24, 81, 115);
             cancelButton.FocusEnabled = false;
             cancelButton.ForeColor = Color.Silver;
-            cancelButton.Location = new Point(818, 565);
+            cancelButton.Location = new Point(716, 424);
+            cancelButton.Margin = new Padding(3, 2, 3, 2);
             cancelButton.Name = "cancelButton";
             cancelButton.PaintImageOnSelected = true;
             cancelButton.processEnterKey = true;
             cancelButton.resizeImage = new Point(0, 0);
             cancelButton.Selected = false;
             cancelButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            cancelButton.Size = new Size(106, 30);
+            cancelButton.Size = new Size(93, 22);
             cancelButton.TabIndex = 25;
             cancelButton.Text = "Cancel";
             cancelButton.UseVisualStyleBackColor = false;
@@ -133,20 +141,23 @@
             // macrosList
             // 
             macrosList.BackColor = Color.FromArgb(40, 40, 40);
+            macrosList.Enable = true;
             macrosList.Icon = Properties.Resources.omenu_mini_select_all;
-            macrosList.Location = new Point(12, 287);
+            macrosList.Location = new Point(10, 215);
+            macrosList.Margin = new Padding(3, 2, 3, 2);
             macrosList.Name = "macrosList";
-            macrosList.Size = new Size(299, 245);
+            macrosList.Size = new Size(262, 184);
             macrosList.TabIndex = 26;
             macrosList.Title = "Preprocessor Directive Macros";
             // 
             // findPackageInput
             // 
             findPackageInput.BackColor = Color.FromArgb(40, 40, 40);
-            findPackageInput.Location = new Point(753, 314);
+            findPackageInput.Location = new Point(659, 236);
+            findPackageInput.Margin = new Padding(3, 2, 3, 2);
             findPackageInput.Name = "findPackageInput";
             findPackageInput.SelectedPackage = "";
-            findPackageInput.Size = new Size(164, 35);
+            findPackageInput.Size = new Size(144, 26);
             findPackageInput.TabIndex = 29;
             // 
             // labelAdv2
@@ -156,33 +167,37 @@
             labelAdv2.BorderSize = 1;
             labelAdv2.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv2.ForeColor = Color.Silver;
-            labelAdv2.Location = new Point(753, 287);
+            labelAdv2.Location = new Point(659, 215);
             labelAdv2.ModifyClampMax = 0F;
             labelAdv2.ModifyClampMin = 0F;
             labelAdv2.ModifyControlName = "";
             labelAdv2.ModifyScale = 1F;
             labelAdv2.Name = "labelAdv2";
-            labelAdv2.Size = new Size(106, 20);
+            labelAdv2.Size = new Size(85, 15);
             labelAdv2.TabIndex = 30;
             labelAdv2.Text = "Install Package";
             // 
             // postCopyDirsList
             // 
             postCopyDirsList.BackColor = Color.FromArgb(40, 40, 40);
-            postCopyDirsList.Icon = null;
-            postCopyDirsList.Location = new Point(317, 371);
+            postCopyDirsList.Enable = true;
+            postCopyDirsList.Icon = Properties.Resources.mmenu_mini_folder_b;
+            postCopyDirsList.Location = new Point(277, 278);
+            postCopyDirsList.Margin = new Padding(3, 2, 3, 2);
             postCopyDirsList.Name = "postCopyDirsList";
-            postCopyDirsList.Size = new Size(299, 161);
+            postCopyDirsList.Size = new Size(262, 121);
             postCopyDirsList.TabIndex = 31;
             postCopyDirsList.Title = "Post Copy Dirs";
             // 
             // postCopyFilesList
             // 
             postCopyFilesList.BackColor = Color.FromArgb(40, 40, 40);
-            postCopyFilesList.Icon = null;
-            postCopyFilesList.Location = new Point(625, 371);
+            postCopyFilesList.Enable = true;
+            postCopyFilesList.Icon = Properties.Resources.mmenu_mini_folder_b;
+            postCopyFilesList.Location = new Point(547, 278);
+            postCopyFilesList.Margin = new Padding(3, 2, 3, 2);
             postCopyFilesList.Name = "postCopyFilesList";
-            postCopyFilesList.Size = new Size(299, 161);
+            postCopyFilesList.Size = new Size(262, 121);
             postCopyFilesList.TabIndex = 32;
             postCopyFilesList.Title = "Post Copy Files";
             // 
@@ -195,9 +210,10 @@
             standardVersionCBox.DropDownStyle = ComboBoxStyle.DropDownList;
             standardVersionCBox.ForeColor = Color.Silver;
             standardVersionCBox.FormattingEnabled = true;
-            standardVersionCBox.Location = new Point(339, 319);
+            standardVersionCBox.Location = new Point(297, 239);
+            standardVersionCBox.Margin = new Padding(3, 2, 3, 2);
             standardVersionCBox.Name = "standardVersionCBox";
-            standardVersionCBox.Size = new Size(121, 28);
+            standardVersionCBox.Size = new Size(106, 23);
             standardVersionCBox.TabIndex = 34;
             // 
             // labelAdv3
@@ -207,21 +223,21 @@
             labelAdv3.BorderSize = 1;
             labelAdv3.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv3.ForeColor = Color.Silver;
-            labelAdv3.Location = new Point(339, 287);
+            labelAdv3.Location = new Point(297, 215);
             labelAdv3.ModifyClampMax = 0F;
             labelAdv3.ModifyClampMin = 0F;
             labelAdv3.ModifyControlName = "";
             labelAdv3.ModifyScale = 1F;
             labelAdv3.Name = "labelAdv3";
-            labelAdv3.Size = new Size(121, 20);
+            labelAdv3.Size = new Size(95, 15);
             labelAdv3.TabIndex = 33;
             labelAdv3.Text = "Standard Version";
             // 
             // CustomGnuGppWSLCppBuilderSetting
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(934, 607);
+            ClientSize = new Size(817, 455);
             Controls.Add(standardVersionCBox);
             Controls.Add(labelAdv3);
             Controls.Add(postCopyFilesList);
@@ -234,6 +250,7 @@
             Controls.Add(libraryFilesList);
             Controls.Add(libraryDirsList);
             Controls.Add(includeDirsList);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "CustomGnuGppWSLCppBuilderSetting";
             Text = "Custom gnu g++ wsl settings";
             ResumeLayout(false);

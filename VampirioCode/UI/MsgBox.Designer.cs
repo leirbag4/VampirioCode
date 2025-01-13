@@ -60,15 +60,15 @@ namespace VampirioCode.UI
             button2.FocusColor = Color.FromArgb(24, 81, 115);
             button2.FocusEnabled = true;
             button2.ForeColor = Color.FromArgb(224, 224, 224);
-            button2.Location = new Point(436, 211);
-            button2.Margin = new Padding(4, 5, 4, 5);
+            button2.Location = new Point(382, 158);
+            button2.Margin = new Padding(4);
             button2.Name = "button2";
             button2.PaintImageOnSelected = true;
             button2.processEnterKey = true;
             button2.resizeImage = new Point(0, 0);
             button2.Selected = false;
             button2.SelectedColor = Color.FromArgb(0, 122, 204);
-            button2.Size = new Size(108, 32);
+            button2.Size = new Size(94, 24);
             button2.TabIndex = 4;
             button2.Text = "Cancel";
             button2.UseVisualStyleBackColor = false;
@@ -82,11 +82,11 @@ namespace VampirioCode.UI
             groupBoxAdv1.Controls.Add(icon);
             groupBoxAdv1.Controls.Add(descLabel);
             groupBoxAdv1.CStyle = UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
-            groupBoxAdv1.Location = new Point(16, 18);
-            groupBoxAdv1.Margin = new Padding(4, 5, 4, 5);
+            groupBoxAdv1.Location = new Point(14, 14);
+            groupBoxAdv1.Margin = new Padding(4);
             groupBoxAdv1.Name = "groupBoxAdv1";
-            groupBoxAdv1.Padding = new Padding(4, 5, 4, 5);
-            groupBoxAdv1.Size = new Size(528, 181);
+            groupBoxAdv1.Padding = new Padding(4);
+            groupBoxAdv1.Size = new Size(462, 136);
             groupBoxAdv1.TabIndex = 3;
             groupBoxAdv1.TabStop = false;
             groupBoxAdv1.Text = "groupBoxAdv1";
@@ -95,11 +95,11 @@ namespace VampirioCode.UI
             // 
             icon.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             icon.Image = null;
-            icon.Location = new Point(474, 18);
-            icon.Margin = new Padding(4, 5, 4, 5);
+            icon.Location = new Point(415, 14);
+            icon.Margin = new Padding(4);
             icon.Name = "icon";
-            icon.Size = new Size(37, 37);
-            icon.SizeMode = PictureBoxSizeMode.CenterImage;
+            icon.Size = new Size(32, 30);
+            icon.SizeMode = PictureBoxSizeMode.AutoSize;
             icon.TabIndex = 7;
             icon.TabStop = false;
             // 
@@ -110,14 +110,14 @@ namespace VampirioCode.UI
             descLabel.BorderSize = 1;
             descLabel.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
             descLabel.ForeColor = Color.Silver;
-            descLabel.Location = new Point(18, 18);
+            descLabel.Location = new Point(16, 14);
             descLabel.Margin = new Padding(4, 0, 4, 0);
             descLabel.ModifyClampMax = 0F;
             descLabel.ModifyClampMin = 0F;
             descLabel.ModifyControlName = "";
             descLabel.ModifyScale = 1F;
             descLabel.Name = "descLabel";
-            descLabel.Size = new Size(436, 144);
+            descLabel.Size = new Size(382, 108);
             descLabel.TabIndex = 2;
             descLabel.Text = "Test Message\r\nLine 1\r\nLine 2\r\n";
             // 
@@ -137,15 +137,15 @@ namespace VampirioCode.UI
             button1.FocusColor = Color.FromArgb(24, 81, 115);
             button1.FocusEnabled = true;
             button1.ForeColor = Color.FromArgb(224, 224, 224);
-            button1.Location = new Point(320, 211);
-            button1.Margin = new Padding(4, 5, 4, 5);
+            button1.Location = new Point(280, 158);
+            button1.Margin = new Padding(4);
             button1.Name = "button1";
             button1.PaintImageOnSelected = true;
             button1.processEnterKey = true;
             button1.resizeImage = new Point(0, 0);
             button1.Selected = false;
             button1.SelectedColor = Color.FromArgb(0, 122, 204);
-            button1.Size = new Size(108, 32);
+            button1.Size = new Size(94, 24);
             button1.TabIndex = 5;
             button1.Text = "No";
             button1.UseVisualStyleBackColor = false;
@@ -166,33 +166,34 @@ namespace VampirioCode.UI
             button0.FocusColor = Color.FromArgb(24, 81, 115);
             button0.FocusEnabled = true;
             button0.ForeColor = Color.FromArgb(224, 224, 224);
-            button0.Location = new Point(204, 211);
-            button0.Margin = new Padding(4, 5, 4, 5);
+            button0.Location = new Point(178, 158);
+            button0.Margin = new Padding(4);
             button0.Name = "button0";
             button0.PaintImageOnSelected = true;
             button0.processEnterKey = true;
             button0.resizeImage = new Point(0, 0);
             button0.Selected = false;
             button0.SelectedColor = Color.FromArgb(0, 122, 204);
-            button0.Size = new Size(108, 32);
+            button0.Size = new Size(94, 24);
             button0.TabIndex = 6;
             button0.Text = "Yes";
             button0.UseVisualStyleBackColor = false;
             // 
             // MsgBox
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(45, 45, 45);
-            ClientSize = new Size(560, 253);
+            ClientSize = new Size(490, 190);
             Controls.Add(button0);
             Controls.Add(button1);
             Controls.Add(button2);
             Controls.Add(groupBoxAdv1);
-            Margin = new Padding(4, 5, 4, 5);
+            Margin = new Padding(4);
             MinimizeBox = false;
             Name = "MsgBox";
             groupBoxAdv1.ResumeLayout(false);
+            groupBoxAdv1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)icon).EndInit();
             ResumeLayout(false);
         }

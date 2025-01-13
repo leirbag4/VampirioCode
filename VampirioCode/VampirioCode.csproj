@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+	<ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
     <Version>0.6.2</Version>
     <PackageIcon></PackageIcon>
     <ApplicationIcon>Res\Icons\icon_64_multiple.ico</ApplicationIcon>

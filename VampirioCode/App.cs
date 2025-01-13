@@ -14,6 +14,7 @@ using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.BuilderSetting.Utils;
 using VampirioCode.Command;
 using VampirioCode.Command.Dotnet;
+using VampirioCode.Hardcode;
 using VampirioCode.IO;
 using VampirioCode.SaveData;
 using VampirioCode.Tests;
@@ -81,6 +82,8 @@ namespace VampirioCode
             this.DragEnter += OnDragEnter;
             this.DragDrop += OnDragDrop;
 
+            // splitter
+            splitContainer.SplitterMoved += SplitContainer_SplitterMoved;
 
             // open last documents
             OpenLastDocuments();
@@ -111,10 +114,23 @@ namespace VampirioCode
             base.OnLoad(e);
         }
 
+        
+
         protected override async void OnShown(EventArgs e)
         {
             base.OnShown(e);
             await DestroyScreenLock();
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            HARDCODE_FIXER.XCONSOLE_FIX_LOCATION_AND_SIZE(this, xconsole, splitContainer);
+            base.OnSizeChanged(e);
+        }
+
+        private void SplitContainer_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            HARDCODE_FIXER.XCONSOLE_FIX_LOCATION_AND_SIZE(this, xconsole, splitContainer);
         }
 
 

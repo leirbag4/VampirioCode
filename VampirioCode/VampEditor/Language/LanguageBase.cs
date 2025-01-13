@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VampirioCode.IO;
 
 namespace VampEditor.Language
 {
@@ -46,8 +47,14 @@ namespace VampEditor.Language
 
         protected void SetFontSyle()
         {
+            int fontSize = 10;
+
+            Display.Initialize();
+            if (Display.Scale < 125)
+                fontSize = 11;
+
             Styles[Style.Default].Font = "Consolas";
-            Styles[Style.Default].Size = 10;
+            Styles[Style.Default].Size = fontSize;
             //Styles[Style.Default].Bold = true;
         }
 

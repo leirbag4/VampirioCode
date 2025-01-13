@@ -40,8 +40,9 @@
             itemList.Enable = true;
             itemList.Icon = (Image)resources.GetObject("itemList.Icon");
             itemList.Location = new Point(0, 0);
+            itemList.Margin = new Padding(3, 2, 3, 2);
             itemList.Name = "itemList";
-            itemList.Size = new Size(298, 206);
+            itemList.Size = new Size(262, 154);
             itemList.TabIndex = 0;
             itemList.Title = "Main Title";
             // 
@@ -55,20 +56,22 @@
             modesCBox.DropDownStyle = ComboBoxStyle.DropDownList;
             modesCBox.ForeColor = Color.Silver;
             modesCBox.FormattingEnabled = true;
-            modesCBox.Location = new Point(3, 172);
+            modesCBox.Location = new Point(3, 129);
+            modesCBox.Margin = new Padding(3, 2, 3, 2);
             modesCBox.Name = "modesCBox";
-            modesCBox.Size = new Size(120, 28);
+            modesCBox.Size = new Size(106, 23);
             modesCBox.TabIndex = 41;
             // 
             // ItemListSources
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             Controls.Add(modesCBox);
             Controls.Add(itemList);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "ItemListSources";
-            Size = new Size(298, 206);
+            Size = new Size(261, 154);
             ResumeLayout(false);
         }
 

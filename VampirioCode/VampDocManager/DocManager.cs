@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using VampEditor;
 using VampirioCode;
 using VampirioCode.Builder.Utils;
+using VampirioCode.Hardcode;
 using VampirioCode.IO;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
@@ -101,12 +102,14 @@ namespace VampDocManager
 
         public void SetTheme(Theme theme)
         {
+            int defaultTabHeight = HARDCODE_FIXER.MAIN_TABS_FIX_HEIGHT();
+
             //
             // DarkRect
             //
             if (theme == Theme.DarkRect)
             {
-                tabPanel.TabBarHeight = 28;
+                tabPanel.TabBarHeight =                 defaultTabHeight;
                 tabPanel.Dock =                         DockStyle.Fill;
                 tabPanel.BackColor =                    Color.FromArgb(30, 30, 30);
 
@@ -148,9 +151,9 @@ namespace VampDocManager
             else if (theme == Theme.DarkMiddleRound)
             { 
 
-                tabPanel.TabBarHeight = 28;
-                tabPanel.Dock =                   DockStyle.Fill;
-                tabPanel.BackColor =              Color.FromArgb(30, 30, 30);
+                tabPanel.TabBarHeight =             defaultTabHeight;
+                tabPanel.Dock =                     DockStyle.Fill;
+                tabPanel.BackColor =                Color.FromArgb(30, 30, 30);
 
 
                 tabPanel.SetSkin(TabSkin.DarkMiddleRoundWClose);

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VampirioCode.Hardcode;
 using VampirioCode.IO;
 using VampirioCode.UI.Controls;
 using VampirioCode.UI.Controls.TabManagement;
@@ -58,6 +59,13 @@ namespace VampirioCode.UI
             base.OnLoad(e);
 
             ParentForm.FormClosing += OnParentFormClosing;
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+
+            HARDCODE_FIXER.XCONSOLE_FIX_CLOSE_BTN(this, clearButton);
         }
 
         private void OnParentFormClosing(object? sender, FormClosingEventArgs e)

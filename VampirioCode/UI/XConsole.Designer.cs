@@ -34,17 +34,18 @@
             // 
             // tabPanel
             // 
+            tabPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabPanel.BackColor = Color.FromArgb(30, 30, 30);
-            tabPanel.Dock = DockStyle.Fill;
             tabPanel.Location = new Point(0, 0);
+            tabPanel.Margin = new Padding(3, 2, 3, 2);
             tabPanel.Name = "tabPanel";
             tabPanel.PaintMode = UI.Controls.TabManagement.TabPaintMode.UserPaintOver;
-            tabPanel.Size = new Size(685, 259);
+            tabPanel.Size = new Size(570, 194);
             tabPanel.TabIndex = 2;
             // 
             // clearButton
             // 
-            clearButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            clearButton.Anchor = AnchorStyles.None;
             clearButton.BorderColor = Color.FromArgb(24, 24, 24);
             clearButton.BorderSize = 1;
             clearButton.CStyle = UI.Controls.ButtonAdv.CustomStyle.SOLID;
@@ -57,14 +58,15 @@
             clearButton.FocusColor = Color.FromArgb(24, 81, 115);
             clearButton.FocusEnabled = false;
             clearButton.ForeColor = SystemColors.ButtonShadow;
-            clearButton.Location = new Point(616, 0);
+            clearButton.Location = new Point(534, 0);
+            clearButton.Margin = new Padding(3, 2, 3, 2);
             clearButton.Name = "clearButton";
             clearButton.PaintImageOnSelected = true;
             clearButton.processEnterKey = true;
             clearButton.resizeImage = new Point(0, 0);
             clearButton.Selected = false;
             clearButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            clearButton.Size = new Size(69, 23);
+            clearButton.Size = new Size(65, 28);
             clearButton.TabIndex = 3;
             clearButton.Text = "clear";
             clearButton.UseVisualStyleBackColor = true;
@@ -72,13 +74,14 @@
             // 
             // XConsole
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             Controls.Add(clearButton);
             Controls.Add(tabPanel);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "XConsole";
-            Size = new Size(685, 259);
+            Size = new Size(599, 194);
             ResumeLayout(false);
         }
 

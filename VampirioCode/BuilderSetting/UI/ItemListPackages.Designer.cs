@@ -55,14 +55,15 @@
             downButton.FocusEnabled = false;
             downButton.ForeColor = Color.FromArgb(120, 120, 120);
             downButton.Image = Properties.Resources.mini_arrow_down_style_b;
-            downButton.Location = new Point(128, 189);
+            downButton.Location = new Point(112, 142);
+            downButton.Margin = new Padding(3, 2, 3, 2);
             downButton.Name = "downButton";
             downButton.PaintImageOnSelected = true;
             downButton.processEnterKey = true;
             downButton.resizeImage = new Point(0, 0);
             downButton.Selected = false;
             downButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            downButton.Size = new Size(41, 16);
+            downButton.Size = new Size(36, 12);
             downButton.TabIndex = 38;
             downButton.UseVisualStyleBackColor = false;
             downButton.Click += OnDownPressed;
@@ -84,14 +85,15 @@
             upButton.FocusEnabled = false;
             upButton.ForeColor = Color.FromArgb(120, 120, 120);
             upButton.Image = Properties.Resources.mini_arrow_up_style_b;
-            upButton.Location = new Point(128, 171);
+            upButton.Location = new Point(112, 128);
+            upButton.Margin = new Padding(3, 2, 3, 2);
             upButton.Name = "upButton";
             upButton.PaintImageOnSelected = true;
             upButton.processEnterKey = true;
             upButton.resizeImage = new Point(0, 0);
             upButton.Selected = false;
             upButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            upButton.Size = new Size(41, 16);
+            upButton.Size = new Size(36, 12);
             upButton.TabIndex = 37;
             upButton.UseVisualStyleBackColor = false;
             upButton.Click += OnUpPressed;
@@ -113,14 +115,15 @@
             addButton.FocusEnabled = false;
             addButton.ForeColor = Color.FromArgb(120, 120, 120);
             addButton.Image = Properties.Resources.mmenu_mini_find;
-            addButton.Location = new Point(0, 171);
+            addButton.Location = new Point(0, 128);
+            addButton.Margin = new Padding(3, 2, 3, 2);
             addButton.Name = "addButton";
             addButton.PaintImageOnSelected = true;
             addButton.processEnterKey = true;
             addButton.resizeImage = new Point(0, 0);
             addButton.Selected = false;
             addButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            addButton.Size = new Size(58, 34);
+            addButton.Size = new Size(51, 26);
             addButton.TabIndex = 36;
             addButton.UseVisualStyleBackColor = false;
             addButton.Click += OnFindPackagePressed;
@@ -142,14 +145,15 @@
             removeButton.FocusEnabled = false;
             removeButton.ForeColor = Color.FromArgb(120, 120, 120);
             removeButton.Image = Properties.Resources.mmenu_mini_remove;
-            removeButton.Location = new Point(64, 171);
+            removeButton.Location = new Point(56, 128);
+            removeButton.Margin = new Padding(3, 2, 3, 2);
             removeButton.Name = "removeButton";
             removeButton.PaintImageOnSelected = true;
             removeButton.processEnterKey = true;
             removeButton.resizeImage = new Point(0, 0);
             removeButton.Selected = false;
             removeButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            removeButton.Size = new Size(58, 34);
+            removeButton.Size = new Size(51, 26);
             removeButton.TabIndex = 35;
             removeButton.UseVisualStyleBackColor = false;
             removeButton.Click += OnRemovePressed;
@@ -158,8 +162,9 @@
             // 
             iconImg.Image = Properties.Resources.package_icon;
             iconImg.Location = new Point(0, 1);
+            iconImg.Margin = new Padding(3, 2, 3, 2);
             iconImg.Name = "iconImg";
-            iconImg.Size = new Size(27, 24);
+            iconImg.Size = new Size(24, 18);
             iconImg.SizeMode = PictureBoxSizeMode.CenterImage;
             iconImg.TabIndex = 34;
             iconImg.TabStop = false;
@@ -172,13 +177,13 @@
             titleLabel.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             titleLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             titleLabel.ForeColor = Color.FromArgb(130, 130, 130);
-            titleLabel.Location = new Point(30, 3);
+            titleLabel.Location = new Point(26, 2);
             titleLabel.ModifyClampMax = 0F;
             titleLabel.ModifyClampMin = 0F;
             titleLabel.ModifyControlName = "";
             titleLabel.ModifyScale = 1F;
             titleLabel.Name = "titleLabel";
-            titleLabel.Size = new Size(120, 20);
+            titleLabel.Size = new Size(94, 15);
             titleLabel.TabIndex = 33;
             titleLabel.Text = "Install Packages";
             // 
@@ -189,16 +194,17 @@
             list.BackColor = Color.FromArgb(54, 54, 54);
             list.ItemHeight = 35;
             list.ItemHeightType = VampirioCode.UI.Controls.VerticalItemList.HeightType.FIXED_SIZE;
-            list.Location = new Point(0, 32);
+            list.Location = new Point(0, 24);
+            list.Margin = new Padding(3, 2, 3, 2);
             list.Name = "list";
             list.SelectedIndex = -1;
             list.SelectionEnable = true;
-            list.Size = new Size(169, 133);
+            list.Size = new Size(148, 100);
             list.TabIndex = 32;
             // 
             // ItemListPackages
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(40, 40, 40);
             Controls.Add(downButton);
@@ -208,8 +214,9 @@
             Controls.Add(iconImg);
             Controls.Add(titleLabel);
             Controls.Add(list);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "ItemListPackages";
-            Size = new Size(169, 206);
+            Size = new Size(148, 154);
             ((System.ComponentModel.ISupportInitialize)iconImg).EndInit();
             ResumeLayout(false);
             PerformLayout();

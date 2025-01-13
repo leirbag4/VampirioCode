@@ -48,13 +48,13 @@
             labelAdv1.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelAdv1.ForeColor = Color.Silver;
-            labelAdv1.Location = new Point(35, 23);
+            labelAdv1.Location = new Point(31, 17);
             labelAdv1.ModifyClampMax = 0F;
             labelAdv1.ModifyClampMin = 0F;
             labelAdv1.ModifyControlName = "";
             labelAdv1.ModifyScale = 1F;
             labelAdv1.Name = "labelAdv1";
-            labelAdv1.Size = new Size(167, 20);
+            labelAdv1.Size = new Size(134, 15);
             labelAdv1.TabIndex = 2;
             labelAdv1.Text = "Download 'dotnet sdk'";
             // 
@@ -68,9 +68,11 @@
             groupBoxAdv1.Controls.Add(buttonAdv1);
             groupBoxAdv1.Controls.Add(labelAdv8);
             groupBoxAdv1.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
-            groupBoxAdv1.Location = new Point(35, 79);
+            groupBoxAdv1.Location = new Point(31, 59);
+            groupBoxAdv1.Margin = new Padding(3, 2, 3, 2);
             groupBoxAdv1.Name = "groupBoxAdv1";
-            groupBoxAdv1.Size = new Size(628, 261);
+            groupBoxAdv1.Padding = new Padding(3, 2, 3, 2);
+            groupBoxAdv1.Size = new Size(550, 196);
             groupBoxAdv1.TabIndex = 39;
             groupBoxAdv1.TabStop = false;
             groupBoxAdv1.Text = "groupBoxAdv1";
@@ -82,13 +84,13 @@
             labelAdv2.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelAdv2.ForeColor = SystemColors.GradientActiveCaption;
-            labelAdv2.Location = new Point(26, 90);
+            labelAdv2.Location = new Point(23, 68);
             labelAdv2.ModifyClampMax = 0F;
             labelAdv2.ModifyClampMin = 0F;
             labelAdv2.ModifyControlName = "";
             labelAdv2.ModifyScale = 1F;
             labelAdv2.Name = "labelAdv2";
-            labelAdv2.Size = new Size(545, 38);
+            labelAdv2.Size = new Size(477, 28);
             labelAdv2.TabIndex = 34;
             labelAdv2.Text = "A know working version is the 8.0";
             // 
@@ -107,14 +109,15 @@
             buttonAdv2.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv2.FocusEnabled = false;
             buttonAdv2.ForeColor = Color.Silver;
-            buttonAdv2.Location = new Point(181, 151);
+            buttonAdv2.Location = new Point(158, 113);
+            buttonAdv2.Margin = new Padding(3, 2, 3, 2);
             buttonAdv2.Name = "buttonAdv2";
             buttonAdv2.PaintImageOnSelected = true;
             buttonAdv2.processEnterKey = true;
             buttonAdv2.resizeImage = new Point(0, 0);
             buttonAdv2.Selected = false;
             buttonAdv2.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv2.Size = new Size(122, 33);
+            buttonAdv2.Size = new Size(107, 25);
             buttonAdv2.TabIndex = 33;
             buttonAdv2.Text = "Download";
             buttonAdv2.UseVisualStyleBackColor = false;
@@ -123,9 +126,11 @@
             // pictureBoxAdv1
             // 
             pictureBoxAdv1.Image = Properties.Resources.dotnet_med_icon;
-            pictureBoxAdv1.Location = new Point(26, 131);
+            pictureBoxAdv1.Location = new Point(23, 98);
+            pictureBoxAdv1.Margin = new Padding(3, 2, 3, 2);
             pictureBoxAdv1.Name = "pictureBoxAdv1";
-            pictureBoxAdv1.Size = new Size(130, 73);
+            pictureBoxAdv1.Size = new Size(114, 55);
+            pictureBoxAdv1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxAdv1.TabIndex = 32;
             pictureBoxAdv1.TabStop = false;
             // 
@@ -145,14 +150,15 @@
             buttonAdv1.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv1.FocusEnabled = false;
             buttonAdv1.ForeColor = Color.Silver;
-            buttonAdv1.Location = new Point(55, 343);
+            buttonAdv1.Location = new Point(48, 257);
+            buttonAdv1.Margin = new Padding(3, 2, 3, 2);
             buttonAdv1.Name = "buttonAdv1";
             buttonAdv1.PaintImageOnSelected = true;
             buttonAdv1.processEnterKey = true;
             buttonAdv1.resizeImage = new Point(0, 0);
             buttonAdv1.Selected = false;
             buttonAdv1.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv1.Size = new Size(122, 33);
+            buttonAdv1.Size = new Size(107, 25);
             buttonAdv1.TabIndex = 31;
             buttonAdv1.Text = "Download";
             buttonAdv1.UseVisualStyleBackColor = false;
@@ -164,13 +170,13 @@
             labelAdv8.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelAdv8.ForeColor = Color.Silver;
-            labelAdv8.Location = new Point(6, 10);
+            labelAdv8.Location = new Point(5, 8);
             labelAdv8.ModifyClampMax = 0F;
             labelAdv8.ModifyClampMin = 0F;
             labelAdv8.ModifyControlName = "";
             labelAdv8.ModifyScale = 1F;
             labelAdv8.Name = "labelAdv8";
-            labelAdv8.Size = new Size(582, 57);
+            labelAdv8.Size = new Size(509, 43);
             labelAdv8.TabIndex = 30;
             labelAdv8.Text = "The compiler needs 'dotnet sdk' installed on your computer in order to work. Download it and follow the instructions.";
             // 
@@ -189,14 +195,15 @@
             buttonAdv3.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv3.FocusEnabled = false;
             buttonAdv3.ForeColor = Color.Silver;
-            buttonAdv3.Location = new Point(50, 370);
+            buttonAdv3.Location = new Point(44, 278);
+            buttonAdv3.Margin = new Padding(3, 2, 3, 2);
             buttonAdv3.Name = "buttonAdv3";
             buttonAdv3.PaintImageOnSelected = true;
             buttonAdv3.processEnterKey = true;
             buttonAdv3.resizeImage = new Point(0, 0);
             buttonAdv3.Selected = false;
             buttonAdv3.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv3.Size = new Size(162, 33);
+            buttonAdv3.Size = new Size(142, 25);
             buttonAdv3.TabIndex = 35;
             buttonAdv3.Text = "Test Installation";
             buttonAdv3.UseVisualStyleBackColor = false;
@@ -204,14 +211,14 @@
             // 
             // DotnetBuildSetup
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 35, 35);
             Controls.Add(buttonAdv3);
             Controls.Add(groupBoxAdv1);
             Controls.Add(labelAdv1);
             Name = "DotnetBuildSetup";
-            Size = new Size(706, 539);
+            Size = new Size(618, 404);
             groupBoxAdv1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).EndInit();
             ResumeLayout(false);

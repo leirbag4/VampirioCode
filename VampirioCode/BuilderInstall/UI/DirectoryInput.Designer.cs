@@ -50,14 +50,15 @@
             browseButton.FocusColor = Color.FromArgb(24, 81, 115);
             browseButton.FocusEnabled = false;
             browseButton.ForeColor = Color.Silver;
-            browseButton.Location = new Point(338, 5);
+            browseButton.Location = new Point(296, 4);
+            browseButton.Margin = new Padding(3, 2, 3, 2);
             browseButton.Name = "browseButton";
             browseButton.PaintImageOnSelected = true;
             browseButton.processEnterKey = true;
             browseButton.resizeImage = new Point(0, 0);
             browseButton.Selected = false;
             browseButton.SelectedColor = Color.FromArgb(0, 122, 204);
-            browseButton.Size = new Size(106, 29);
+            browseButton.Size = new Size(93, 22);
             browseButton.TabIndex = 28;
             browseButton.Text = "Browse...";
             browseButton.UseVisualStyleBackColor = false;
@@ -76,30 +77,34 @@
             input.ForeColor = Color.Silver;
             input.IncludeOnlyCharacters = null;
             input.LeftLeadingCharacter = '\0';
-            input.Location = new Point(24, 6);
+            input.Location = new Point(21, 4);
+            input.Margin = new Padding(3, 2, 3, 2);
             input.Name = "input";
-            input.Size = new Size(308, 27);
+            input.Size = new Size(270, 23);
             input.TabIndex = 27;
             // 
             // pictureBoxAdv1
             // 
             pictureBoxAdv1.Image = Properties.Resources.file_icon_folder;
-            pictureBoxAdv1.Location = new Point(2, 10);
+            pictureBoxAdv1.Location = new Point(2, 8);
+            pictureBoxAdv1.Margin = new Padding(3, 2, 3, 2);
             pictureBoxAdv1.Name = "pictureBoxAdv1";
-            pictureBoxAdv1.Size = new Size(16, 16);
+            pictureBoxAdv1.Size = new Size(14, 14);
+            pictureBoxAdv1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxAdv1.TabIndex = 29;
             pictureBoxAdv1.TabStop = false;
             // 
             // DirectoryInput
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 35, 35);
             Controls.Add(pictureBoxAdv1);
             Controls.Add(browseButton);
             Controls.Add(input);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "DirectoryInput";
-            Size = new Size(455, 39);
+            Size = new Size(398, 29);
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).EndInit();
             ResumeLayout(false);
             PerformLayout();
