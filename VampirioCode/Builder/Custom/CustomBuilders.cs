@@ -17,6 +17,12 @@ namespace VampirioCode.Builder.Custom
 
         private static Dictionary<string, CustomBuilder> builders;
 
+        private static readonly Dictionary<BuilderType, Func<CustomBuilder>> builderRegistry = new Dictionary<BuilderType, Func<CustomBuilder>>()
+        {
+            { BuilderType.CustomMsvcCpp,        () => new CustomMsvcCppBuilder() },
+            { BuilderType.CustomGnuGppWSLCpp,   () => new CustomGnuCppWSLBuilder() }
+        };
+
         public static void Initialize()
         {
             builders = new Dictionary<string, CustomBuilder>();
@@ -30,9 +36,36 @@ namespace VampirioCode.Builder.Custom
 
         public static CustomBuilder GetBuilder(string fullProjFilePath, BuilderType builderType)
         {
-            if(builders.ContainsKey(fullProjFilePath))
-                return builders[fullProjFilePath];
+            string builderKey = fullProjFilePath + builderType.ToString();
 
+            if (builders.ContainsKey(builderKey))
+                return builders[builderKey];
+
+            // Check if builder is registered
+            if (builderRegistry.TryGetValue(builderType, out var builderFactory))
+            {
+                CustomBuilder builder = builderFactory.Invoke();
+                builder.Setup(fullProjFilePath, "");
+
+                if (builder.Exists())
+                {
+                    builders.Add(builderKey, builder);
+                    builder.Load();
+                    return builder;
+                }
+                else
+                    return null; // don't delete this line
+            }
+
+            return null; // don't delete this line
+        }
+
+        /*public static CustomBuilder GetBuilder(string fullProjFilePath, BuilderType builderType)
+        {
+            string builderKey = fullProjFilePath + builderType.ToString();
+
+            if(builders.ContainsKey(builderKey))
+                return builders[builderKey];
 
             if (builderType == BuilderType.CustomMsvcCpp)
             { 
@@ -41,15 +74,14 @@ namespace VampirioCode.Builder.Custom
 
                 if (builder.Exists())
                 {
-                    builders.Add(fullProjFilePath, builder);
-                    //XConsole.Alert("exist");
+                    builders.Add(builderKey, builder);
                     builder.Load();
                     return builder;
-                    //builders.Add(projectName, builder.Load());
                 }
                 else
                 {
-                    throw new Exception("Custom builder doesn't exist!");
+                    return null;
+                    //throw new Exception("Custom builder doesn't exist!");
                 }
             }
             else if (builderType == BuilderType.CustomGnuGppWSLCpp)
@@ -59,22 +91,21 @@ namespace VampirioCode.Builder.Custom
 
                 if (builder.Exists())
                 {
-                    builders.Add(fullProjFilePath, builder);
-                    //XConsole.Alert("exist");
+                    builders.Add(builderKey, builder);
                     builder.Load();
                     return builder;
-                    //builders.Add(projectName, builder.Load());
                 }
                 else
                 {
-                    throw new Exception("Custom builder doesn't exist!");
+                    return null;
+                    //throw new Exception("Custom builder doesn't exist!");
                 }
             }
 
 
             //XConsole.Alert("path: " + projectName + " builderType: " + builderType);
             return null;
-        }
+        }*/
 
         public static CustomMsvcCppBuilder Create_CPP_MSVC_BASIC(Document document, VampirioEditor editor, BuilderTemplateInfo builderTemplateInfo)
         {
@@ -121,7 +152,8 @@ namespace VampirioCode.Builder.Custom
             //Get(projName, document.BuilderType);
 
             //XConsole.Alert("proj: " + projName + "  btype: " + document.BuilderType);
-            UpdateCode(editor, builderTemplateInfo);
+            if((builderTemplateInfo != null) && !builderTemplateInfo.DontUpdateCode)
+                UpdateCode(editor, builderTemplateInfo);
 
             return builder;
         }
@@ -185,8 +217,8 @@ namespace VampirioCode.Builder.Custom
             //Get(projName, document.BuilderType);
 
             //XConsole.Alert("proj: " + projName + "  btype: " + document.BuilderType);
-
-            UpdateCode(editor, builderTemplateInfo);
+            if ((builderTemplateInfo != null) && !builderTemplateInfo.DontUpdateCode)
+                UpdateCode(editor, builderTemplateInfo);
 
             return builder;
         }
@@ -224,7 +256,8 @@ namespace VampirioCode.Builder.Custom
             //Get(projName, document.BuilderType);
 
             //XConsole.Alert("proj: " + projName + "  btype: " + document.BuilderType);
-            UpdateCode(editor, builderTemplateInfo);
+            if ((builderTemplateInfo != null) && !builderTemplateInfo.DontUpdateCode)
+                UpdateCode(editor, builderTemplateInfo);
 
             return builder;
         }

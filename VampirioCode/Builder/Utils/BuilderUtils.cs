@@ -114,15 +114,6 @@ namespace VampirioCode.Builder.Utils
 
                         if (newBuilderType == BuilderType.CustomMsvcCpp)
                         {
-                            /*if (document.IsTemporary)
-                            {
-                                XConsole.Alert("enter: " + document.FullFilePath);
-                                document.Move(AppInfo.TemporaryCustomFilesPath + "projReloco");
-                                XConsole.Alert("enter2: " + document.FullFilePath);
-                            }
-                            else
-                                XConsole.Alert("no enter");*/
-                            
                             var builder = CustomBuilders.Create_CPP_MSVC_BASIC(document, null, null);
                             CustomMsvcCppBuilderSetting builderSettings = new CustomMsvcCppBuilderSetting();
                             builderSettings.Open(document.FullFilePath, document.BuilderType);
@@ -218,6 +209,22 @@ namespace VampirioCode.Builder.Utils
             // No equivalent compatible builder
             else
                 return BuilderType.None;*/
+        }
+
+        public static BuilderType GetEquivalentCustomOnly(BuilderType currBuilderType)
+        {
+
+            int custBuildType = (int)currBuilderType;
+
+            // Simple Build To Custom
+            if (custBuildType < 0x00010000)
+            {
+                custBuildType = custBuildType << 16;
+                return (BuilderType)custBuildType;
+            }
+            // Already a Custom build type
+            else
+                return currBuilderType;
         }
 
         public static bool CanCompile(DocumentType docType)

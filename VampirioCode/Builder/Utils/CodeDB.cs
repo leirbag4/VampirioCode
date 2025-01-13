@@ -109,10 +109,61 @@ public class Program
 }";
                 // ------------------------------------
 
+                // ------------------------------------
+                case BuilderTemplate.JavascriptBasic:
+                // ------------------------------------
 
+                return @"console.log(""tester"")";
+                // ------------------------------------
+
+                // ------------------------------------
+                case BuilderTemplate.JavaBasic:
+                // ------------------------------------
+
+                return @"public class Program
+{
+    public static void main(String[] args)
+    {
+        System.out.println(""vampirio"");
+    }
+}";
+                // ------------------------------------
+
+
+                // ------------------------------------
+                case BuilderTemplate.PhpBasic:
+                // ------------------------------------
+
+                return @"<?php
+
+    echo(""vampirio"");
+
+?>";
+                // ------------------------------------
+            
+
+                // ------------------------------------
+                case BuilderTemplate.HtmlBasic:
+                // ------------------------------------
+
+                return @"<html>
+    <head>
+        <title>
+            Vampirio Page
+        </title>
+    </head>
+    <body>
+        <p>
+            Vampirio test page
+        </p>
+    </body>
+</html>";
+                // ------------------------------------
             }
 
             return "";
+
+
 
         }
     }

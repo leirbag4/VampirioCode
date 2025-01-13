@@ -33,8 +33,9 @@ namespace VampirioCode.Builder.Custom
 
         public CustomMsvcCppBuilder()
         {
-            Name = "CustomMsvc";
-            Type = BuilderType.CustomMsvcCpp;
+            Name =          "CustomMsvc";
+            Type =          BuilderType.CustomMsvcCpp;
+            BuilderKind =   BuilderKind.CppMsvc;
 
             Setting =   new MsvcCppBSetting();
             Workspace = new CppWorkspace();
@@ -52,7 +53,7 @@ namespace VampirioCode.Builder.Custom
             //Directory.CreateDirectory(TempDir);
 
             BaseProjDir =           TempDir + projectName + "\\";       // temporary base dir ->    \temp_proj\_vamp\proj_name\
-            BuilderTypeDir =        BaseProjDir + "msvc\\";             // temp builder type dir -> \temp_proj\_vamp\proj_name\msvc\
+            BuilderTypeDir =        BaseProjDir + BuilderKind + "\\";             // temp builder type dir -> \temp_proj\_vamp\proj_name\msvc\
             ProjectDir =            BuilderTypeDir + "build\\";         // temporary project dir -> \temp_proj\_vamp\proj_name\msvc\build\
             ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_proj\_vamp\proj_name\msvc\build\proj.cpp
             objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\msvc\build\obj\
@@ -81,11 +82,9 @@ namespace VampirioCode.Builder.Custom
             SaveSetting<MsvcCppBSetting>(Setting);
 
             // Workspace
-            Workspace.MainFile =                Path.GetRelativePath(originalBaseDirPath, originalFullFilePath);
-            //Workspace.MsvcProject =             new WorkspaceProject();
-            //Workspace.MsvcProject.MainFile =    Workspace.MainFile;//Path.GetRelativePath(BaseProjDir, ProgramFile);
-            //Workspace.MsvcProject.BuilderType = Type;
-            Workspace.DefaultBuilderType =      BuilderType.CustomMsvcCpp;
+            Workspace.MainFile =            Path.GetRelativePath(originalBaseDirPath, originalFullFilePath);
+            Workspace.DefaultBuilderType =  BuilderType.CustomMsvcCpp;
+            Workspace.RegisterProject(Type, BuilderKind);
 
             SaveWorkspace<CppWorkspace>(Workspace);
         }

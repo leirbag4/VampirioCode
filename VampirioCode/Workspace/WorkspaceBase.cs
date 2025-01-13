@@ -8,6 +8,7 @@ using VampirioCode.IO;
 using System.IO;
 using VampDocManager;
 using VampirioCode.Builder;
+using VampirioCode.Builder.Custom;
 
 namespace VampirioCode.Workspace
 {
@@ -18,7 +19,7 @@ namespace VampirioCode.Workspace
         public DocumentType Language { get; set; }
         public DocumentType[] DocumentTypes { get; set; }
         public BuilderType DefaultBuilderType { get; set; }
-        //public WorkspaceProject[] WorkspaceProjects { get; set; }
+        public List<WorkspaceProject> WorkspaceProjects { get; set; }
         
         protected void SetLanguage(DocumentType language)
         {
@@ -49,6 +50,28 @@ namespace VampirioCode.Workspace
             }
 
             return false;
+        }
+
+        public void RegisterProject(BuilderType builderType, BuilderKind builderKind)
+        {
+            if ((WorkspaceProjects == null) || (WorkspaceProjects.Count == 0))
+            {
+                WorkspaceProjects = new List<WorkspaceProject>();
+                WorkspaceProjects.Add(new WorkspaceProject() { BuilderType = builderType, BuilderKind = builderKind });
+            }
+            else
+            {
+                // Check if already exists
+                foreach (var workspaceProj in WorkspaceProjects)
+                {
+                    if (builderType == builderType)
+                        return;
+                }
+
+                // Create one if doesn't exist
+                WorkspaceProjects.Add(new WorkspaceProject() { BuilderType = builderType, BuilderKind = builderKind });
+
+            }
         }
 
         public static ResultInfo Save<T>(T workspace, string path) where T : WorkspaceBase

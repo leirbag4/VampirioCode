@@ -31,6 +31,8 @@ namespace VampirioCode.BuilderSetting
         public override void Open(string fullFilePath, BuilderType builderType)
         {
             builder = (CustomGnuCppWSLBuilder)CustomBuilders.GetBuilder(fullFilePath, builderType);
+            builder.Prepare();
+            builder.Load();
 
             //XConsole.Alert("t:" + builder.Setting.CopyDirsPre.Count);
             //XConsole.Alert("t -> " + builder.Setting.CopyDirsPre[0].From);

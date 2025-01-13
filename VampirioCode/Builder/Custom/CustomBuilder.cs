@@ -26,6 +26,8 @@ namespace VampirioCode.Builder.Custom
         // custom workspace file -> .workspace
         protected string WorkspaceFile { get; set; } = "";
 
+        // builder directory
+        protected BuilderKind BuilderKind { get; set; } = BuilderKind.None;
 
         public string GetBuildSettingsFile() { return BuildSettingsFile; }
 

@@ -26,9 +26,9 @@ namespace VampirioCode.Builder
         SimpleGnuGppCpp =   0x00000004,
         SimpleClangCpp =    0x00000008,
         SimpleWasmCpp =     0x00000010,
-        SimpleJs =          0x00000011,
-        SimpleJava =        0x00000012,
-        SimplePhp =         0x00000014,
+        SimpleJs =          0x00000020,
+        SimpleJava =        0x00000040,
+        SimplePhp =         0x00000080,
 
         // Customs
         //CustomCSharp =        0x00010000, // guide for future implementation

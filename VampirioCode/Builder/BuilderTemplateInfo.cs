@@ -19,6 +19,8 @@ namespace VampirioCode.Builder
         public string Tag { get; set; }
         public Type BuilderSettingUI { get; set; }
         public string Code { get { return CodeDB.GetCode(this.Template); } }
+        public bool DontUpdateCode { get; set; } = false;
+
         //public CustomBuilderSettingBase BuilderSetting { get; set; }
         //public CustomBuilderSettingBase BuilderSetting { get { return new CustomMsvcCppBuilderSetting();/*GetBuilderSetting(this.BuilderType);*/ } }
         public CustomBuilderSettingBase BuilderSetting { get { return (CustomBuilderSettingBase)Activator.CreateInstance(BuilderSettingUI); } }

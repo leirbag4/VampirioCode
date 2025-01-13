@@ -32,8 +32,9 @@ namespace VampirioCode.Builder.Custom
 
         public CustomGnuCppWSLBuilder()
         {
-            Name = "CustomGnuCppWSL";
-            Type = BuilderType.CustomGnuGppWSLCpp;
+            Name =          "CustomGnuCppWSL";
+            Type =          BuilderType.CustomGnuGppWSLCpp;
+            BuilderKind =   BuilderKind.CppGnuGpp;
 
             Setting = new GnuCppBSetting();
             Workspace = new CppWorkspace();
@@ -56,7 +57,7 @@ namespace VampirioCode.Builder.Custom
             TempDir = originalBaseDirPath + "\\" + AppInfo.VampTempDir + "\\";         // temporary directory ->   \temp_proj\_vamp\
 
             BaseProjDir =       TempDir + projectName + "\\";       // temporary base dir ->    \temp_proj\_vamp\proj_name\
-            BuilderTypeDir =    BaseProjDir + "gnuCppWsl\\";        // temp builder type dir -> \temp_proj\_vamp\proj_name\gnuCppWsl\
+            BuilderTypeDir =    BaseProjDir + BuilderKind + "\\";        // temp builder type dir -> \temp_proj\_vamp\proj_name\gnuCppWsl\
             ProjectDir =        BuilderTypeDir + "build\\";         // temporary project dir -> \temp_proj\_vamp\proj_name\gnuCppWsl\build\
             ProgramFile =       ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_proj\_vamp\proj_name\gnuCppWsl\build\proj.cpp
             objsDir =           ProjectDir + "obj\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\gnuCppWsl\build\obj\
@@ -75,7 +76,8 @@ namespace VampirioCode.Builder.Custom
 
             // Workspace
             Workspace.MainFile =            Path.GetRelativePath(originalBaseDirPath, originalFullFilePath);
-            Workspace.DefaultBuilderType =  BuilderType.CustomMsvcCpp;
+            Workspace.DefaultBuilderType =  BuilderType.CustomGnuGppWSLCpp;
+            Workspace.RegisterProject(Type, BuilderKind);
 
             SaveWorkspace<CppWorkspace>(Workspace);
         }
