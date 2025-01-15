@@ -17,6 +17,8 @@ namespace VampirioCode.Command.Dotnet
 
         public async Task<VersionResult> VersionAsync()
         {
+            ConfirmProgramPath = false;
+
             return await CreateCommand<VersionResult>("dotnet", "--version", cmd.Trim());
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.Dotnet.Params;
 using VampirioCode.Command.Dotnet.Result;
+using VampirioCode.UI;
 
 namespace VampirioCode.Command.Dotnet
 {
@@ -92,6 +93,8 @@ namespace VampirioCode.Command.Dotnet
                     Set("--dry-run",            DryRun);
                     Set("--force",              Force);
                     Set("--no-update-check",    NoUpdateCheck);
+
+            ConfirmProgramPath = false;
 
             return await CreateCommand<NewResult>("dotnet", "new", cmd.Trim());
         }

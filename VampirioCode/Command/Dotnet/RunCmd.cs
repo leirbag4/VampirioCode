@@ -113,6 +113,8 @@ namespace VampirioCode.Command.Dotnet
             SetIfExists("--project",            ProjectPath);
             SetIfExists(Arguments);
 
+            ConfirmProgramPath = false;
+
             return await CreateCommand<RunResult>("dotnet", "run", cmd.Trim());
         }
 

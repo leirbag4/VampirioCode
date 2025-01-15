@@ -77,6 +77,8 @@ namespace VampirioCode.Command.Dotnet
                     Set("--diagnostics",    Diagnostics);
             SetIfExists("--verbosity",      VerbosityInfo.Get(Verbosity).Param);
 
+            ConfirmProgramPath = false;
+
             return await CreateCommand<NewSearchResult>("dotnet", "new search \"" + TemplateName + "\"", "--columns-all", cmd.Trim());
         }
 

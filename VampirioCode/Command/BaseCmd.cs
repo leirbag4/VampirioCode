@@ -17,6 +17,7 @@ namespace VampirioCode.Command
         public ErrorInfo ErrorInfo { get; private set; } = null;
         public bool AutoTriggerErrors { get; set; } = true;
         public bool LogParams { get; set; } = true;
+        public bool ConfirmProgramPath { get; set; } = true;
 
         protected CmdRun proc;
         protected BaseResult baseResult = null;
@@ -41,12 +42,8 @@ namespace VampirioCode.Command
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
             baseResult = new T();
 
-            if (!File.Exists(program.Replace('"', ' ').Trim()))
-            {
+            if (ConfirmProgramPath && !File.Exists(program.Replace('"', ' ').Trim()))
                 MsgBox.Show("Incorrect Path", "Incorrect 'Compiler or Interpreter' path.\n\nPath:'"+program+"'\n\nConfigure it at 'Config -> Setup Compilers | Interpreters'", DialogButtons.OK, DialogIcon.Error);
-                //_OnComplete(tcs);
-                //return await tcs.Task;
-            }
 
             string arguments = command;
 

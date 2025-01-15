@@ -173,6 +173,8 @@ namespace VampirioCode.Command.Dotnet
             Set("--no-self-contained",      NoSelfContained);
             Set("--disable-build-servers",  DisableBuildServers);
 
+            ConfirmProgramPath = false;
+
             return await CreateCommand<BuildResult>("dotnet", "build", cmd.Trim());
         }
 
