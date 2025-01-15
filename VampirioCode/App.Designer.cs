@@ -543,8 +543,8 @@
             // 
             setupCompilersInterpreterToolStripMenuItem.ForeColor = Color.Silver;
             setupCompilersInterpreterToolStripMenuItem.Name = "setupCompilersInterpreterToolStripMenuItem";
-            setupCompilersInterpreterToolStripMenuItem.Size = new Size(232, 22);
-            setupCompilersInterpreterToolStripMenuItem.Text = "Setup Compilers / Interpreters";
+            setupCompilersInterpreterToolStripMenuItem.Size = new Size(230, 22);
+            setupCompilersInterpreterToolStripMenuItem.Text = "Setup Compilers | Interpreters";
             setupCompilersInterpreterToolStripMenuItem.Click += OnSetupCompilersInterpreters;
             // 
             // helpToolStripMenuItem

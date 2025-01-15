@@ -58,6 +58,7 @@
             buttonAdv3 = new VampirioCode.UI.Controls.ButtonAdv();
             pictureBoxAdv1 = new VampirioCode.UI.Controls.PictureBoxAdv();
             cl_exe_input = new UI.FileInput();
+            buttonAdv5 = new VampirioCode.UI.Controls.ButtonAdv();
             groupBoxAdv1.SuspendLayout();
             panelContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).BeginInit();
@@ -112,7 +113,7 @@
             // okButton
             // 
             okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            okButton.BackColor = Color.FromArgb(30, 30, 30);
+            okButton.BackColor = Color.FromArgb(30, 30, 40);
             okButton.BorderColor = Color.FromArgb(10, 10, 10);
             okButton.BorderSize = 1;
             okButton.CStyle = VampirioCode.UI.Controls.ButtonAdv.CustomStyle.SOLID;
@@ -443,7 +444,7 @@
             // buttonAdv1
             // 
             buttonAdv1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            buttonAdv1.BackColor = Color.FromArgb(30, 30, 30);
+            buttonAdv1.BackColor = Color.FromArgb(30, 30, 40);
             buttonAdv1.BorderColor = Color.FromArgb(10, 10, 10);
             buttonAdv1.BorderSize = 1;
             buttonAdv1.CStyle = VampirioCode.UI.Controls.ButtonAdv.CustomStyle.SOLID;
@@ -473,7 +474,7 @@
             // buttonAdv2
             // 
             buttonAdv2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            buttonAdv2.BackColor = Color.FromArgb(30, 30, 30);
+            buttonAdv2.BackColor = Color.FromArgb(30, 30, 40);
             buttonAdv2.BorderColor = Color.FromArgb(10, 10, 10);
             buttonAdv2.BorderSize = 1;
             buttonAdv2.CStyle = VampirioCode.UI.Controls.ButtonAdv.CustomStyle.SOLID;
@@ -486,7 +487,7 @@
             buttonAdv2.FocusColor = Color.FromArgb(24, 81, 115);
             buttonAdv2.FocusEnabled = false;
             buttonAdv2.ForeColor = Color.Silver;
-            buttonAdv2.Location = new Point(480, 31);
+            buttonAdv2.Location = new Point(480, 8);
             buttonAdv2.Margin = new Padding(3, 2, 3, 2);
             buttonAdv2.Name = "buttonAdv2";
             buttonAdv2.PaintImageOnSelected = true;
@@ -494,11 +495,11 @@
             buttonAdv2.resizeImage = new Point(0, 0);
             buttonAdv2.Selected = false;
             buttonAdv2.SelectedColor = Color.FromArgb(0, 122, 204);
-            buttonAdv2.Size = new Size(107, 56);
+            buttonAdv2.Size = new Size(119, 36);
             buttonAdv2.TabIndex = 29;
-            buttonAdv2.Text = "Use reference hardcoded paths";
+            buttonAdv2.Text = "Use 'common' hardcoded paths";
             buttonAdv2.UseVisualStyleBackColor = false;
-            buttonAdv2.Click += OnUseHardcodedPaths;
+            buttonAdv2.Click += OnUseCommonHardcodedPaths;
             // 
             // panelContainer
             // 
@@ -610,10 +611,41 @@
             cl_exe_input.Size = new Size(450, 29);
             cl_exe_input.TabIndex = 31;
             // 
+            // buttonAdv5
+            // 
+            buttonAdv5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            buttonAdv5.BackColor = Color.FromArgb(30, 30, 40);
+            buttonAdv5.BorderColor = Color.FromArgb(10, 10, 10);
+            buttonAdv5.BorderSize = 1;
+            buttonAdv5.CStyle = VampirioCode.UI.Controls.ButtonAdv.CustomStyle.SOLID;
+            buttonAdv5.expandImage = false;
+            buttonAdv5.extraText = "";
+            buttonAdv5.extraTextAlign = ContentAlignment.MiddleCenter;
+            buttonAdv5.extraTextColor = Color.Black;
+            buttonAdv5.extraTextFont = null;
+            buttonAdv5.extraTextOffset = new Point(0, 0);
+            buttonAdv5.FocusColor = Color.FromArgb(24, 81, 115);
+            buttonAdv5.FocusEnabled = false;
+            buttonAdv5.ForeColor = Color.Silver;
+            buttonAdv5.Location = new Point(480, 53);
+            buttonAdv5.Margin = new Padding(3, 2, 3, 2);
+            buttonAdv5.Name = "buttonAdv5";
+            buttonAdv5.PaintImageOnSelected = true;
+            buttonAdv5.processEnterKey = true;
+            buttonAdv5.resizeImage = new Point(0, 0);
+            buttonAdv5.Selected = false;
+            buttonAdv5.SelectedColor = Color.FromArgb(0, 122, 204);
+            buttonAdv5.Size = new Size(119, 36);
+            buttonAdv5.TabIndex = 32;
+            buttonAdv5.Text = "Use 'Build Tools' hardcoded paths";
+            buttonAdv5.UseVisualStyleBackColor = false;
+            buttonAdv5.Click += OnUseBuildToolsHardcodedPaths;
+            // 
             // MsvcBuildSetup
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(buttonAdv5);
             Controls.Add(cl_exe_input);
             Controls.Add(panelContainer);
             Controls.Add(buttonAdv2);
@@ -664,5 +696,6 @@
         private VampirioCode.UI.Controls.PictureBoxAdv pictureBoxAdv1;
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv4;
         private UI.FileInput cl_exe_input;
+        private VampirioCode.UI.Controls.ButtonAdv buttonAdv5;
     }
 }

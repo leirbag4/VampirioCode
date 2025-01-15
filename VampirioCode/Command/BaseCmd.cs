@@ -41,6 +41,13 @@ namespace VampirioCode.Command
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
             baseResult = new T();
 
+            if (!File.Exists(program.Replace('"', ' ').Trim()))
+            {
+                MsgBox.Show("Incorrect Path", "Incorrect 'Compiler or Interpreter' path.\n\nPath:'"+program+"'\n\nConfigure it at 'Config -> Setup Compilers | Interpreters'", DialogButtons.OK, DialogIcon.Error);
+                //_OnComplete(tcs);
+                //return await tcs.Task;
+            }
+
             string arguments = command;
 
             if (param0 != "") arguments += " " + param0;

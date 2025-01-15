@@ -79,16 +79,23 @@ namespace VampirioCode.BuilderInstall.cpp
         {
             string clPath = GetCompilerPath();
 
-            if (clPath != "")
+            try
             {
-                string basePath = clPath.Substring(0, clPath.LastIndexOf("\\"));
-                string libPath = Path.Combine(basePath, "lib.exe");
+                if (clPath != "")
+                {
+                    string basePath = clPath.Substring(0, clPath.LastIndexOf("\\"));
+                    string libPath = Path.Combine(basePath, "lib.exe");
 
-                cl_exe_input.FilePath = clPath;
-                lib_exe_input.FilePath = libPath;
+                    cl_exe_input.FilePath = clPath;
+                    lib_exe_input.FilePath = libPath;
+                }
+                else
+                    MsgBox.Show(this, "Can't find", "Can't find 'cl.exe' and 'lib.exe' of MSVC Visual Studio installation. Install Visual Studio with C++ features first or setup path manually of each program.");
             }
-            else
-                MsgBox.Show("Can't find", "Can't find 'cl.exe' and 'lib.exe' of MSVC Visual Studio installation. Install Visual Studio with C++ features first or setup path manually of each program.");
+            catch (Exception e)
+            {
+                MsgBox.Show(this, "Can't find", "Can't auto find 'cl.exe' and 'lib.exe'");
+            }
         }
 
         public string GetCompilerPath()
@@ -181,22 +188,35 @@ namespace VampirioCode.BuilderInstall.cpp
 
         private void FindLibUmAndUcrt()
         {
-            string libraryBase = FindDirWithVersion("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\");
-            um_kernel32_lib_input.DirPath = Path.Combine(libraryBase, "um\\x64");
-            ucrt_lib_input.DirPath = Path.Combine(libraryBase, "ucrt\\x64");
+            try
+            {
+                string libraryBase = FindDirWithVersion("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\");
+                um_kernel32_lib_input.DirPath = Path.Combine(libraryBase, "um\\x64");
+                ucrt_lib_input.DirPath = Path.Combine(libraryBase, "ucrt\\x64");
+            }
+            catch (Exception e)
+            {
+                MsgBox.Show(this, "Can't find", "Can't auto find directories for 'um kernel32lib' and 'ucrt lib'. Setup by hand please.");
+            }
         }
 
         private void FindIncludeUcrt()
         {
-
-            // 'include ucrt'
-            string include = FindDirWithVersion("C:\\Program Files (x86)\\Windows Kits\\10\\Include\\");
-            if (include != "")
+            try
             {
-                // hardcoded fixed bug
-                include = include.Replace("\\libd", "");
+                // 'include ucrt'
+                string include = FindDirWithVersion("C:\\Program Files (x86)\\Windows Kits\\10\\Include\\");
+                if (include != "")
+                {
+                    // hardcoded fixed bug
+                    include = include.Replace("\\libd", "");
 
-                ucrt_include_input.DirPath = Path.Combine(include, "ucrt");
+                    ucrt_include_input.DirPath = Path.Combine(include, "ucrt");
+                }
+            }
+            catch (Exception e)
+            {
+                MsgBox.Show(this, "Can't find", "Can't auto find 'ucrt input' directory. Setup by hand please.");
             }
         }
 
@@ -214,7 +234,6 @@ namespace VampirioCode.BuilderInstall.cpp
                 stl_include_input.DirPath = Path.Combine(clPath.Substring(0, index), "include");
                 stl_lib_dir_input.DirPath = Path.Combine(clPath.Substring(0, index), "lib\\x64");
             }
-
 
         }
 
@@ -259,7 +278,7 @@ namespace VampirioCode.BuilderInstall.cpp
             AutoFillIncludesAndLibraries();
         }
 
-        private void OnUseHardcodedPaths(object sender, EventArgs e)
+        private void OnUseCommonHardcodedPaths(object sender, EventArgs e)
         {
             cl_exe_input.FilePath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe";
             lib_exe_input.FilePath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe";
@@ -274,6 +293,21 @@ namespace VampirioCode.BuilderInstall.cpp
             ucrt_lib_input.DirPath = @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64";
         }
 
+        private void OnUseBuildToolsHardcodedPaths(object sender, EventArgs e)
+        {
+            cl_exe_input.FilePath = @"C:\BuildTools\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\cl.exe";
+            lib_exe_input.FilePath = @"C:\BuildTools\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\lib.exe";
+
+            // Includes
+            stl_include_input.DirPath = @"C:\BuildTools\VC\Tools\MSVC\14.42.34433\include";
+            ucrt_include_input.DirPath = @"C:\BuildTools\Windows Kits\10\Include\10.0.26100.0\ucrt";
+
+            // Library Directories
+            stl_lib_dir_input.DirPath = @"C:\BuildTools\VC\Tools\MSVC\14.42.34433\lib\x64";
+            um_kernel32_lib_input.DirPath = @"C:\BuildTools\Windows Kits\10\Lib\10.0.26100.0\um\x64";
+            ucrt_lib_input.DirPath = @"C:\BuildTools\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64";
+        }
+
         private void OnDownloadFromGithubPressed(object sender, EventArgs e)
         {
             FileBrowserUtils.NavigateToWebPage(@"https://github.com/Data-Oriented-House/PortableBuildTools?tab=readme-ov-file");
@@ -283,5 +317,6 @@ namespace VampirioCode.BuilderInstall.cpp
         {
             FileBrowserUtils.NavigateToWebPage(@"https://www.mediafire.com/file/0kryca7n20gdgip/PortableBuildTools.zip/file");
         }
+
     }
 }
