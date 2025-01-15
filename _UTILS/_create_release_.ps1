@@ -1,0 +1,1 @@
+Compress-Archive -Path ".\VampirioCode" -DestinationPath ".\VampirioCode.zip"
