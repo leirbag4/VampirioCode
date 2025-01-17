@@ -53,19 +53,19 @@ namespace VampirioCode.Builder.Custom
             //Directory.CreateDirectory(TempDir);
 
             BaseProjDir =           TempDir + projectName + "\\";       // temporary base dir ->    \temp_proj\_vamp\proj_name\
-            BuilderTypeDir =        BaseProjDir + BuilderKind + "\\";             // temp builder type dir -> \temp_proj\_vamp\proj_name\msvc\
-            ProjectDir =            BuilderTypeDir + "build\\";         // temporary project dir -> \temp_proj\_vamp\proj_name\msvc\build\
-            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_proj\_vamp\proj_name\msvc\build\proj.cpp
-            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\msvc\build\obj\
-            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\msvc\build\bin\
-            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_proj\_vamp\proj_name\msvc\build\bin\proj.exe
+            BuilderTypeDir =        BaseProjDir + BuilderKind + "\\";   // temp builder type dir -> \temp_proj\_vamp\proj_name\msvc\
+            ProjectDir =            BuilderTypeDir + "build\\";         // temporary project dir -> \temp_proj\_vamp\proj_name\CppMsvc\build\
+            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_proj\_vamp\proj_name\CppMsvc\build\proj.cpp
+            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\CppMsvc\build\obj\
+            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\CppMsvc\build\bin\
+            OutputFilename =        outputDir + projectName + ".exe";   // output binaries dir ->   \temp_proj\_vamp\proj_name\CppMsvc\build\bin\proj.exe
 
             // Custom Build Settings File
             WorkspaceFile =         TempDir +        AppInfo.WorkspaceFileName;      // build workspace file ->  \temp_proj\_vamp\.workspace
-            BuildSettingsFile =     BuilderTypeDir + AppInfo.BSettingsFileName;      // build settings file ->   \temp_proj\_vamp\proj_name\msvc\.bsettings
-            //BuildSettingsFile =     ProjectDir + ".bsettings";          // build settings file ->     \temp_build\proj_name\msvc\.bsettings
+            BuildSettingsFile =     BuilderTypeDir + AppInfo.BSettingsFileName;      // build settings file ->   \temp_proj\_vamp\proj_name\CppMsvc\.bsettings
+            //BuildSettingsFile =     ProjectDir + ".bsettings";          // build settings file ->     \temp_build\proj_name\CppMsvc\.bsettings
             //BuildSettingsFile = originalBaseDir + ".bsettings";
-            //BuildSettingsFile = originalBaseDirPath + "\\v" + originalBaseDirName + "\\msvc\\" + ".bsettings";
+            //BuildSettingsFile = originalBaseDirPath + "\\v" + originalBaseDirName + "\\CppMsvc\\" + ".bsettings";
             
             
             //XConsole.Alert("TempDir: " + TempDir);
@@ -205,13 +205,23 @@ namespace VampirioCode.Builder.Custom
             else if(Setting.IncludeSourcesMode == IncludeSourcesMode.Manually)
             {
                 //File.WriteAllText(ProgramFile, code);
-                sourceFiles = await CopySourceFilesAsync(Setting.SourceFiles, new string[] { ".cpp", ".h" }, dontInclude);
+                //sourceFiles = await CopySourceFilesAsync(Setting.SourceFiles, new string[] { ".cpp", ".h" }, dontInclude);
+
+                //dontInclude = new string[] { originalFileName };
+
+                List<string> newSourceFiles = GetManuallySettingsSources(Setting.SourceFiles);
+
+                sourceFiles = await CopySourceFilesAsync(newSourceFiles, new string[] { ".cpp", ".h" }, dontInclude);
+                sourceFiles.Insert(0, ProgramFile);
+
+                // Remove repeated sources
+                sourceFiles = sourceFiles.Distinct().ToList();
             }
             else // Default
             {
                 sourceFiles = new string[] { ProgramFile }.ToList();
 
-                // write all code to '\temp_build\proj_name\msvc\proj.cpp' main program file
+                // write all code to '\temp_build\proj_name\CppMsvc\proj.cpp' main program file
                 File.WriteAllText(ProgramFile, code);
             }
 

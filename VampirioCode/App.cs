@@ -60,6 +60,8 @@ namespace VampirioCode
             BuilderUtils.Initialize();
             RegisterCmdKeys();
 
+            DefineUtils.HideIfDebug(new ToolStripMenuItem[] {debugCurrDocumentToolStripMenuItem, openAppFolderToolStripMenuItem, jsonTesterToolStripMenuItem, debugBuildersToolStripMenuItem, resetConfigFileToolStripMenuItem });
+
             // theme
             menuStrip.Renderer = new VampirioCode.UI.VampGraphics.MenuStripRenderer();
             menuStrip.BackColor = Color.FromArgb(30, 30, 30);
@@ -114,7 +116,7 @@ namespace VampirioCode
             base.OnLoad(e);
         }
 
-        
+
 
         protected override async void OnShown(EventArgs e)
         {
@@ -512,7 +514,7 @@ namespace VampirioCode
                     {
                         //XConsole.Alert("CurrDocument.BuilderType: " + CurrDocument.BuilderType);
                         BuilderTemplateInfo binfo = BuilderTemplateInfo.GetFromType(CurrDocument.BuilderType);
-                        
+
                         //XConsole.Alert("binfo: " + binfo);
 
                         //if (binfo == null)
@@ -573,14 +575,14 @@ namespace VampirioCode
                             {
                                 if (!exists)
                                     CustomBuilders.Create_CPP_MSVC_BASIC(CurrDocument, CurrEditor, binfo);
-                                
+
                                 CurrDocument.BuilderType = BuilderType.CustomMsvcCpp;
                             }
                             else if (CurrDocument.BuilderType == BuilderType.CustomGnuGppWSLCpp)
                             {
-                                if(!exists)
+                                if (!exists)
                                     CustomBuilders.Create_CPP_GNU_GPP_WSL_BASIC(CurrDocument, CurrEditor, binfo);
-                                
+
                                 CurrDocument.BuilderType = BuilderType.CustomGnuGppWSLCpp;
                             }
                             //return;*/
@@ -1648,6 +1650,21 @@ namespace VampirioCode
             Application.Exit();
         }
 
+        private void OnConfigResetConfigFile(object sender, EventArgs e)
+        {
+            var result = MsgBox.Show("Reset Config?", "This will reset all program configurations and also will close all 'temporary' and 'non temporary' files. 'Compilers and Interpreters' paths will be removed.\n\nDo you want to continue?", DialogButtons.YesNoCancel, DialogIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                // Reset the config file
+                Config.CreateNew();
+                Config.Save();
+
+                // Do not pass through 'OnClosing(CancelEventArgs e)'
+                Application.Exit();
+            }
+        }
+
         private void OnWorkspaceDebugPressed(object sender, EventArgs e)
         {
             WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(CurrDocument.FullFilePath);
@@ -1678,5 +1695,7 @@ namespace VampirioCode
             BuilderDebugger debugger = new BuilderDebugger();
             debugger.Show();
         }
+
+
     }
 }

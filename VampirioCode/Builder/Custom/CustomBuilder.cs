@@ -243,6 +243,7 @@ namespace VampirioCode.Builder.Custom
 
                 try
                 {
+                    //XConsole.Alert("outputFullFilePath: " + outputFullFilePath + " ProgramFile: " + ProgramFile);
                     if (outputFullFilePath == ProgramFile)
                     {
                         // This is the 'main' program
@@ -264,6 +265,21 @@ namespace VampirioCode.Builder.Custom
             }
 
             return sourceFiles;
+        }
+
+        public List<string> GetManuallySettingsSources(List<string> sources)
+        {
+            List<string> newSourceFiles = new List<string>();
+
+            foreach (var file in sources)
+            {
+                if (file.Trim() == originalFileName.Trim())
+                    File.WriteAllText(ProgramFile, code);
+                else
+                    newSourceFiles.Add(file);
+            }
+
+            return newSourceFiles;
         }
     }
 

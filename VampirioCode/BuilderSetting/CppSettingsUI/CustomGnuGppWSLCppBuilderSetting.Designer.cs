@@ -34,12 +34,17 @@
             okButton = new VampirioCode.UI.Controls.ButtonAdv();
             cancelButton = new VampirioCode.UI.Controls.ButtonAdv();
             macrosList = new ItemList();
-            findPackageInput = new UI.FindPackageInput();
             labelAdv2 = new VampirioCode.UI.Controls.LabelAdv();
             postCopyDirsList = new ItemList();
             postCopyFilesList = new ItemList();
             standardVersionCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
             labelAdv3 = new VampirioCode.UI.Controls.LabelAdv();
+            itemListPackages = new UI.ItemListPackages();
+            sourceFilesList = new UI.ItemListSources();
+            labelAdv5 = new VampirioCode.UI.Controls.LabelAdv();
+            outputNameInput = new TextBox();
+            outputTypeCBox = new VampirioCode.UI.Controls.ComboBoxAdv();
+            labelAdv4 = new VampirioCode.UI.Controls.LabelAdv();
             SuspendLayout();
             // 
             // includeDirsList
@@ -94,7 +99,7 @@
             okButton.FocusColor = Color.FromArgb(24, 81, 115);
             okButton.FocusEnabled = false;
             okButton.ForeColor = Color.Silver;
-            okButton.Location = new Point(618, 424);
+            okButton.Location = new Point(618, 530);
             okButton.Margin = new Padding(3, 2, 3, 2);
             okButton.Name = "okButton";
             okButton.PaintImageOnSelected = true;
@@ -124,7 +129,7 @@
             cancelButton.FocusColor = Color.FromArgb(24, 81, 115);
             cancelButton.FocusEnabled = false;
             cancelButton.ForeColor = Color.Silver;
-            cancelButton.Location = new Point(716, 424);
+            cancelButton.Location = new Point(716, 530);
             cancelButton.Margin = new Padding(3, 2, 3, 2);
             cancelButton.Name = "cancelButton";
             cancelButton.PaintImageOnSelected = true;
@@ -143,22 +148,12 @@
             macrosList.BackColor = Color.FromArgb(40, 40, 40);
             macrosList.Enable = true;
             macrosList.Icon = Properties.Resources.omenu_mini_select_all;
-            macrosList.Location = new Point(10, 215);
+            macrosList.Location = new Point(10, 379);
             macrosList.Margin = new Padding(3, 2, 3, 2);
             macrosList.Name = "macrosList";
-            macrosList.Size = new Size(262, 184);
+            macrosList.Size = new Size(262, 135);
             macrosList.TabIndex = 26;
             macrosList.Title = "Preprocessor Directive Macros";
-            // 
-            // findPackageInput
-            // 
-            findPackageInput.BackColor = Color.FromArgb(40, 40, 40);
-            findPackageInput.Location = new Point(659, 236);
-            findPackageInput.Margin = new Padding(3, 2, 3, 2);
-            findPackageInput.Name = "findPackageInput";
-            findPackageInput.SelectedPackage = "";
-            findPackageInput.Size = new Size(144, 26);
-            findPackageInput.TabIndex = 29;
             // 
             // labelAdv2
             // 
@@ -182,10 +177,10 @@
             postCopyDirsList.BackColor = Color.FromArgb(40, 40, 40);
             postCopyDirsList.Enable = true;
             postCopyDirsList.Icon = Properties.Resources.mmenu_mini_folder_b;
-            postCopyDirsList.Location = new Point(277, 278);
+            postCopyDirsList.Location = new Point(277, 379);
             postCopyDirsList.Margin = new Padding(3, 2, 3, 2);
             postCopyDirsList.Name = "postCopyDirsList";
-            postCopyDirsList.Size = new Size(262, 121);
+            postCopyDirsList.Size = new Size(262, 135);
             postCopyDirsList.TabIndex = 31;
             postCopyDirsList.Title = "Post Copy Dirs";
             // 
@@ -194,10 +189,10 @@
             postCopyFilesList.BackColor = Color.FromArgb(40, 40, 40);
             postCopyFilesList.Enable = true;
             postCopyFilesList.Icon = Properties.Resources.mmenu_mini_folder_b;
-            postCopyFilesList.Location = new Point(547, 278);
+            postCopyFilesList.Location = new Point(547, 379);
             postCopyFilesList.Margin = new Padding(3, 2, 3, 2);
             postCopyFilesList.Name = "postCopyFilesList";
-            postCopyFilesList.Size = new Size(262, 121);
+            postCopyFilesList.Size = new Size(262, 135);
             postCopyFilesList.TabIndex = 32;
             postCopyFilesList.Title = "Post Copy Files";
             // 
@@ -210,7 +205,7 @@
             standardVersionCBox.DropDownStyle = ComboBoxStyle.DropDownList;
             standardVersionCBox.ForeColor = Color.Silver;
             standardVersionCBox.FormattingEnabled = true;
-            standardVersionCBox.Location = new Point(297, 239);
+            standardVersionCBox.Location = new Point(290, 311);
             standardVersionCBox.Margin = new Padding(3, 2, 3, 2);
             standardVersionCBox.Name = "standardVersionCBox";
             standardVersionCBox.Size = new Size(106, 23);
@@ -223,7 +218,7 @@
             labelAdv3.BorderSize = 1;
             labelAdv3.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv3.ForeColor = Color.Silver;
-            labelAdv3.Location = new Point(297, 215);
+            labelAdv3.Location = new Point(290, 287);
             labelAdv3.ModifyClampMax = 0F;
             labelAdv3.ModifyClampMin = 0F;
             labelAdv3.ModifyControlName = "";
@@ -233,17 +228,104 @@
             labelAdv3.TabIndex = 33;
             labelAdv3.Text = "Standard Version";
             // 
+            // itemListPackages
+            // 
+            itemListPackages.BackColor = Color.FromArgb(40, 40, 40);
+            itemListPackages.Location = new Point(618, 211);
+            itemListPackages.Margin = new Padding(3, 2, 3, 2);
+            itemListPackages.Name = "itemListPackages";
+            itemListPackages.Size = new Size(189, 164);
+            itemListPackages.TabIndex = 45;
+            // 
+            // sourceFilesList
+            // 
+            sourceFilesList.BackColor = Color.FromArgb(40, 40, 40);
+            sourceFilesList.Enable = true;
+            sourceFilesList.Icon = Properties.Resources.mmenu_mini_copy_path;
+            sourceFilesList.Location = new Point(10, 208);
+            sourceFilesList.Margin = new Padding(3, 2, 3, 2);
+            sourceFilesList.Name = "sourceFilesList";
+            sourceFilesList.Size = new Size(262, 161);
+            sourceFilesList.TabIndex = 46;
+            sourceFilesList.Title = "Source Files";
+            // 
+            // labelAdv5
+            // 
+            labelAdv5.AutoSize = true;
+            labelAdv5.BorderColor = Color.DarkGray;
+            labelAdv5.BorderSize = 1;
+            labelAdv5.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv5.ForeColor = Color.Silver;
+            labelAdv5.Location = new Point(445, 225);
+            labelAdv5.ModifyClampMax = 0F;
+            labelAdv5.ModifyClampMin = 0F;
+            labelAdv5.ModifyControlName = "";
+            labelAdv5.ModifyScale = 1F;
+            labelAdv5.Name = "labelAdv5";
+            labelAdv5.Size = new Size(80, 15);
+            labelAdv5.TabIndex = 50;
+            labelAdv5.Text = "Output Name";
+            // 
+            // outputNameInput
+            // 
+            outputNameInput.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            outputNameInput.BackColor = Color.FromArgb(60, 60, 60);
+            outputNameInput.BorderStyle = BorderStyle.FixedSingle;
+            outputNameInput.ForeColor = Color.Silver;
+            outputNameInput.Location = new Point(445, 249);
+            outputNameInput.Margin = new Padding(3, 2, 3, 2);
+            outputNameInput.Name = "outputNameInput";
+            outputNameInput.Size = new Size(163, 23);
+            outputNameInput.TabIndex = 49;
+            // 
+            // outputTypeCBox
+            // 
+            outputTypeCBox.BackColor = Color.FromArgb(52, 52, 52);
+            outputTypeCBox.BorderColor = Color.FromArgb(100, 100, 100);
+            outputTypeCBox.BorderSize = 2;
+            outputTypeCBox.ButtonColor = SystemColors.Control;
+            outputTypeCBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            outputTypeCBox.ForeColor = Color.Silver;
+            outputTypeCBox.FormattingEnabled = true;
+            outputTypeCBox.Location = new Point(290, 249);
+            outputTypeCBox.Margin = new Padding(3, 2, 3, 2);
+            outputTypeCBox.Name = "outputTypeCBox";
+            outputTypeCBox.Size = new Size(106, 23);
+            outputTypeCBox.TabIndex = 48;
+            // 
+            // labelAdv4
+            // 
+            labelAdv4.AutoSize = true;
+            labelAdv4.BorderColor = Color.DarkGray;
+            labelAdv4.BorderSize = 1;
+            labelAdv4.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv4.ForeColor = Color.Silver;
+            labelAdv4.Location = new Point(290, 225);
+            labelAdv4.ModifyClampMax = 0F;
+            labelAdv4.ModifyClampMin = 0F;
+            labelAdv4.ModifyControlName = "";
+            labelAdv4.ModifyScale = 1F;
+            labelAdv4.Name = "labelAdv4";
+            labelAdv4.Size = new Size(72, 15);
+            labelAdv4.TabIndex = 47;
+            labelAdv4.Text = "Output Type";
+            // 
             // CustomGnuGppWSLCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(817, 455);
+            ClientSize = new Size(817, 561);
+            Controls.Add(labelAdv5);
+            Controls.Add(outputNameInput);
+            Controls.Add(outputTypeCBox);
+            Controls.Add(labelAdv4);
+            Controls.Add(sourceFilesList);
+            Controls.Add(itemListPackages);
             Controls.Add(standardVersionCBox);
             Controls.Add(labelAdv3);
             Controls.Add(postCopyFilesList);
             Controls.Add(postCopyDirsList);
             Controls.Add(labelAdv2);
-            Controls.Add(findPackageInput);
             Controls.Add(macrosList);
             Controls.Add(cancelButton);
             Controls.Add(okButton);
@@ -265,11 +347,16 @@
         private VampirioCode.UI.Controls.ButtonAdv okButton;
         private VampirioCode.UI.Controls.ButtonAdv cancelButton;
         private ItemList macrosList;
-        private UI.FindPackageInput findPackageInput;
         private VampirioCode.UI.Controls.LabelAdv labelAdv2;
         private ItemList postCopyDirsList;
         private ItemList postCopyFilesList;
         private VampirioCode.UI.Controls.ComboBoxAdv standardVersionCBox;
         private VampirioCode.UI.Controls.LabelAdv labelAdv3;
+        private UI.ItemListPackages itemListPackages;
+        private UI.ItemListSources sourceFilesList;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv5;
+        private TextBox outputNameInput;
+        private VampirioCode.UI.Controls.ComboBoxAdv outputTypeCBox;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv4;
     }
 }

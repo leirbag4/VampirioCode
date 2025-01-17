@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.BuilderSetting.CppSettings;
 using VampirioCode.BuilderSetting.CppSettings.Settings;
+using VampirioCode.BuilderSetting.Others;
 using VampirioCode.Command;
 using VampirioCode.Command.GnuGppWSL;
 using VampirioCode.Command.GnuGppWSL.Params;
@@ -44,29 +45,29 @@ namespace VampirioCode.Builder.Custom
         {
             /*TempDir =               AppInfo.TemporaryBuildPath;         // temporary directory ->   \temp_build\
             BaseProjDir =           TempDir + projectName + "\\";       // temporary base dir ->    \temp_build\proj_name\
-            ProjectDir =            BaseProjDir + "gnuCppWsl\\";        // temporary project dir -> \temp_build\proj_name\gnuCppWsl\
-            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\gnuCppWsl\proj.cpp
-            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\obj\
-            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\bin\
-            OutputFilename =        outputDir + projectName;            // output binaries dir ->   \temp_build\proj_name\gnuCppWsl\bin\proj
+            ProjectDir =            BaseProjDir + "gnuCppWsl\\";        // temporary project dir -> \temp_build\proj_name\CppGnuGpp\
+            ProgramFile =           ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_build\proj_name\CppGnuGpp\proj.cpp
+            objsDir =               ProjectDir + "obj\\";               // output binaries dir ->   \temp_build\proj_name\CppGnuGpp\obj\
+            outputDir =             ProjectDir + "bin\\";               // output binaries dir ->   \temp_build\proj_name\CppGnuGpp\bin\
+            OutputFilename =        outputDir + projectName;            // output binaries dir ->   \temp_build\proj_name\CppGnuGpp\bin\proj
 
             // Custom Build Settings File
-            BuildSettingsFile =     ProjectDir + ".bsettings";        // build settings file ->   \temp_build\proj_name\gnuCppWsl\.bsettings
+            BuildSettingsFile =     ProjectDir + ".bsettings";        // build settings file ->   \temp_build\proj_name\CppGnuGpp\.bsettings
             */
 
             TempDir = originalBaseDirPath + "\\" + AppInfo.VampTempDir + "\\";         // temporary directory ->   \temp_proj\_vamp\
 
             BaseProjDir =       TempDir + projectName + "\\";       // temporary base dir ->    \temp_proj\_vamp\proj_name\
-            BuilderTypeDir =    BaseProjDir + BuilderKind + "\\";        // temp builder type dir -> \temp_proj\_vamp\proj_name\gnuCppWsl\
-            ProjectDir =        BuilderTypeDir + "build\\";         // temporary project dir -> \temp_proj\_vamp\proj_name\gnuCppWsl\build\
-            ProgramFile =       ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_proj\_vamp\proj_name\gnuCppWsl\build\proj.cpp
-            objsDir =           ProjectDir + "obj\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\gnuCppWsl\build\obj\
-            outputDir =         ProjectDir + "bin\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\gnuCppWsl\build\bin\
-            OutputFilename =    outputDir + projectName;            // output binaries dir ->   \temp_proj\_vamp\proj_name\gnuCppWsl\build\bin\proj.exe
+            BuilderTypeDir =    BaseProjDir + BuilderKind + "\\";   // temp builder type dir -> \temp_proj\_vamp\proj_name\CppGnuGpp\
+            ProjectDir =        BuilderTypeDir + "build\\";         // temporary project dir -> \temp_proj\_vamp\proj_name\CppGnuGpp\build\
+            ProgramFile =       ProjectDir + projectName + ".cpp";  // .cpp program file ->     \temp_proj\_vamp\proj_name\CppGnuGpp\build\proj.cpp
+            objsDir =           ProjectDir + "obj\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\CppGnuGpp\build\obj\
+            outputDir =         ProjectDir + "bin\\";               // output binaries dir ->   \temp_proj\_vamp\proj_name\CppGnuGpp\build\bin\
+            OutputFilename =    outputDir + projectName;            // output binaries dir ->   \temp_proj\_vamp\proj_name\CppGnuGpp\build\bin\proj.exe
 
             // Custom Build Settings File
             WorkspaceFile = TempDir + AppInfo.WorkspaceFileName;      // build workspace file ->  \temp_proj\_vamp\.workspace
-            BuildSettingsFile = BuilderTypeDir + AppInfo.BSettingsFileName;      // build settings file ->   \temp_proj\_vamp\proj_name\gnuCppWsl\.bsettings
+            BuildSettingsFile = BuilderTypeDir + AppInfo.BSettingsFileName;      // build settings file ->   \temp_proj\_vamp\proj_name\CppGnuGpp\.bsettings
 
         }
 
@@ -101,21 +102,25 @@ namespace VampirioCode.Builder.Custom
 
             if (result.IsOk)
             {
-                //XConsole.Clear();
-                //GnuGppWSL gnuGppWSL = new GnuGppWSL();
-                //runResult = await gnuGppWSL.RunAsync(result.OutputFilename);
+                if (Setting.OutputType == OutputType.Executable)
+                {
+                    XConsole.Clear();
+                    GnuGppWSL gnuGppWSL = new GnuGppWSL();
 
-                XConsole.Clear();
-                GnuGppWSL gnuGppWSL = new GnuGppWSL();
+                    RunCmd runCmd = new RunCmd();
+                    runCmd.AddVariable(Variables.ProjDir, ProjectDir);
 
-                RunCmd runCmd = new RunCmd();
-                runCmd.AddVariable(Variables.ProjDir, ProjectDir);
+                    if (Setting.LibraryDirs.Count > 0)
+                        runCmd.LibraryPaths = Setting.LibraryDirs;
 
-                if (Setting.LibraryDirs.Count > 0)
-                    runCmd.LibraryPaths = Setting.LibraryDirs;
-
-                runCmd.Filename = result.OutputFilename;
-                runResult = await gnuGppWSL.RunAsync(runCmd);
+                    runCmd.Filename = result.OutputFilename;
+                    runResult = await gnuGppWSL.RunAsync(runCmd);
+                }
+                else
+                { 
+                    XConsole.Clear();
+                    XConsole.LogInfo("The file '" + Path.GetFileName(result.OutputFilename) + "' is not an executable.");
+                }
             }
 
             runResult = new RunResult();
@@ -144,16 +149,57 @@ namespace VampirioCode.Builder.Custom
             //FileUtils.DeleteFilesAndDirs(projDirPath);
             //XConsole.Alert(originalFullFilePath);
             //XConsole.Alert(originalBaseDir);
-            
+
             //FileUtils.GetFilesAt
-            
+
             // write all code to '\temp_build\proj_name\proj.cpp' main program file
-            File.WriteAllText(ProgramFile, code);
+            //File.WriteAllText(ProgramFile, code);
 
 
             // [ COMPILATION PROCESS ]
             //List<string> sourceFiles = new string[] { ProgramFile }.ToList();
-            List<string> sourceFiles = new string[] { CmdUtils.ToUnixRelativePath(ProgramFile) }.ToList();
+            //List<string> sourceFiles = new string[] { CmdUtils.ToUnixRelativePath(ProgramFile) }.ToList();
+
+            List<string> sourceFiles = null;
+            string[] dontInclude = null;
+
+            if (Setting.IncludeSourcesMode == IncludeSourcesMode.Automatic)
+            {
+
+                File.WriteAllText(ProgramFile, code);
+                sourceFiles = await CopySourceFilesAsync(null, new string[] { ".cpp", ".h" }, dontInclude);
+                sourceFiles.Insert(0, ProgramFile);
+
+                // Remove repeated sources
+                sourceFiles = sourceFiles.Distinct().ToList();
+                sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
+
+            }
+            else if (Setting.IncludeSourcesMode == IncludeSourcesMode.Manually)
+            {
+                //dontInclude = new string[] { originalFileName };
+
+                List<string> newSourceFiles = GetManuallySettingsSources(Setting.SourceFiles);
+
+                sourceFiles = await CopySourceFilesAsync(newSourceFiles, new string[] { ".cpp", ".h" }, dontInclude);
+                sourceFiles.Insert(0, ProgramFile);
+
+                // Remove repeated sources
+                sourceFiles = sourceFiles.Distinct().ToList();
+                sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
+
+                XConsole.Alert("stop here");
+            }
+            else // Default
+            {
+                sourceFiles = new string[] { ProgramFile }.ToList();
+                sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
+
+                // write all code to '\temp_build\proj_name\CppGnuGpp\proj.cpp' main program file
+                File.WriteAllText(ProgramFile, code);
+            }
+
+
 
 
             // Build Process
@@ -170,6 +216,7 @@ namespace VampirioCode.Builder.Custom
             cmd.LibraryPaths =                  Setting.LibraryDirs;
             cmd.LibraryFiles =                  Setting.LibraryFiles;
 
+            cmd.OutputType =                    Setting.OutputType;
             cmd.StandardVersion =               Setting.StandardVersion;
             
             if (Setting.InstallPackage != "")

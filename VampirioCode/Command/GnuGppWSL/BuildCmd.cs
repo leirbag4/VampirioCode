@@ -10,6 +10,10 @@ namespace VampirioCode.Command.GnuGppWSL
 {
     public class BuildCmd : BaseCmd
     {
+        /// <summary>
+        /// Executable, Shared Library or Static Library
+        /// </summary>
+        public OutputType OutputType { get; set; } = OutputType.Executable;
         public StandardVersion StandardVersion { get; set; } = StandardVersion.StdCpp17;
         public List<string> Includes { get; set; } = new List<string>();
         public List<string> Sources { get; set; }
@@ -21,6 +25,8 @@ namespace VampirioCode.Command.GnuGppWSL
 
         public async Task<BuildResult> BuildAsync()
         {
+            SetIfExists(OutputTypeInfo.Get(OutputType).Param);
+
             SetIfExists(StandardVersionInfo.Get(StandardVersion).Param);
             SetPreprocessor(PreprocessorDefinitions); // -D
 
@@ -36,6 +42,8 @@ namespace VampirioCode.Command.GnuGppWSL
             SetLibFiles(LibraryFiles);      // -l
 
             SetIfExists("-o", OutputFilename);
+
+            ConfirmProgramPath = false;
 
             //return await CreateCommand<BuildResult>("wsl", "-d Ubuntu-test g++", cmd.ToString());
             return await CreateCommand<BuildResult>("wsl", $"-d {GnuGppWSL.DistroName} g++", cmd.ToString());

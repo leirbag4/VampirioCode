@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using VampirioCode.Builder;
 using VampirioCode.Builder.Custom;
 using VampirioCode.BuilderSetting.Actions;
+using VampirioCode.BuilderSetting.CppSettingsUI;
 using VampirioCode.BuilderSetting.UI;
 using VampirioCode.Command.GnuGppWSL.Params;
 using VampirioCode.Properties;
@@ -19,7 +20,7 @@ using VampirioCode.UI.Controls.VerticalItemListManagement;
 
 namespace VampirioCode.BuilderSetting
 {
-    public partial class CustomGnuGppWSLCppBuilderSetting : CustomBuilderSettingBase
+    public partial class CustomGnuGppWSLCppBuilderSetting : CustomCppBuilderSettingBase
     {
         private CustomGnuCppWSLBuilder builder;
 
@@ -48,16 +49,21 @@ namespace VampirioCode.BuilderSetting
             libraryDirsList.SetupDirMode();
             libraryFilesList.SetupFileMode(new FileBrowseInfo("Choose .lib files", false, "DLL files (*.dll)|*.dll|LIB files (*.lib)|*.lib"));
             macrosList.SetupValuePair(0.5f, true, true);
+            
+            sourceFilesList.Setup("Choose .cpp and .h files", builder.GetOriginalBaseDirPath(), "C++ and Header files (*.cpp, *.h)|*.cpp;*.h|CPP files (*.cpp)|*.cpp|H files (*.h)|*.h", builder.Setting, builder);
 
             postCopyDirsList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { BrowseInfo = new DirBrowseInfo() { Title = "Select a Directory" } });
             postCopyFilesList.SetupValuePairBrowsable(new ValuePairBrowseInfo() { LeftBrowseInfo = new FileBrowseInfo("Select Files", true, "DLL files (*.dll)|*.dll|LIB files (*.lib)|*.lib|All Files (*.*)|*.*"), RightBrowseInfo = new DirBrowseInfo() { Title = "Select a Directory" } });
 
-            foreach (StandardVersion std in Enum.GetValues(typeof(StandardVersion)))
+            SetupComboBoxEnums<OutputType, OutputTypeInfo>(outputTypeCBox, "Name");
+            SetupComboBoxEnums<StandardVersion, StandardVersionInfo>(standardVersionCBox, "Param");
+
+            /*foreach (StandardVersion std in Enum.GetValues(typeof(StandardVersion)))
             {
                 var stdInfo = StandardVersionInfo.Get(std);
                 if (stdInfo.Param != "")
                     standardVersionCBox.Items.Add(stdInfo.Param);
-            }
+            }*/
 
 
 
@@ -75,31 +81,44 @@ namespace VampirioCode.BuilderSetting
             SetItemListSBrowsable(libraryDirsList, settings.LibraryDirs);
             SetItemListSBrowsable(libraryFilesList, settings.LibraryFiles);
             SetItemListValuePair(macrosList, settings.PreprocessorMacros);
-            SetFindPackage(findPackageInput, settings.InstallPackage);
+            //SetFindPackage(findPackageInput, settings.InstallPackage);
+            SetFindPackages(itemListPackages, settings.InstallPackages);
             SetItemListValuePairBrowsable(postCopyDirsList, settings.CopyDirsPost);
             SetItemListValuePairBrowsable(postCopyFilesList, settings.CopyFilesPost);
+            SetSourceFiles(sourceFilesList, settings);
 
-            SetStandardVersion(standardVersionCBox, settings.StandardVersion);
+            SetComboBoxEnum<OutputType, OutputTypeInfo>(outputTypeCBox, settings.OutputType, "Name");
+            SetComboBoxEnum<StandardVersion, StandardVersionInfo>(standardVersionCBox, settings.StandardVersion, "Param");
+
+
+            //SetStandardVersion(standardVersionCBox, settings.StandardVersion);
         }
 
         private void OnSaveData()
         {
             var settings = builder.Setting;
 
-            settings.IncludeDirs = GetItemListSBrowsable(includeDirsList);
-            settings.LibraryDirs = GetItemListSBrowsable(libraryDirsList);
-            settings.LibraryFiles = GetItemListSBrowsable(libraryFilesList);
-            settings.PreprocessorMacros = GetItemListValuePair(macrosList);
-            settings.InstallPackage = GetFindPackage(findPackageInput);
-            settings.CopyDirsPost = GetItemListValuePairBrowsable(postCopyDirsList);
-            settings.CopyFilesPost = GetItemListValuePairBrowsable(postCopyFilesList);
+            settings.IncludeDirs =          GetItemListSBrowsable(includeDirsList);
+            settings.LibraryDirs =          GetItemListSBrowsable(libraryDirsList);
+            settings.LibraryFiles =         GetItemListSBrowsable(libraryFilesList);
+            settings.PreprocessorMacros =   GetItemListValuePair(macrosList);
+            //settings.InstallPackage =     GetFindPackage(findPackageInput);
+            settings.InstallPackages =      GetFindPackages(itemListPackages);
+            settings.CopyDirsPost =         GetItemListValuePairBrowsable(postCopyDirsList);
+            settings.CopyFilesPost =        GetItemListValuePairBrowsable(postCopyFilesList);
+            settings.IncludeSourcesMode =   GetIncludeSourceFilesMode(sourceFilesList);
+            settings.SourceFiles =          GetSourceFiles(sourceFilesList, settings);
 
-            settings.StandardVersion = GetStandardVersion(standardVersionCBox);
+            settings.OutputType =           GetComboBoxEnum<Command.GnuGppWSL.Params.OutputType, OutputTypeInfo>(outputTypeCBox, "GetByName");
+            settings.StandardVersion =      GetComboBoxEnum<StandardVersion, StandardVersionInfo>(standardVersionCBox, "GetByParam");
+            
+            //settings.StandardVersion =      GetStandardVersion(standardVersionCBox);
+
 
             builder.Save();
         }
 
-        private void SetStandardVersion(ComboBoxAdv comboBox, StandardVersion std)
+        /*private void SetStandardVersion(ComboBoxAdv comboBox, StandardVersion std)
         {
             string param = StandardVersionInfo.Get(std).Param;
             comboBox.SelectedItem = param;
@@ -113,7 +132,7 @@ namespace VampirioCode.BuilderSetting
         {
             string param = comboBox.SelectedItem.ToString();
             return StandardVersionInfo.GetByParam(param).StandardVersion;
-        }
+        }*/
 
         private void OnOkPressed(object sender, EventArgs e)
         {

@@ -91,11 +91,12 @@
             openAppFolderToolStripMenuItem = new ToolStripMenuItem();
             jsonViewerToolStripMenuItem = new ToolStripMenuItem();
             jsonTesterToolStripMenuItem = new ToolStripMenuItem();
-            wORKSPACEDebugToolStripMenuItem = new ToolStripMenuItem();
-            cONFIGFILEDebugToolStripMenuItem = new ToolStripMenuItem();
+            workspaceDebugToolStripMenuItem = new ToolStripMenuItem();
+            configDebugToolStripMenuItem = new ToolStripMenuItem();
             debugBuildersToolStripMenuItem = new ToolStripMenuItem();
             resetConfigFileToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
+            configResetConfigFileToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -534,7 +535,7 @@
             // 
             // configToolStripMenuItem
             // 
-            configToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setupCompilersInterpreterToolStripMenuItem });
+            configToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setupCompilersInterpreterToolStripMenuItem, configResetConfigFileToolStripMenuItem });
             configToolStripMenuItem.Name = "configToolStripMenuItem";
             configToolStripMenuItem.Size = new Size(55, 23);
             configToolStripMenuItem.Text = "Config";
@@ -564,7 +565,7 @@
             // 
             // debugToolStripMenuItem
             // 
-            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, jsonViewerToolStripMenuItem, jsonTesterToolStripMenuItem, wORKSPACEDebugToolStripMenuItem, cONFIGFILEDebugToolStripMenuItem, debugBuildersToolStripMenuItem, resetConfigFileToolStripMenuItem });
+            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { syntaxColorChangerToolStripMenuItem, debugCurrDocumentToolStripMenuItem, loggerToolStripMenuItem, openAppFolderToolStripMenuItem, jsonViewerToolStripMenuItem, jsonTesterToolStripMenuItem, workspaceDebugToolStripMenuItem, configDebugToolStripMenuItem, debugBuildersToolStripMenuItem, resetConfigFileToolStripMenuItem });
             debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             debugToolStripMenuItem.Size = new Size(54, 23);
             debugToolStripMenuItem.Text = "Debug";
@@ -617,21 +618,21 @@
             jsonTesterToolStripMenuItem.Text = "Tree View Tester";
             jsonTesterToolStripMenuItem.Click += OnTreeViewTester;
             // 
-            // wORKSPACEDebugToolStripMenuItem
+            // workspaceDebugToolStripMenuItem
             // 
-            wORKSPACEDebugToolStripMenuItem.ForeColor = Color.Silver;
-            wORKSPACEDebugToolStripMenuItem.Name = "wORKSPACEDebugToolStripMenuItem";
-            wORKSPACEDebugToolStripMenuItem.Size = new Size(191, 22);
-            wORKSPACEDebugToolStripMenuItem.Text = "WORKSPACE debug";
-            wORKSPACEDebugToolStripMenuItem.Click += OnWorkspaceDebugPressed;
+            workspaceDebugToolStripMenuItem.ForeColor = Color.Silver;
+            workspaceDebugToolStripMenuItem.Name = "workspaceDebugToolStripMenuItem";
+            workspaceDebugToolStripMenuItem.Size = new Size(191, 22);
+            workspaceDebugToolStripMenuItem.Text = "WORKSPACE debug";
+            workspaceDebugToolStripMenuItem.Click += OnWorkspaceDebugPressed;
             // 
-            // cONFIGFILEDebugToolStripMenuItem
+            // configDebugToolStripMenuItem
             // 
-            cONFIGFILEDebugToolStripMenuItem.ForeColor = Color.Silver;
-            cONFIGFILEDebugToolStripMenuItem.Name = "cONFIGFILEDebugToolStripMenuItem";
-            cONFIGFILEDebugToolStripMenuItem.Size = new Size(191, 22);
-            cONFIGFILEDebugToolStripMenuItem.Text = "CONFIG FILE debug";
-            cONFIGFILEDebugToolStripMenuItem.Click += OnConfigFileDebugPressed;
+            configDebugToolStripMenuItem.ForeColor = Color.Silver;
+            configDebugToolStripMenuItem.Name = "configDebugToolStripMenuItem";
+            configDebugToolStripMenuItem.Size = new Size(191, 22);
+            configDebugToolStripMenuItem.Text = "CONFIG FILE debug";
+            configDebugToolStripMenuItem.Click += OnConfigFileDebugPressed;
             // 
             // debugBuildersToolStripMenuItem
             // 
@@ -658,6 +659,14 @@
             toolBar.Name = "toolBar";
             toolBar.Size = new Size(693, 27);
             toolBar.TabIndex = 5;
+            // 
+            // configResetConfigFileToolStripMenuItem
+            // 
+            configResetConfigFileToolStripMenuItem.ForeColor = Color.Silver;
+            configResetConfigFileToolStripMenuItem.Name = "configResetConfigFileToolStripMenuItem";
+            configResetConfigFileToolStripMenuItem.Size = new Size(230, 22);
+            configResetConfigFileToolStripMenuItem.Text = "Reset Config File";
+            configResetConfigFileToolStripMenuItem.Click += OnConfigResetConfigFile;
             // 
             // App
             // 
@@ -732,8 +741,8 @@
         private ToolStripMenuItem jsonTesterToolStripMenuItem;
         private ToolStripMenuItem basicCodeToolStripMenuItem;
         private ToolStripMenuItem moveBuildToolStripMenuItem;
-        private ToolStripMenuItem wORKSPACEDebugToolStripMenuItem;
-        private ToolStripMenuItem cONFIGFILEDebugToolStripMenuItem;
+        private ToolStripMenuItem workspaceDebugToolStripMenuItem;
+        private ToolStripMenuItem configDebugToolStripMenuItem;
         private ToolStripSeparator toolStripMenuItem1;
         private ToolStripMenuItem renameToolStripMenuItem;
         private ToolStripSeparator toolStripMenuItem2;
@@ -752,5 +761,6 @@
         private ToolStripMenuItem hTMLBasicPageToolStripMenuItem;
         private ToolStripMenuItem debugBuildersToolStripMenuItem;
         private UI.XConsole xconsole;
+        private ToolStripMenuItem configResetConfigFileToolStripMenuItem;
     }
 }

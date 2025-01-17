@@ -26,6 +26,8 @@ namespace VampirioCode.Command.GnuGppWSL
         {
             LogParams = true;
 
+            ConfirmProgramPath = false;
+
             if (CanUse(LibraryPaths))
             {
                 SetLibraryPaths(LibraryPaths);

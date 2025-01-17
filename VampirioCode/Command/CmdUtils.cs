@@ -16,5 +16,15 @@ namespace VampirioCode.Command
         {
             return ("./" + Path.GetRelativePath(AppInfo.BasePath, absoluteFilePath)).Replace("\\", "/");
         }
+
+        public static List<string> ToUnixRelativePaths(List<string> sourceFiles)
+        {
+            for (int a = 0; a < sourceFiles.Count; a++)
+            {
+                sourceFiles[a] = CmdUtils.ToUnixRelativePath(sourceFiles[a]);
+            }
+
+            return sourceFiles;
+        }
     }
 }

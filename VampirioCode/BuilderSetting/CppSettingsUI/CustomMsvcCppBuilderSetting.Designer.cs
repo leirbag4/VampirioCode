@@ -100,7 +100,7 @@
             okButton.FocusColor = Color.FromArgb(24, 81, 115);
             okButton.FocusEnabled = false;
             okButton.ForeColor = Color.Silver;
-            okButton.Location = new Point(618, 464);
+            okButton.Location = new Point(618, 531);
             okButton.Margin = new Padding(3, 2, 3, 2);
             okButton.Name = "okButton";
             okButton.PaintImageOnSelected = true;
@@ -130,7 +130,7 @@
             cancelButton.FocusColor = Color.FromArgb(24, 81, 115);
             cancelButton.FocusEnabled = false;
             cancelButton.ForeColor = Color.Silver;
-            cancelButton.Location = new Point(716, 464);
+            cancelButton.Location = new Point(716, 531);
             cancelButton.Margin = new Padding(3, 2, 3, 2);
             cancelButton.Name = "cancelButton";
             cancelButton.PaintImageOnSelected = true;
@@ -149,10 +149,10 @@
             macrosList.BackColor = Color.FromArgb(40, 40, 40);
             macrosList.Enable = true;
             macrosList.Icon = Properties.Resources.omenu_mini_select_all;
-            macrosList.Location = new Point(10, 333);
+            macrosList.Location = new Point(10, 372);
             macrosList.Margin = new Padding(3, 2, 3, 2);
             macrosList.Name = "macrosList";
-            macrosList.Size = new Size(262, 121);
+            macrosList.Size = new Size(262, 144);
             macrosList.TabIndex = 26;
             macrosList.Title = "Preprocessor Directive Macros";
             // 
@@ -193,10 +193,10 @@
             postCopyDirsList.BackColor = Color.FromArgb(40, 40, 40);
             postCopyDirsList.Enable = true;
             postCopyDirsList.Icon = Properties.Resources.mmenu_mini_folder_b;
-            postCopyDirsList.Location = new Point(277, 333);
+            postCopyDirsList.Location = new Point(277, 372);
             postCopyDirsList.Margin = new Padding(3, 2, 3, 2);
             postCopyDirsList.Name = "postCopyDirsList";
-            postCopyDirsList.Size = new Size(262, 121);
+            postCopyDirsList.Size = new Size(262, 144);
             postCopyDirsList.TabIndex = 31;
             postCopyDirsList.Title = "Post Copy Dirs";
             // 
@@ -205,10 +205,10 @@
             postCopyFilesList.BackColor = Color.FromArgb(40, 40, 40);
             postCopyFilesList.Enable = true;
             postCopyFilesList.Icon = Properties.Resources.mmenu_mini_folder_b;
-            postCopyFilesList.Location = new Point(547, 333);
+            postCopyFilesList.Location = new Point(547, 372);
             postCopyFilesList.Margin = new Padding(3, 2, 3, 2);
             postCopyFilesList.Name = "postCopyFilesList";
-            postCopyFilesList.Size = new Size(262, 121);
+            postCopyFilesList.Size = new Size(262, 144);
             postCopyFilesList.TabIndex = 32;
             postCopyFilesList.Title = "Post Copy Files";
             // 
@@ -284,7 +284,7 @@
             sourceFilesList.Location = new Point(10, 207);
             sourceFilesList.Margin = new Padding(3, 2, 3, 2);
             sourceFilesList.Name = "sourceFilesList";
-            sourceFilesList.Size = new Size(262, 119);
+            sourceFilesList.Size = new Size(262, 161);
             sourceFilesList.TabIndex = 41;
             sourceFilesList.Title = "Source Files";
             // 
@@ -323,14 +323,14 @@
             itemListPackages.Location = new Point(624, 207);
             itemListPackages.Margin = new Padding(3, 2, 3, 2);
             itemListPackages.Name = "itemListPackages";
-            itemListPackages.Size = new Size(185, 119);
+            itemListPackages.Size = new Size(185, 164);
             itemListPackages.TabIndex = 44;
             // 
             // CustomMsvcCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(817, 494);
+            ClientSize = new Size(817, 561);
             Controls.Add(itemListPackages);
             Controls.Add(labelAdv5);
             Controls.Add(outputNameInput);
