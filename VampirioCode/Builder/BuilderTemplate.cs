@@ -17,5 +17,6 @@ namespace VampirioCode.Builder
         HtmlBasic,
 
         CppMsvcSDL2,
+        CppGnuGppSDL2
     }
 }

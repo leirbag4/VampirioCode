@@ -32,7 +32,8 @@ int main()
 
                 // ------------------------------------
                 case BuilderTemplate.CppMsvcSDL2:
-                // ------------------------------------
+                case BuilderTemplate.CppGnuGppSDL2:
+                    // ------------------------------------
                     return @"//#define SDL_main main
 
 #include <iostream>
@@ -44,7 +45,7 @@ SDL_Window* window;
 SDL_Renderer* renderer;
 
 
-int main(int argc, char** argv[])
+int main(int argc, char* argv[])
 {
     cout << ""[start]"" << endl;
 

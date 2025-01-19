@@ -60,8 +60,8 @@ namespace VampirioCode.Builder
             _Create(BuilderTemplate.CppMsvcSDL2,    BuilderType.CustomMsvcCpp,  "Cpp Msvc SDL2",    "C++ SDL2",         "cpp_msvc_sdl2",    typeof(CustomMsvcCppBuilderSetting));
 
             // GNU g++ WSL
-            _Create(BuilderTemplate.CppGnuGppWSLBasic, BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL Basic", "C++ Basic Main", "cpp_gnu_gpp_wsl_basic", typeof(CustomGnuGppWSLCppBuilderSetting));
-
+            _Create(BuilderTemplate.CppGnuGppWSLBasic, BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL Basic", "C++ Basic Main", "cpp_gnu_gpp_wsl_basic",  typeof(CustomGnuGppWSLCppBuilderSetting));
+            _Create(BuilderTemplate.CppGnuGppSDL2,  BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL SDL2",  "C++ SDL2", "cpp_gnuGpp_sdl2",              typeof(CustomGnuGppWSLCppBuilderSetting));
 
             _init = true;
         }

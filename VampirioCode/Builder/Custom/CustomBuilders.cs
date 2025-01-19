@@ -243,10 +243,50 @@ namespace VampirioCode.Builder.Custom
             setting.LibraryDirAdd("C:\\tests\\ultra_test\\lib2");
 
             // Library Files
-            setting.LibraryFileAdd("libcpmt.so");
-            setting.LibraryFileAdd("kernel32.so");
-            setting.LibraryFileAdd("libucrt.so");
+            setting.LibraryFileAdd("libcpmt");
+            setting.LibraryFileAdd("kernel32");
+            setting.LibraryFileAdd("libucrt");
             */
+            setting.StandardVersion = Command.GnuGppWSL.Params.StandardVersion.StdCpp17;
+
+            // Save build settings
+            builder.Save();
+
+            // Update to the list
+            //Get(projName, document.BuilderType);
+
+            //XConsole.Alert("proj: " + projName + "  btype: " + document.BuilderType);
+            if ((builderTemplateInfo != null) && !builderTemplateInfo.DontUpdateCode)
+                UpdateCode(editor, builderTemplateInfo);
+
+            return builder;
+        }
+
+        public static CustomGnuCppWSLBuilder Create_CPP_GNU_GPP_WSL_SDL2(Document document, VampirioEditor editor, BuilderTemplateInfo builderTemplateInfo)
+        {
+            //string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
+            CustomGnuCppWSLBuilder builder = new CustomGnuCppWSLBuilder();
+            builder.Setup(document.FullFilePath, document.Text);
+
+
+            GnuCppBSetting setting = builder.Setting;
+            //setting.AddCopyDirPre("magia\\veneno", "tester\\capitan");
+            //setting.AddCopyDirPre("code", "info\\code");
+
+            /*// Includes
+            setting.IncludeDirAdd("C:\\tests\\ultra_test\\include");
+            setting.IncludeDirAdd("C:\\tests\\ultra_test\\other_include");
+
+            // Library Directories
+            setting.LibraryDirAdd("C:\\tests\\ultra_test\\lib1");
+            setting.LibraryDirAdd("C:\\tests\\ultra_test\\lib2");
+
+            // Library Files
+            setting.LibraryFileAdd("libcpmt");
+            setting.LibraryFileAdd("kernel32");*/
+            setting.LibraryFileAdd("SDL2");
+            
+
             setting.StandardVersion = Command.GnuGppWSL.Params.StandardVersion.StdCpp17;
 
             // Save build settings

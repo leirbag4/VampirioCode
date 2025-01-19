@@ -1150,6 +1150,11 @@ namespace VampirioCode
                 Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomGnuGppWSLCpp);
                 CustomBuilders.Create_CPP_GNU_GPP_WSL_BASIC(document, CurrEditor, builderTemplateInfo);
             }
+            else if (template == BuilderTemplate.CppGnuGppSDL2)
+            {
+                Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomGnuGppWSLCpp);
+                CustomBuilders.Create_CPP_GNU_GPP_WSL_SDL2(document, CurrEditor, builderTemplateInfo);
+            }
         }
 
         private void Find()
