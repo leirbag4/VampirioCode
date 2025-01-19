@@ -50,6 +50,15 @@ namespace VampirioCode.Command.GnuGppWSL
             return result;
         }
 
+        public async Task<BuildLibResult> BuildLibAsync(BuildLibCmd cmd)
+        {
+            SetupProgramPaths();
+
+            var result = await cmd.BuildAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
         /// <summary>
         /// Run the compiled executable by using the cmd as parameter
         /// </summary>

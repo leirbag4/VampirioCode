@@ -521,7 +521,6 @@ namespace VampirioCode
                         {
                             // ----------------------------------------
 
-
                             //XConsole.Alert("si: " + workspaceInfo.MainDirFullPath);
                             //BuilderKind
 
@@ -557,7 +556,7 @@ namespace VampirioCode
                             CurrDocument.BuilderType = btypeCustom;
                             binfo = BuilderTemplateInfo.GetFromType(btypeCustom);
 
-                            XConsole.Alert(binfo.ToString());
+                            //XConsole.Alert(binfo.ToString());
 
                             if (binfo == null)
                             {

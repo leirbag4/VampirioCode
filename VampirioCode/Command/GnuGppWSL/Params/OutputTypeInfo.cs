@@ -12,6 +12,7 @@ public class OutputTypeInfo
         public OutputType OutputType { get; set; } 
         public string Name { get; set; } = "";
         public string Param { get; set; } = "";
+        public string Param2 { get; set; } = "";
 
         private static bool _init = false;
         private static List<OutputTypeInfo> outputTypeInfos = new List<OutputTypeInfo>();
@@ -22,7 +23,7 @@ public class OutputTypeInfo
                 return;
 
             _Create(OutputType.Executable,  "Executable",   "");
-            _Create(OutputType.DynamicLib,  "Dynamic Lib",  "-shared");
+            _Create(OutputType.DynamicLib,  "Dynamic Lib",  "-shared", "-fPIC");
             _Create(OutputType.StaticLib,   "Static Lib",   "-c");
 
             _init = true;
@@ -46,12 +47,13 @@ public class OutputTypeInfo
             return outputTypeInfos.FirstOrDefault(info => info.Param == param);
         }
 
-        private static OutputTypeInfo _Create(OutputType type, string name, string param)
+        private static OutputTypeInfo _Create(OutputType type, string name, string param, string param2 = "")
         {
             OutputTypeInfo modeInfo = new OutputTypeInfo();
             modeInfo.OutputType =   type;
             modeInfo.Name =         name;
             modeInfo.Param =        param;
+            modeInfo.Param2 =       param2;
             outputTypeInfos.Add(modeInfo);
             return modeInfo;
         }

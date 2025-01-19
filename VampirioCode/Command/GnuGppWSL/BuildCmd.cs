@@ -26,6 +26,8 @@ namespace VampirioCode.Command.GnuGppWSL
         public async Task<BuildResult> BuildAsync()
         {
             SetIfExists(OutputTypeInfo.Get(OutputType).Param);
+            SetIfExists(OutputTypeInfo.Get(OutputType).Param2);
+            
 
             SetIfExists(StandardVersionInfo.Get(StandardVersion).Param);
             SetPreprocessor(PreprocessorDefinitions); // -D

@@ -209,7 +209,18 @@ namespace VampirioCode.Builder.Custom
             //BuildHelper.AddBasicVars(this);
             cmd.AddVariable(Variables.ProjDir,  ProjectDir);
             cmd.Sources =                       sourceFiles;
-            cmd.OutputFilename =                CmdUtils.ToUnixRelativePath(OutputFilename);
+
+            /*foreach (string obj in cmd.OutputObjFiles) 
+            {
+                XConsole.Alert("IS: " + obj);
+            }*/
+
+            if (IsStaticLib())
+            { 
+                //cmd.OutputObjFiles =            CmdUtils.ToUnixRelativePaths(ToObjFiles(sourceFiles));
+            }
+            else
+                cmd.OutputFilename =            CmdUtils.ToUnixRelativePath(OutputFilename);
             //cmd.OutputObjsDir =                 objsDir;
             cmd.PreprocessorDefinitions =       VariableAction.ToString(Setting.PreprocessorMacros, "=");
             cmd.Includes =                      Setting.IncludeDirs;
@@ -219,10 +230,8 @@ namespace VampirioCode.Builder.Custom
             cmd.OutputType =                    Setting.OutputType;
             cmd.StandardVersion =               Setting.StandardVersion;
             
-            if (Setting.InstallPackage != "")
-            {
-                await ImportPackage(Setting.InstallPackage, ProjectDir);
-            }
+            if (Setting.InstallPackages.Count > 0)
+                await ImportPackages(Setting.InstallPackages, ProjectDir);
             
             
             bool copied;
@@ -232,14 +241,55 @@ namespace VampirioCode.Builder.Custom
             copied = await CopyFiles(Setting.CopyFilesPost, cmd);
             if (!copied) XConsole.Alert("error");
 
-            //var result = await msvc.BuildAsync(sourceFiles, OutputFilename, objsDir, Setting.IncludeDirs, Setting.LibraryDirs, Setting.LibraryFiles);
-            //var result = await gnuGppWSL.BuildAsync(cmd);
-            //result.OutputFilename = OutputFilename;
+
             var result = await gnuGppWSL.BuildAsync(cmd);
             result.OutputFilename = CmdUtils.ToUnixRelativePath(OutputFilename);
 
+            // ---------------------------------
+            //          Library Build
+            // ---------------------------------
+            if (CheckResult(result) && IsStaticLib())
+            {
+                await FileUtils.CopyDirectoryAdvAsync(AppInfo.BasePath, objsDir, new string[] { ".o" }, null, false, true);
+
+                List<string> objFiles = await GetObjFiles();
+                objFiles = CmdUtils.ToUnixRelativePaths(objFiles);
+
+                BuildLibCmd libCmd =            new BuildLibCmd();
+                libCmd.ObjectFiles =            objFiles;
+                libCmd.LibOutputFilename =      result.OutputFilename;
+
+                var libResult =                 await gnuGppWSL.BuildLibAsync(libCmd);
+                libResult.LibOutputFilename =   libCmd.LibOutputFilename;
+                result.OutputFilename =         libResult.LibOutputFilename;
+            }
 
             return result;
+        }
+
+        private async Task<List<string>> GetObjFiles()
+        {
+            return await FileUtils.GetFilesAdvAsync(objsDir, new string[] { ".o" }, null, true, true, false);
+        }
+
+        /*private List<string> ToObjFiles(List<string> sources)
+        {
+            List<string> objs = new List<string>();
+
+            foreach (string source in sources)
+            {
+                string dirPath = Path.GetDirectoryName(Path.GetFullPath(source));
+                dirPath += "\\obj\\" + Path.GetFileNameWithoutExtension(source) + ".o";
+                objs.Add(dirPath);
+            }
+
+
+            return objs;
+        }*/
+
+        private bool IsStaticLib()
+        {
+            return Setting.OutputType == OutputType.StaticLib;
         }
 
         private string ConvertOutputFilename(string fullFileName, OutputType type)

@@ -252,7 +252,7 @@ namespace VampirioCode.Utils
         /// <param name="dontIncludeRelativeFiles">Like 'main.cpp' and 'C:\\test2\\source\\main.cpp' won't be copyed</param>
         /// <param name="recursive">Recursive mode directory by directory</param>
         /// <returns>true if copyed done</returns>
-        public static async Task<bool> CopyDirectoryAdvAsync(string fromPath, string toPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true)
+        public static async Task<bool> CopyDirectoryAdvAsync(string fromPath, string toPath, string[] includeExtensions = null, string[] dontIncludeRelativeFiles = null, bool recursive = true, bool deleteFromOrigin = false)
         {
             try
             {
@@ -295,7 +295,11 @@ namespace VampirioCode.Utils
 
                     // Build the destination file path and copy the file
                     string tempPath = Path.Combine(toPath, file.Name);
-                    await Task.Run(() => file.CopyTo(tempPath, true)); // Overwrite if exists
+
+                    if(deleteFromOrigin)
+                        await Task.Run(() => file.MoveTo(tempPath, true)); // Overwrite if exists
+                    else
+                        await Task.Run(() => file.CopyTo(tempPath, true)); // Overwrite if exists
                 }
 
                 // If specified, copy the subdirectories and their contents recursively
