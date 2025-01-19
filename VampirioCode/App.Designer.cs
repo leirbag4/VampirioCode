@@ -40,6 +40,9 @@
             cToolStripMenuItem = new ToolStripMenuItem();
             sDL2ToolStripMenuItem = new ToolStripMenuItem();
             basicToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem9 = new ToolStripSeparator();
+            gNUGSDL2ToolStripMenuItem = new ToolStripMenuItem();
+            basicGNUGToolStripMenuItem = new ToolStripMenuItem();
             basicCodeToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem2 = new ToolStripSeparator();
             basicMaincToolStripMenuItem = new ToolStripMenuItem();
@@ -97,8 +100,6 @@
             debugBuildersToolStripMenuItem = new ToolStripMenuItem();
             resetConfigFileToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
-            toolStripMenuItem9 = new ToolStripSeparator();
-            gNUGSDL2ToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -195,7 +196,7 @@
             // 
             // cToolStripMenuItem
             // 
-            cToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { sDL2ToolStripMenuItem, basicToolStripMenuItem, toolStripMenuItem9, gNUGSDL2ToolStripMenuItem });
+            cToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { sDL2ToolStripMenuItem, basicToolStripMenuItem, toolStripMenuItem9, gNUGSDL2ToolStripMenuItem, basicGNUGToolStripMenuItem });
             cToolStripMenuItem.ForeColor = Color.Silver;
             cToolStripMenuItem.Name = "cToolStripMenuItem";
             cToolStripMenuItem.Size = new Size(180, 22);
@@ -207,7 +208,7 @@
             sDL2ToolStripMenuItem.Name = "sDL2ToolStripMenuItem";
             sDL2ToolStripMenuItem.Size = new Size(180, 22);
             sDL2ToolStripMenuItem.Tag = "cpp_msvc_sdl2";
-            sDL2ToolStripMenuItem.Text = "SDL2";
+            sDL2ToolStripMenuItem.Text = "SDL2 - MSVC";
             sDL2ToolStripMenuItem.Click += OnCustomBuildPressed;
             // 
             // basicToolStripMenuItem
@@ -216,8 +217,31 @@
             basicToolStripMenuItem.Name = "basicToolStripMenuItem";
             basicToolStripMenuItem.Size = new Size(180, 22);
             basicToolStripMenuItem.Tag = "cpp_gnu_gpp_wsl_basic";
-            basicToolStripMenuItem.Text = "Basic";
+            basicToolStripMenuItem.Text = "Basic - MSVC";
             basicToolStripMenuItem.Click += OnCustomBuildPressed;
+            // 
+            // toolStripMenuItem9
+            // 
+            toolStripMenuItem9.Name = "toolStripMenuItem9";
+            toolStripMenuItem9.Size = new Size(177, 6);
+            // 
+            // gNUGSDL2ToolStripMenuItem
+            // 
+            gNUGSDL2ToolStripMenuItem.ForeColor = Color.Silver;
+            gNUGSDL2ToolStripMenuItem.Name = "gNUGSDL2ToolStripMenuItem";
+            gNUGSDL2ToolStripMenuItem.Size = new Size(180, 22);
+            gNUGSDL2ToolStripMenuItem.Tag = "cpp_gnu_gpp_wsl_sdl2";
+            gNUGSDL2ToolStripMenuItem.Text = "SDL2 - GNU g++";
+            gNUGSDL2ToolStripMenuItem.Click += OnCustomBuildPressed;
+            // 
+            // basicGNUGToolStripMenuItem
+            // 
+            basicGNUGToolStripMenuItem.ForeColor = Color.Silver;
+            basicGNUGToolStripMenuItem.Name = "basicGNUGToolStripMenuItem";
+            basicGNUGToolStripMenuItem.Size = new Size(180, 22);
+            basicGNUGToolStripMenuItem.Tag = "cpp_gnu_gpp_wsl_basic";
+            basicGNUGToolStripMenuItem.Text = "Basic - GNU g++";
+            basicGNUGToolStripMenuItem.Click += OnCustomBuildPressed;
             // 
             // basicCodeToolStripMenuItem
             // 
@@ -670,20 +694,6 @@
             toolBar.Size = new Size(693, 27);
             toolBar.TabIndex = 5;
             // 
-            // toolStripMenuItem9
-            // 
-            toolStripMenuItem9.Name = "toolStripMenuItem9";
-            toolStripMenuItem9.Size = new Size(177, 6);
-            // 
-            // gNUGSDL2ToolStripMenuItem
-            // 
-            gNUGSDL2ToolStripMenuItem.ForeColor = Color.Silver;
-            gNUGSDL2ToolStripMenuItem.Name = "gNUGSDL2ToolStripMenuItem";
-            gNUGSDL2ToolStripMenuItem.Size = new Size(180, 22);
-            gNUGSDL2ToolStripMenuItem.Tag = "cpp_gnuGpp_sdl2";
-            gNUGSDL2ToolStripMenuItem.Text = "GNU g++ SDL2";
-            gNUGSDL2ToolStripMenuItem.Click += OnCustomBuildPressed;
-            // 
             // App
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -780,5 +790,6 @@
         private ToolStripMenuItem configResetConfigFileToolStripMenuItem;
         private ToolStripSeparator toolStripMenuItem9;
         private ToolStripMenuItem gNUGSDL2ToolStripMenuItem;
+        private ToolStripMenuItem basicGNUGToolStripMenuItem;
     }
 }
