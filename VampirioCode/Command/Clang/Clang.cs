@@ -12,6 +12,7 @@ namespace VampirioCode.Command.Clang
     public class Clang : BaseCmdProgram
     {
         public static string ProgramPath = "";     //@"C:\programs_dev\clang_llvm_18_1_0\bin\clang++.exe";
+        public static string LibProgramPath = "";//@"C:\programs_dev\clang_llvm_18_1_0\bin\llvm-ar.exe";
 
         public async Task<BuildResult> BuildAsync(List<string> sources, string outputFilename = "", List<string> includes = null, List<string> libraryPaths = null, List<string> libraryFiles = null)
         {
@@ -49,9 +50,33 @@ namespace VampirioCode.Command.Clang
             return result;
         }
 
+        /// <summary>
+        /// Run the compiled executable by using the cmd as parameter
+        /// </summary>
+        /// <param name="cmd">The run command</param>
+        /// <returns></returns>
+        public async Task<RunResult> RunAsync(RunCmd cmd)
+        {
+            SetupProgramPaths();
+
+            var result = await cmd.RunAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
+        public async Task<BuildLibResult> BuildLibAsync(BuildLibCmd cmd)
+        {
+            SetupProgramPaths();
+
+            var result = await cmd.BuildAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
         protected override void SetupProgramPaths()
         {
-            ProgramPath = Config.BuildersSettings.CLang.clang_exe_path;
+            ProgramPath =       Config.BuildersSettings.CLang.clang_exe_path;
+            LibProgramPath =    Config.BuildersSettings.CLang.clang_llvm_ar_exe_input;
         }
     }
 }

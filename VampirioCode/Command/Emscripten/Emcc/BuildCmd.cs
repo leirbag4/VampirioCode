@@ -64,11 +64,16 @@ namespace VampirioCode.Command.Emscripten.Emcc
         /// Options from https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
         /// </summary>
         public Options Options = new Options();
-
+        public StandardVersion StandardVersion { get; set; } = StandardVersion.StdCpp17;
+        public List<string> Includes { get; set; } = new List<string>();
         /// <summary>
         /// Main source input files like main.cpp
         /// </summary>
-        public List<string> SourceFiles = new List<string>();
+        public List<string> Sources = new List<string>();
+        public List<string> LibraryPaths { get; set; } = new List<string>();
+        public List<string> LibraryFiles { get; set; } = new List<string>();
+        public List<string> PreprocessorDefinitions { get; set; } = new List<string>();
+        public OutputType OutputType { get; set; } = OutputType.Executable;
 
         /// <summary>
         /// 
@@ -95,7 +100,13 @@ namespace VampirioCode.Command.Emscripten.Emcc
             // emcc
             Set("emcc");
             SetIfExists(Options.Create());
-            SetIfExists(SourceFiles.ToArray());
+
+            SetIncludes(Includes);
+
+            if (CanUse(LibraryPaths)) SetLibPaths(LibraryPaths);
+            if (CanUse(LibraryFiles)) SetLibFiles(LibraryFiles);
+
+            SetIfExists(Sources.ToArray());
             SetIfExists("--embed-file", EmbedFile);
             SetIfExists("-o",           OutputFilename);
             AutoTriggerErrors = false;
@@ -115,7 +126,7 @@ namespace VampirioCode.Command.Emscripten.Emcc
         public async Task<BuildResult> BuildWithPrevPermanentAsync()
         {
             SetIfExists(Options.Create());
-            SetIfExists(SourceFiles.ToArray());
+            SetIfExists(Sources.ToArray());
             SetIfExists("--embed-file", EmbedFile);
             SetIfExists("-o", OutputFilename);
             AutoTriggerErrors = false;
@@ -136,6 +147,33 @@ namespace VampirioCode.Command.Emscripten.Emcc
         protected override void OnComplete(BaseResult result)
         {
             Println("[complete]");
+        }
+
+        private void SetIncludes(List<string> includes)
+        {
+            if ((includes != null) && (includes.Count > 0))
+            {
+                foreach (string include in includes)
+                    cmd += "-I\"" + _fixLastEscapeBar(include) + "\" ";
+            }
+        }
+
+        private void SetLibPaths(List<string> libraries)
+        {
+            if ((libraries != null) && (libraries.Count > 0))
+            {
+                foreach (string lib in libraries)
+                    cmd += "-L\"" + _fixLastEscapeBar(lib) + "\" ";
+            }
+        }
+
+        private void SetLibFiles(List<string> libraries)
+        {
+            if ((libraries != null) && (libraries.Count > 0))
+            {
+                foreach (string lib in libraries)
+                    cmd += "-l\"" + _fixLastEscapeBar(lib) + "\" ";
+            }
         }
 
 

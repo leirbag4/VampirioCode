@@ -48,6 +48,10 @@
             pictureBoxAdv1 = new VampirioCode.UI.Controls.PictureBoxAdv();
             buttonAdv3 = new VampirioCode.UI.Controls.ButtonAdv();
             labelAdv8 = new VampirioCode.UI.Controls.LabelAdv();
+            labelAdv17 = new VampirioCode.UI.Controls.LabelAdv();
+            clang_llvm_ar_exe_input = new UI.FileInput();
+            labelAdv9 = new VampirioCode.UI.Controls.LabelAdv();
+            labelAdv11 = new VampirioCode.UI.Controls.LabelAdv();
             groupBoxAdv1.SuspendLayout();
             groupBoxAdv2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).BeginInit();
@@ -61,7 +65,7 @@
             labelAdv1.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelAdv1.ForeColor = Color.Silver;
-            labelAdv1.Location = new Point(26, 16);
+            labelAdv1.Location = new Point(26, 11);
             labelAdv1.ModifyClampMax = 0F;
             labelAdv1.ModifyClampMin = 0F;
             labelAdv1.ModifyControlName = "";
@@ -76,7 +80,7 @@
             // 
             clang_exe_input.BackColor = Color.FromArgb(35, 35, 35);
             clang_exe_input.FilePath = "";
-            clang_exe_input.Location = new Point(26, 42);
+            clang_exe_input.Location = new Point(26, 24);
             clang_exe_input.Margin = new Padding(3, 2, 3, 2);
             clang_exe_input.Name = "clang_exe_input";
             clang_exe_input.Size = new Size(450, 30);
@@ -96,7 +100,7 @@
             groupBoxAdv1.Controls.Add(labelAdv5);
             groupBoxAdv1.Controls.Add(clang_include_input);
             groupBoxAdv1.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
-            groupBoxAdv1.Location = new Point(21, 97);
+            groupBoxAdv1.Location = new Point(21, 105);
             groupBoxAdv1.Margin = new Padding(3, 2, 3, 2);
             groupBoxAdv1.Name = "groupBoxAdv1";
             groupBoxAdv1.Padding = new Padding(3, 2, 3, 2);
@@ -287,7 +291,7 @@
             groupBoxAdv2.Controls.Add(buttonAdv3);
             groupBoxAdv2.Controls.Add(labelAdv8);
             groupBoxAdv2.CStyle = VampirioCode.UI.Controls.GroupBoxAdv.CustomStyle.SOLID;
-            groupBoxAdv2.Location = new Point(21, 241);
+            groupBoxAdv2.Location = new Point(21, 249);
             groupBoxAdv2.Margin = new Padding(3, 2, 3, 2);
             groupBoxAdv2.Name = "groupBoxAdv2";
             groupBoxAdv2.Padding = new Padding(3, 2, 3, 2);
@@ -399,16 +403,84 @@
             labelAdv8.TabIndex = 30;
             labelAdv8.Text = resources.GetString("labelAdv8.Text");
             // 
+            // labelAdv17
+            // 
+            labelAdv17.AutoSize = true;
+            labelAdv17.BorderColor = Color.DarkGray;
+            labelAdv17.BorderSize = 1;
+            labelAdv17.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv17.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelAdv17.ForeColor = SystemColors.WindowFrame;
+            labelAdv17.Location = new Point(190, 57);
+            labelAdv17.ModifyClampMax = 0F;
+            labelAdv17.ModifyClampMin = 0F;
+            labelAdv17.ModifyControlName = "";
+            labelAdv17.ModifyScale = 1F;
+            labelAdv17.Name = "labelAdv17";
+            labelAdv17.Size = new Size(254, 13);
+            labelAdv17.TabIndex = 44;
+            labelAdv17.Text = "C:\\programs_dev\\clang_llvm_18_1_0\\bin\\llvm-ar.exe";
+            // 
+            // clang_llvm_ar_input
+            // 
+            clang_llvm_ar_exe_input.BackColor = Color.FromArgb(35, 35, 35);
+            clang_llvm_ar_exe_input.FilePath = "";
+            clang_llvm_ar_exe_input.Location = new Point(25, 68);
+            clang_llvm_ar_exe_input.Margin = new Padding(3, 2, 3, 2);
+            clang_llvm_ar_exe_input.Name = "clang_llvm_ar_input";
+            clang_llvm_ar_exe_input.Size = new Size(450, 30);
+            clang_llvm_ar_exe_input.TabIndex = 43;
+            // 
+            // labelAdv9
+            // 
+            labelAdv9.AutoSize = true;
+            labelAdv9.BorderColor = Color.DarkGray;
+            labelAdv9.BorderSize = 1;
+            labelAdv9.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv9.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelAdv9.ForeColor = Color.Silver;
+            labelAdv9.Location = new Point(25, 55);
+            labelAdv9.ModifyClampMax = 0F;
+            labelAdv9.ModifyClampMin = 0F;
+            labelAdv9.ModifyControlName = "";
+            labelAdv9.ModifyScale = 1F;
+            labelAdv9.Name = "labelAdv9";
+            labelAdv9.Size = new Size(157, 15);
+            labelAdv9.TabIndex = 42;
+            labelAdv9.Text = "'llvm-ar.exe' compiler path";
+            // 
+            // labelAdv11
+            // 
+            labelAdv11.AutoSize = true;
+            labelAdv11.BorderColor = Color.DarkGray;
+            labelAdv11.BorderSize = 1;
+            labelAdv11.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv11.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelAdv11.ForeColor = SystemColors.WindowFrame;
+            labelAdv11.Location = new Point(195, 13);
+            labelAdv11.ModifyClampMax = 0F;
+            labelAdv11.ModifyClampMin = 0F;
+            labelAdv11.ModifyControlName = "";
+            labelAdv11.ModifyScale = 1F;
+            labelAdv11.Name = "labelAdv11";
+            labelAdv11.Size = new Size(262, 13);
+            labelAdv11.TabIndex = 45;
+            labelAdv11.Text = "C:\\programs_dev\\clang_llvm_18_1_0\\bin\\clang++.exe";
+            // 
             // CLangBuildSetup
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 35, 35);
+            Controls.Add(labelAdv11);
+            Controls.Add(labelAdv17);
+            Controls.Add(clang_llvm_ar_exe_input);
+            Controls.Add(labelAdv9);
+            Controls.Add(labelAdv1);
             Controls.Add(groupBoxAdv2);
             Controls.Add(buttonAdv2);
             Controls.Add(groupBoxAdv1);
             Controls.Add(clang_exe_input);
-            Controls.Add(labelAdv1);
             Name = "CLangBuildSetup";
             Size = new Size(618, 408);
             groupBoxAdv1.ResumeLayout(false);
@@ -440,5 +512,9 @@
         private VampirioCode.UI.Controls.ButtonAdv buttonAdv3;
         private VampirioCode.UI.Controls.LabelAdv labelAdv8;
         private VampirioCode.UI.Controls.PictureBoxAdv pictureBoxAdv1;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv17;
+        private UI.FileInput clang_llvm_ar_exe_input;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv9;
+        private VampirioCode.UI.Controls.LabelAdv labelAdv11;
     }
 }

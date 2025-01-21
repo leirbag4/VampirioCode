@@ -20,7 +20,9 @@ namespace VampirioCode.Builder.Custom
         private static readonly Dictionary<BuilderType, Func<CustomBuilder>> builderRegistry = new Dictionary<BuilderType, Func<CustomBuilder>>()
         {
             { BuilderType.CustomMsvcCpp,        () => new CustomMsvcCppBuilder() },
-            { BuilderType.CustomGnuGppWSLCpp,   () => new CustomGnuCppWSLBuilder() }
+            { BuilderType.CustomGnuGppWSLCpp,   () => new CustomGnuCppWSLBuilder() },
+            { BuilderType.CustomClangCpp,       () => new CustomClangBuilder() },
+            { BuilderType.CustomEmscriptenCpp,  () => new CustomEmscriptenBuilder() }
         };
 
         public static void Initialize()
@@ -296,6 +298,40 @@ namespace VampirioCode.Builder.Custom
             //Get(projName, document.BuilderType);
 
             //XConsole.Alert("proj: " + projName + "  btype: " + document.BuilderType);
+            if ((builderTemplateInfo != null) && !builderTemplateInfo.DontUpdateCode)
+                UpdateCode(editor, builderTemplateInfo);
+
+            return builder;
+        }
+
+        public static CustomClangBuilder Create_CPP_CLANG_BASIC(Document document, VampirioEditor editor, BuilderTemplateInfo builderTemplateInfo)
+        {
+            CustomClangBuilder builder = new CustomClangBuilder();
+            builder.Setup(document.FullFilePath, document.Text);
+
+            CLangBSetting setting = builder.Setting;
+            setting.StandardVersion = Command.Clang.Params.StandardVersion.StdCpp17;
+
+            // Save build settings
+            builder.Save();
+
+            if ((builderTemplateInfo != null) && !builderTemplateInfo.DontUpdateCode)
+                UpdateCode(editor, builderTemplateInfo);
+
+            return builder;
+        }
+
+        public static CustomEmscriptenBuilder Create_CPP_EMSCRIPTEN_BASIC(Document document, VampirioEditor editor, BuilderTemplateInfo builderTemplateInfo)
+        {
+            CustomEmscriptenBuilder builder = new CustomEmscriptenBuilder();
+            builder.Setup(document.FullFilePath, document.Text);
+
+            EmscriptenBSetting setting = builder.Setting;
+            setting.StandardVersion = Command.Emscripten.Emcc.Params.StandardVersion.StdCpp17;
+
+            // Save build settings
+            builder.Save();
+
             if ((builderTemplateInfo != null) && !builderTemplateInfo.DontUpdateCode)
                 UpdateCode(editor, builderTemplateInfo);
 

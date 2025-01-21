@@ -10,6 +10,8 @@ namespace VampirioCode.Builder
     {
         CppGnuGppWSLBasic,
         CppMsvcBasic,
+        CppClangBasic,
+        CppEmscriptenBasic,
         CSharpDotnetBasic,
         JavascriptBasic,
         JavaBasic,

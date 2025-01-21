@@ -51,12 +51,30 @@ namespace VampirioCode.Command.Emscripten.Emcc
         public async Task<BuildResult> BuildAsync(List<string> sourceFiles, string outputFilename, bool? exitRuntime = null, string embedFile = "")
         { 
             BuildCmd cmd =              new BuildCmd();
-            cmd.SourceFiles =           sourceFiles;
+            cmd.Sources =               sourceFiles;
             cmd.OutputFilename =        outputFilename;
             cmd.Options.ExitRuntime =   exitRuntime;
             cmd.EmbedFile =             embedFile;
 
             var result =                await cmd.BuildAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
+        public async Task<BuildResult> BuildAsync(BuildCmd cmd)
+        {
+            SetupProgramPaths();
+
+            var result = await cmd.BuildAsync();
+            CheckCmd(cmd);
+            return result;
+        }
+
+        public async Task<BuildLibResult> BuildLibAsync(BuildLibCmd cmd)
+        {
+            SetupProgramPaths();
+
+            var result = await cmd.BuildAsync();
             CheckCmd(cmd);
             return result;
         }

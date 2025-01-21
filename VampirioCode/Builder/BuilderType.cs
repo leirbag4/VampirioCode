@@ -25,7 +25,7 @@ namespace VampirioCode.Builder
         SimpleMsvcCpp =     0x00000002, // equivalent with CustomMsvcCpp = 0x00020000
         SimpleGnuGppCpp =   0x00000004,
         SimpleClangCpp =    0x00000008,
-        SimpleWasmCpp =     0x00000010,
+        SimpleEmscriptenCpp=0x00000010,
         SimpleJs =          0x00000020,
         SimpleJava =        0x00000040,
         SimplePhp =         0x00000080,
@@ -33,7 +33,10 @@ namespace VampirioCode.Builder
         // Customs
         //CustomCSharp =        0x00010000, // guide for future implementation
         CustomMsvcCpp =         0x00020000,
-        CustomGnuGppWSLCpp =    0x00040000  // guide for future implementation
+        CustomGnuGppWSLCpp =    0x00040000,
+        CustomClangCpp =        0x00080000,
+        CustomEmscriptenCpp =   0x00100000
+
     }
 
 }

@@ -61,7 +61,14 @@ namespace VampirioCode.Builder
 
             // GNU g++ WSL
             _Create(BuilderTemplate.CppGnuGppWSLBasic,  BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL Basic", "C++ Basic Main",  "cpp_gnu_gpp_wsl_basic",    typeof(CustomGnuGppWSLCppBuilderSetting));
-            _Create(BuilderTemplate.CppGnuGppSDL2,      BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL SDL2",  "C++ SDL2",        "cpp_gnu_gpp_wsl_sdl2",          typeof(CustomGnuGppWSLCppBuilderSetting));
+            _Create(BuilderTemplate.CppGnuGppSDL2,      BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL SDL2",  "C++ SDL2",        "cpp_gnu_gpp_wsl_sdl2",     typeof(CustomGnuGppWSLCppBuilderSetting));
+
+            // Clang
+            _Create(BuilderTemplate.CppClangBasic,      BuilderType.CustomClangCpp, "Cpp CLang Basic", "C++ Basic Main",  "cpp_clang_basic",    typeof(CustomClangCppBuilderSetting));
+            
+            // Emscripten
+            _Create(BuilderTemplate.CppEmscriptenBasic, BuilderType.CustomEmscriptenCpp, "Cpp Emscripten Basic", "C++ Basic Main",  "cpp_emscripten_basic",    typeof(CustomEmscriptenCppBuilderSetting));
+
 
             _init = true;
         }

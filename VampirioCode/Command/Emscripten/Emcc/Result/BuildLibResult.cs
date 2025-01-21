@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace VampirioCode.Command.Emscripten.Emcc.Result
 {
-    public class BuildResult : BaseResult
+    public class BuildLibResult : BaseResult
     {
-        public string OutputFilename { get; set; } = "";
+        public string LibOutputFilename { get; set; } = "";
     }
 }

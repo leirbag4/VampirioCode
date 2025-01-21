@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VampirioCode.Command.Clang.Params
+namespace VampirioCode.Command.Emscripten.Emcc.Params
 {
     public class StandardVersionInfo
     {

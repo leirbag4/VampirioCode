@@ -17,21 +17,37 @@ namespace VampirioCode.Command.Clang
         public List<string> Sources { get; set; }
         public List<string> LibraryPaths { get; set; } = new List<string>();
         public List<string> LibraryFiles { get; set; } = new List<string>();
+        public OutputType OutputType { get; set; } = OutputType.Executable;
         public string OutputFilename { get; set; } = "";
-
+        public List<string> PreprocessorDefinitions { get; set; } = new List<string>();
+        //public string OutputObjsDir { get; set; } = "";
 
         public async Task<BuildResult> BuildAsync()
         {
+            SetIfExists(OutputTypeInfo.Get(OutputType).Param);
+            //SetIfExists(OutputTypeInfo.Get(OutputType).Param2);
+
             SetIfExists(Sources.ToArray());
-            SetIfExists("-o", OutputFilename);
             SetIfExists(StandardVersionInfo.Get(StandardVersion).Param);
+            SetPreprocessor(PreprocessorDefinitions); // -D
 
             SetIncludes(Includes);
 
             if (CanUse(LibraryPaths))   SetLibPaths(LibraryPaths);
             if (CanUse(LibraryFiles))   SetLibFiles(LibraryFiles);
 
+            SetIfExists("-o", OutputFilename);
+
             return await CreateCommand<BuildResult>(_quotes(Clang.ProgramPath), cmd.Trim());
+        }
+
+        private void SetPreprocessor(List<string> preprocessorDefinitions)
+        {
+            if ((preprocessorDefinitions != null) && (preprocessorDefinitions.Count > 0))
+            {
+                foreach (string directive in preprocessorDefinitions)
+                    cmd += "-D\"" + _fixLastEscapeBar(directive) + "\" ";
+            }
         }
 
         private void SetIncludes(List<string> includes)

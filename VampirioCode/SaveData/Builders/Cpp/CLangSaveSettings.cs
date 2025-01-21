@@ -10,7 +10,10 @@ namespace VampirioCode.SaveData.Builders.Cpp
     {
         // Compiler Executables 'clang++.exe'
         public string clang_exe_path { get; set; } = "";
-        
+
+        // Compiler Static Lib 'llvm-ar.exe'
+        public string clang_llvm_ar_exe_input { get; set; } = "";
+
         // Includes
         public string clang_include_dir { get; set; } = "";
         

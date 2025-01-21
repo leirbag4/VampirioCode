@@ -524,8 +524,10 @@ namespace VampirioCode
                             //XConsole.Alert("si: " + workspaceInfo.MainDirFullPath);
                             //BuilderKind
 
-                            string cppMsvcPath = Path.Combine(workspaceInfo.MainDirFullPath, BuilderKind.CppMsvc.ToString());
-                            string cppGnuGppPath = Path.Combine(workspaceInfo.MainDirFullPath, BuilderKind.CppGnuGpp.ToString());
+                            string cppMsvcPath =        Path.Combine(workspaceInfo.MainDirFullPath, BuilderKind.CppMsvc.ToString());
+                            string cppGnuGppPath =      Path.Combine(workspaceInfo.MainDirFullPath, BuilderKind.CppGnuGpp.ToString());
+                            string cppCLangPath =       Path.Combine(workspaceInfo.MainDirFullPath, BuilderKind.CppCLang.ToString());
+                            string cppEmscriptenPath =  Path.Combine(workspaceInfo.MainDirFullPath, BuilderKind.CppEmscripten.ToString());
 
                             BuilderType typeCustom = BuilderUtils.GetEquivalentCustomOnly(CurrDocument.BuilderType);
                             bool exists = false;
@@ -539,6 +541,16 @@ namespace VampirioCode
                             {
                                 exists = Directory.Exists(cppGnuGppPath);
                                 //XConsole.Alert("gnu c++ exists: " + exists);
+                            }
+                            else if (typeCustom == BuilderType.CustomClangCpp)
+                            {
+                                exists = Directory.Exists(cppCLangPath);
+                                //XConsole.Alert("clang++ exists: " + exists);
+                            }
+                            else if (typeCustom == BuilderType.CustomEmscriptenCpp)
+                            {
+                                exists = Directory.Exists(cppEmscriptenPath);
+                                //XConsole.Alert("emscripten exists: " + exists);
                             }
                             else
                             {
@@ -583,6 +595,20 @@ namespace VampirioCode
                                     CustomBuilders.Create_CPP_GNU_GPP_WSL_BASIC(CurrDocument, CurrEditor, binfo);
 
                                 CurrDocument.BuilderType = BuilderType.CustomGnuGppWSLCpp;
+                            }
+                            else if (CurrDocument.BuilderType == BuilderType.CustomClangCpp)
+                            {
+                                if (!exists)
+                                    CustomBuilders.Create_CPP_CLANG_BASIC(CurrDocument, CurrEditor, binfo);
+
+                                CurrDocument.BuilderType = BuilderType.CustomClangCpp;
+                            }
+                            else if (CurrDocument.BuilderType == BuilderType.CustomEmscriptenCpp)
+                            {
+                                if (!exists)
+                                    CustomBuilders.Create_CPP_EMSCRIPTEN_BASIC(CurrDocument, CurrEditor, binfo);
+
+                                CurrDocument.BuilderType = BuilderType.CustomEmscriptenCpp;
                             }
                             //return;*/
                         }
@@ -929,13 +955,13 @@ namespace VampirioCode
 
             DocumentType docType = DocumentType.OTHER;
 
-            if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
-            else if (sender == cppToolStripMenuItem) docType = DocumentType.CPP;
-            else if (sender == jsToolStripMenuItem) docType = DocumentType.JS;
-            else if (sender == javaToolStripMenuItem) docType = DocumentType.JAVA;
-            else if (sender == phpToolStripMenuItem) docType = DocumentType.PHP;
-            else if (sender == htmlToolStripMenuItem) docType = DocumentType.HTML;
-            else if (sender == cmakeToolStripMenuItem) docType = DocumentType.TXT;
+                 if (sender == csharpToolStripMenuItem) docType = DocumentType.CSHARP;
+            else if (sender == cppToolStripMenuItem)    docType = DocumentType.CPP;
+            else if (sender == jsToolStripMenuItem)     docType = DocumentType.JS;
+            else if (sender == javaToolStripMenuItem)   docType = DocumentType.JAVA;
+            else if (sender == phpToolStripMenuItem)    docType = DocumentType.PHP;
+            else if (sender == htmlToolStripMenuItem)   docType = DocumentType.HTML;
+            else if (sender == cmakeToolStripMenuItem)  docType = DocumentType.TXT;
 
             SetLanguage(docType);
 

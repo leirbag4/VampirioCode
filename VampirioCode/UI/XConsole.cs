@@ -22,6 +22,7 @@ namespace VampirioCode.UI
         private static RichTextBox _savedOutp;
         private static FooterUI _footer;
         private static bool _detachedAllowClear = true;
+        private static bool _allowClear = true;
 
         public XConsole()
         {
@@ -195,9 +196,17 @@ namespace VampirioCode.UI
                 MessageBox.Show(str);
         }
 
+        public static void AllowClear(bool enable)
+        { 
+            _allowClear = enable;
+        }
+
         public static void Clear()
         {
             if (!_detachedAllowClear)
+                return;
+
+            if (!_allowClear)
                 return;
 
             if (_outp.InvokeRequired)

@@ -35,15 +35,17 @@ namespace VampirioCode.BuilderInstall.cpp
 
         private void LoadSaveData()
         {
-            clang_exe_input.FilePath = Config.BuildersSettings.CLang.clang_exe_path;
-            clang_include_input.DirPath = Config.BuildersSettings.CLang.clang_include_dir;
-            clang_lib_input.DirPath = Config.BuildersSettings.CLang.clang_lib_dir;
-            auto_fill_ckbox.Checked = Config.BuildersSettings.CLang.auto_fill_checked;
+            clang_exe_input.FilePath =          Config.BuildersSettings.CLang.clang_exe_path;
+            clang_llvm_ar_exe_input.FilePath =  Config.BuildersSettings.CLang.clang_llvm_ar_exe_input;
+            clang_include_input.DirPath =       Config.BuildersSettings.CLang.clang_include_dir;
+            clang_lib_input.DirPath =           Config.BuildersSettings.CLang.clang_lib_dir;
+            auto_fill_ckbox.Checked =           Config.BuildersSettings.CLang.auto_fill_checked;
         }
 
         public override void SaveData()
         {
             Config.BuildersSettings.CLang.clang_exe_path = clang_exe_input.FilePath;
+            Config.BuildersSettings.CLang.clang_llvm_ar_exe_input = clang_llvm_ar_exe_input.FilePath;
             Config.BuildersSettings.CLang.clang_include_dir = clang_include_input.DirPath;
             Config.BuildersSettings.CLang.clang_lib_dir = clang_lib_input.DirPath;
             Config.BuildersSettings.CLang.auto_fill_checked = auto_fill_ckbox.Checked;
@@ -57,6 +59,7 @@ namespace VampirioCode.BuilderInstall.cpp
                 if (index != -1)
                 {
                     string basePath = path.Substring(0, index);
+                    clang_llvm_ar_exe_input.FilePath = basePath + "bin\\llvm-ar.exe";
                     clang_include_input.DirPath = basePath + "include";
                     clang_lib_input.DirPath = basePath + "lib";
                 }

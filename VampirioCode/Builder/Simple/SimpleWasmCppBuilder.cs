@@ -20,7 +20,7 @@ namespace VampirioCode.Builder.Simple
         public SimpleWasmCppBuilder()
         {
             Name = "Emscripten C++";
-            Type = BuilderType.SimpleWasmCpp;
+            Type = BuilderType.SimpleEmscriptenCpp;
         }
 
         public override void Prepare()

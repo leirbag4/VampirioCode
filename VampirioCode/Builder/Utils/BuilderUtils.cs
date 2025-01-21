@@ -124,6 +124,18 @@ namespace VampirioCode.Builder.Utils
                             CustomGnuGppWSLCppBuilderSetting builderSettings = new CustomGnuGppWSLCppBuilderSetting();
                             builderSettings.Open(document.FullFilePath, document.BuilderType);
                         }
+                        else if (newBuilderType == BuilderType.CustomClangCpp)
+                        {
+                            var builder = CustomBuilders.Create_CPP_CLANG_BASIC(document, null, null);
+                            CustomClangCppBuilderSetting builderSettings = new CustomClangCppBuilderSetting();
+                            builderSettings.Open(document.FullFilePath, document.BuilderType);
+                        }
+                        else if (newBuilderType == BuilderType.CustomEmscriptenCpp)
+                        {
+                            var builder = CustomBuilders.Create_CPP_EMSCRIPTEN_BASIC(document, null, null);
+                            CustomEmscriptenCppBuilderSetting builderSettings = new CustomEmscriptenCppBuilderSetting();
+                            builderSettings.Open(document.FullFilePath, document.BuilderType);
+                        }
                         else
                         { 
                             MsgBox.Show("Not found", "Can't convert the current custom build type '" + document.BuilderType + "'\n\nNew supposed build type '" + newBuilderType + "'");
