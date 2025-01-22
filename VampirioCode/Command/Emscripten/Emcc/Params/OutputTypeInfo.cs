@@ -23,7 +23,7 @@ public class OutputTypeInfo
                 return;
 
             _Create(OutputType.Executable,  "Executable",   "");
-            _Create(OutputType.DynamicLib,  "Dynamic Lib",  "-shared", "-fPIC");
+            _Create(OutputType.DynamicLib,  "Dynamic Lib",  "-s", "MAIN_MODULE=1");
             _Create(OutputType.StaticLib,   "Static Lib",   "-c");
 
             _init = true;

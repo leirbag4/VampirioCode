@@ -188,7 +188,7 @@ namespace VampirioCode.Builder.Custom
                 sourceFiles = sourceFiles.Distinct().ToList();
                 sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
 
-                XConsole.Alert("stop here");
+                //XConsole.Alert("stop here");
             }
             else // Default
             {

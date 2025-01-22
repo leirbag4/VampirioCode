@@ -12,6 +12,8 @@ using VampirioCode.Command;
 using VampirioCode.Command.Emscripten.Emcc;
 using VampirioCode.Command.Emscripten.Emcc.Params;
 using VampirioCode.Command.Emscripten.Emcc.Result;
+using VampirioCode.Command.Nodejs;
+using VampirioCode.Command.Nodejs.Result;
 using VampirioCode.Environment;
 using VampirioCode.UI;
 using VampirioCode.Utils;
@@ -35,7 +37,7 @@ namespace VampirioCode.Builder.Custom
         {
             Name =          "CustomEmscripten";
             Type =          BuilderType.CustomEmscriptenCpp;
-            BuilderKind =   BuilderKind.CppGnuGpp;
+            BuilderKind =   BuilderKind.CppEmscripten;
 
             Setting = new EmscriptenBSetting();
             Workspace = new CppWorkspace();
@@ -86,24 +88,28 @@ namespace VampirioCode.Builder.Custom
 
         protected override async Task OnBuildAndRun()
         {
-            /*var result = await _Build();
-            RunResult runResult;
+            XConsole.AllowClear(false);
+            var result = await _Build();
+            RunEmscriptenResult runResult;
 
             if (result.IsOk)
             {
                 if (Setting.OutputType == OutputType.Executable)
                 {
                     XConsole.Clear();
-                    GnuGppWSL gnuGppWSL = new GnuGppWSL();
+                    //Emcc emcc = new Emcc();
 
-                    RunCmd runCmd = new RunCmd();
+                    Nodejs nodejs = new Nodejs();
+                    runResult = await nodejs.RunEmscriptenAsync(OutputFilename);
+
+                    /*RunCmd runCmd = new RunCmd();
                     runCmd.AddVariable(Variables.ProjDir, ProjectDir);
 
                     if (Setting.LibraryDirs.Count > 0)
                         runCmd.LibraryPaths = Setting.LibraryDirs;
 
                     runCmd.Filename = result.OutputFilename;
-                    runResult = await gnuGppWSL.RunAsync(runCmd);
+                    runResult = await emcc.RunAsync(runCmd);*/
                 }
                 else
                 { 
@@ -112,10 +118,10 @@ namespace VampirioCode.Builder.Custom
                 }
             }
 
-            runResult = new RunResult();
+            runResult = new RunEmscriptenResult();
             runResult.SetError(result.ErrorInfo);
             //return runResult;
-            CheckResult(result);*/
+            CheckResult(result);
         }
 
 
@@ -148,7 +154,7 @@ namespace VampirioCode.Builder.Custom
 
                 // Remove repeated sources
                 sourceFiles = sourceFiles.Distinct().ToList();
-                sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
+                //sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
 
             }
             else if (Setting.IncludeSourcesMode == IncludeSourcesMode.Manually)
@@ -162,14 +168,14 @@ namespace VampirioCode.Builder.Custom
 
                 // Remove repeated sources
                 sourceFiles = sourceFiles.Distinct().ToList();
-                sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
+                //sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
 
-                XConsole.Alert("stop here");
+                //XConsole.Alert("stop here");
             }
             else // Default
             {
                 sourceFiles = new string[] { ProgramFile }.ToList();
-                sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
+                //sourceFiles = CmdUtils.ToUnixRelativePaths(sourceFiles);
 
                 // write all code to '\temp_build\proj_name\CppGnuGpp\proj.cpp' main program file
                 File.WriteAllText(ProgramFile, code);
@@ -194,7 +200,7 @@ namespace VampirioCode.Builder.Custom
                 //cmd.OutputObjFiles =            CmdUtils.ToUnixRelativePaths(ToObjFiles(sourceFiles));
             }
             else
-                cmd.OutputFilename =            CmdUtils.ToUnixRelativePath(OutputFilename);
+                cmd.OutputFilename =            OutputFilename;//CmdUtils.ToUnixRelativePath(OutputFilename);
             //cmd.OutputObjsDir =                 objsDir;
             cmd.PreprocessorDefinitions =       VariableAction.ToString(Setting.PreprocessorMacros, "=");
             cmd.Includes =                      Setting.IncludeDirs;
@@ -227,7 +233,7 @@ namespace VampirioCode.Builder.Custom
                 await FileUtils.CopyDirectoryAdvAsync(AppInfo.BasePath, objsDir, new string[] { ".o" }, null, false, true);
 
                 List<string> objFiles = await GetObjFiles();
-                objFiles = CmdUtils.ToUnixRelativePaths(objFiles);
+                //objFiles = CmdUtils.ToUnixRelativePaths(objFiles);
 
                 BuildLibCmd libCmd =            new BuildLibCmd();
                 libCmd.ObjectFiles =            objFiles;
@@ -256,7 +262,7 @@ namespace VampirioCode.Builder.Custom
             if (type == OutputType.Executable)
                 return fullFileName;
             else if (type == OutputType.DynamicLib)
-                return Path.ChangeExtension(fullFileName, ".so");
+                return Path.ChangeExtension(fullFileName, ".wasm");
             else // if (type == OutputType.Static)
                 return Path.ChangeExtension(fullFileName, ".a");
         }

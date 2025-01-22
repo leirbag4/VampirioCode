@@ -69,6 +69,7 @@ namespace VampirioCode.BuilderInstall.cpp
         private void OnUseHardcodedPaths(object sender, EventArgs e)
         {
             clang_exe_input.FilePath = @"C:\programs_dev\clang_llvm_18_1_0\bin\clang++.exe";
+            clang_llvm_ar_exe_input.FilePath = @"C:\programs_dev\clang_llvm_18_1_0\bin\llvm-ar.exe";
             clang_include_input.DirPath = @"C:\programs_dev\clang_llvm_18_1_0\include";
             clang_lib_input.DirPath = @"C:\programs_dev\clang_llvm_18_1_0\lib";
         }

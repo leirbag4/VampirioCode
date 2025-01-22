@@ -107,6 +107,12 @@ namespace VampirioCode.Command.Emscripten.Emcc
             if (CanUse(LibraryFiles)) SetLibFiles(LibraryFiles);
 
             SetIfExists(Sources.ToArray());
+
+            SetPreprocessor(PreprocessorDefinitions); // -D
+
+            SetIfExists(OutputTypeInfo.Get(OutputType).Param);
+            SetIfExists(OutputTypeInfo.Get(OutputType).Param2);
+
             SetIfExists("--embed-file", EmbedFile);
             SetIfExists("-o",           OutputFilename);
             AutoTriggerErrors = false;
@@ -176,6 +182,14 @@ namespace VampirioCode.Command.Emscripten.Emcc
             }
         }
 
+        private void SetPreprocessor(List<string> preprocessorDefinitions)
+        {
+            if ((preprocessorDefinitions != null) && (preprocessorDefinitions.Count > 0))
+            {
+                foreach (string directive in preprocessorDefinitions)
+                    cmd += "-D\"" + _fixLastEscapeBar(directive) + "\" ";
+            }
+        }
 
         // This file is a helper file because you need first to launch 'emsdk.bat activate latest'
         // which sets all environment variables like the needed for python, nodejs and also fill PATH.
