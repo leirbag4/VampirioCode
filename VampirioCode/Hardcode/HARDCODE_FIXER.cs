@@ -70,5 +70,41 @@ namespace VampirioCode.Hardcode
             return defaultTabHeight;
         }
 
+        public static void CPP_SETTINGS_MSVC(UserControl includeDirsList, UserControl libraryDirsList, UserControl libraryFilesList, UserControl sourceFilesList, UserControl itemListPackages, UserControl macrosList, UserControl postCopyDirsList, UserControl postCopyFilesList)
+        {
+	        int w0 = 28;
+	        int w1 = 25;
+
+            if(Display.Scale >= 125)
+            { 
+	            includeDirsList.Width += 	w0;
+	            libraryDirsList.Width += 	w0;
+	            libraryFilesList.Width += 	w0;
+	            sourceFilesList.Width += 	w0;
+	            itemListPackages.Width += 	w1;
+	            macrosList.Width += 		w0;
+	            postCopyDirsList.Width += 	w0;
+	            postCopyFilesList.Width += 	w0;
+            }
+        }
+
+        public static void CPP_SETTINGS_GNU_GPP(UserControl includeDirsList, UserControl libraryDirsList, UserControl libraryFilesList, UserControl sourceFilesList, UserControl itemListPackages, UserControl macrosList, UserControl postCopyDirsList, UserControl postCopyFilesList)
+        {
+	        int w0 = 28;
+	        int w1 = 25;
+
+            if(Display.Scale >= 125)
+            { 
+	            includeDirsList.Width += 	w0;
+	            libraryDirsList.Width += 	w0;
+	            libraryFilesList.Width += 	w0;
+	            sourceFilesList.Width += 	w0;
+	            itemListPackages.Width += 	w1;
+	            macrosList.Width += 		w0;
+	            postCopyDirsList.Width += 	w0;
+	            postCopyFilesList.Width += 	w0;
+            }
+        }
+
     }
 }

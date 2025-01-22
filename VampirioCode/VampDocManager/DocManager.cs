@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VampEditor;
 using VampirioCode;
+using VampirioCode.Builder;
 using VampirioCode.Builder.Utils;
 using VampirioCode.Hardcode;
 using VampirioCode.IO;
@@ -36,7 +37,7 @@ namespace VampDocManager
     public class DocManager : UserControl
     {
 
-        public delegate void DocumentCreatedEvent(Document document, DocumentTab documentTab, CreateMode mode);
+        public delegate void DocumentCreatedEvent(Document document, DocumentTab documentTab, OpenDocInfo openDocInfo, CreateMode mode);
         public delegate void DocumentRemovedEvent(Document document, DocumentTab documentTab, CloseMode mode);
         public delegate void CurrDocumentTabChangedEvent(int index, Document doc);
         public delegate void EditorContextItemPressedEvent(EditorEventType eventType, Document document);
@@ -321,7 +322,7 @@ namespace VampDocManager
             {
                 docTab = CreateDocument(doc);
                 if (DocumentCreated != null)
-                    DocumentCreated(doc, docTab, CreateMode.NewDocument);
+                    DocumentCreated(doc, docTab, null, CreateMode.NewDocument);
             }
 
             return docTab;
@@ -332,7 +333,32 @@ namespace VampDocManager
             return OpenDocument(path, null);
         }
 
-        public Document OpenDocument(string path, DocumentSettings settings = null)
+        public Document OpenDocument(string path, bool checkWorkspace)
+        {
+            if (checkWorkspace)
+            {
+                WorkspaceInfo workspaceInfo = BuilderUtils.GetWorkspaceInfo(path);
+                if (workspaceInfo != null)
+                {
+                    //XConsole.Alert("dale");
+
+                    WorkspaceBase workspace = workspaceInfo.GetWorkspaceBase();
+                    BuilderType builderType = workspace.DefaultBuilderType;
+                    DocumentType docType = workspace.DocumentTypes[0];
+
+                    //XConsole.Alert("builderType: " +    builderType);
+                    //XConsole.Alert("docType: " +        docType);
+                    OpenDocInfo openDocInfo = new OpenDocInfo(workspaceInfo, workspace, builderType, docType);
+                    return OpenDocument(path, null, openDocInfo);
+                }
+                else
+                    return OpenDocument(path, null);
+            }
+            else
+                return OpenDocument(path, null);
+        }
+
+        public Document OpenDocument(string path, DocumentSettings settings = null, OpenDocInfo openDocInfo = null)
         {
             // check if document already exists and load it instead of open a new repeated one
             Document selectedDoc = SelectDocument(path);
@@ -386,9 +412,24 @@ namespace VampDocManager
 
                 }
 
+                // 
+                // Hardcode fixed bug for documents without extensions or secondary documents
+                // like .h .For example an empty doc or a .h will be treated as .cpp
+                // so a Builder can be selected in the upper menu (toolstripmenu)
+                //
+                if (openDocInfo != null)
+                {
+                    if ((doc.DocType == DocumentType.OTHER) || (doc.DocType == DocumentType.H))
+                    {
+                        doc.DocType =       openDocInfo.DocumentType;
+                        doc.BuilderType =   openDocInfo.BuilderType;
+                    }
+                }
+
+                // ------------------------
                 docTab = CreateDocument(doc);
                 if (DocumentCreated != null)
-                    DocumentCreated(doc, docTab, CreateMode.OpenDocument);
+                    DocumentCreated(doc, docTab, openDocInfo, CreateMode.OpenDocument);
             }
 
             return doc;
@@ -656,6 +697,11 @@ namespace VampDocManager
             }
 
             return -1;
+        }
+
+        public bool Exists(string fileFullPath)
+        {
+            return (DocToIndex(fileFullPath) != -1);
         }
 
         private void OnCloseTabPressed(object sender, EventArgs e)

@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
-    <Version>0.6.2</Version>
+    <Version>0.6.3</Version>
     <PackageIcon></PackageIcon>
     <ApplicationIcon>Res\Icons\icon_64_multiple.ico</ApplicationIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

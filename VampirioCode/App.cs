@@ -296,7 +296,7 @@ namespace VampirioCode
                             returnToDoc = CurrDocument;
 
                             XConsole.PrintError("i: " + docManager.DocToIndex(mainFileFullPath));
-                            Document openedDocument = docManager.OpenDocument(mainFileFullPath);
+                            Document openedDocument = docManager.OpenDocument(mainFileFullPath, true);
                         }
 
                         XConsole.Println("cppws: " + cppWorkspace.ToString());
@@ -366,7 +366,7 @@ namespace VampirioCode
         {
             string sel = (string)((ToolStripMenuItem)sender).Tag;
 
-            if (sel == "new") New();
+                 if (sel == "new") New();
             else if (sel == "open") Open();
             else if (sel == "save") Save();
             else if (sel == "save_as") SaveAs();
@@ -380,7 +380,7 @@ namespace VampirioCode
             string templateTag = (string)((ToolStripMenuItem)sender).Tag;
             BuilderTemplateInfo binfo = BuilderTemplateInfo.GetFromTag(templateTag);
 
-            XConsole.Alert(binfo.ToString());
+            //XConsole.Alert(binfo.ToString());
 
             if (binfo == null)
             {
@@ -752,6 +752,8 @@ namespace VampirioCode
 
                 string fromPath = workspaceInfo.RootDirFullPath;
 
+                //XConsole.Alert("fromPath: " + fromPath);
+
                 XConsole.Println("info: " + workspaceInfo.ToString());
 
 
@@ -779,7 +781,7 @@ namespace VampirioCode
                     XConsole.Println(fileAdv.ToString());
                 }
 
-                XConsole.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                XConsole.Println("=================================");
 
                 //string toPath = folderBrowserDialog.SelectedPath;
 
@@ -792,7 +794,8 @@ namespace VampirioCode
                 FileUtils.MoveDirectoryContents(fromPath, newFullDir);
                 // -------------------------------------------------
 
-                XConsole.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                XConsole.Println("=================================");
+
 
                 foreach (var doc in docManager.Documents)
                 {
@@ -800,7 +803,7 @@ namespace VampirioCode
                     {
                         if (doc.FullFilePath == fileAdv.OriginalFullFile)
                         {
-                            XConsole.PrintError("-> " + doc.FullFilePath + " [update]");
+                            XConsole.PrintWarning("-> " + doc.FullFilePath + " [update]");
 
                             doc.IsTemporary = false;
 
@@ -827,6 +830,17 @@ namespace VampirioCode
                 SetTitle(CurrDocument);
                 SaveConfig();
 
+                // Delete directories from 'build'
+                string fromBuildPath = Utility.ReplaceLast(fromPath, AppInfo.TemporaryFilesPath, AppInfo.TemporaryBuildPath);
+                Directory.Delete(fromPath, true);
+                if (Directory.Exists(fromBuildPath))
+                {
+                    Directory.Delete(fromBuildPath, true);
+                    XConsole.PrintWarning("build directory deleted [c] (" + AppInfo.TemporaryBuildPath + "): " + fromBuildPath + "\n");
+                }
+                XConsole.PrintWarning("directory deleted [c] (" + AppInfo.TemporaryFilesPath + "): " + fromPath);
+
+                // -------------------------------
                 MsgBox.Show(this, "Done!", "Custom build project moved done to:\n\n'" + newFullDir + "'");
             }
             else
@@ -1071,7 +1085,8 @@ namespace VampirioCode
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string filePath = dialog.FileName.Trim();
-                docManager.OpenDocument(filePath);
+                //docManager.OpenDocument(filePath);
+                docManager.OpenDocument(filePath, true);
             }
         }
 
@@ -1294,12 +1309,83 @@ namespace VampirioCode
                     loadedTempFilesPath.Add(doc.FullFilePath);
             }
 
+            //XConsole.Alert("allTempFilesPath: " + allTempFilesPath.Length);
+
             foreach (var tempFile in allTempFilesPath)
             {
+                //XConsole.Alert("is: " + tempFile);
                 if (!loadedTempFilesPath.Contains(tempFile))
                 {
                     File.Delete(tempFile);
                     XConsole.PrintWarning("old temporary file deleted: " + tempFile);
+                }
+            }
+            
+            //
+            // Cleanup empty directories
+            //
+            string[] directories = Directory.GetDirectories(AppInfo.TemporaryFilesPath);
+            string buildDir = "";
+
+            foreach (var dir in directories)
+            {
+                //XConsole.Alert("d: " + dir);
+
+                string[] files = FileUtils.GetFilesAt(dir);
+
+                //
+                // Directory is empty, no file inside
+                //
+                if (files.Length == 0)
+                {
+                    buildDir = Utility.ReplaceLast(dir, AppInfo.TemporaryFilesPath, AppInfo.TemporaryBuildPath);
+
+                    try
+                    {
+                        Directory.Delete(dir, true);
+                        Directory.Delete(buildDir, true);
+
+                        XConsole.PrintWarning("directory deleted [a] (" + AppInfo.TemporaryFilesPath + "): " + dir);
+                        XConsole.PrintWarning("build directory deleted [a] (" + AppInfo.TemporaryBuildPath + "): " + buildDir + "\n");
+                    }
+                    catch (Exception e)
+                    {
+                        XConsole.PrintError($"Can't delete '{dir}' or '{buildDir}'");
+                    }
+                }
+                //
+                // Error: can't be more than one file inside 'temp_files' dir
+                //
+                else if (files.Length > 1)
+                {
+                    buildDir = Utility.ReplaceLast(dir, AppInfo.TemporaryFilesPath, AppInfo.TemporaryBuildPath);
+
+                    MsgBox.Show("Can't be more than one file inside 'temp_files' dir. Delete '" + dir + "' and '" + buildDir + "' manually.\n");
+                }
+                //
+                // Check if file inside directory is open or it was moved
+                //
+                else if (files.Length == 1)
+                {
+                    string file = files[0];
+
+                    if (!docManager.Exists(file))
+                    {
+                        buildDir = Utility.ReplaceLast(dir, AppInfo.TemporaryFilesPath, AppInfo.TemporaryBuildPath);
+
+                        try
+                        {
+                            Directory.Delete(dir, true);
+                            Directory.Delete(buildDir, true);
+
+                            XConsole.PrintWarning("directory deleted [b] (" + AppInfo.TemporaryFilesPath + "): " + dir);
+                            XConsole.PrintWarning("build directory deleted [b] (" + AppInfo.TemporaryBuildPath + "): " + buildDir + "\n");
+                        }
+                        catch (Exception e)
+                        {
+                            XConsole.PrintError($"Can't delete '{dir}' or '{buildDir}'");
+                        }
+                    }
                 }
             }
         }
@@ -1444,9 +1530,18 @@ namespace VampirioCode
             SetTitleState(doc);
         }
 
-        private void OnDocumentCreated(Document document, DocumentTab documentTab, CreateMode mode)
+        private void OnDocumentCreated(Document document, DocumentTab documentTab, OpenDocInfo openDocInfo, CreateMode mode)
         {
             documentTab.Editor.PositionChanged += OnEditorPositionChanged;
+
+            if (openDocInfo != null)
+            {
+                //XConsole.Alert("doc type: " + document.DocType);
+                //SelectLanguageMenu(document.DocType);
+                //SelectBuilderMenu(document.DocType, document.BuilderType);
+                //SelectLanguageMenu(openDocInfo.DocumentType);
+                //SelectBuilderMenu(openDocInfo.DocumentType, openDocInfo.BuilderType);
+            }
         }
 
         private void OnDocumentRemoved(Document document, DocumentTab documentTab, CloseMode mode)
@@ -1486,7 +1581,7 @@ namespace VampirioCode
 
             foreach (string filePath in filePaths)
             {
-                docManager.OpenDocument(filePath);
+                docManager.OpenDocument(filePath, true);
             }
         }
 

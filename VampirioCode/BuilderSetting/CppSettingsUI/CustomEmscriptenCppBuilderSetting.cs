@@ -13,6 +13,7 @@ using VampirioCode.BuilderSetting.Actions;
 using VampirioCode.BuilderSetting.CppSettingsUI;
 using VampirioCode.BuilderSetting.UI;
 using VampirioCode.Command.Emscripten.Emcc.Params;
+using VampirioCode.Hardcode;
 using VampirioCode.Properties;
 using VampirioCode.UI;
 using VampirioCode.UI.Controls;
@@ -69,6 +70,8 @@ namespace VampirioCode.BuilderSetting
 
 
             OnLoadData();
+
+            HARDCODE_FIXER.CPP_SETTINGS_MSVC(includeDirsList, libraryDirsList, libraryFilesList, sourceFilesList, itemListPackages, macrosList, postCopyDirsList, postCopyFilesList);
 
             base.OnLoad(e);
         }

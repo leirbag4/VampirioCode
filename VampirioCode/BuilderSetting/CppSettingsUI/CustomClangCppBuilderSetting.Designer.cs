@@ -205,7 +205,7 @@
             standardVersionCBox.DropDownStyle = ComboBoxStyle.DropDownList;
             standardVersionCBox.ForeColor = Color.Silver;
             standardVersionCBox.FormattingEnabled = true;
-            standardVersionCBox.Location = new Point(290, 311);
+            standardVersionCBox.Location = new Point(301, 311);
             standardVersionCBox.Margin = new Padding(3, 2, 3, 2);
             standardVersionCBox.Name = "standardVersionCBox";
             standardVersionCBox.Size = new Size(106, 23);
@@ -218,7 +218,7 @@
             labelAdv3.BorderSize = 1;
             labelAdv3.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv3.ForeColor = Color.Silver;
-            labelAdv3.Location = new Point(290, 287);
+            labelAdv3.Location = new Point(301, 287);
             labelAdv3.ModifyClampMax = 0F;
             labelAdv3.ModifyClampMin = 0F;
             labelAdv3.ModifyControlName = "";
@@ -275,7 +275,7 @@
             outputNameInput.Location = new Point(445, 249);
             outputNameInput.Margin = new Padding(3, 2, 3, 2);
             outputNameInput.Name = "outputNameInput";
-            outputNameInput.Size = new Size(163, 23);
+            outputNameInput.Size = new Size(138, 23);
             outputNameInput.TabIndex = 49;
             // 
             // outputTypeCBox
@@ -287,7 +287,7 @@
             outputTypeCBox.DropDownStyle = ComboBoxStyle.DropDownList;
             outputTypeCBox.ForeColor = Color.Silver;
             outputTypeCBox.FormattingEnabled = true;
-            outputTypeCBox.Location = new Point(290, 249);
+            outputTypeCBox.Location = new Point(301, 249);
             outputTypeCBox.Margin = new Padding(3, 2, 3, 2);
             outputTypeCBox.Name = "outputTypeCBox";
             outputTypeCBox.Size = new Size(106, 23);
@@ -300,7 +300,7 @@
             labelAdv4.BorderSize = 1;
             labelAdv4.CStyle = VampirioCode.UI.Controls.LabelAdv.CustomStyle.NORMAL;
             labelAdv4.ForeColor = Color.Silver;
-            labelAdv4.Location = new Point(290, 225);
+            labelAdv4.Location = new Point(301, 225);
             labelAdv4.ModifyClampMax = 0F;
             labelAdv4.ModifyClampMin = 0F;
             labelAdv4.ModifyControlName = "";
@@ -310,7 +310,7 @@
             labelAdv4.TabIndex = 47;
             labelAdv4.Text = "Output Type";
             // 
-            // CustomCLangCppBuilderSetting
+            // CustomClangCppBuilderSetting
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -333,7 +333,7 @@
             Controls.Add(libraryDirsList);
             Controls.Add(includeDirsList);
             Margin = new Padding(3, 2, 3, 2);
-            Name = "CustomCLangCppBuilderSetting";
+            Name = "CustomClangCppBuilderSetting";
             Text = "Custom clang++ settings";
             ResumeLayout(false);
             PerformLayout();

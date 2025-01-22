@@ -35,18 +35,18 @@ namespace VampirioCode.BuilderInstall
             base.OnLoad(e);
 
             CreateTitleItem("C++");
-            CreateItem("C++ MSVC",          BuilderKind.CppMsvc);
-            CreateItem("C++ GNU g++",       BuilderKind.CppGnuGpp);
-            CreateItem("C++ CLang",         BuilderKind.CppCLang);
-            CreateItem("C++ Emscripten",    BuilderKind.CppEmscripten);
+            CreateItem("C++ MSVC", BuilderKind.CppMsvc);
+            CreateItem("C++ GNU g++", BuilderKind.CppGnuGpp);
+            CreateItem("C++ CLang", BuilderKind.CppCLang);
+            CreateItem("C++ Emscripten", BuilderKind.CppEmscripten);
             CreateTitleItem("C#");
-            CreateItem("C# Dotnet",         BuilderKind.CSharpDotnet);
+            CreateItem("C# Dotnet", BuilderKind.CSharpDotnet);
             CreateTitleItem("Javascript");
-            CreateItem("JS NodeJS",         BuilderKind.JavascriptNodeJs);
+            CreateItem("JS NodeJS", BuilderKind.JavascriptNodeJs);
             CreateTitleItem("Java");
-            CreateItem("Java javac",        BuilderKind.JavaJavac);
+            CreateItem("Java javac", BuilderKind.JavaJavac);
             CreateTitleItem("PHP");
-            CreateItem("PHP Xampp",         BuilderKind.PhpXampp);
+            CreateItem("PHP Xampp", BuilderKind.PhpXampp);
 
 
             XConsole.Push();
@@ -66,7 +66,7 @@ namespace VampirioCode.BuilderInstall
             SaveAndRemovePrevBuilder();
 
             switch (builderKind)
-            { 
+            {
                 case BuilderKind.CppMsvc:
                     SetBuilder(new MsvcBuildSetup());
                     break;
@@ -158,6 +158,11 @@ namespace VampirioCode.BuilderInstall
             Config.Save();
 
             XConsole.Pop();
+        }
+
+        private void OnClearPressed(object sender, EventArgs e)
+        {
+            XConsole.Clear();
         }
     }
 }
