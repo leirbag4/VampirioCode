@@ -13,6 +13,7 @@ using VampirioCode.Command;
 using VampirioCode.BuilderSetting;
 using VampirioCode.Utils;
 using VampirioCode.Workspace;
+using System.IO;
 
 namespace VampirioCode.Builder.Custom
 {
@@ -56,6 +57,25 @@ namespace VampirioCode.Builder.Custom
                 }
             });
             
+        }
+
+        public async Task<bool> CopyResDir()
+        {
+            string resDirPath =     Path.Combine(originalBaseDirPath, AppInfo.ResDirName);
+            string resOutDirPath =  Path.Combine(outputDir, AppInfo.ResDirName);
+
+            if (Path.Exists(resDirPath))
+            {
+                bool result = await VampirioCode.Utils.FileUtils.CopyDirectoryAsync(resDirPath, resOutDirPath, true);
+
+                if (!result)
+                {
+                    XConsole.PrintError($"Can't copy: '{resDirPath}' to '{outputDir}'");
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public bool Exists()

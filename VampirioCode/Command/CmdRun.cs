@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VampirioCode.UI;
 
 namespace VampirioCode.Command
 {
@@ -28,9 +29,12 @@ namespace VampirioCode.Command
         private bool _error = false;
 
 
-        public CmdRun(string fileName, string arguments)
+        public CmdRun(string fileName, string arguments, bool useRelativePath = false)
         {
-            WorkingDirectory = ".";
+            if (useRelativePath)
+                WorkingDirectory = Path.GetDirectoryName(fileName);
+            else
+                WorkingDirectory = ".";
             FileName = fileName;
             Arguments = arguments;
 

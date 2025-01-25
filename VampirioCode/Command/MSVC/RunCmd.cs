@@ -14,7 +14,7 @@ namespace VampirioCode.Command.MSVC
         public async Task<RunResult> RunAsync()
         {
             LogParams = false;
-            return await CreateCommand<RunResult>(Filename, "");
+            return await CreateCommand<RunResult>(Filename, "", "", "", true);
         }
 
         protected override void OnDataReceived(string data)

@@ -22,6 +22,7 @@ namespace VampirioCode
         public static string VampTempDir                { get { return "_vamp"; } }
         public static string BSettingsFileName          { get { return ".bsettings"; } }
         public static string WorkspaceFileName          { get { return ".workspace"; } }
+        public static string ResDirName                 { get { return "res"; } }
 
         public static string PackagesPath               { get { return AppDomain.CurrentDomain.BaseDirectory + "packages\\"; } }
 

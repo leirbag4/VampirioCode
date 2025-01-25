@@ -31,10 +31,10 @@ namespace VampirioCode.Command.GnuGppWSL
             if (CanUse(LibraryPaths))
             {
                 SetLibraryPaths(LibraryPaths);
-                return await CreateCommand<RunResult>("wsl", "-d Ubuntu-test", "bash -c \"" + cmd + " && '" + Filename + "'\"");
+                return await CreateCommand<RunResult>("wsl", "-d Ubuntu-test", "bash -c \"" + cmd + " && '" + Filename + "'\"", "", true);
             }
             else
-                return await CreateCommand<RunResult>("wsl", "-d Ubuntu-test", _quotes(Filename));
+                return await CreateCommand<RunResult>("wsl", "-d Ubuntu-test", _quotes(Filename), "", true);
         }
 
         private void SetLibraryPaths(List<string> libPaths)

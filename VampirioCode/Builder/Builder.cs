@@ -19,6 +19,7 @@ namespace VampirioCode.Builder
         protected string BaseProjDir { get; set; } = "";
         protected string BuilderTypeDir { get; set; } = "";
         protected string ProjectDir { get; set; } = "";
+        protected string outputDir;
         protected string ProgramFile { get; set; } = "";    // e.g: main.cpp  or  Program.cs
         public string OutputFilename { get; set; } = "";    // e.g: 'project.exe' or 'untitled 2.exe'
 

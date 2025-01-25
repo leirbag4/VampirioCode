@@ -37,7 +37,7 @@ namespace VampirioCode.Command
 
         //protected async Task<T> _CreateCommand<T>(string program, string command, string param0 = "", string param1 = "") where T : BaseResult, new()
         
-        protected async Task<T> CreateCommand<T>(string program, string command, string param0 = "", string param1 = "") where T : BaseResult, new()
+        protected async Task<T> CreateCommand<T>(string program, string command, string param0 = "", string param1 = "", bool useRelativePath = false) where T : BaseResult, new()
         {
             TaskCompletionSource<T> tcs = new TaskCompletionSource<T>();
             baseResult = new T();
@@ -53,7 +53,7 @@ namespace VampirioCode.Command
             if(LogParams)
                 Println(program + " " + arguments);
             
-            proc = new CmdRun(program, arguments);
+            proc = new CmdRun(program, arguments, useRelativePath);
             proc.DataReceived += _OnDataReceived;
             proc.ErrorDataReceived += _OnErrorDataReceived;
             //proc.Complete +=          OnComplete;

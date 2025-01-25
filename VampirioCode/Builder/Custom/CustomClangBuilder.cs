@@ -29,7 +29,6 @@ namespace VampirioCode.Builder.Custom
         private List<string> libFiles =     new List<string>();
 
         private string objsDir;
-        private string outputDir;
 
         public CustomClangBuilder()
         {
@@ -210,8 +209,10 @@ namespace VampirioCode.Builder.Custom
             
             if (Setting.InstallPackages.Count > 0)
                 await ImportPackages(Setting.InstallPackages, ProjectDir);
-            
-            
+
+            // Copy 'res' directory if exists
+            await CopyResDir();
+
             bool copied;
             copied = await CopyDirs(Setting.CopyDirsPost, cmd);
             if (!copied) XConsole.Alert("error");
