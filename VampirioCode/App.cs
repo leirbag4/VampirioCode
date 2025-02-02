@@ -1096,7 +1096,10 @@ namespace VampirioCode
             bool saved = docManager.Save();
 
             if (saved && wasTemporary)
+            {
                 SelectLanguageAndBuilder(CurrDocument);
+                CurrDocumentTab.Editor.SetLanguage(CurrDocument.DocType); // fixed language selection bug
+            }
         }
 
         private void SaveAs()
@@ -1104,7 +1107,10 @@ namespace VampirioCode
             bool saved = docManager.SaveAs();
 
             if (saved)
+            {
                 SelectLanguageAndBuilder(CurrDocument);
+                CurrDocumentTab.Editor.SetLanguage(CurrDocument.DocType); // fixed language selection bug
+            }
         }
 
         private void CloseDoc()
@@ -1407,12 +1413,13 @@ namespace VampirioCode
         private void SelectLanguageAndBuilder(Document document)
         {
             SelectLanguageMenu(document.DocType);
+            FillBuilderItems();
             SelectBuilderMenu(document.DocType, document.BuilderType);
         }
 
         private void SelectLanguageMenu(DocumentType docType)
         {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, htmlToolStripMenuItem, cmakeToolStripMenuItem };
+            //ToolStripMenuItem[] items = new ToolStripMenuItem[] { csharpToolStripMenuItem, cppToolStripMenuItem, jsToolStripMenuItem, javaToolStripMenuItem, phpToolStripMenuItem, htmlToolStripMenuItem, cmakeToolStripMenuItem };
 
             Dictionary<DocumentType, ToolStripMenuItem> items2 = new Dictionary<DocumentType, ToolStripMenuItem>()
             {
