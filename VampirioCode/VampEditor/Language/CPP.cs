@@ -18,7 +18,7 @@ namespace VampEditor.Language
         private const String CPP_TYPES =                "bool int double float short signed long void char wchar_t ";
         private const String CPP_TYPES_2 =              "uint8_t int8_t uint16_t int16_t uint32_t int32_t uint64_t int64_t size_t ";
         private const String CPP_STRUCT_AND_ARR =       "this class delete new using struct enum namespace ";
-        private const String CPP_QUALIFIERS =           "public private protected static virtual ";
+        private const String CPP_QUALIFIERS =           "public private protected static virtual override ";
         private const String CPP_OTHERS_1 =             "false true try catch inline throw ";
         private const String CPP_OTHERS_2 =             "unsigned const ";
         private const String CPP_OTHERS_3 =             "decltype constexpr volatile asm friend operator template mutable explicit static_cast const_cast dynamic_cast typeid typename auto register sizeof typedef union extern reinterpret_cast";
