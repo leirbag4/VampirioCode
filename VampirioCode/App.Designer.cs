@@ -40,6 +40,7 @@
             cToolStripMenuItem = new ToolStripMenuItem();
             sDL2ToolStripMenuItem = new ToolStripMenuItem();
             basicToolStripMenuItem = new ToolStripMenuItem();
+            vampEngineMSVCToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem9 = new ToolStripSeparator();
             gNUGSDL2ToolStripMenuItem = new ToolStripMenuItem();
             basicGNUGToolStripMenuItem = new ToolStripMenuItem();
@@ -100,6 +101,7 @@
             debugBuildersToolStripMenuItem = new ToolStripMenuItem();
             resetConfigFileToolStripMenuItem = new ToolStripMenuItem();
             toolBar = new UI.ToolBar();
+            vampEngineXomplexMSVCToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
             splitContainer.Panel1.SuspendLayout();
             splitContainer.Panel2.SuspendLayout();
@@ -196,7 +198,7 @@
             // 
             // cToolStripMenuItem
             // 
-            cToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { sDL2ToolStripMenuItem, basicToolStripMenuItem, toolStripMenuItem9, gNUGSDL2ToolStripMenuItem, basicGNUGToolStripMenuItem });
+            cToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { basicToolStripMenuItem, sDL2ToolStripMenuItem, vampEngineMSVCToolStripMenuItem, vampEngineXomplexMSVCToolStripMenuItem, toolStripMenuItem9, basicGNUGToolStripMenuItem, gNUGSDL2ToolStripMenuItem });
             cToolStripMenuItem.ForeColor = Color.Silver;
             cToolStripMenuItem.Name = "cToolStripMenuItem";
             cToolStripMenuItem.Size = new Size(180, 22);
@@ -206,7 +208,7 @@
             // 
             sDL2ToolStripMenuItem.ForeColor = Color.Silver;
             sDL2ToolStripMenuItem.Name = "sDL2ToolStripMenuItem";
-            sDL2ToolStripMenuItem.Size = new Size(180, 22);
+            sDL2ToolStripMenuItem.Size = new Size(234, 22);
             sDL2ToolStripMenuItem.Tag = "cpp_msvc_sdl2";
             sDL2ToolStripMenuItem.Text = "SDL2 - MSVC";
             sDL2ToolStripMenuItem.Click += OnCustomBuildPressed;
@@ -215,21 +217,30 @@
             // 
             basicToolStripMenuItem.ForeColor = Color.Silver;
             basicToolStripMenuItem.Name = "basicToolStripMenuItem";
-            basicToolStripMenuItem.Size = new Size(180, 22);
-            basicToolStripMenuItem.Tag = "cpp_gnu_gpp_wsl_basic";
+            basicToolStripMenuItem.Size = new Size(234, 22);
+            basicToolStripMenuItem.Tag = "cpp_msvc_basic";
             basicToolStripMenuItem.Text = "Basic - MSVC";
             basicToolStripMenuItem.Click += OnCustomBuildPressed;
+            // 
+            // vampEngineMSVCToolStripMenuItem
+            // 
+            vampEngineMSVCToolStripMenuItem.ForeColor = Color.Silver;
+            vampEngineMSVCToolStripMenuItem.Name = "vampEngineMSVCToolStripMenuItem";
+            vampEngineMSVCToolStripMenuItem.Size = new Size(234, 22);
+            vampEngineMSVCToolStripMenuItem.Tag = "cpp_msvc_vamp_engine";
+            vampEngineMSVCToolStripMenuItem.Text = "VampEngine - MSVC";
+            vampEngineMSVCToolStripMenuItem.Click += OnCustomBuildPressed;
             // 
             // toolStripMenuItem9
             // 
             toolStripMenuItem9.Name = "toolStripMenuItem9";
-            toolStripMenuItem9.Size = new Size(177, 6);
+            toolStripMenuItem9.Size = new Size(231, 6);
             // 
             // gNUGSDL2ToolStripMenuItem
             // 
             gNUGSDL2ToolStripMenuItem.ForeColor = Color.Silver;
             gNUGSDL2ToolStripMenuItem.Name = "gNUGSDL2ToolStripMenuItem";
-            gNUGSDL2ToolStripMenuItem.Size = new Size(180, 22);
+            gNUGSDL2ToolStripMenuItem.Size = new Size(234, 22);
             gNUGSDL2ToolStripMenuItem.Tag = "cpp_gnu_gpp_wsl_sdl2";
             gNUGSDL2ToolStripMenuItem.Text = "SDL2 - GNU g++";
             gNUGSDL2ToolStripMenuItem.Click += OnCustomBuildPressed;
@@ -238,7 +249,7 @@
             // 
             basicGNUGToolStripMenuItem.ForeColor = Color.Silver;
             basicGNUGToolStripMenuItem.Name = "basicGNUGToolStripMenuItem";
-            basicGNUGToolStripMenuItem.Size = new Size(180, 22);
+            basicGNUGToolStripMenuItem.Size = new Size(234, 22);
             basicGNUGToolStripMenuItem.Tag = "cpp_gnu_gpp_wsl_basic";
             basicGNUGToolStripMenuItem.Text = "Basic - GNU g++";
             basicGNUGToolStripMenuItem.Click += OnCustomBuildPressed;
@@ -593,7 +604,7 @@
             // 
             aboutToolStripMenuItem.ForeColor = Color.Silver;
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(107, 22);
+            aboutToolStripMenuItem.Size = new Size(180, 22);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += OnAboutPressed;
             // 
@@ -694,6 +705,15 @@
             toolBar.Size = new Size(693, 27);
             toolBar.TabIndex = 5;
             // 
+            // vampEngineXomplexMSVCToolStripMenuItem
+            // 
+            vampEngineXomplexMSVCToolStripMenuItem.ForeColor = Color.Silver;
+            vampEngineXomplexMSVCToolStripMenuItem.Name = "vampEngineXomplexMSVCToolStripMenuItem";
+            vampEngineXomplexMSVCToolStripMenuItem.Size = new Size(234, 22);
+            vampEngineXomplexMSVCToolStripMenuItem.Tag = "cpp_msvc_vamp_engine_complex";
+            vampEngineXomplexMSVCToolStripMenuItem.Text = "VampEngine Complex - MSVC";
+            vampEngineXomplexMSVCToolStripMenuItem.Click += OnCustomBuildPressed;
+            // 
             // App
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -791,5 +811,7 @@
         private ToolStripSeparator toolStripMenuItem9;
         private ToolStripMenuItem gNUGSDL2ToolStripMenuItem;
         private ToolStripMenuItem basicGNUGToolStripMenuItem;
+        private ToolStripMenuItem vampEngineMSVCToolStripMenuItem;
+        private ToolStripMenuItem vampEngineXomplexMSVCToolStripMenuItem;
     }
 }

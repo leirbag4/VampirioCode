@@ -193,6 +193,8 @@ namespace VampirioCode.Builder.Custom
             setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
             setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
             setting.LibraryDirAdd("${projDir}\\lib\\x64");
+            setting.LibraryDirAdd("${projDir}\\lib");
+            setting.LibraryDirAdd("${projDir}\\lib\\lib-x64");
 
             // Library Files
             setting.LibraryFileAdd("libcpmt.lib");
@@ -200,16 +202,94 @@ namespace VampirioCode.Builder.Custom
             setting.LibraryFileAdd("libucrt.lib");
             setting.LibraryFileAdd("SDL2main.lib");
             setting.LibraryFileAdd("SDL2.lib");
+            setting.LibraryFileAdd("SDL2_image.lib");
+            setting.LibraryFileAdd("SDL2_ttf.lib");
 
             setting.PreprocessorMacroAdd("SDL_main", "main");
 
             setting.CopyFilePostAdd("${projDir}\\SDL2.dll", "${projDir}\\bin", true);
+            setting.CopyFilePostAdd("${projDir}\\SDL2_image.dll", "${projDir}\\bin", true);
+            setting.CopyFilePostAdd("${projDir}\\SDL2_ttf.dll", "${projDir}\\bin", true);
 
             setting.StandardVersion = Command.MSVC.Params.StandardVersion.StdCpp17;
             setting.ExceptionHanldingModel = Command.MSVC.Params.ExceptionHandlingModel.EHsc;
 
             setting.InstallPackage = "sdl2_msvc";
             setting.InstallPackages.Add("sdl2_msvc");
+
+
+            // Save build settings
+            builder.Save();
+
+            // Update to the list
+            //Get(projName, document.BuilderType);
+
+            //XConsole.Alert("proj: " + projName + "  btype: " + document.BuilderType);
+            if ((builderTemplateInfo != null) && !builderTemplateInfo.DontUpdateCode)
+                UpdateCode(editor, builderTemplateInfo);
+
+            return builder;
+        }
+
+        public static CustomMsvcCppBuilder Create_CPP_MSVC_VAMP_ENGINE(Document document, VampirioEditor editor, BuilderTemplateInfo builderTemplateInfo)
+        {
+            //string projName = Path.GetFileNameWithoutExtension(document.FullFilePath);
+            CustomMsvcCppBuilder builder = new CustomMsvcCppBuilder();
+            builder.Setup(document.FullFilePath, document.Text);
+
+
+            MsvcCppBSetting setting = builder.Setting;
+            //setting.AddCopyDirPre("magia\\veneno", "tester\\capitan");
+            //setting.AddCopyDirPre("code", "info\\code");
+
+            /*
+            setting.IncludeDirAdd("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\include");
+            setting.IncludeDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt");
+            setting.IncludeDirAdd("${projDir}\\include");
+
+            // Library Directories
+            setting.LibraryDirAdd("C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\lib\\x64");
+            setting.LibraryDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\um\\x64");
+            setting.LibraryDirAdd("C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\ucrt\\x64");
+            setting.LibraryDirAdd("${projDir}\\lib\\x64");
+             */
+
+            // Includes
+            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
+            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
+            setting.IncludeDirAdd("${projDir}\\include");
+
+            // Library Directories
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
+            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
+            setting.LibraryDirAdd("${projDir}\\lib\\x64");
+            setting.LibraryDirAdd("${projDir}\\lib");
+            setting.LibraryDirAdd("${projDir}\\lib\\lib-x64");
+
+
+            // Library Files
+            setting.LibraryFileAdd("libcpmt.lib");
+            setting.LibraryFileAdd("kernel32.lib");
+            setting.LibraryFileAdd("libucrt.lib");
+            setting.LibraryFileAdd("SDL2main.lib");
+            setting.LibraryFileAdd("SDL2.lib");
+            setting.LibraryFileAdd("SDL2_image.lib");
+            setting.LibraryFileAdd("SDL2_ttf.lib");
+            setting.LibraryFileAdd("VampEngine.lib");
+
+            setting.PreprocessorMacroAdd("SDL_main", "main");
+
+            setting.CopyFilePostAdd("${projDir}\\SDL2.dll", "${projDir}\\bin", true);
+            setting.CopyFilePostAdd("${projDir}\\SDL2_image.dll", "${projDir}\\bin", true);
+            setting.CopyFilePostAdd("${projDir}\\SDL2_ttf.dll", "${projDir}\\bin", true);
+
+            setting.StandardVersion = Command.MSVC.Params.StandardVersion.StdCpp17;
+            setting.ExceptionHanldingModel = Command.MSVC.Params.ExceptionHandlingModel.EHsc;
+
+            setting.InstallPackage = "sdl2_msvc";
+            setting.InstallPackages.Add("sdl2_msvc");
+            setting.InstallPackages.Add("vampirio_engine_msvc");
 
 
             // Save build settings

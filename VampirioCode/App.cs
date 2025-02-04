@@ -1097,8 +1097,10 @@ namespace VampirioCode
 
             if (saved && wasTemporary)
             {
-                SelectLanguageAndBuilder(CurrDocument);
-                CurrDocumentTab.Editor.SetLanguage(CurrDocument.DocType); // fixed language selection bug
+                //SelectLanguageAndBuilder(CurrDocument);
+                //SetLanguage(document.DocType, document.BuilderType);
+                //CurrDocumentTab.Editor.SetLanguage(CurrDocument.DocType); // fixed language selection bug
+                SetLanguage(CurrDocument.DocType, CurrDocument.BuilderType);
             }
         }
 
@@ -1108,8 +1110,9 @@ namespace VampirioCode
 
             if (saved)
             {
-                SelectLanguageAndBuilder(CurrDocument);
-                CurrDocumentTab.Editor.SetLanguage(CurrDocument.DocType); // fixed language selection bug
+                SetLanguage(CurrDocument.DocType, CurrDocument.BuilderType);
+                //SelectLanguageAndBuilder(CurrDocument);
+                //CurrDocumentTab.Editor.SetLanguage(CurrDocument.DocType); // fixed language selection bug
             }
         }
 
@@ -1166,8 +1169,9 @@ namespace VampirioCode
             document.DocType = docType;
             document.BuilderType = builderType;
             document.CustomBuild = true;
-            SelectLanguageMenu(docType);
-            SelectBuilderMenu(docType, builderType);
+            //SelectLanguageMenu(docType);
+            //SelectBuilderMenu(docType, builderType);
+            SetLanguage(CurrDocument.DocType, CurrDocument.BuilderType);
 
             return document;
         }
@@ -1189,6 +1193,16 @@ namespace VampirioCode
                 Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
                 CustomBuilders.Create_CPP_MSVC_SDL2(document, CurrEditor, builderTemplateInfo);
             }
+            else if (template == BuilderTemplate.CppMsvcVampEngine)
+            {
+                Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
+                CustomBuilders.Create_CPP_MSVC_VAMP_ENGINE(document, CurrEditor, builderTemplateInfo);
+            }
+            else if (template == BuilderTemplate.CppMsvcVampEngineComplex)
+            {
+                Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomMsvcCpp);
+                CustomBuilders.Create_CPP_MSVC_VAMP_ENGINE(document, CurrEditor, builderTemplateInfo);
+            }
             // -----------------------------------------
             //               gnu g++ WSL
             // -----------------------------------------
@@ -1202,6 +1216,7 @@ namespace VampirioCode
                 Document document = CreateCustomDocument(DocumentType.CPP, BuilderType.CustomGnuGppWSLCpp);
                 CustomBuilders.Create_CPP_GNU_GPP_WSL_SDL2(document, CurrEditor, builderTemplateInfo);
             }
+
         }
 
         private void Find()

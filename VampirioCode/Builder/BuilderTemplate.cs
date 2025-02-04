@@ -19,6 +19,8 @@ namespace VampirioCode.Builder
         HtmlBasic,
 
         CppMsvcSDL2,
-        CppGnuGppSDL2
+        CppGnuGppSDL2,
+        CppMsvcVampEngine,
+        CppMsvcVampEngineComplex
     }
 }

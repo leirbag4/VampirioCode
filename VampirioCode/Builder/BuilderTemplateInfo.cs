@@ -56,9 +56,11 @@ namespace VampirioCode.Builder
             // IMPORTANT:       _Create(BuilderTemplate.CppMsvcSDL2,    BuilderType.CustomMsvcCpp,
 
             // MSVC
-            _Create(BuilderTemplate.CppMsvcBasic,   BuilderType.CustomMsvcCpp,  "Cpp Msvc Basic",   "C++ Basic Main",   "cpp_msvc_basic",   typeof(CustomMsvcCppBuilderSetting));
-            _Create(BuilderTemplate.CppMsvcSDL2,    BuilderType.CustomMsvcCpp,  "Cpp Msvc SDL2",    "C++ SDL2",         "cpp_msvc_sdl2",    typeof(CustomMsvcCppBuilderSetting));
-
+            _Create(BuilderTemplate.CppMsvcBasic,               BuilderType.CustomMsvcCpp,  "Cpp Msvc Basic",   "C++ Basic Main",   "cpp_msvc_basic",   typeof(CustomMsvcCppBuilderSetting));
+            _Create(BuilderTemplate.CppMsvcSDL2,                BuilderType.CustomMsvcCpp,  "Cpp Msvc SDL2",    "C++ SDL2",         "cpp_msvc_sdl2",    typeof(CustomMsvcCppBuilderSetting));
+            _Create(BuilderTemplate.CppMsvcVampEngine,          BuilderType.CustomMsvcCpp,  "Cpp Msvc Vamp Engine",    "C++ Vamp Engine",         "cpp_msvc_vamp_engine",           typeof(CustomMsvcCppBuilderSetting));
+            _Create(BuilderTemplate.CppMsvcVampEngineComplex,   BuilderType.CustomMsvcCpp,  "Cpp Msvc Vamp Engine",    "C++ Vamp Engine",         "cpp_msvc_vamp_engine_complex",   typeof(CustomMsvcCppBuilderSetting));
+            
             // GNU g++ WSL
             _Create(BuilderTemplate.CppGnuGppWSLBasic,  BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL Basic", "C++ Basic Main",  "cpp_gnu_gpp_wsl_basic",    typeof(CustomGnuGppWSLCppBuilderSetting));
             _Create(BuilderTemplate.CppGnuGppSDL2,      BuilderType.CustomGnuGppWSLCpp, "Cpp Gnu g++ WSL SDL2",  "C++ SDL2",        "cpp_gnu_gpp_wsl_sdl2",     typeof(CustomGnuGppWSLCppBuilderSetting));
