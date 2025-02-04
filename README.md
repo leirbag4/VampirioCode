@@ -21,3 +21,7 @@ Its functionalities are:
 ![reference image](Docs/ref_img1_beta_0_6_2.png)
 <br><br><br>
 ![reference image](Docs/ref_img2_beta_0_6_0.png)
+<br><br><br>
+![reference image](Docs/ref_img3_beta_0_6_3.png)
+<br><br><br>
+![reference image](Docs/ref_img4_beta_0_6_3.png)
