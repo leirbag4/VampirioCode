@@ -278,23 +278,186 @@ namespace VampirioCode.BuilderInstall.cpp
             AutoFillIncludesAndLibraries();
         }
 
-        private void OnUseCommonHardcodedPaths(object sender, EventArgs e)
+        private void OnUseVisualStudioCommonHardcodedPaths(object sender, EventArgs e)
         {
-            cl_exe_input.FilePath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe";
-            lib_exe_input.FilePath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe";
+            cl_exe_input.FilePath =     @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\cl.exe";
+            lib_exe_input.FilePath =    @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x64\lib.exe";
 
             // Includes
-            stl_include_input.DirPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include";
-            ucrt_include_input.DirPath = @"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt";
+            stl_include_input.DirPath =     @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include";
+            ucrt_include_input.DirPath =    @"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt";
 
             // Library Directories
-            stl_lib_dir_input.DirPath = @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\lib\x64";
+            stl_lib_dir_input.DirPath =     @"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\lib\x64";
             um_kernel32_lib_input.DirPath = @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\x64";
-            ucrt_lib_input.DirPath = @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64";
+            ucrt_lib_input.DirPath =        @"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\x64";
         }
+
+
+
+        private void OnSelectVisualStudioPaths(object sender, EventArgs e)
+        {
+            MsgBox.Show(this, "'Microsoft Visual Studio' directory", "Please select the 'Microsoft Visual Studio' directory. Usually located at:\n\nC:\\Program Files\\Microsoft Visual Studio");
+            string visualStudioPath = SelectFolder("Select the 'Microsoft Visual Studio' directory. Usually located at:\n\nC:\\Program Files\\Microsoft Visual Studio", "Microsoft Visual Studio", "C:\\Program Files\\Microsoft Visual Studio");
+            if (string.IsNullOrEmpty(visualStudioPath)) return;
+
+            MsgBox.Show(this, "'Windows Kits' directory", "Please select the 'Windows Kits' directory. Usually located at:\n\nC:\\Program Files (x86)\\Windows Kits");
+            string windowsKitsPath = SelectFolder("Select the 'Windows Kits' directory. Usually located at:\n\nC:\\Program Files (x86)\\Windows Kits", "Windows Kits", "C:\\Program Files (x86)\\Windows Kits");
+            if (string.IsNullOrEmpty(windowsKitsPath)) return;
+
+            //string visualStudioPath = "C:\\Program Files\\Microsoft Visual Studio";
+            //string windowsKitsPath = "C:\\Program Files (x86)\\Windows Kits";
+
+            string latestVsYear = GetLatestYearDirectory(visualStudioPath);
+            //string latestVsEdition = GetLatestVersionDirectory2(Path.Combine(visualStudioPath, latestVsYear, "Community\\VC\\Tools\\MSVC"));
+            string latestVsEdition = GetEdition(Path.Combine(visualStudioPath, latestVsYear));
+            //XConsole.Alert("latestVsEdition: " + latestVsEdition);
+
+
+            string latestMsvcVersion = GetLatestVersionDirectory2(Path.Combine(visualStudioPath, latestVsYear, latestVsEdition, "VC", "Tools", "MSVC"));
+            //XConsole.Alert("latestMsvcVersion: " + latestMsvcVersion);
+
+            string latestWindowsKitsVersion = GetLatestVersionDirectoryFloat(windowsKitsPath);
+            //XConsole.Alert("[-] latestWindowsKitsVersion: " + latestWindowsKitsVersion);
+
+            //string windowsKitsNumber = GetLatestVersionDirectory(windowsKitsPath);
+            //XConsole.Alert("windowsKitsNumber: " + windowsKitsNumber);
+
+            string latestWindowsSdkVersion = GetLatestVersionDirectory2(Path.Combine(windowsKitsPath, latestWindowsKitsVersion, "Include"));
+            //XConsole.Alert("STR: " + Path.Combine(windowsKitsPath, latestWindowsKitsVersion, "Include"));
+            //XConsole.Alert("latestWindowsSdkVersion: " + latestWindowsSdkVersion);
+
+            if (latestVsYear == null || latestVsEdition == null || latestMsvcVersion == null || latestWindowsKitsVersion == null || latestWindowsSdkVersion == null)
+            {
+                MessageBox.Show("Can't find valid versions for selected directories.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string msvcVersionPath = Path.Combine(visualStudioPath, latestVsYear, latestVsEdition, "VC", "Tools", "MSVC", latestMsvcVersion);
+            string windowsKitsVersionPath = Path.Combine(windowsKitsPath, latestWindowsKitsVersion, "Include", latestWindowsSdkVersion);
+
+            cl_exe_input.FilePath = Path.Combine(msvcVersionPath, "bin", "Hostx64", "x64", "cl.exe");
+            lib_exe_input.FilePath = Path.Combine(msvcVersionPath, "bin", "Hostx64", "x64", "lib.exe");
+
+            stl_include_input.DirPath = Path.Combine(msvcVersionPath, "include");
+            ucrt_include_input.DirPath = Path.Combine(windowsKitsVersionPath, "ucrt");
+
+            stl_lib_dir_input.DirPath = Path.Combine(msvcVersionPath, "lib", "x64");
+            um_kernel32_lib_input.DirPath = Path.Combine(windowsKitsPath, latestWindowsKitsVersion, "Lib", latestWindowsSdkVersion, "um", "x64");
+            ucrt_lib_input.DirPath = Path.Combine(windowsKitsPath, latestWindowsKitsVersion, "Lib", latestWindowsSdkVersion, "ucrt", "x64");
+        }
+
+        private string SelectFolder(string description, string lookFor, string possiblePath)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                folderDialog.Description = description;
+                folderDialog.ShowNewFolderButton = false;
+                folderDialog.SelectedPath = possiblePath;
+
+                var dialog = folderDialog.ShowDialog();
+                string dir = Path.GetFileName(folderDialog.SelectedPath);
+
+                if (dir != lookFor)
+                {
+                    MsgBox.Show("Directory '" + dir + "' is not compatible.\n\nYou must select the one called '" + lookFor + "' usually located at:\n\n'" + possiblePath + "'", DialogButtons.OK, DialogIcon.Error);
+                    return null;
+                }
+
+                return dialog == DialogResult.OK ? folderDialog.SelectedPath : null;
+            }
+        }
+
+        private string GetEdition(string basePath)
+        {
+            string[] editions = { "Community", "Professional", "Enterprise", "BuildTools" };
+
+            string installedEdition = editions.FirstOrDefault(edition => Directory.Exists(Path.Combine(basePath, edition)));
+
+            if (installedEdition.Trim() == "")
+            {
+                MsgBox.Show("Can't find the VS edition like 'Community', 'Professional', 'etc'");
+                return null;
+            }
+            else
+                return installedEdition;
+        }
+
+        private string GetLatestYearDirectory(string parentPath)
+        {
+            if (!Directory.Exists(parentPath)) return null;
+
+            var versionDirs = Directory.GetDirectories(parentPath)
+                .Select(Path.GetFileName)
+                .Where(name => int.TryParse(name, out _))
+                .OrderByDescending(name => name)
+                .ToList();
+
+            return versionDirs.FirstOrDefault();
+        }
+
+        private string GetLatestVersionDirectory(string parentPath)
+        {
+            if (!Directory.Exists(parentPath)) return null;
+
+            var versionDirs = Directory.GetDirectories(parentPath)
+                .Select(Path.GetFileName)
+                .Where(name => Version.TryParse(name, out _))
+                .OrderByDescending(name => new Version(name))
+                .ToList();
+
+            return versionDirs.FirstOrDefault();
+        }
+
+        private string GetLatestVersionDirectory2(string parentPath)
+        {
+            if (!Directory.Exists(parentPath)) return null;
+
+            var versionDirs = Directory.GetDirectories(parentPath)
+                .Select(Path.GetFileName)
+                .Where(name => Version.TryParse(name, out _))
+                .OrderByDescending(name => new Version(name))
+                .ToList();
+
+            return versionDirs.FirstOrDefault();
+        }
+
+        private string GetLatestVersionDirectoryFloat(string parentPath)
+        {
+            if (!Directory.Exists(parentPath)) return null;
+
+            var versionDirs = Directory.GetDirectories(parentPath)
+                .Select(Path.GetFileName)
+                .Where(name => float.TryParse(name, out _))
+                .OrderByDescending(name => name)
+                .ToList();
+
+            if (versionDirs.Count <= 0)
+                return null;
+
+            return versionDirs[versionDirs.Count - 1];
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private void OnUseBuildToolsHardcodedPaths(object sender, EventArgs e)
         {
+            OnSelectBuildTools();
+            return;
+
             cl_exe_input.FilePath = @"C:\BuildTools\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\cl.exe";
             lib_exe_input.FilePath = @"C:\BuildTools\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\lib.exe";
 
@@ -308,6 +471,59 @@ namespace VampirioCode.BuilderInstall.cpp
             ucrt_lib_input.DirPath = @"C:\BuildTools\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64";
         }
 
+        private void OnSelectBuildTools()
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                folderDialog.Description = "Select the 'BuildTools' directory";
+                folderDialog.ShowNewFolderButton = false;
+
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedPath = folderDialog.SelectedPath;
+                    string vcPath = Path.Combine(selectedPath, "VC");
+                    string kitsPath = Path.Combine(selectedPath, "Windows Kits");
+
+                    if (!Directory.Exists(vcPath) || !Directory.Exists(kitsPath))
+                    {
+                        MessageBox.Show("It's not the 'BuildTools' directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    string msvcPath = Path.Combine(vcPath, "Tools", "MSVC");
+                    string windowsKitsIncludePath = Path.Combine(kitsPath, "10", "Include");
+                    string windowsKitsLibPath = Path.Combine(kitsPath, "10", "Lib");
+
+                    string latestMsvcVersion = GetLatestVersionDirectory(msvcPath);
+                    string latestWindowsKitsVersion = GetLatestVersionDirectory(windowsKitsIncludePath);
+
+                    if (latestMsvcVersion == null || latestWindowsKitsVersion == null)
+                    {
+                        MessageBox.Show("Can't find valid versions on 'BuildTools'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // update paths
+                    string msvcVersionPath = Path.Combine(msvcPath, latestMsvcVersion);
+                    string windowsKitsVersionPath = Path.Combine(windowsKitsIncludePath, latestWindowsKitsVersion);
+
+                    cl_exe_input.FilePath = Path.Combine(msvcVersionPath, "bin", "Hostx64", "x64", "cl.exe");
+                    lib_exe_input.FilePath = Path.Combine(msvcVersionPath, "bin", "Hostx64", "x64", "lib.exe");
+
+                    stl_include_input.DirPath = Path.Combine(msvcVersionPath, "include");
+                    ucrt_include_input.DirPath = Path.Combine(windowsKitsVersionPath, "ucrt");
+
+                    stl_lib_dir_input.DirPath = Path.Combine(msvcVersionPath, "lib", "x64");
+                    um_kernel32_lib_input.DirPath = Path.Combine(windowsKitsLibPath, latestWindowsKitsVersion, "um", "x64");
+                    ucrt_lib_input.DirPath = Path.Combine(windowsKitsLibPath, latestWindowsKitsVersion, "ucrt", "x64");
+                }
+            }
+        }
+
+ 
+
+
+
         private void OnDownloadFromGithubPressed(object sender, EventArgs e)
         {
             FileBrowserUtils.NavigateToWebPage(@"https://github.com/Data-Oriented-House/PortableBuildTools?tab=readme-ov-file");
@@ -318,5 +534,17 @@ namespace VampirioCode.BuilderInstall.cpp
             FileBrowserUtils.NavigateToWebPage(@"https://www.mediafire.com/file/0kryca7n20gdgip/PortableBuildTools.zip/file");
         }
 
+        private void OnClearPressed(object sender, EventArgs e)
+        {
+            cl_exe_input.FilePath =         "";
+            lib_exe_input.FilePath =        "";
+
+            stl_include_input.DirPath =     "";
+            ucrt_include_input.DirPath =    "";
+
+            stl_lib_dir_input.DirPath =     "";
+            um_kernel32_lib_input.DirPath = "";
+            ucrt_lib_input.DirPath =        "";
+        }
     }
 }

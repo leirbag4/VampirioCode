@@ -107,13 +107,11 @@ int main(int argc, char* argv[])
 
 using namespace std;
 
-void Setup();
 void OnInit();
 void OnUpdate(float deltaTime);
 void OnPaint();
 
 VampEngine* engine;
-Texture* texture;
 
 int main(int argc, char* argv[])
 {
@@ -176,7 +174,6 @@ void OnPaint()
 
 using namespace std;
 
-void Setup();
 void OnInit();
 void OnUpdate(float deltaTime);
 void OnPaint();
