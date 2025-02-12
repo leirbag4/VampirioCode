@@ -15,10 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="packages\sdl2_msvc.vpkg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Res\Icons\icon_64_multiple.ico" />
   </ItemGroup>
 
@@ -57,9 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="packages\vampirio_engine_msvc.vpkg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -71,12 +64,6 @@
     <Folder Include="Command\Nodejs\Params\" />
     <Folder Include="Command\PHP\Params\" />
     <Folder Include="Template\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="packages\sdl2_msvc.vpkg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>
