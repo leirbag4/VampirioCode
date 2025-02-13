@@ -36,6 +36,11 @@
             versionLabel = new Controls.LabelAdv();
             closeButton = new Controls.ButtonAdv();
             labelAdv4 = new Controls.LabelAdv();
+            labelAdv5 = new Controls.LabelAdv();
+            labelAdv6 = new Controls.LabelAdv();
+            linkLabel1 = new LinkLabel();
+            labelAdv7 = new Controls.LabelAdv();
+            linkLabel2 = new LinkLabel();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAdv1).BeginInit();
             SuspendLayout();
             // 
@@ -62,13 +67,14 @@
             githubLinkLabel.ActiveLinkColor = Color.MediumOrchid;
             githubLinkLabel.AutoSize = true;
             githubLinkLabel.LinkColor = Color.BlueViolet;
-            githubLinkLabel.Location = new Point(108, 106);
+            githubLinkLabel.Location = new Point(157, 106);
             githubLinkLabel.Name = "githubLinkLabel";
-            githubLinkLabel.Size = new Size(236, 15);
+            githubLinkLabel.Size = new Size(159, 15);
             githubLinkLabel.TabIndex = 1;
             githubLinkLabel.TabStop = true;
-            githubLinkLabel.Text = "https://github.com/leirbag4/VampirioCode";
-            githubLinkLabel.LinkClicked += OnGithubLinkPressed;
+            githubLinkLabel.Tag = "https://vampiriostudio.com/";
+            githubLinkLabel.Text = "https://vampiriostudio.com/";
+            githubLinkLabel.LinkClicked += OnLinkPressed;
             // 
             // pictureBoxAdv1
             // 
@@ -149,7 +155,7 @@
             closeButton.FocusColor = Color.FromArgb(24, 81, 115);
             closeButton.FocusEnabled = false;
             closeButton.ForeColor = Color.FromArgb(120, 120, 120);
-            closeButton.Location = new Point(200, 134);
+            closeButton.Location = new Point(198, 191);
             closeButton.Margin = new Padding(3, 2, 3, 2);
             closeButton.Name = "closeButton";
             closeButton.PaintImageOnSelected = true;
@@ -181,13 +187,100 @@
             labelAdv4.Text = "Developed by Gabriel Frasca\r\nalso known as Leirbag4";
             labelAdv4.TextAlign = ContentAlignment.TopCenter;
             // 
+            // labelAdv5
+            // 
+            labelAdv5.AutoSize = true;
+            labelAdv5.BorderColor = Color.DarkGray;
+            labelAdv5.BorderSize = 1;
+            labelAdv5.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelAdv5.ForeColor = Color.Silver;
+            labelAdv5.Location = new Point(24, 106);
+            labelAdv5.ModifyClampMax = 0F;
+            labelAdv5.ModifyClampMin = 0F;
+            labelAdv5.ModifyControlName = "";
+            labelAdv5.ModifyScale = 1F;
+            labelAdv5.Name = "labelAdv5";
+            labelAdv5.Size = new Size(95, 15);
+            labelAdv5.TabIndex = 8;
+            labelAdv5.Text = "Vampirio Studio";
+            // 
+            // labelAdv6
+            // 
+            labelAdv6.AutoSize = true;
+            labelAdv6.BorderColor = Color.DarkGray;
+            labelAdv6.BorderSize = 1;
+            labelAdv6.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelAdv6.ForeColor = Color.Silver;
+            labelAdv6.Location = new Point(24, 131);
+            labelAdv6.ModifyClampMax = 0F;
+            labelAdv6.ModifyClampMin = 0F;
+            labelAdv6.ModifyControlName = "";
+            labelAdv6.ModifyScale = 1F;
+            labelAdv6.Name = "labelAdv6";
+            labelAdv6.Size = new Size(87, 15);
+            labelAdv6.TabIndex = 10;
+            labelAdv6.Text = "Vampirio Code";
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.ActiveLinkColor = Color.MediumOrchid;
+            linkLabel1.AutoSize = true;
+            linkLabel1.LinkColor = Color.BlueViolet;
+            linkLabel1.Location = new Point(157, 131);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(237, 15);
+            linkLabel1.TabIndex = 9;
+            linkLabel1.TabStop = true;
+            linkLabel1.Tag = "https://vampiriostudio.com/vampirio_code";
+            linkLabel1.Text = "https://vampiriostudio.com/vampirio_code";
+            linkLabel1.LinkClicked += OnLinkPressed;
+            // 
+            // labelAdv7
+            // 
+            labelAdv7.AutoSize = true;
+            labelAdv7.BorderColor = Color.DarkGray;
+            labelAdv7.BorderSize = 1;
+            labelAdv7.CStyle = UI.Controls.LabelAdv.CustomStyle.NORMAL;
+            labelAdv7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelAdv7.ForeColor = Color.Silver;
+            labelAdv7.Location = new Point(24, 160);
+            labelAdv7.ModifyClampMax = 0F;
+            labelAdv7.ModifyClampMin = 0F;
+            labelAdv7.ModifyControlName = "";
+            labelAdv7.ModifyScale = 1F;
+            labelAdv7.Name = "labelAdv7";
+            labelAdv7.Size = new Size(45, 15);
+            labelAdv7.TabIndex = 12;
+            labelAdv7.Text = "Github";
+            // 
+            // linkLabel2
+            // 
+            linkLabel2.ActiveLinkColor = Color.MediumOrchid;
+            linkLabel2.AutoSize = true;
+            linkLabel2.LinkColor = Color.BlueViolet;
+            linkLabel2.Location = new Point(157, 160);
+            linkLabel2.Name = "linkLabel2";
+            linkLabel2.Size = new Size(236, 15);
+            linkLabel2.TabIndex = 11;
+            linkLabel2.TabStop = true;
+            linkLabel2.Tag = "https://github.com/leirbag4/VampirioCode";
+            linkLabel2.Text = "https://github.com/leirbag4/VampirioCode";
+            linkLabel2.LinkClicked += OnLinkPressed;
+            // 
             // AboutUI
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BorderColor = Color.FromArgb(50, 50, 50);
             BorderSize = 2;
-            ClientSize = new Size(470, 166);
+            ClientSize = new Size(470, 224);
+            Controls.Add(labelAdv7);
+            Controls.Add(linkLabel2);
+            Controls.Add(labelAdv6);
+            Controls.Add(linkLabel1);
+            Controls.Add(labelAdv5);
             Controls.Add(labelAdv4);
             Controls.Add(closeButton);
             Controls.Add(versionLabel);
@@ -215,5 +308,10 @@
         private Controls.LabelAdv versionLabel;
         private Controls.ButtonAdv closeButton;
         private Controls.LabelAdv labelAdv4;
+        private Controls.LabelAdv labelAdv5;
+        private Controls.LabelAdv labelAdv6;
+        private LinkLabel linkLabel1;
+        private Controls.LabelAdv labelAdv7;
+        private LinkLabel linkLabel2;
     }
 }

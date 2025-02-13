@@ -32,11 +32,13 @@ namespace VampirioCode.UI
             this.Close();
         }
 
-        private void OnGithubLinkPressed(object sender, LinkLabelLinkClickedEventArgs e)
+        private void OnLinkPressed(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            LinkLabel link = sender as LinkLabel;
+            
             try
             {
-                string url = "https://github.com/leirbag4/VampirioCode";
+                string url = link.Tag.ToString();//"https://github.com/leirbag4/VampirioCode";
                 Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
             }
             catch (Exception ex)
