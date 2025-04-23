@@ -30,6 +30,7 @@ namespace VampirioCode.Command.JDK
         public async Task<BuildResult> BuildAsync(BuildCmd cmd)
         {
             SetupProgramPaths();
+            SetVariables(cmd);
 
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
@@ -39,6 +40,11 @@ namespace VampirioCode.Command.JDK
         protected override void SetupProgramPaths()
         {
             ProgramPath = Config.BuildersSettings.JavaJDK.javac_exe_path;
+        }
+
+        protected override void SetVariables(BaseCmd cmd)
+        {
+
         }
     }
 }

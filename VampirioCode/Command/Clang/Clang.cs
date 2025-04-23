@@ -24,6 +24,8 @@ namespace VampirioCode.Command.Clang
             cmd.Includes =          includes;
             cmd.LibraryPaths =      libraryPaths;
             cmd.LibraryFiles =      libraryFiles;
+            SetVariables(cmd);
+
             var result =            await cmd.BuildAsync();
             CheckCmd(cmd);
             return result;
@@ -32,6 +34,7 @@ namespace VampirioCode.Command.Clang
         public async Task<BuildResult> BuildAsync(BuildCmd cmd)
         {
             SetupProgramPaths();
+            SetVariables(cmd);
 
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
@@ -45,6 +48,8 @@ namespace VampirioCode.Command.Clang
             RunCmd cmd =        new RunCmd();
             cmd.Filename =      filename;
             cmd.LibraryPaths =  libraryPaths;
+            SetVariables(cmd);
+
             var result =        await cmd.RunAsync();
             CheckCmd(cmd);
             return result;
@@ -77,6 +82,11 @@ namespace VampirioCode.Command.Clang
         {
             ProgramPath =       Config.BuildersSettings.CLang.clang_exe_path;
             LibProgramPath =    Config.BuildersSettings.CLang.clang_llvm_ar_exe_input;
+        }
+
+        protected override void SetVariables(BaseCmd cmd)
+        {
+
         }
     }
 }

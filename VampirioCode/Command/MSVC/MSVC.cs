@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using VampirioCode.Command.MSVC.Params;
 using VampirioCode.Command.MSVC.Result;
+using VampirioCode.Environment;
 using VampirioCode.IO;
 using VampirioCode.SaveData;
+using VampirioCode.UI;
 
 namespace VampirioCode.Command.MSVC
 {
@@ -72,6 +74,8 @@ namespace VampirioCode.Command.MSVC
             cmd.LibraryPaths =              libraryPaths;
             cmd.LibraryFiles =              libraryFiles;
             cmd.ExceptionHandlingModel =    exceptionHandlingModel;
+            SetVariables(cmd);
+
             var result =                    await cmd.BuildAsync();
             CheckCmd(cmd);
             return result;
@@ -81,6 +85,7 @@ namespace VampirioCode.Command.MSVC
         public async Task<BuildResult> BuildAsync(BuildCmd cmd)
         {
             SetupProgramPaths();
+            SetVariables(cmd);
 
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
@@ -90,6 +95,7 @@ namespace VampirioCode.Command.MSVC
         public async Task<BuildLibresult> BuildLibAsync(BuildLibCmd cmd)
         {
             SetupProgramPaths();
+            SetVariables(cmd);
 
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
@@ -107,6 +113,8 @@ namespace VampirioCode.Command.MSVC
 
             RunCmd cmd =    new RunCmd();
             cmd.Filename =  filename;
+            SetVariables(cmd);
+
             var result =    await cmd.RunAsync();
             CheckCmd(cmd);
             return result;
@@ -116,6 +124,18 @@ namespace VampirioCode.Command.MSVC
         {
             ProgramPath =       Config.BuildersSettings.Msvc.cl_exe_path;
             LibProgramPath =    Config.BuildersSettings.Msvc.lib_exe_path;
+        }
+
+        protected override void SetVariables(BaseCmd cmd)
+        {
+            // Includes
+            cmd.AddVariable(CppVariables.StlInclude,    Config.BuildersSettings.Msvc.stl_include);
+            cmd.AddVariable(CppVariables.UcrtInclude,   Config.BuildersSettings.Msvc.ucrt_include);
+            
+            // Libraries
+            cmd.AddVariable(CppVariables.StlLibDir,     Config.BuildersSettings.Msvc.stl_lib_dir);
+            cmd.AddVariable(CppVariables.UmLibDir,      Config.BuildersSettings.Msvc.um_lib_dir);
+            cmd.AddVariable(CppVariables.UcrtLibDir,    Config.BuildersSettings.Msvc.ucrt_lib_dir);
         }
 
     }

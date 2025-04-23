@@ -29,6 +29,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
             cmd.ToolOrSdk =     toolOrSdk;
             cmd.Permanent =     permanent;
             cmd.System =        system;
+            SetVariables(cmd);
+
             var result =        await cmd.ActivateAsync();
             CheckCmd(cmd);
             return result;
@@ -45,6 +47,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
 
             ListCmd cmd =   new ListCmd();
             cmd.Old = old;
+            SetVariables(cmd);
+
             var result =    await cmd.ListAsync();
             CheckCmd(cmd);
             return result;
@@ -61,6 +65,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
 
             InstallCmd cmd =    new InstallCmd();
             cmd.ToolOrSdk =     toolOrSdk;
+            SetVariables(cmd);
+
             var result =        await cmd.InstallAsync();
             CheckCmd(cmd);
             return result;
@@ -77,6 +83,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
 
             UninstallCmd cmd =  new UninstallCmd();
             cmd.ToolOrSdk =     toolOrSdk;
+            SetVariables(cmd);
+
             var result =        await cmd.UninstallAsync();
             CheckCmd(cmd);
             return result;
@@ -91,6 +99,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
             SetupProgramPaths();
 
             UpdateCmd cmd =     new UpdateCmd();
+            SetVariables(cmd);
+
             var result =        await cmd.UpdateAsync();
             CheckCmd(cmd);
             return result;
@@ -105,6 +115,8 @@ namespace VampirioCode.Command.Emscripten.Emsdk
             SetupProgramPaths();
 
             HelpCmd cmd =   new HelpCmd();
+            SetVariables(cmd);
+
             var result =    await cmd.HelpAsync();
             CheckCmd(cmd);
             return result;
@@ -113,6 +125,11 @@ namespace VampirioCode.Command.Emscripten.Emsdk
         protected override void SetupProgramPaths()
         {
             ProgramPath = Config.BuildersSettings.Emscripten.emsdk_bat_path;
+        }
+
+        protected override void SetVariables(BaseCmd cmd)
+        {
+
         }
     }
 }

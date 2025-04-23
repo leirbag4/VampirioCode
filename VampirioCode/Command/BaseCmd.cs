@@ -219,6 +219,15 @@ namespace VampirioCode.Command
                 variables.Add(varName, varValue);
 
         }
+
+        public string GetVariable(string varName)
+        {
+            if (variables.ContainsKey(varName))
+                return variables[varName];
+            else
+                return "";
+        }
+
         public string ReplaceVars(string path, OperatingSystemType os = OperatingSystemType.Windows)
         {
             if (os == OperatingSystemType.Windows)

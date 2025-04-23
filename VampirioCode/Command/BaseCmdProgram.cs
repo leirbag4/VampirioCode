@@ -25,5 +25,10 @@ namespace VampirioCode.Command
         { 
         
         }
+
+        protected virtual void SetVariables(BaseCmd cmd) 
+        { 
+        
+        }
     }
 }

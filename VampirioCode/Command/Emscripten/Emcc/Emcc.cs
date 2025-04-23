@@ -78,5 +78,15 @@ namespace VampirioCode.Command.Emscripten.Emcc
             CheckCmd(cmd);
             return result;
         }
+
+        protected override void SetupProgramPaths()
+        { 
+        
+        }
+
+        protected override void SetVariables(BaseCmd cmd)
+        {
+
+        }
     }
 }

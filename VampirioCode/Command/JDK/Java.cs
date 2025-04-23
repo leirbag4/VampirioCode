@@ -20,6 +20,8 @@ namespace VampirioCode.Command.JDK
             RunCmd cmd =    new RunCmd();
             cmd.Filename =  filename;
             cmd.ClassPath = classPath;
+            SetVariables(cmd);
+
             var result =    await cmd.RunAsync();
             CheckCmd(cmd);
             return result;
@@ -28,6 +30,11 @@ namespace VampirioCode.Command.JDK
         protected override void SetupProgramPaths()
         {
             ProgramPath = Config.BuildersSettings.JavaJDK.java_exe_path;
+        }
+
+        protected override void SetVariables(BaseCmd cmd)
+        {
+
         }
     }
 }

@@ -20,6 +20,8 @@ namespace VampirioCode.Command.GnuGppWSL
             BuildCmd cmd = new BuildCmd();
             cmd.Sources = sources;
             cmd.OutputFilename = outputFilename;
+            SetVariables(cmd);
+
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
             return result;
@@ -30,6 +32,8 @@ namespace VampirioCode.Command.GnuGppWSL
             SetupProgramPaths();
 
             var result = await cmd.BuildAsync();
+            SetVariables(cmd);
+
             CheckCmd(cmd);
             return result;
         }
@@ -45,6 +49,8 @@ namespace VampirioCode.Command.GnuGppWSL
 
             RunCmd cmd = new RunCmd();
             cmd.Filename = filename;
+            SetVariables(cmd);
+
             var result = await cmd.RunAsync();
             CheckCmd(cmd);
             return result;
@@ -53,6 +59,7 @@ namespace VampirioCode.Command.GnuGppWSL
         public async Task<BuildLibResult> BuildLibAsync(BuildLibCmd cmd)
         {
             SetupProgramPaths();
+            SetVariables(cmd);
 
             var result = await cmd.BuildAsync();
             CheckCmd(cmd);
@@ -67,6 +74,7 @@ namespace VampirioCode.Command.GnuGppWSL
         public async Task<RunResult> RunAsync(RunCmd cmd)
         {
             SetupProgramPaths();
+            SetVariables(cmd);
 
             var result = await cmd.RunAsync();
             CheckCmd(cmd);
@@ -76,6 +84,11 @@ namespace VampirioCode.Command.GnuGppWSL
         protected override void SetupProgramPaths()
         {
             DistroName = Config.BuildersSettings.GnuGpp.wsl_distro_name;
+        }
+
+        protected override void SetVariables(BaseCmd cmd)
+        {
+
         }
     }
 }

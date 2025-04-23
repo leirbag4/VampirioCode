@@ -131,13 +131,14 @@ namespace VampirioCode.Builder.Custom
             */
 
             // Includes
-            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
-            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
+            setting.IncludeDirAdd("${stlInclude}");    //setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
+            setting.IncludeDirAdd("${ucrtInclude}");   //setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
 
             // Library Directories
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
+            setting.LibraryDirAdd("${stlLibDir}");    // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
+            setting.LibraryDirAdd("${umLibDir}");     // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
+            setting.LibraryDirAdd("${ucrtLibDir}");   // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
+
 
             // Library Files
             setting.LibraryFileAdd("libcpmt.lib");
@@ -184,14 +185,14 @@ namespace VampirioCode.Builder.Custom
              */
 
             // Includes
-            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
-            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
+            setting.IncludeDirAdd("${stlInclude}");    //setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
+            setting.IncludeDirAdd("${ucrtInclude}");   //setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
             setting.IncludeDirAdd("${projDir}\\include");
 
             // Library Directories
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
+            setting.LibraryDirAdd("${stlLibDir}");    // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
+            setting.LibraryDirAdd("${umLibDir}");     // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
+            setting.LibraryDirAdd("${ucrtLibDir}");   // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
             setting.LibraryDirAdd("${projDir}\\lib\\x64");
             setting.LibraryDirAdd("${projDir}\\lib");
             setting.LibraryDirAdd("${projDir}\\lib\\lib-x64");
@@ -255,14 +256,15 @@ namespace VampirioCode.Builder.Custom
              */
 
             // Includes
-            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
-            setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
+            setting.IncludeDirAdd("${stlInclude}");    //setting.IncludeDirAdd(Config.BuildersSettings.Msvc.stl_include);
+            setting.IncludeDirAdd("${ucrtInclude}");   //setting.IncludeDirAdd(Config.BuildersSettings.Msvc.ucrt_include);
             setting.IncludeDirAdd("${projDir}\\include");
 
             // Library Directories
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
-            setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
+            setting.LibraryDirAdd("${stlLibDir}");    // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.stl_lib_dir);
+            setting.LibraryDirAdd("${umLibDir}");     // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.um_lib_dir);
+            setting.LibraryDirAdd("${ucrtLibDir}");   // setting.LibraryDirAdd(Config.BuildersSettings.Msvc.ucrt_lib_dir);
+
             setting.LibraryDirAdd("${projDir}\\lib\\x64");
             setting.LibraryDirAdd("${projDir}\\lib");
             setting.LibraryDirAdd("${projDir}\\lib\\lib-x64");
