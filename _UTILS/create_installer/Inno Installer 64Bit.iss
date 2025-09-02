@@ -21,7 +21,7 @@ Compression=lzma2
 SolidCompression=yes
 OutputDir=.
 OutputBaseFilename=vampirio_code_setup
-;SetupIconFile=res\icon_64_multiple.ico
+SetupIconFile=res\icon_64_multiple.ico
 ; "ArchitecturesAllowed=x64compatible" specifies that Setup cannot run
 ; on anything but x64 and Windows 11 on Arm.
 ArchitecturesAllowed=x64compatible
@@ -32,7 +32,7 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 
 [Files]
-; Copia todos los archivos y carpetas, excepto los .iss
+; Copy all files and dirs except .iss
 Source: "release\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs; Excludes: "config.cfg;*.iss"
 ;Source: "VampirioCode.exe"; DestDir: "{app}"; DestName: "VampirioCode.exe"
 ;Source: "MyProg.chm"; DestDir: "{app}"
@@ -44,5 +44,5 @@ Name: "desktopicon"; Description: "Create an icon on the Desktop"; GroupDescript
 
 [Icons]
 Name: "{group}\Vampirio Code"; Filename: "{app}\VampirioCode.exe"
-; Acceso directo opcional en el escritorio
+; Add optional shortcut to the desktop
 Name: "{commondesktop}\Vampirio Code"; Filename: "{app}\VampirioCode.exe"; Tasks: desktopicon
