@@ -46,3 +46,7 @@ Name: "desktopicon"; Description: "Create an icon on the Desktop"; GroupDescript
 Name: "{group}\Vampirio Code"; Filename: "{app}\VampirioCode.exe"
 ; Add optional shortcut to the desktop
 Name: "{commondesktop}\Vampirio Code"; Filename: "{app}\VampirioCode.exe"; Tasks: desktopicon
+
+; Remove 'AppData\Roaming\VampirioCode'
+[UninstallDelete]
+Type: filesandordirs; Name: "{userappdata}\VampirioCode"
