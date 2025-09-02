@@ -13,7 +13,7 @@ echo Detected version: %VERSION_NUMBER%
 echo.
 
 :: ============================
-:: COPY and create ZIP file
+:: COPY files and struct
 :: ============================
 SET ORIGINAL_RELEASE_DIR="..\VampirioCode\bin\Release\net8.0-windows"
 SET NEW_RELEASE_DIR=".\VampirioCode"
@@ -23,6 +23,22 @@ xcopy /y /e /i %ORIGINAL_RELEASE_DIR% %NEW_RELEASE_DIR%
 del %NEW_RELEASE_DIR%\config.cfg
 del %NEW_RELEASE_DIR%\VampirioCode.pdb
 
+:: ============================
+:: CREATE Portable or Installable version
+:: ============================
+::powershell -NoProfile -ExecutionPolicy Bypass -File "_set_to_installable.ps1"
+:: CREATE Portable or Installable version
+if "%~1"=="" (
+    echo No .ps1 script provided! Please call this batch with a parameter.
+	pause
+    exit /b 1
+)
+
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~1"
+
+:: ============================
+:: COMPRESS to ZIP file
+:: ============================
 powershell -NoProfile -ExecutionPolicy Bypass -File "_create_release_.ps1"
 rmdir /s /q %NEW_RELEASE_DIR%
 

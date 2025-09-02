@@ -41,6 +41,13 @@ del %NEW_RELEASE_DIR%\config.cfg >nul 2>&1
 del %NEW_RELEASE_DIR%\VampirioCode.pdb >nul 2>&1
 
 :: ============================
+:: CREATE Installable version
+:: ============================
+echo .
+echo change settings.ini to installable version
+powershell -NoProfile -ExecutionPolicy Bypass -File "_set_to_installable.ps1"
+
+:: ============================
 :: Build installer with Inno Setup
 :: ============================
 
