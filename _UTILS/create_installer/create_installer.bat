@@ -38,7 +38,7 @@ xcopy /y /e /i %ORIGINAL_RELEASE_DIR% %NEW_RELEASE_DIR%
 
 :: Remove unwanted files
 del %NEW_RELEASE_DIR%\config.cfg >nul 2>&1
-del %NEW_RELEASE_DIR%\VampirioCode.pdb >nul 2>&1
+::del %NEW_RELEASE_DIR%\VampirioCode.pdb >nul 2>&1
 
 :: ============================
 :: CREATE Installable version

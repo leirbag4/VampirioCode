@@ -21,7 +21,7 @@ SET ZIP_NAME="vampirio-code-ver-%VERSION_NUMBER%.zip"
 
 xcopy /y /e /i %ORIGINAL_RELEASE_DIR% %NEW_RELEASE_DIR%
 del %NEW_RELEASE_DIR%\config.cfg
-del %NEW_RELEASE_DIR%\VampirioCode.pdb
+::del %NEW_RELEASE_DIR%\VampirioCode.pdb
 rmdir /s /q "%NEW_RELEASE_DIR%\temp_build"
 rmdir /s /q "%NEW_RELEASE_DIR%\temp_files"
 :: ============================
