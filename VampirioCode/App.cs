@@ -49,7 +49,8 @@ namespace VampirioCode
         {
             DarkTitleBarHelper.UseImmersiveDarkMode(Handle, true);
 
-            FilesStructInit();
+            Settings.Initialize();
+            DirStructsInit();
             Display.Initialize();
             DocumentTypeInfo.Initialize();
             Config.Initialize();
@@ -1288,8 +1289,16 @@ namespace VampirioCode
             }
         }
 
-        private void FilesStructInit()
+        private void DirStructsInit()
         {
+            // Create AppData directory -> '...\AppData\Roaming\VampirioCode' because 'temp_dir'
+            // and 'temp_files' will be inside it
+            if (Settings.Installable)
+            { 
+                if(!Directory.Exists(AppInfo.AppDataDir))
+                    Directory.CreateDirectory(AppInfo.AppDataDir);
+            }
+
             if (!Directory.Exists(AppInfo.TemporaryFilesPath))
                 Directory.CreateDirectory(AppInfo.TemporaryFilesPath);
         }
