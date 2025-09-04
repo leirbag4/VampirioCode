@@ -49,7 +49,11 @@ namespace VampirioCode
         {
             DarkTitleBarHelper.UseImmersiveDarkMode(Handle, true);
 
-            Settings.Initialize();
+            if (!Settings.Initialize())
+            {
+                Application.Exit();
+                return;
+            }
             DirStructsInit();
             Display.Initialize();
             DocumentTypeInfo.Initialize();

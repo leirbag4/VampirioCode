@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
-    <Version>0.6.8</Version>
+    <Version>0.6.9</Version>
     <PackageIcon></PackageIcon>
     <ApplicationIcon>Res\Icons\icon_64_multiple.ico</ApplicationIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -53,6 +53,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="CopyFiles\settings.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>settings.ini</Link>
+	</None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
